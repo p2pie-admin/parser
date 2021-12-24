@@ -1,0 +1,5 @@
+{
+  "STRAPI": "https://cotletastrapi.herokuapp.com/graphql",
+  "LOCAL_STRAPI": "http://localhost:1337/graphql",
+  "RATES_PROVIDER": "https://allchange.org/api/rates?directions="
+}
