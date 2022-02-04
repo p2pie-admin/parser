@@ -10,8 +10,10 @@ const db_1 = __importDefault(require("./db"));
 async function preferencesLoader() {
     try {
         const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI);
-        const data = await graphQLClient.request(queries_1.RatesPreferencesQuery);
-        db_1.default.push(".preferences", data.ratesFilterPreference);
+        const prefsData = await graphQLClient.request(queries_1.RatesPreferencesQuery);
+        db_1.default.push(".preferences", prefsData.ratesFilterPreference);
+        const exchangersData = await graphQLClient.request(queries_1.ExchangersQuery);
+        db_1.default.push(".exchangers", exchangersData.exchangers);
         db_1.default.save();
     }
     catch (err) {

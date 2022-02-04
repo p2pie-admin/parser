@@ -5,51 +5,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.server = void 0;
 const fastify_1 = __importDefault(require("fastify"));
-const preferencesLoader_1 = __importDefault(require("./preferencesLoader"));
+const initialLoader_1 = __importDefault(require("./initialLoader"));
 const handleDirRequest_1 = __importDefault(require("./dirs/handleDirRequest"));
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
+const fastify_static_1 = __importDefault(require("fastify-static"));
+const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
+const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
 const server = (0, fastify_1.default)();
 exports.server = server;
 server.register(fastify_websocket_1.default);
-const allRoutes = {
-    routes: ["/rates", "/dirs", "/preferences", "/problematic"],
-};
+server.register(fastify_static_1.default, {
+    root: path_1.default.join(__dirname, "../public"),
+    prefix: "/public/",
+});
+console.log(path_1.default.join(__dirname));
 server.get("/", async function (_, reply) {
-    reply.send(JSON.stringify(allRoutes));
+    reply.sendFile("menu.html");
 });
 server.get("/preferences", async function (_, reply) {
     reply.send(JSON.stringify(db_1.default.getData(".preferences")));
 });
-server.get("/problematic", async function (_, reply) {
-    reply.send(JSON.stringify(db_1.default.getData(".problematicRates")));
+server.get("/exchangers", async function (_, reply) {
+    reply.send(JSON.stringify(db_1.default.getData(".exchangers")));
 });
-server.get("/rate=:dirId", async function (request, reply) {
-    const { dirId } = request.params;
+server.get("/dirs", async function (_, reply) {
+    reply.send(JSON.stringify(db_1.default.getData(".dirs")));
+});
+server.get("/warnings", async function (_, reply) {
+    reply.send(JSON.stringify(db_1.default.getData(".warnings")));
+});
+server.get("/errors", async function (_, reply) {
+    reply.send(JSON.stringify(db_1.default.getData(".errors")));
+});
+server.get("/dir=:dirId/full=:isFull", async function (request, reply) {
+    var _a;
+    const { dirId, isFull } = request.params;
     if (dirId && dirId.length < 20 && dirId.includes("_")) {
-        const res = await (0, handleDirRequest_1.default)(dirId.toUpperCase());
+        const convertedDirRates = (_a = db_1.default.getData(".allConvertedRates")[dirId]) !== null && _a !== void 0 ? _a : (await (0, handleDirRequest_1.default)(dirId.toUpperCase()));
+        const res = isFull === "true"
+            ? convertedDirRates === null || convertedDirRates === void 0 ? void 0 : convertedDirRates.rates
+            : {
+                bestRates: convertedDirRates === null || convertedDirRates === void 0 ? void 0 : convertedDirRates.bestRates,
+                uniqueRates: convertedDirRates === null || convertedDirRates === void 0 ? void 0 : convertedDirRates.uniqueRates,
+            };
         reply.send(JSON.stringify(res));
     }
     else {
         reply.send("wrong request");
     }
 });
-server.get("/websocket", { websocket: true }, (connection) => {
-    connection.socket.on("message", async (message) => {
-        const dirId = String(message);
-        if (dirId && dirId.length < 20 && dirId.includes("_")) {
-            const res = await (0, handleDirRequest_1.default)(dirId.toUpperCase());
-            connection.socket.send(JSON.stringify(res));
-        }
-        else {
-            connection.socket.send("wrong request");
-        }
-    });
-});
 const start = async () => {
     try {
+        console.log("started");
         await server.listen(process.env.PORT || 5000, "0.0.0.0");
-        await (0, preferencesLoader_1.default)();
+        await (0, initialLoader_1.default)();
+        setInterval(getAllRates_1.default, db_1.default.getData(".preferences.update_time_sec") * 1000);
     }
     catch (error) {
         server.log.error(error);

@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
-  query Exchangers($names: [String!]) {
-    exchangers(where: { name_contains: $names, status: ["active"] }) {
+  {
+    exchangers(where: { status: ["active"] }) {
       name
       our_rating
       logo {
@@ -19,17 +19,17 @@ const ExchangersQuery = gql`
 const RatesPreferencesQuery = gql`
   {
     ratesFilterPreference {
-      dirs_disabled
       update_time_sec
+      dirs_disabled
+      optimal_course_power
       dirs_cleaning_coefficient
+      SD_applied_from
+      SD_best_rates
+      SD_worst_rates
+      filter_options {
+        name
+      }
       cities
-      best_rating
-      optimal
-      lowest_min
-      best_course
-      fast
-      top_reserve
-      most_popular
     }
   }
 `;

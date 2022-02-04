@@ -7,8 +7,8 @@ const db_1 = __importDefault(require("../db"));
 const getAllRates_1 = __importDefault(require("../rates/getAllRates"));
 const helper_1 = require("./helper");
 async function handleDirRequest(dir) {
-    var _a, _b;
-    const { dirs, snapshot, counter, all_rates, preferences } = db_1.default.getObject(".");
+    var _a;
+    const { dirs, snapshot, counter, preferences } = db_1.default.getObject(".");
     db_1.default.push(`.dirs.${dir}`, 1 + ((_a = dirs[dir]) !== null && _a !== void 0 ? _a : 0));
     if (counter >
         Object.keys(dirs).length * (preferences.dirs_cleaning_coefficient || 10)) {
@@ -22,7 +22,9 @@ async function handleDirRequest(dir) {
         db_1.default.push(".counter", counter + 1);
         db_1.default.save();
     }
-    return (_b = all_rates[dir]) !== null && _b !== void 0 ? _b : (await (0, getAllRates_1.default)(dir));
+    console.log(`${dir} requested`);
+    const allConvertedRates = await (0, getAllRates_1.default)();
+    return allConvertedRates && allConvertedRates[dir];
 }
 exports.default = handleDirRequest;
 //# sourceMappingURL=handleDirRequest.js.map

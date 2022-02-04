@@ -4,16 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../db"));
-const [givePm] = db_1.default.getData(".lastDir").split("_");
+const verification_1 = __importDefault(require("./verification"));
 const transformRateStringsToRates = (rateStrings) => {
-    let ratesValues = rateStrings.map((rs) => rs.split(";"));
+    let manyRatesValues = rateStrings.map((rs) => rs.split(";"));
     const isCash = db_1.default.getData(".lastDir").includes("CASH");
     if (isCash)
-        ratesValues = groupCities(ratesValues);
-    return ratesValues.reduce((rates, rateValues) => {
+        manyRatesValues = groupCities(manyRatesValues);
+    return manyRatesValues.reduce((rates, rateValues) => {
         const rate = formatRate(rateValues);
-        const verifiedRate = verifyRate(rate);
-        verifiedRate ? rates.push(verifiedRate) : addToProblematic(rateValues);
+        const verificationResult = (0, verification_1.default)(rate);
+        !verificationResult.rateErrors.length
+            ? rates.push(rate)
+            : addToProblematic(rate, verificationResult);
         return rates;
     }, []);
 };
@@ -28,7 +30,7 @@ const groupCities = (ratesValues) => {
     }, []);
 };
 const formatRate = (rateValues) => {
-    const [id, name, course, reserve, _, from_fee, to_fee, min_amount, max_amount, mask, cities,] = rateValues;
+    const [id, name, course, reserve, max_fee, from_fee, to_fee, min_amount, max_amount, mask, cities,] = rateValues;
     const binParams = [
         0b000000001,
         0b000000010,
@@ -41,64 +43,48 @@ const formatRate = (rateValues) => {
         0b100000000,
     ];
     const paramIds = binParams.reduce((res, p) => p & +mask ? [...res, binParams.indexOf(p)] : res, []);
-    const [give, get] = extractAmountsFromCourse(+course, from_fee, to_fee);
+    const [give, get] = extractAmountsFromCourse(+course);
     const rate = {
         id: +id,
         name,
         give,
         get,
+        max_fee,
         from_fee,
         to_fee,
-        course: +course,
-        reserve: +reserve,
-        min_amount: min_amount.includes(givePm) ? parseFloat(min_amount) : 0,
-        max_amount: max_amount.includes(givePm) ? parseFloat(max_amount) : 0,
+        min_amount: transformLimit(min_amount, +course),
+        max_amount: transformLimit(max_amount, +course),
+        reserve: transformLimit(`${reserve} ${db_1.default.getData(".lastDir").split("_")[1]}`, +course),
         paramIds,
         cities: formatCities(cities),
     };
     return rate;
 };
-const extractAmountsFromCourse = (course, from_fee, to_fee) => {
-    const feeGive = calculateFeeGive(from_fee, to_fee, course);
-    const feeGet = calculateFeeGet(from_fee, to_fee, course);
-    const [give, get] = course < 1 ? [1, feeGet(1 / course)] : [feeGive(course), 1];
-    return [roundNumber(give), roundNumber(get)];
+const transformLimit = (limit, course) => {
+    const limitCur = limit.split(" ")[1];
+    const limitValue = parseFloat(limit);
+    const [givePm, getPm] = db_1.default.getData(".lastDir").split("_");
+    const give = givePm.includes(limitCur)
+        ? limitValue
+        : getPm.includes(limitCur)
+            ? limitValue * course
+            : 0;
+    const get = getPm.includes(limitCur)
+        ? limitValue
+        : givePm.includes(limitCur)
+            ? limitValue / course
+            : 0;
+    return { give: roundAmount(give), get: roundAmount(get) };
 };
-const calculateFeeGive = (from_fee, to_fee, course) => (amount) => {
-    let res = amount;
-    for (let fee of [from_fee, to_fee]) {
-        if (fee.includes("%") && parseFloat(fee)) {
-            res = res * (1 + parseFloat(fee) / 100);
-        }
-        else if (fee !== "0") {
-            res = fee.includes(givePm)
-                ? res + parseFloat(fee)
-                : res + parseFloat(fee) * course;
-        }
-    }
-    return res;
+const extractAmountsFromCourse = (course) => {
+    const [give, get] = course < 1 ? [1, 1 / course] : [course, 1];
+    return [roundAmount(give), roundAmount(get)];
 };
-const calculateFeeGet = (from_fee, to_fee, course) => (amount) => {
-    let res = amount;
-    for (let fee of [from_fee, to_fee]) {
-        if (fee.includes("%") && parseFloat(fee)) {
-            res = res * (1 - parseFloat(fee) / 100);
-        }
-        else if (fee !== "0") {
-            res = fee.includes(givePm)
-                ? res - parseFloat(fee) / course
-                : res - parseFloat(fee);
-        }
-    }
-    return res;
-};
-const roundNumber = (num) => {
-    const thousandsPart = num / 10000;
-    const signsAfterPoint = Math.floor(Math.log10(thousandsPart));
-    if (signsAfterPoint >= 0) {
-        return +num.toFixed(0);
-    }
-    return +num.toFixed(-signsAfterPoint);
+const roundAmount = (amount, factor = 3) => {
+    if (amount === 0)
+        return 0;
+    const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
+    return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
 };
 const formatCities = (cities) => {
     const cityList = db_1.default.getData(".preferences.cities");
@@ -117,23 +103,14 @@ const formatCities = (cities) => {
         return accumulator;
     }, {});
 };
-const verifyRate = (rate) => {
-    const { name, reserve, min_amount, max_amount } = rate;
-    const targetViolations = name.length > 20 ||
-        name.length < 3 ||
-        reserve < min_amount ||
-        min_amount > max_amount;
-    const generalViolations = Object.values(rate).find((val) => val === NaN || val === 0);
-    return max_amount !== 0 && (targetViolations || generalViolations)
-        ? null
-        : rate;
-};
-const addToProblematic = (rateValues) => {
+const addToProblematic = (rate, verificationResult) => {
     const dir = db_1.default.getData(".lastDir");
-    const exchangerName = rateValues[1].replace(".", "_");
-    const problematicRateExists = db_1.default.exists(`.problematicRates.${dir}.${exchangerName}`);
+    const problematicRateExists = db_1.default.exists(`.problematicRates.${dir}.${rate.name}`);
     if (!problematicRateExists)
-        db_1.default.push(`.problematicRates.${dir}.${exchangerName}`, formatRate(rateValues));
+        db_1.default.push(`.problematicRates.${dir}.${rate.name}`, {
+            rate,
+            verificationResult,
+        });
 };
 exports.default = transformRateStringsToRates;
 //# sourceMappingURL=rateTransformer.js.map

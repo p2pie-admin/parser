@@ -2,24 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB = {
     dirs: {},
-    lastDir: "",
     snapshot: {},
     counter: 1,
-    all_rates: {},
-    problematicRates: {},
+    allConvertedRates: {},
+    warnings: {},
+    errors: {},
     preferences: {
         dirs_disabled: "",
         update_time_sec: 100,
         dirs_cleaning_coefficient: 10,
         cities: {},
-        best_rating: false,
-        optimal: true,
-        lowest_min: false,
-        best_course: false,
-        most_popular: false,
-        fast: false,
-        top_reserve: false,
+        filter_options: [],
+        SD_applied_from: 8,
+        SD_best_rates: 4,
+        SD_worst_rates: 5,
     },
+    exchangers: [],
 };
 exports.default = initialDB;
 //# sourceMappingURL=initialDB.js.map
