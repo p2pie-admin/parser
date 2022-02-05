@@ -45,9 +45,7 @@ type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
 server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
   const { dirId, isFull } = request.params;
   if (dirId && dirId.length < 20 && dirId.includes("_")) {
-    const convertedDirRates =
-      db.getData(".allConvertedRates")[dirId] ??
-      (await handleDirRequest(dirId.toUpperCase()));
+    const convertedDirRates = await handleDirRequest(dirId.toUpperCase());
     const res =
       isFull === "true"
         ? convertedDirRates?.rates

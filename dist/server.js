@@ -39,10 +39,9 @@ server.get("/errors", async function (_, reply) {
     reply.send(JSON.stringify(db_1.default.getData(".errors")));
 });
 server.get("/dir=:dirId/full=:isFull", async function (request, reply) {
-    var _a;
     const { dirId, isFull } = request.params;
     if (dirId && dirId.length < 20 && dirId.includes("_")) {
-        const convertedDirRates = (_a = db_1.default.getData(".allConvertedRates")[dirId]) !== null && _a !== void 0 ? _a : (await (0, handleDirRequest_1.default)(dirId.toUpperCase()));
+        const convertedDirRates = await (0, handleDirRequest_1.default)(dirId.toUpperCase());
         const res = isFull === "true"
             ? convertedDirRates === null || convertedDirRates === void 0 ? void 0 : convertedDirRates.rates
             : {

@@ -1,15 +1,15 @@
 import db from "../db";
 import getAllRates from "../rates/getAllRates";
 import { removeSame } from "./helper";
-import { DB, AllConvertedRates, ConvertedDirRates } from "../types";
+import { DB, ConvertedDirRates } from "../types";
+import { dir } from "console";
 
 async function handleDirRequest(
-  dir: string
+  dirId: string
 ): Promise<ConvertedDirRates | null> {
   const { dirs, snapshot, counter, preferences } = db.getObject<DB>(".");
   //const dirExists = dirs && Object.keys(dirs).find((d) => d === dir);
-
-  db.push(`.dirs.${dir}`, 1 + (dirs[dir] ?? 0)); // increase dir or initialize dir
+  db.push(`.dirs.${dirId}`, 1 + (dirs[dirId] ?? 0)); // increase dir or initialize dir
 
   if (
     counter >
@@ -26,9 +26,11 @@ async function handleDirRequest(
     db.push(".counter", counter + 1);
     db.save();
   }
-  console.log(`${dir} requested`);
+  console.log(`${dirId} requested`);
+  const alreadyExistingRate = db.getData(".allConvertedRates")[dirId];
+  if (alreadyExistingRate) return alreadyExistingRate;
   const allConvertedRates = await getAllRates();
-  return allConvertedRates && allConvertedRates[dir];
+  return allConvertedRates && allConvertedRates[dirId];
 }
 
 export default handleDirRequest;
