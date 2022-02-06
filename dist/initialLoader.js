@@ -15,6 +15,7 @@ async function initialLoader() {
         const exchangersData = await graphQLClient.request(queries_1.ExchangersQuery);
         db_1.default.push(".exchangers", exchangersData.exchangers);
         db_1.default.save();
+        console.log("preferences and exchangers were updated!");
     }
     catch (err) {
         console.log(err);

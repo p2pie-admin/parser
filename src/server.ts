@@ -1,6 +1,7 @@
 import fastify, { FastifyRequest } from "fastify";
 import initialLoader from "./initialLoader";
 import handleDirRequest from "./dirs/handleDirRequest";
+import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
@@ -38,6 +39,10 @@ server.get("/warnings", async function (_, reply) {
 
 server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
+});
+
+server.post("/webhooks-handler", async function (request, _) {
+  handleWebhookPayload(request.body);
 });
 
 type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;

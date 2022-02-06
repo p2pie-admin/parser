@@ -7,6 +7,7 @@ exports.server = void 0;
 const fastify_1 = __importDefault(require("fastify"));
 const initialLoader_1 = __importDefault(require("./initialLoader"));
 const handleDirRequest_1 = __importDefault(require("./dirs/handleDirRequest"));
+const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload"));
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
 const fastify_static_1 = __importDefault(require("fastify-static"));
 const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
@@ -37,6 +38,9 @@ server.get("/warnings", async function (_, reply) {
 });
 server.get("/errors", async function (_, reply) {
     reply.send(JSON.stringify(db_1.default.getData(".errors")));
+});
+server.post("/webhooks-handler", async function (request, _) {
+    (0, handleWebhookPayload_1.default)(request.body);
 });
 server.get("/dir=:dirId/full=:isFull", async function (request, reply) {
     const { dirId, isFull } = request.params;
