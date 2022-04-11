@@ -13,6 +13,7 @@ const fastify_static_1 = __importDefault(require("fastify-static"));
 const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
+const parser_1 = __importDefault(require("./xml/parser"));
 const server = (0, fastify_1.default)();
 exports.server = server;
 server.register(fastify_websocket_1.default);
@@ -61,6 +62,8 @@ server.get("/dir=:dirId/full=:isFull", async function (request, reply) {
 const start = async () => {
     try {
         console.log("started");
+        const parser = new parser_1.default();
+        parser._getXML("https://n-change.net/en/courses.xml?q=%2Fcourses.xml");
         await server.listen(process.env.PORT || 5000, "0.0.0.0");
         await (0, initialLoader_1.default)();
         setInterval(getAllRates_1.default, db_1.default.getData(".preferences.update_time_sec") * 1000);

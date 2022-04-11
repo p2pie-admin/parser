@@ -119,3 +119,20 @@
 // }
 
 // console.log(calculateFees(exampleRate, customAmount))
+
+
+
+// const extractAmountsFromCourse = (course: number): [number, number] => {
+//     const [give, get] = course < 1 ? [1, 1 / course] : [course, 1];
+//     return [roundAmount(give), roundAmount(get)];
+//   };
+  
+//   const roundAmount = (amount: number, factor = 3) => {
+//     // в логарифм нули не вставляем
+//     if (amount === 0) return 0;
+//     // нахожу минимальный значимый порядок числа
+//     // это такое число, в которое нужно возвести десятку, чтобы получить тысячную долю amount
+//     const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
+//     //  округляем только часть после точки до порядка равного orderOfMagnitude
+//     return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
+//   };

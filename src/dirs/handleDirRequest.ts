@@ -2,7 +2,6 @@ import db from "../db";
 import getAllRates from "../rates/getAllRates";
 import { removeSame } from "./helper";
 import { DB, ConvertedDirRates } from "../types";
-import { dir } from "console";
 
 async function handleDirRequest(
   dirId: string

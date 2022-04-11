@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@types/node-fetch": "2",
+    "axios": "^0.26.1",
     "dotenv": "^10.0.0",
     "fastify": "^3.23.0",
     "fastify-static": "^4.5.0",
@@ -20,7 +21,8 @@
     "graphql-request": "^3.6.1",
     "node-fetch": "2",
     "node-json-db": "^1.4.1",
-    "simple-json-db": "^1.2.3"
+    "simple-json-db": "^1.2.3",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

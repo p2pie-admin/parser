@@ -7,6 +7,7 @@ import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
+import Parser from "./xml/parser";
 
 const server = fastify();
 server.register(websocket);
@@ -79,6 +80,8 @@ server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
 const start = async () => {
   try {
     console.log("started");
+    const parser = new Parser();
+    parser._getXML("https://n-change.net/en/courses.xml?q=%2Fcourses.xml");
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
     await initialLoader();
     setInterval(getAllRates, db.getData(".preferences.update_time_sec") * 1000);
