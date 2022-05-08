@@ -7,15 +7,16 @@ const graphql_request_1 = require("graphql-request");
 const queries_1 = require("./queries");
 const config_json_1 = __importDefault(require("./config.json"));
 const db_1 = __importDefault(require("./db"));
+const normalizer_1 = __importDefault(require("./normalizer"));
 async function initialLoader() {
     try {
         const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI);
-        const prefsData = await graphQLClient.request(queries_1.RatesPreferencesQuery);
-        db_1.default.push(".preferences", prefsData.ratesFilterPreference);
+        const data = await graphQLClient.request(queries_1.ParserSetting);
+        db_1.default.push(".parser_setting", (0, normalizer_1.default)(data.parserSetting));
         const exchangersData = await graphQLClient.request(queries_1.ExchangersQuery);
-        db_1.default.push(".exchangers", exchangersData.exchangers);
+        db_1.default.push(".exchangers", (0, normalizer_1.default)(exchangersData.exchangers));
         db_1.default.save();
-        console.log("preferences and exchangers were updated!");
+        console.log("parser settings and exchangers were updated!");
     }
     catch (err) {
         console.log(err);

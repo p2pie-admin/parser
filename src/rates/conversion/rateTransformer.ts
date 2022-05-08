@@ -109,7 +109,7 @@ const transformLimit = (limit: string, course: number, dir: string): Limit => {
 };
 
 const formatCities = (cities: string) => {
-  const cityList = db.getData(".preferences.cities");
+  const cityList = db.getData(".parser_setting.cities");
   return cities
     .split("/")
     .reduce((accumulator: { [key: string]: string[] }, cityCode: string) => {

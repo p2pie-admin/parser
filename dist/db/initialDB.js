@@ -2,15 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB = {
     dirs: {},
-    snapshot: {},
-    counter: 1,
-    allConvertedRates: {},
-    warnings: {},
-    errors: {},
-    preferences: {
+    parser_setting: {
         dirs_disabled: "",
         update_time_sec: 100,
-        dirs_cleaning_coefficient: 10,
         cities: {},
         filter_options: [],
         SD_applied_from: 8,

@@ -1,9 +1,9 @@
 import initialLoader from "./initialLoader";
 
-async function handleWebhookPayload(payload: any) {
+async function handleWebhookPayload(entity_triggered: string) {
   if (
-    payload.model === "rates-filter-preferences" ||
-    payload.model === "exchanger"
+    entity_triggered === "parser_setting" ||
+    entity_triggered === "exchanger"
   ) {
     await initialLoader();
   }

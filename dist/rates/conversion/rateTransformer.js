@@ -76,7 +76,7 @@ const transformLimit = (limit, course, dir) => {
     return { give, get };
 };
 const formatCities = (cities) => {
-    const cityList = db_1.default.getData(".preferences.cities");
+    const cityList = db_1.default.getData(".parser_setting.cities");
     return cities
         .split("/")
         .reduce((accumulator, cityCode) => {

@@ -1,4 +1,4 @@
-import { Rate } from "../../types";
+import { Rate } from "../../types/rates.json";
 
 interface Best {
   combinedSegment: Segment;

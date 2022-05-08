@@ -1,0 +1,69 @@
+Date : 2022-04-27 22:24:21
+Directory : /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src
+Total : 37 files,  1329 codes, 320 comments, 622 blanks, all 2271 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| TypeScript |         32 |        829 |        301 |        183 |      1,313 |
+| JSON       |          2 |        432 |          0 |        426 |        858 |
+| JavaScript |          3 |         68 |         19 |         13 |        100 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                   |         37 |      1,329 |        320 |        622 |      2,271 |
+| db                                                                                                  |          2 |         25 |          0 |          7 |         32 |
+| dbRates                                                                                             |          4 |        475 |          2 |        440 |        917 |
+| dirs                                                                                                |          5 |         92 |         40 |         20 |        152 |
+| rates                                                                                               |         10 |        412 |        241 |         90 |        743 |
+| rates/conversion                                                                                    |          6 |        356 |        202 |         65 |        623 |
+| types                                                                                               |         10 |        145 |         21 |         25 |        191 |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                            | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/config.json                         | JSON       |          5 |          0 |          1 |          6 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/db/index.ts                         | TypeScript |         10 |          0 |          4 |         14 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/db/initialDB.ts                     | TypeScript |         15 |          0 |          3 |         18 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dbRates/exchangerCreator.ts         | TypeScript |         31 |          2 |          6 |         39 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dbRates/exchangerLinks.json         | JSON       |        427 |          0 |        425 |        852 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dbRates/index.ts                    | TypeScript |         10 |          0 |          6 |         16 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dbRates/initialDB.ts                | TypeScript |          7 |          0 |          3 |         10 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dirs/convertDirs.js                 | JavaScript |         31 |          0 |          3 |         34 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dirs/getDirections.js               | JavaScript |          0 |         19 |          7 |         26 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dirs/handleDirRequest.ts            | TypeScript |         11 |         21 |          4 |         36 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dirs/helper.ts                      | TypeScript |         13 |          0 |          3 |         16 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/dirs/query.js                       | JavaScript |         37 |          0 |          3 |         40 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/handleWebhookPayload.ts             | TypeScript |         10 |          0 |          3 |         13 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/initialLoader.ts                    | TypeScript |         21 |          0 |          4 |         25 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/normalizer.ts                       | TypeScript |         33 |          1 |          9 |         43 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/queries.ts                          | TypeScript |         45 |          0 |          6 |         51 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/_getAllRates.ts               | TypeScript |         16 |         38 |         10 |         64 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/DO_NOT_DELETE.ts   | TypeScript |          0 |        126 |         12 |        138 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/findBestRates.ts   | TypeScript |         57 |          9 |          8 |         74 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/findUniqueRates.ts | TypeScript |         47 |          0 |          7 |         54 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/index.ts           | TypeScript |         32 |         15 |          6 |         53 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/rateTransformer.ts | TypeScript |        118 |         42 |         17 |        177 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/conversion/verification.ts    | TypeScript |        102 |         10 |         15 |        127 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/getAllRates.ts                | TypeScript |         13 |          0 |          7 |         20 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/parser.ts                     | TypeScript |         16 |          1 |          4 |         21 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/rates/worker.ts                     | TypeScript |         11 |          0 |          4 |         15 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/server.ts                           | TypeScript |         66 |         15 |         17 |         98 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/currency.json.ts              | TypeScript |          4 |          3 |          0 |          7 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/exchanger.json.ts             | TypeScript |         13 |          3 |          0 |         16 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/exchanger_contacts.json.ts    | TypeScript |          7 |          3 |          0 |         10 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/index.ts                      | TypeScript |         35 |          0 |         11 |         46 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/parser_types.ts               | TypeScript |         19 |          0 |          4 |         23 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/rates.json.ts                 | TypeScript |         32 |          0 |         10 |         42 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/search.json.ts                | TypeScript |          9 |          3 |          0 |         12 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/section.json.ts               | TypeScript |          8 |          3 |          0 |         11 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/seo.json.ts                   | TypeScript |         12 |          3 |          0 |         15 |
+| /Users/admin/Documents/Projects/cotleta/course-formatter-ts/src/types/subitem.json.ts               | TypeScript |          6 |          3 |          0 |          9 |
+| Total                                                                                               |            |      1,329 |        320 |        622 |      2,271 |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

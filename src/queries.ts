@@ -2,36 +2,50 @@ import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
   {
-    exchangers(where: { status: ["active"] }) {
-      name
-      our_rating
-      logo {
-        url
-        previewUrl
+    exchangers(filters: {status: {eq: "disabled"}} pagination: { start: 1, limit: 1000 }){
+      data{
+        id
+        attributes{
+          name
+          description
+          logo{
+            data{
+              attributes{
+                name
+                url
+                alternativeText
+              }
+            }
+          }
+          status
+          tag
+          date_listed
+          ref_link
+          rates_link
+
+        }
       }
-      tag
-      date_listed
-      description
     }
   }
 `;
 
-const RatesPreferencesQuery = gql`
-  {
-    ratesFilterPreference {
-      update_time_sec
-      dirs_disabled
-      optimal_course_power
-      dirs_cleaning_coefficient
-      SD_applied_from
-      SD_best_rates
-      SD_worst_rates
-      filter_options {
-        name
+const ParserSetting = gql`
+{
+    parserSetting{
+      data{
+        attributes{
+          update_time_sec
+          dirs_disabled
+          course_power
+          cities
+          SD_applied_from
+          SD_best
+          SD_worst
+
+        }
       }
-      cities
     }
-  }
+}
 `;
 
-export { ExchangersQuery, RatesPreferencesQuery };
+export { ExchangersQuery, ParserSetting };

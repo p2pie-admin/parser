@@ -1,13 +1,13 @@
 import fastify, { FastifyRequest } from "fastify";
 import initialLoader from "./initialLoader";
-import handleDirRequest from "./dirs/handleDirRequest";
+//import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
-import Parser from "./xml/parser";
+
 
 const server = fastify();
 server.register(websocket);
@@ -16,18 +16,17 @@ server.register(fastifyStatic, {
   prefix: "/public/",
 });
 
-console.log(path.join(__dirname));
-
 server.get("/", async function (_, reply) {
   reply.sendFile("menu.html");
 });
 
-server.get("/preferences", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".preferences")));
+server.get("/parser_settings", async function (_, reply) {
+  reply.send(JSON.stringify(db.getData(".parser_setting")));
 });
 
 server.get("/exchangers", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".exchangers")));
+  const exchangers = db.getData(".exchangers")
+  reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
 });
 
 server.get("/dirs", async function (_, reply) {
@@ -43,27 +42,28 @@ server.get("/errors", async function (_, reply) {
 });
 
 server.post("/webhooks-handler", async function (request, _) {
-  handleWebhookPayload(request.body);
+  // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
+  handleWebhookPayload(request.headers.from as string);
 });
 
 type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
 
-server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
-  const { dirId, isFull } = request.params;
-  if (dirId && dirId.length < 20 && dirId.includes("_")) {
-    const convertedDirRates = await handleDirRequest(dirId.toUpperCase());
-    const res =
-      isFull === "true"
-        ? convertedDirRates?.rates
-        : {
-            bestRates: convertedDirRates?.bestRates,
-            uniqueRates: convertedDirRates?.uniqueRates,
-          };
-    reply.send(JSON.stringify(res));
-  } else {
-    reply.send("wrong request");
-  }
-});
+// server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
+//   const { dirId, isFull } = request.params;
+//   if (dirId && dirId.length < 20 && dirId.includes("_")) {
+//     const convertedDirRates = await handleDirRequest(dirId.toUpperCase());
+//     const res =
+//       isFull === "true"
+//         ? convertedDirRates?.rates
+//         : {
+//             bestRates: convertedDirRates?.bestRates,
+//             uniqueRates: convertedDirRates?.uniqueRates,
+//           };
+//     reply.send(JSON.stringify(res));
+//   } else {
+//     reply.send("wrong request");
+//   }
+// });
 
 // server.get("/websocket", { websocket: true }, (connection) => {
 //   connection.socket.on("message", async (message) => {
@@ -79,12 +79,11 @@ server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
 
 const start = async () => {
   try {
-    console.log("started");
-    const parser = new Parser();
-    parser._getXML("https://n-change.net/en/courses.xml?q=%2Fcourses.xml");
+    // call handleDirRequest to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
     await initialLoader();
-    setInterval(getAllRates, db.getData(".preferences.update_time_sec") * 1000);
+    getAllRates()
+    //setInterval(getAllRates, db.getData(".parser_setting.update_time_sec") * 1000);
   } catch (error) {
     server.log.error(error);
     process.exit(1);
