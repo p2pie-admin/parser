@@ -7,6 +7,8 @@ import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
+import createExchangers from "./dbRates/createExchangers";
+import bulkStatusChange from "./dbRates/bulkStatusChange";
 
 
 const server = fastify();
@@ -41,10 +43,10 @@ server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-server.post("/webhooks-handler", async function (request, _) {
-  // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
-  handleWebhookPayload(request.headers.from as string);
-});
+// server.post("/webhooks-handler", async function (request, _) {
+//   // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
+//   handleWebhookPayload(request.headers.from as string);
+// });
 
 type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
 
@@ -79,11 +81,11 @@ type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
 
 const start = async () => {
   try {
-    // call handleDirRequest to initilize exchangers from links JSON
+    //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
+    //bulkStatusChange("suspended", "active")
     await initialLoader();
     getAllRates()
-    //setInterval(getAllRates, db.getData(".parser_setting.update_time_sec") * 1000);
   } catch (error) {
     server.log.error(error);
     process.exit(1);

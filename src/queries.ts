@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
   {
-    exchangers(filters: {status: {eq: "disabled"}} pagination: { start: 1, limit: 1000 }){
+    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 1, limit: 1000 }){
       data{
         id
         attributes{

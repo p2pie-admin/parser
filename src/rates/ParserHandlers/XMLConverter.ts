@@ -1,11 +1,11 @@
 
 
-import dbRates from "../../dbRates";
 import { RateData, ExchangerResponse } from "src/types/exchangerResp";
-import { ConvertedDirRates, Rate } from "src/types/rates.json";
-import ErrorCreator from "./ErrorCreator"
+import { ConvertedDirRates, Limit, Rate } from "src/types/rates.json";
+import ErrorHandler from "./ErrorHandler"
 import CitiesHandler from "./CitiesHandler";
 import db from "../../db";
+import dbRates from "../../dbRates";
 
 export default class XMLConverter {
 
@@ -15,54 +15,79 @@ export default class XMLConverter {
       this.exchangerId = exchangerId
     }
 
+    transformLimit = (limit: string, course: number, dir: string): Limit => {
+      const limitCur = limit.split(" ")[1];
+      const limitValue = parseFloat(limit);
+      const [givePm, getPm] = dir.split("_");
+      const give = givePm.includes(limitCur)
+        ? limitValue
+        : getPm.includes(limitCur)
+        ? limitValue * course
+        : 0;
+      const get = getPm.includes(limitCur)
+        ? limitValue
+        : givePm.includes(limitCur)
+        ? limitValue / course
+        : 0;
+      return { give, get };
+    };
+
     matchXMLRatesWithDirs = (rates: RateData[]): any => {
      const cityCodes = db.getData(".parser_setting.cities") 
+     let rateDataError = false
      rates.map(rate => {
         try{
           const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`
-          // const min = this.transformLimit(min_amount, +course, dir);
-          // const max = this.transformLimit(max_amount, +course, dir);
-          // const resv = this.transformLimit(`${reserve} ${dir.split("_")[1]}`, +course, dir);
+          const course = Number(rate.in._text) / Number(rate.out._text)
+          const min = this.transformLimit(rate.minamount._text, +course, dir);
+          const max = this.transformLimit(rate.maxamount._text, +course, dir);
+          const reserve = this.transformLimit(`${rate.amount._text} ${dir.split("_")[1]}`, +course, dir);
 
           const citiesHandler = new CitiesHandler()
+          
           const convertedDirRates = {
             id: this.exchangerId,
             min_fee: rate.minfee?._text,
             from_fee: rate.fromfee?._text,
             to_fee: rate.tofee?._text,
-            course: Number(rate.in._text) / Number(rate.out._text),
-            // min_amount: Limit;
-            // max_amount: Limit;
-            // reserve: Limit;
+            course,
+            min,
+            max,
+            reserve,
             param: rate.param?._text,
             cities: cityCodes && rate.city?._text ? citiesHandler.formatCities(rate.city?._text, cityCodes) : null
           }
           //return [dir, convertedDirRates]
+          
           dbRates.push(`.allConvertedRates.${dir}[]`, convertedDirRates) // as ConvertedDirRates)
         } catch (err) { 
-          const errorCreator = new ErrorCreator(this.exchangerId)
-          errorCreator.saveError('unknown-error', err.code)
-        }
+          rateDataError = true
+        }       
       })
+      if(rateDataError) {
+        const errorHandler = new ErrorHandler(this.exchangerId)
+        errorHandler.saveError('data-error')
+      }   
     }
 
 
     checkForErrors = (exchangerResponse: ExchangerResponse | null): boolean => {
        
-      const errorCreator = new ErrorCreator(this.exchangerId)
-        if(!exchangerResponse) {
-          errorCreator.saveError('404')
-          return false
-        } 
-        if(exchangerResponse.error){
-          errorCreator.saveError('error-response', exchangerResponse?.error?._text)
-          return false
-        }
-        if(!exchangerResponse.rates){
-          errorCreator.saveError('no-rates')
-          return false
-        }
-        return true
+      const errorHandler = new ErrorHandler(this.exchangerId)
+      
+      if(!exchangerResponse) {
+        errorHandler.saveError('404')
+        return false
+      } 
+      if(exchangerResponse.error){
+        errorHandler.saveError("exchanger-custom-error", exchangerResponse?.error?._text)
+        return false
+      }
+      if(!exchangerResponse.rates?.item?.length){
+        errorHandler.saveError('no-rates')
+        return false
+      }
+      return true
     }
 
 }

@@ -1,3 +1,4 @@
+import { ExchangerError } from 'src/types/exchangerResp';
 
 type Sides = "give" | "get";
 type Limit = { [key in Sides]: number };
@@ -23,8 +24,8 @@ interface ConvertedDirRates {
   }
 
 
-interface ProblematicRates {
-    [key: string]: { [key: string]: object };
+interface Errors {
+    [key: string]: ExchangerError;
   }
   
   
@@ -32,10 +33,18 @@ interface AllConvertedRates {
     [key: string]: ConvertedDirRates;
 }
 
+type LinkAndID = {
+  exchangerId: string;
+  ratesLink: string;
+}
+
 export {
     AllConvertedRates,
-    ProblematicRates,
+    Errors,
     Rate,
-    ConvertedDirRates
+    Limit,
+    Sides,
+    ConvertedDirRates,
+    LinkAndID
 }
   

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "concurrently \"nodemon dist/server.js\" \"tsc -w\" \"rm db.json\"",
+    "dev": "concurrently \"rm dbRates.json\" \"rm db.json\" \"nodemon dist/server.js\" \"tsc -w\" ",
     "watch": "tsc -w",
     "test": "jest"
   },

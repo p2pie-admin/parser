@@ -1,3 +1,4 @@
+import { IExchanger } from './types/exchanger.json';
 import { GraphQLClient } from "graphql-request";
 import { ParserSetting, ExchangersQuery } from "./queries";
 import config from "./config.json";
@@ -13,9 +14,11 @@ async function initialLoader() {
     const data = await graphQLClient.request(ParserSetting);
     db.push(".parser_setting", normalizer(data.parserSetting));
     const exchangersData = await graphQLClient.request(ExchangersQuery);
-    db.push(".exchangers", normalizer(exchangersData.exchangers));
+    const allExchangers  = normalizer(exchangersData.exchangers)
+    db.push(".exchangers.active", allExchangers.filter((exch: IExchanger) => exch.status === "active"));
+    db.push(".exchangers.suspended", allExchangers.filter((exch: IExchanger) => exch.status === "suspended"));
     db.save();
-    console.log("parser settings and exchangers were updated!");
+    console.log("-= Parser settings and exchangers were updated! =-");
   } catch (err) {
     console.log(err);
   }

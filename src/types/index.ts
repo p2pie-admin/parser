@@ -1,5 +1,5 @@
 import { IExchanger } from "./exchanger.json";
-import { AllConvertedRates, ProblematicRates } from "./rates.json";
+import { AllConvertedRates, Errors } from "./rates.json";
 
 type FilterOption = { [key in "name"]: string };
 
@@ -17,7 +17,14 @@ interface ParserSetting {
 interface DB {
   dirs: { [key: string]: number }; // отслеживаем какие направления популярны
   parser_setting: ParserSetting;
-  exchangers: IExchanger[];
+  exchangers: {
+    active: IExchanger[];
+    suspended: IExchanger[];
+  },
+  warnings: Errors;
+  errors: Errors;
+  left_to_parse: number;
+  times_rates_requested: number;
 }
 
 type Violation = [boolean, string];
@@ -29,8 +36,6 @@ interface VerificationResult {
 
 interface DBRATES {
   allConvertedRates: AllConvertedRates;
-  warnings: ProblematicRates;
-  errors: ProblematicRates;
 }
 
 

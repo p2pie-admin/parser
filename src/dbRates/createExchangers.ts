@@ -4,10 +4,10 @@ import { gql } from "graphql-request";
 import exchangerLinks from "./exchangerLinks.json"
 
 const mutation = gql`
-mutation CreateExchanger($name:String, $rates_link:String){
-  createExchanger(data: {name: $name, rates_link: $rates_link}){
+mutation CreateExchanger($name:String, $rates_link:String, $status: ENUM_EXCHANGER_STATUS){
+  createExchanger(data: {name: $name, rates_link: $rates_link, status: $status}){
     data{
-      id
+      id  
     }
   }
 }
@@ -27,13 +27,12 @@ async function createExchangers() {
 
       Object.entries(exchangerLinks).map(async ([name, rates_link]) => {
           try{
-            await graphQLClient.request(mutation, {name, rates_link});
+            await graphQLClient.request(mutation, {name, rates_link, status: "active"});
           } catch (err){
             console.error(err)
           }
-
       })
-    }
+}
 
   
   export default createExchangers;

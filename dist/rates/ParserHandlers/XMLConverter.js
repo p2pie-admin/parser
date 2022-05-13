@@ -3,14 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dbRates_1 = __importDefault(require("../../dbRates"));
-const ErrorCreator_1 = __importDefault(require("./ErrorCreator"));
+const ErrorHandler_1 = __importDefault(require("./ErrorHandler"));
 const CitiesHandler_1 = __importDefault(require("./CitiesHandler"));
 const db_1 = __importDefault(require("../../db"));
+const dbRates_1 = __importDefault(require("../../dbRates"));
 class XMLConverter {
     constructor(exchangerId) {
         this.matchXMLRatesWithDirs = (rates) => {
             const cityCodes = db_1.default.getData(".parser_setting.cities");
+            let rateDataError = false;
             rates.map(rate => {
                 var _a, _b, _c, _d, _e, _f;
                 try {
@@ -28,24 +29,27 @@ class XMLConverter {
                     dbRates_1.default.push(`.allConvertedRates.${dir}[]`, convertedDirRates);
                 }
                 catch (err) {
-                    const errorCreator = new ErrorCreator_1.default(this.exchangerId);
-                    errorCreator.saveError('unknown-error', err.code);
+                    rateDataError = true;
                 }
             });
+            if (rateDataError) {
+                const errorHandler = new ErrorHandler_1.default(this.exchangerId);
+                errorHandler.saveError('data-error');
+            }
         };
         this.checkForErrors = (exchangerResponse) => {
-            var _a;
-            const errorCreator = new ErrorCreator_1.default(this.exchangerId);
+            var _a, _b, _c;
+            const errorHandler = new ErrorHandler_1.default(this.exchangerId);
             if (!exchangerResponse) {
-                errorCreator.saveError('404');
+                errorHandler.saveError('404');
                 return false;
             }
             if (exchangerResponse.error) {
-                errorCreator.saveError('error-response', (_a = exchangerResponse === null || exchangerResponse === void 0 ? void 0 : exchangerResponse.error) === null || _a === void 0 ? void 0 : _a._text);
+                errorHandler.saveError("exchanger-custom-error", (_a = exchangerResponse === null || exchangerResponse === void 0 ? void 0 : exchangerResponse.error) === null || _a === void 0 ? void 0 : _a._text);
                 return false;
             }
-            if (!exchangerResponse.rates) {
-                errorCreator.saveError('no-rates');
+            if (!((_c = (_b = exchangerResponse.rates) === null || _b === void 0 ? void 0 : _b.item) === null || _c === void 0 ? void 0 : _c.length)) {
+                errorHandler.saveError('no-rates');
                 return false;
             }
             return true;

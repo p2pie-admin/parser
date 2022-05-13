@@ -4,7 +4,7 @@ exports.ParserSetting = exports.ExchangersQuery = void 0;
 const graphql_request_1 = require("graphql-request");
 const ExchangersQuery = (0, graphql_request_1.gql) `
   {
-    exchangers(filters: {status: {eq: "disabled"}} pagination: { start: 1, limit: 1000 }){
+    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 1, limit: 1000 }){
       data{
         id
         attributes{

@@ -14,9 +14,11 @@ async function initialLoader() {
         const data = await graphQLClient.request(queries_1.ParserSetting);
         db_1.default.push(".parser_setting", (0, normalizer_1.default)(data.parserSetting));
         const exchangersData = await graphQLClient.request(queries_1.ExchangersQuery);
-        db_1.default.push(".exchangers", (0, normalizer_1.default)(exchangersData.exchangers));
+        const allExchangers = (0, normalizer_1.default)(exchangersData.exchangers);
+        db_1.default.push(".exchangers.active", allExchangers.filter((exch) => exch.status === "active"));
+        db_1.default.push(".exchangers.suspended", allExchangers.filter((exch) => exch.status === "suspended"));
         db_1.default.save();
-        console.log("parser settings and exchangers were updated!");
+        console.log("-= Parser settings and exchangers were updated! =-");
     }
     catch (err) {
         console.log(err);

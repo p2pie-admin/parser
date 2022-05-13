@@ -1,5 +1,6 @@
 
 import { RateData } from "src/types/exchangerResp";
+import ErrorHandler from "./ErrorHandler";
 // import db from "../../db"
 
 
@@ -7,15 +8,22 @@ import { RateData } from "src/types/exchangerResp";
 export default class CitiesHandler {
 
 
-    groupRatesDataCities = (ratesData: RateData[]): RateData[] => {
+    groupRatesDataCities = (exchangerId: string, ratesData: RateData[]): RateData[] => {
         // {... cities: "VRN"} -> {... cities: "VRN/MSK/SPB"}
-        return ratesData.reduce((groupedRatesData: RateData[], rateData: RateData) => {
+        try{
+          return ratesData.reduce((groupedRatesData: RateData[], rateData: RateData) => {
             const sameDir = groupedRatesData.findIndex((rv) => rv.from._text === rateData.from._text && rv.to._text === rateData.to._text && rateData.city);
                 sameDir === -1 
                 ? groupedRatesData.push(rateData)
                 : groupedRatesData[sameDir].city = {_text: groupedRatesData[sameDir].city?._text + "/" + rateData.city?._text}
           return groupedRatesData;
         }, []);
+        }catch(err){
+          const exchangerHandler = new ErrorHandler(exchangerId)
+          exchangerHandler.saveError("data-error", err.message)
+          return []
+        }
+
       };
 
     formatCities = (cities: string, cityList: {[key: string]: string}) => {

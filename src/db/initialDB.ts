@@ -11,7 +11,14 @@ const initialDB: DB = {
     SD_best_rates: 4,
     SD_worst_rates: 5,
   },
-  exchangers: [],
+  exchangers: {
+    active: [],
+    suspended: []
+  },
+  errors: {},
+  warnings: {},
+  left_to_parse: 0,
+  times_rates_requested: 1
 };
 
 export default initialDB;
