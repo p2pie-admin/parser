@@ -1,7 +1,7 @@
 
 
 import { RateData, ExchangerResponse } from "src/types/exchangerResp";
-import { ConvertedDirRates, Limit, Rate } from "src/types/rates.json";
+import {  Limit } from "src/types/rates.json";
 import ErrorHandler from "./ErrorHandler"
 import CitiesHandler from "./CitiesHandler";
 import db from "../../db";
@@ -15,10 +15,16 @@ export default class XMLConverter {
       this.exchangerId = exchangerId
     }
 
-    transformLimit = (limit: string, course: number, dir: string): Limit => {
+    transformLimit = (limit: string | undefined, course: number, dir: string): Limit => {
+      if(!limit) return { give: 0, get: 0 }
       const limitCur = limit.split(" ")[1];
       const limitValue = parseFloat(limit);
       const [givePm, getPm] = dir.split("_");
+      console.log("givePm ", givePm)
+      console.log("getPm ", getPm)
+      console.log("limitValue ", limitValue)
+      console.log("course ", course);
+      
       const give = givePm.includes(limitCur)
         ? limitValue
         : getPm.includes(limitCur)
@@ -32,24 +38,33 @@ export default class XMLConverter {
       return { give, get };
     };
 
-    matchXMLRatesWithDirs = (rates: RateData[]): any => {
-     const cityCodes = db.getData(".parser_setting.cities") 
+    matchXMLRatesWithDirs = (rates: RateData[]): void => {
+     const cityCodes = db.getData(".parser_setting.cities") as {[key: string]: string}
+     const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string
+     const possible_pm_codes = db.getData(".possible_pm_codes") as string[]
      let rateDataError = false
+
      rates.map(rate => {
         try{
           const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`
-          const course = Number(rate.in._text) / Number(rate.out._text)
-          const min = this.transformLimit(rate.minamount._text, +course, dir);
-          const max = this.transformLimit(rate.maxamount._text, +course, dir);
-          const reserve = this.transformLimit(`${rate.amount._text} ${dir.split("_")[1]}`, +course, dir);
+          // если хоть одна платежка в dir не из cms, скипаем
+          if(!possible_pm_codes.find(code => code === rate.from._text.toUpperCase())) return
+          if(!possible_pm_codes.find(code => code === rate.to._text.toUpperCase())) return
+          // если запрещенные направления, тоже скипаем
+          if(dirs_disabled.split("\n").find(dir_disabled => dir_disabled.toUpperCase() === dir)) return
 
+          const course = Number(rate.in._text) / Number(rate.out._text)    
+          const [min_fee, from_fee, to_fee, min, max] = ["minfee", "fromfee", "tofee", "min", "max"]
+            .map((limit) => this.transformLimit(rate[limit as keyof RateData]?._text, +course, dir))
+
+          const reserve = this.transformLimit(`${rate.amount._text} ${dir.split("_")[1]}`, +course, dir);
           const citiesHandler = new CitiesHandler()
           
           const convertedDirRates = {
             id: this.exchangerId,
-            min_fee: rate.minfee?._text,
-            from_fee: rate.fromfee?._text,
-            to_fee: rate.tofee?._text,
+            min_fee,
+            from_fee,
+            to_fee,
             course,
             min,
             max,
@@ -58,7 +73,6 @@ export default class XMLConverter {
             cities: cityCodes && rate.city?._text ? citiesHandler.formatCities(rate.city?._text, cityCodes) : null
           }
           //return [dir, convertedDirRates]
-          
           dbRates.push(`.allConvertedRates.${dir}[]`, convertedDirRates) // as ConvertedDirRates)
         } catch (err) { 
           rateDataError = true

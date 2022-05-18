@@ -1,17 +1,17 @@
 import axios from "axios";
 import db from "../../db"
 import ErrorHandler from "./ErrorHandler";
-import Piscina from 'piscina';
-import {resolve} from "path"
+// import Piscina from 'piscina';
+// import {resolve} from "path"
 import { LinkAndID } from 'src/types/rates.json';
-import getAllRates from "../getAllRates";
-import lockExchangersWithErrors from "./lockExchangersWithErrors";
-import dbRates from "../../dbRates";
-import initialLoader from "../../initialLoader";
+import finishParsing from "./FinishParsing";
 import { ExchangerResponse } from "src/types/exchangerResp";
 import CitiesHandler from "./CitiesHandler";
 import XMLConverter from "./XMLConverter";
 import XML2JSON from "xml-js";
+
+
+
 
 // const pool = new Piscina({
 //   filename: resolve(__dirname, "worker.js"),
@@ -22,17 +22,9 @@ const afterExchangerParsing = () => {
   const leftToParse = db.getData(".left_to_parse")
   db.push(".left_to_parse", leftToParse - 1) 
   console.log(leftToParse, " left")
-  if(leftToParse <= 0){
-    dbRates.save()
-    const timeout = db.getData(".parser_setting.update_time_sec")
-    const timesRatesRequested = db.getData(".times_rates_requested") as number
-    setTimeout(getAllRates, timeout * 1000);
-    if(timesRatesRequested % 3 === 0){
-      console.log(`reloading settings...`)
-      initialLoader()
-      lockExchangersWithErrors()
-    } 
-    console.log(`All exchangers requested, restarting in ${timeout} sec`)
+
+  if(leftToParse <= 0) {
+    finishParsing()
   }
 }
 
@@ -47,7 +39,7 @@ export default class Parser {
   async _requestXML(ratesLink: string, exchangerId: string) {
 
     return axios
-          .get(ratesLink, {timeout: 1000 * 20})
+          .get(ratesLink, {timeout: 1000 * 150})
           .then(function (response) {
             afterExchangerParsing()
             const options = {
@@ -86,10 +78,10 @@ export default class Parser {
   }
 
   requestAllXMLs() {
+    // инициализируем сколько осталось
     db.push(".left_to_parse", this.ratesLinks.length - 1)
     try {
       this.ratesLinks.map(async ({exchangerId, ratesLink}) => await this._requestXML(ratesLink, exchangerId))
-      //Promise.all([this.ratesLinks.map(({exchangerId, ratesLink}, id) => this._requestXML(ratesLink, exchangerId, id))])
     } catch (err) {
         console.log('Fail');
     }

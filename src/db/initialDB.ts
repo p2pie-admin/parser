@@ -18,7 +18,8 @@ const initialDB: DB = {
   errors: {},
   warnings: {},
   left_to_parse: 0,
-  times_rates_requested: 1
+  times_rates_requested: 1,
+  possible_pm_codes: []
 };
 
 export default initialDB;

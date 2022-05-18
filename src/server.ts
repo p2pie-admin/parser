@@ -1,14 +1,15 @@
-import fastify, { FastifyRequest } from "fastify";
+import fastify from "fastify";
 import initialLoader from "./initialLoader";
 //import handleDirRequest from "./dirs/handleDirRequest";
-import handleWebhookPayload from "./handleWebhookPayload";
+//import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
-import createExchangers from "./dbRates/createExchangers";
-import bulkStatusChange from "./dbRates/bulkStatusChange";
+import fs from "fs"
+// import createExchangers from "./dbRates/createExchangers";
+//import bulkStatusChange from "./dbRates/bulkStatusChange";
 
 
 const server = fastify();
@@ -31,8 +32,9 @@ server.get("/exchangers", async function (_, reply) {
   reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
 });
 
-server.get("/dirs", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".dirs")));
+server.get("/rates", async function (_, reply) {
+  const rates = fs.readFileSync(path.resolve(__dirname, "../dbRates.json"), "utf8")
+  reply.send(JSON.stringify(JSON.parse(rates).allConvertedRates['ADVCUSD_USDTERC']));
 });
 
 server.get("/warnings", async function (_, reply) {
@@ -48,7 +50,7 @@ server.get("/errors", async function (_, reply) {
 //   handleWebhookPayload(request.headers.from as string);
 // });
 
-type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
+//type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
 
 // server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
 //   const { dirId, isFull } = request.params;
@@ -90,7 +92,7 @@ const start = async () => {
     server.log.error(error);
     process.exit(1);
   }
-};
+}; 
 
 start();
 

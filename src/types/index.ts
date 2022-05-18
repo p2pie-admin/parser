@@ -25,6 +25,7 @@ interface DB {
   errors: Errors;
   left_to_parse: number;
   times_rates_requested: number;
+  possible_pm_codes: string[];
 }
 
 type Violation = [boolean, string];

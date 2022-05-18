@@ -29,7 +29,7 @@ const ExchangersQuery = gql`
   }
 `;
 
-const ParserSetting = gql`
+const ParserSettingQuery = gql`
 {
     parserSetting{
       data{
@@ -48,4 +48,38 @@ const ParserSetting = gql`
 }
 `;
 
-export { ExchangersQuery, ParserSetting };
+const PmGroupsQuery = gql`
+{
+  selector {
+    data {
+      attributes {
+        sections {
+          pm_groups(pagination: { start: 0, limit: 1000 }) {
+            data {
+              attributes {
+                prefix
+                options {
+                  ... on ComponentSelectorSubgroup {
+                		code
+                  }
+                  ... on ComponentSelectorCurrency {
+                    currency {
+                      data {
+                        attributes {
+                          code
+                        }
+                      }
+                    }   
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
+
+export { ExchangersQuery, ParserSettingQuery, PmGroupsQuery };

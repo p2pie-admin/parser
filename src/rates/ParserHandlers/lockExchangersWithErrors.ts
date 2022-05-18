@@ -3,7 +3,7 @@ import  config  from "../../config.json";
 import { GraphQLClient } from "graphql-request";
 import { gql } from "graphql-request";
 import db from "../../db";
-import { Errors, LinkAndID } from '../../types/rates.json';
+import { Errors } from '../../types/rates.json';
 import { ExchangerError } from "../../types/exchangerResp";
 import ErrorHandler from './ErrorHandler';
 

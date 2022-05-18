@@ -11,6 +11,7 @@ const fastify_static_1 = __importDefault(require("fastify-static"));
 const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
+const fs_1 = __importDefault(require("fs"));
 const server = (0, fastify_1.default)();
 exports.server = server;
 server.register(fastify_websocket_1.default);
@@ -28,8 +29,9 @@ server.get("/exchangers", async function (_, reply) {
     const exchangers = db_1.default.getData(".exchangers");
     reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
 });
-server.get("/dirs", async function (_, reply) {
-    reply.send(JSON.stringify(db_1.default.getData(".dirs")));
+server.get("/rates", async function (_, reply) {
+    const rates = fs_1.default.readFileSync(path_1.default.resolve(__dirname, "../dbRates.json"), "utf8");
+    reply.send(JSON.stringify(JSON.parse(rates).allConvertedRates['ADVCUSD_USDTERC']));
 });
 server.get("/warnings", async function (_, reply) {
     reply.send(JSON.stringify(db_1.default.getData(".warnings")));
