@@ -1,13 +1,12 @@
 import { IExchanger } from "./exchanger.json";
-import { AllConvertedRates, Errors } from "./rates.json";
+import { DirRate, DirTops, Errors } from "./rates.json";
 
-type FilterOption = { [key in "name"]: string };
 
 interface ParserSetting {
   dirs_disabled: string;
-  update_time_sec: number;
+  restart_after_sec: number;
   cities: { [key: string]: string };
-  filter_options: FilterOption[];
+  filter_options: string;
   SD_applied_from: number;
   SD_best_rates: number;
   SD_worst_rates: number;
@@ -36,7 +35,8 @@ interface VerificationResult {
 }
 
 interface DBRATES {
-  allConvertedRates: AllConvertedRates;
+  dirRates: {[key: string]: DirRate[]};
+  dirTops: {[key: string]: DirTops};
 }
 
 
@@ -47,5 +47,4 @@ export {
   ParserSetting,
   Violation,
   VerificationResult,
-  FilterOption,
 };

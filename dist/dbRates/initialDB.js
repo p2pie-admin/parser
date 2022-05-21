@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB = {
-    allConvertedRates: {},
+    dirRates: {},
+    dirTops: {}
 };
 exports.default = initialDB;
 //# sourceMappingURL=initialDB.js.map

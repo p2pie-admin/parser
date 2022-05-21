@@ -1,7 +1,8 @@
 import { DBRATES } from "../types";
 
 const initialDB: DBRATES = {
-  allConvertedRates : {},
+  dirRates: {},
+  dirTops: {}
 };
 
 export default initialDB;

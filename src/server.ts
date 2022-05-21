@@ -1,4 +1,4 @@
-import fastify from "fastify";
+import fastify, { FastifyRequest } from "fastify";
 import initialLoader from "./initialLoader";
 //import handleDirRequest from "./dirs/handleDirRequest";
 //import handleWebhookPayload from "./handleWebhookPayload";
@@ -7,7 +7,8 @@ import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
-import fs from "fs"
+import bulkStatusChange from "./dbRates/bulkStatusChange";
+import dbRates from "./dbRates";
 // import createExchangers from "./dbRates/createExchangers";
 //import bulkStatusChange from "./dbRates/bulkStatusChange";
 
@@ -23,7 +24,7 @@ server.get("/", async function (_, reply) {
   reply.sendFile("menu.html");
 });
 
-server.get("/parser_settings", async function (_, reply) {
+server.get("/parser_setting", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".parser_setting")));
 });
 
@@ -32,10 +33,6 @@ server.get("/exchangers", async function (_, reply) {
   reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
 });
 
-server.get("/rates", async function (_, reply) {
-  const rates = fs.readFileSync(path.resolve(__dirname, "../dbRates.json"), "utf8")
-  reply.send(JSON.stringify(JSON.parse(rates).allConvertedRates['ADVCUSD_USDTERC']));
-});
 
 server.get("/warnings", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".warnings")));
@@ -50,24 +47,17 @@ server.get("/errors", async function (_, reply) {
 //   handleWebhookPayload(request.headers.from as string);
 // });
 
-//type myReq = FastifyRequest<{ Params: { dirId: string; isFull: string } }>;
+type myReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
 
-// server.get("/dir=:dirId/full=:isFull", async function (request: myReq, reply) {
-//   const { dirId, isFull } = request.params;
-//   if (dirId && dirId.length < 20 && dirId.includes("_")) {
-//     const convertedDirRates = await handleDirRequest(dirId.toUpperCase());
-//     const res =
-//       isFull === "true"
-//         ? convertedDirRates?.rates
-//         : {
-//             bestRates: convertedDirRates?.bestRates,
-//             uniqueRates: convertedDirRates?.uniqueRates,
-//           };
-//     reply.send(JSON.stringify(res));
-//   } else {
-//     reply.send("wrong request");
-//   }
-// });
+server.get("/dir=:dirId/tops=:tops", async function (request: myReq, reply) {
+  const { dirId, tops } = request.params;
+  if (dirId && dirId.length < 20 && dirId.includes("_")) {
+      reply.send(JSON.stringify(dbRates.getData(tops === "true" ? ".dirTops" : ".dirRates")));
+  } else {
+    reply.send("wrong request");
+    reply.code(500)
+  }
+});
 
 // server.get("/websocket", { websocket: true }, (connection) => {
 //   connection.socket.on("message", async (message) => {
@@ -85,7 +75,7 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    //bulkStatusChange("suspended", "active")
+    bulkStatusChange("suspended", "active")
     await initialLoader();
     getAllRates()
   } catch (error) {

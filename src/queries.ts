@@ -22,7 +22,6 @@ const ExchangersQuery = gql`
           date_listed
           ref_link
           rates_link
-
         }
       }
     }
@@ -34,7 +33,8 @@ const ParserSettingQuery = gql`
     parserSetting{
       data{
         attributes{
-          update_time_sec
+          restart_after_sec
+          filter_options
           dirs_disabled
           course_power
           cities

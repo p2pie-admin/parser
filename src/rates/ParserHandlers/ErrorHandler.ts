@@ -6,9 +6,11 @@ export default class ErrorCreator {
 
 
     exchangerId: string;
+    type: "errors" | "warnings"
 
-    constructor(exchangerId: string) {
+    constructor(exchangerId: string, type?: "errors" | "warnings") {
       this.exchangerId = exchangerId
+      this.type = type || "errors"
     }
 
     errorCodesExplanation = {
@@ -28,7 +30,7 @@ export default class ErrorCreator {
         "522": "Истекло время ожидания",
         "no-rates" : "Обменник ответил, но курсы не отдает",
         "json-parsing-error" : "Не удалось распарсить XML",
-        "data-error": "Не хватает данных в ответе",
+        "data-error": "Курсы обмена некорректны",
         "exchanger-custom-error": "Обменник сообщил об ошибке",
         "unknown-error": "Неизвестная ошибка"
     } as {[key in ErrorCode]: string}
@@ -38,7 +40,7 @@ export default class ErrorCreator {
 
     saveError = (code : ErrorCode | undefined = "unknown-error", serverRespMessage?: string | undefined): void  => {
         console.error(`Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`)
-        db.push(`.errors.${this.exchangerId}`, {
+        db.push(`.${this.type}.${this.exchangerId}`, {
             code,
             isStatusChanged: false,
             devMessage:  this.errorCodesExplanation[code],
@@ -47,11 +49,11 @@ export default class ErrorCreator {
     }
 
     setErrorStatusChanged = (isChanged: boolean) => {
-        db.push(`.errors.${this.exchangerId}.isStatusChanged`, isChanged)
+        db.push(`.${this.type}.${this.exchangerId}.isStatusChanged`, isChanged)
     }
 
     deleteError = () => {
-        db.delete(`.errors.${this.exchangerId}`)
+        db.delete(`.${this.type}.${this.exchangerId}`)
     }
 
 }
