@@ -7,7 +7,7 @@ import CitiesHandler from "./CitiesHandler";
 import db from "../../db";
 import dbRates from "../../dbRates";
 
-export default class XMLConverter {
+export default class RateFormatter {
 
     exchangerId: string;
 
@@ -32,7 +32,7 @@ export default class XMLConverter {
       return { give, get };
     };
 
-    matchXMLRatesWithDirs = (rates: RateData[]): void => {
+    formatAndMatchRatesWithDirs = (rates: RateData[]): void => {
      const cityCodes = db.getData(".parser_setting.cities") as {[key: string]: string}
      const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string
      const possible_pm_codes = db.getData(".possible_pm_codes") as string[]

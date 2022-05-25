@@ -2,25 +2,12 @@ import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
   {
-    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 1, limit: 1000 }){
+    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 0, limit: 10000 }){
       data{
         id
         attributes{
           name
-          description
-          logo{
-            data{
-              attributes{
-                name
-                url
-                alternativeText
-              }
-            }
-          }
           status
-          tag
-          date_listed
-          ref_link
           rates_link
         }
       }
@@ -33,10 +20,10 @@ const ParserSettingQuery = gql`
     parserSetting{
       data{
         attributes{
-          restart_after_sec
+          timeout
+          gap
           filter_options
           dirs_disabled
-          course_power
           cities
           SD_applied_from
           SD_best

@@ -4,21 +4,19 @@ const initialDB = {
     dirs: {},
     parser_setting: {
         dirs_disabled: "",
-        restart_after_sec: 20,
+        timeout: 12000,
+        gap: 250,
         cities: {},
         filter_options: '',
         SD_applied_from: 8,
         SD_best_rates: 4,
         SD_worst_rates: 5,
     },
-    exchangers: {
-        active: [],
-        suspended: []
-    },
+    exchangers: {},
     errors: {},
     warnings: {},
     left_to_parse: 0,
-    times_rates_requested: 1,
+    stop_main_loop: false,
     possible_pm_codes: []
 };
 exports.default = initialDB;

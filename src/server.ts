@@ -1,7 +1,7 @@
 import fastify, { FastifyRequest } from "fastify";
 import initialLoader from "./initialLoader";
 //import handleDirRequest from "./dirs/handleDirRequest";
-//import handleWebhookPayload from "./handleWebhookPayload";
+import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
@@ -42,10 +42,13 @@ server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-// server.post("/webhooks-handler", async function (request, _) {
-//   // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
-//   handleWebhookPayload(request.headers.from as string);
-// });
+
+
+server.post("/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf", async function (request: any, reply) {
+  // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
+  if (request?.body?.model) await handleWebhookPayload(request?.body);
+  reply.send(request?.body || "error");
+});
 
 type myReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
 
@@ -75,7 +78,8 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    bulkStatusChange("suspended", "active")
+    // bulkStatusChange("suspended", "active")
+    // bulkStatusChange("disabled", "active")
     await initialLoader();
     getAllRates()
   } catch (error) {

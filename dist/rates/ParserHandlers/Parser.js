@@ -6,67 +6,84 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const db_1 = __importDefault(require("../../db"));
 const ErrorHandler_1 = __importDefault(require("./ErrorHandler"));
-const FinishParsing_1 = __importDefault(require("./FinishParsing"));
 const CitiesHandler_1 = __importDefault(require("./CitiesHandler"));
-const XMLConverter_1 = __importDefault(require("./XMLConverter"));
+const RateFormatter_1 = __importDefault(require("./RateFormatter"));
 const xml_js_1 = __importDefault(require("xml-js"));
-const afterExchangerParsing = () => {
-    const leftToParse = db_1.default.getData(".left_to_parse");
-    db_1.default.push(".left_to_parse", leftToParse - 1);
-    console.log(leftToParse, " left");
-    if (leftToParse <= 0) {
-        (0, FinishParsing_1.default)();
+const cleanRates_1 = require("../cleaners/cleanRates");
+const convertXMLtoJSON = (errorHandler, data) => {
+    const options = {
+        compact: true,
+        ignoreComment: true,
+        alwaysChildren: true,
+    };
+    let res = {};
+    try {
+        res = JSON.parse(xml_js_1.default.xml2json(data, options));
     }
+    catch ({ message }) {
+        errorHandler.saveError("json-parsing-error", message);
+    }
+    return res;
 };
 class Parser {
-    constructor(ratesLinks) {
-        this.ratesLinks = ratesLinks;
+    constructor(exchangers) {
+        this._getRate = (exchangerId, expireIn, rates_link) => {
+            axios_1.default
+                .get(rates_link)
+                .then(function (response) {
+                var _a, _b;
+                const errorHandler = new ErrorHandler_1.default(exchangerId);
+                const JSONres = convertXMLtoJSON(errorHandler, response === null || response === void 0 ? void 0 : response.data);
+                const citiesHandler = new CitiesHandler_1.default();
+                const rateFormatter = new RateFormatter_1.default(exchangerId);
+                const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
+                if (wereRatesReceived && ((_a = JSONres.rates) === null || _a === void 0 ? void 0 : _a.item)) {
+                    console.log(`\u001b[1;32m Rates received for: ${exchangerId}`);
+                    const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_b = JSONres.rates) === null || _b === void 0 ? void 0 : _b.item);
+                    rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities);
+                    db_1.default.push(`.exchangers.${exchangerId}.status`, "active");
+                }
+            })
+                .catch(function (err) {
+                const { message, code, status } = err;
+                const numberCode = message.match(/\d+/) && message.match(/\d+/)[0];
+                const errorHandler = new ErrorHandler_1.default(exchangerId);
+                errorHandler.saveError(code || status || numberCode, message);
+            });
+        };
+        this._stopOnDataChange = (intervalId, exchangerId, initialStatus) => {
+            const { rates_link, status } = db_1.default.exists(`.exchangers.${exchangerId}`) ? db_1.default.getData(`.exchangers.${exchangerId}`) : { rates_link: "", status: "disabled" };
+            if (initialStatus !== status) {
+                console.log(`\u001b[1;34m ${exchangerId} changed status from ${initialStatus} to ${status}`);
+                clearInterval(intervalId);
+                (0, cleanRates_1.cleanRates)(exchangerId);
+                status !== "disabled" && this._runExchangerLoop(exchangerId);
+                return;
+            }
+        };
+        this._runExchangerLoop = (exchangerId) => {
+            const { rates_link, status } = db_1.default.exists(`.exchangers.${exchangerId}`) ? db_1.default.getData(`.exchangers.${exchangerId}`) : { rates_link: "", status: "disabled" };
+            const timeout = db_1.default.getData(".parser_setting.timeout") || 30000;
+            if (status === "disabled") {
+                (0, cleanRates_1.cleanRates)(exchangerId);
+                return;
+            }
+            const exchangerTimeout = status === "active" ? timeout : timeout * (Math.random() * 10 + 20);
+            const intervalId = setInterval(() => {
+                this._stopOnDataChange(intervalId, exchangerId, status);
+                this._getRate(exchangerId, timeout - 2000, rates_link);
+            }, exchangerTimeout);
+        };
+        this.exchangers = exchangers;
     }
-    async _requestXML(ratesLink, exchangerId) {
-        return axios_1.default
-            .get(ratesLink, { timeout: 1000 * 150 })
-            .then(function (response) {
-            var _a, _b;
-            afterExchangerParsing();
-            const options = {
-                compact: true,
-                ignoreComment: true,
-                alwaysChildren: true,
-            };
-            const errorHandler = new ErrorHandler_1.default(exchangerId);
-            let res = {};
-            try {
-                res = JSON.parse(xml_js_1.default.xml2json(response.data, options));
-            }
-            catch ({ message }) {
-                errorHandler.saveError("json-parsing-error", message);
-            }
-            const citiesHandler = new CitiesHandler_1.default();
-            const xmlConverter = new XMLConverter_1.default(exchangerId);
-            const wereRatesReceived = xmlConverter.checkForErrors(res);
-            if (wereRatesReceived && ((_a = res.rates) === null || _a === void 0 ? void 0 : _a.item)) {
-                console.log(`Succeeded: ${exchangerId}`);
-                errorHandler.deleteError();
-                const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_b = res.rates) === null || _b === void 0 ? void 0 : _b.item);
-                xmlConverter.matchXMLRatesWithDirs(ratesDataWithGroupedCities);
-            }
-        })
-            .catch(function (err) {
-            afterExchangerParsing();
-            const { message, code, status } = err;
-            const numberCode = message.match(/\d+/) && message.match(/\d+/)[0];
-            const errorHandler = new ErrorHandler_1.default(exchangerId);
-            errorHandler.saveError(code || status || numberCode, message);
+    pollExchangerLinks(gap) {
+        let leftToLoop = Object.keys(this.exchangers).length;
+        Object.keys(this.exchangers).map(async (exchangerId, n) => {
+            await new Promise(resolve => setTimeout(resolve, n * gap));
+            console.log(`${exchangerId} requested, ${leftToLoop} left`);
+            leftToLoop -= 1;
+            this._runExchangerLoop(exchangerId);
         });
-    }
-    requestAllXMLs() {
-        db_1.default.push(".left_to_parse", this.ratesLinks.length - 1);
-        try {
-            this.ratesLinks.map(async ({ exchangerId, ratesLink }) => await this._requestXML(ratesLink, exchangerId));
-        }
-        catch (err) {
-            console.log('Fail');
-        }
     }
 }
 exports.default = Parser;

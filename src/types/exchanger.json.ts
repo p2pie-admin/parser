@@ -1,16 +1,15 @@
 /**
  * Model definition for exchanger
  */
-export interface IExchanger {
-  id: string;
+export type ExchangerStatus = "active" | "suspended" | "disabled";
+
+export type Exchanger = {
   name: string;
-  description?: string;
-  logo?: Blob;
-  status: "active" | "suspended" | "disabled";
-  tag?: "pro" | "p2p" | "new";
-  contacts?: any;
-  date_listed?: string;
+  status: ExchangerStatus;
   rates_link: string;
-  ref_link?: string;
-  admin_comment?: string;
 }
+
+export interface ExchangerWithId extends Exchanger {
+  id: string
+}
+

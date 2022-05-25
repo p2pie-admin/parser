@@ -29,12 +29,14 @@ class ErrorCreator {
         };
         this.errorDefaultMessage = "Неизвестная ошибка";
         this.saveError = (code = "unknown-error", serverRespMessage) => {
-            console.error(`Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`);
+            console.error(`\u001b[1;31m Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`);
+            if (db_1.default.exists(`.${this.type}.${this.exchangerId}`))
+                return;
             db_1.default.push(`.${this.type}.${this.exchangerId}`, {
                 code,
-                isStatusChanged: false,
                 devMessage: this.errorCodesExplanation[code],
                 serverRespMessage,
+                isStatusChanged: false
             });
         };
         this.setErrorStatusChanged = (isChanged) => {

@@ -21,7 +21,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".", 
+    "noErrorTruncation": true
+    
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts", "src/db/initialDB.mjs", "src/rates/getAllRates.js", "src/rates/ParserHandlers/worker.js"]

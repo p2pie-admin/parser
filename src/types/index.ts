@@ -1,10 +1,11 @@
-import { IExchanger } from "./exchanger.json";
+import { Exchanger } from "./exchanger.json";
 import { DirRate, DirTops, Errors } from "./rates.json";
 
 
 interface ParserSetting {
   dirs_disabled: string;
-  restart_after_sec: number;
+  timeout: number;
+  gap: number;
   cities: { [key: string]: string };
   filter_options: string;
   SD_applied_from: number;
@@ -16,14 +17,11 @@ interface ParserSetting {
 interface DB {
   dirs: { [key: string]: number }; // отслеживаем какие направления популярны
   parser_setting: ParserSetting;
-  exchangers: {
-    active: IExchanger[];
-    suspended: IExchanger[];
-  },
+  exchangers: {[key: string]: Exchanger}
   warnings: Errors;
   errors: Errors;
   left_to_parse: number;
-  times_rates_requested: number;
+  stop_main_loop: boolean;
   possible_pm_codes: string[];
 }
 

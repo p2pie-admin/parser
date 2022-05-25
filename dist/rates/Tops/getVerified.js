@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dbRates_1 = __importDefault(require("../../dbRates"));
 const db_1 = __importDefault(require("../../db"));
 const ErrorHandler_1 = __importDefault(require("../ParserHandlers/ErrorHandler"));
 const { SD_applied_from, SD_best_dirRates, SD_worst_dirRates } = db_1.default.getData(".parser_setting");
@@ -86,11 +87,9 @@ const getAverageAndSD = (dirRates) => {
     return [average, SD];
 };
 const addToProblematic = (dirRate, type, texts, dir) => {
-    const problematicDirRateExists = db_1.default.exists(`.${type}.${dir}.${dirRate.id}`);
-    if (!problematicDirRateExists) {
-        const errorCreator = new ErrorHandler_1.default(dirRate.id, type);
-        errorCreator.saveError("data-error", JSON.stringify(texts));
-    }
+    const errorCreator = new ErrorHandler_1.default(dirRate.id, type);
+    errorCreator.saveError("data-error", JSON.stringify(texts));
+    dbRates_1.default.delete(`.dirRates.${dir}.${dirRate.id}`);
 };
 exports.default = getVerified;
 //# sourceMappingURL=getVerified.js.map

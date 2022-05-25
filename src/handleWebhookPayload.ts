@@ -1,11 +1,20 @@
+import db from "./db";
 import initialLoader from "./initialLoader";
+import getAllRates from "./rates/getAllRates";
+import { Exchanger } from "./types/exchanger.json";
 
-async function handleWebhookPayload(entity_triggered: string) {
+async function handleWebhookPayload({model, event}: any) {
   if (
-    entity_triggered === "parser_setting" ||
-    entity_triggered === "exchanger"
+    model === "parser_setting" ||
+    model === "exchanger"
+    //entity_triggered === "exchanger"
   ) {
-    await initialLoader();
+    // const exchangers = db.getData(".exchangers") as {[key: string]: Exchanger}
+    // // останавливаем все опросники
+    // db.push(".exchangers", Object.entries(exchangers).reduce((res: {[key: string]: Exchanger}, [exchangerId, exchangerData]) => ({...res, [exchangerId]:  {...exchangerData, stopInterval: true}}), {}))
+    // // запускаем заново
+    //await initialLoader();
+    // getAllRates()
   }
 }
 

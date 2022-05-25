@@ -1,4 +1,4 @@
-import { IExchanger } from './types/exchanger.json';
+import { ExchangerWithId, ExchangerWithLoop } from './types/exchanger.json';
 import { GraphQLClient } from "graphql-request";
 import { ParserSettingQuery, ExchangersQuery, PmGroupsQuery } from "./queries";
 import config from "./config.json";
@@ -38,15 +38,18 @@ async function initialLoader() {
 
     db.push(".parser_setting", normalizer(parserData.parserSetting));
 
-    const allExchangers  = normalizer(exchangersData.exchangers)
-    db.push(".exchangers.active", allExchangers.filter((exch: IExchanger) => exch.status === "active"));
-    db.push(".exchangers.suspended", allExchangers.filter((exch: IExchanger) => exch.status === "suspended"));
+    const exchangersWithId  = normalizer(exchangersData.exchangers) as ExchangerWithId[]
 
-    const sections = normalizer(pmGroupsData).selector.sections as Section[]
-    
+    const exchangersWithLoop = exchangersWithId.reduce((res:  {[key: string]: Exchanger}, ex: ExchangerWithId) => {
+      const { id, ...rest } = ex
+      return {...res, [id]: {...rest} }
+    }, {})
+    db.push(".exchangers", exchangersWithLoop)
+
+    const sections = normalizer(pmGroupsData).selector.sections as Section[]   
     db.push(".possible_pm_codes", getPossiblePmCodesFromSections(sections))
-    
-    db.save();
+
+    db.save()
     console.log("-= Parser settings and exchangers were updated! =-");
 }
 

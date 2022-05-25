@@ -1,3 +1,4 @@
+import dbRates  from '../../dbRates';
 
 import { VerificationResult, Violation } from "../../types";
 import { DirRate } from "../../types/rates.json";
@@ -112,13 +113,9 @@ const addToProblematic = (
   texts: string[],
   dir: string
 ) => {
-  const problematicDirRateExists = db.exists(
-    `.${type}.${dir}.${dirRate.id}`
-  );
-  if (!problematicDirRateExists){
     const errorCreator = new ErrorCreator(dirRate.id, type)
-    errorCreator.saveError("data-error", JSON.stringify(texts))
-  }    
+    errorCreator.saveError("data-error", JSON.stringify(texts)) 
+    dbRates.delete(`.dirRates.${dir}.${dirRate.id}`)
 };
 
 export default getVerified;

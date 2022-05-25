@@ -39,12 +39,13 @@ export default class ErrorCreator {
     errorDefaultMessage = "Неизвестная ошибка"
 
     saveError = (code : ErrorCode | undefined = "unknown-error", serverRespMessage?: string | undefined): void  => {
-        console.error(`Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`)
+        console.error(`\u001b[1;31m Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`)
+        if(db.exists(`.${this.type}.${this.exchangerId}`)) return
         db.push(`.${this.type}.${this.exchangerId}`, {
             code,
-            isStatusChanged: false,
             devMessage:  this.errorCodesExplanation[code],
             serverRespMessage,
+            isStatusChanged: false
         } as ExchangerError)
     }
 
