@@ -1,5 +1,5 @@
 import { Exchanger } from "./exchanger.json";
-import { DirRate, DirTops, Errors } from "./rates.json";
+import { DirRates, DirTops, Errors } from "./rates.json";
 
 
 interface ParserSetting {
@@ -33,8 +33,8 @@ interface VerificationResult {
 }
 
 interface DBRATES {
-  dirRates: {[key: string]: DirRate[]};
-  dirTops: {[key: string]: DirTops};
+  allDirsRates: {[key: string]: DirRates};
+  allDirsTops: {[key: string]: DirTops};
 }
 
 

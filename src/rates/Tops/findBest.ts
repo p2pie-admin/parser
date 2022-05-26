@@ -1,8 +1,8 @@
-import { DirRate } from "../../types/rates.json";
+import { DirRates } from "../../types/rates.json";
 
 interface Best {
   combinedSegment: Segment;
-  rates: DirRate[];
+  dirRates: DirRates;
 }
 
 class Segment {
@@ -50,11 +50,12 @@ class Segment {
   };
 }
 
-const findBestRates = (rates: DirRate[]) => {
-  const bestCourseAsc = [...rates].sort((r1, r2) => r1.course - r2.course);
+const findBestDirRates = (dirRates: DirRates): DirRates => {
+
+  const bestCourseAsc = [...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
   // ASC - малое к большему
-  const bestRates = bestCourseAsc.reduce(
-    (best: Best, rate: DirRate) => {
+  const best = bestCourseAsc.reduce(
+    (best: Best, [id, rate]) => {
       const rateSegment = new Segment(
         rate.min.give,
         rate.max.give
@@ -62,12 +63,13 @@ const findBestRates = (rates: DirRate[]) => {
       if (best.combinedSegment.covers(rateSegment)) return best;
       return {
         combinedSegment: best.combinedSegment.combine(rateSegment),
-        rates: [...best.rates, rate],
+        dirRates: {...best.dirRates, [id]: rate}
       };
+      
     },
-    { combinedSegment: new Segment(null, null), rates: [] }
+    { combinedSegment: new Segment(null, null), dirRates: {} }
   );
-  return bestRates.rates;
+  return best.dirRates
 };
 
-export default findBestRates;
+export default findBestDirRates;

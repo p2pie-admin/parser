@@ -2,16 +2,17 @@ import db from "../db"
 import dbRates from "../dbRates"
 import lockExchangersWithErrors from "./cleaners/lockExchangersWithErrors"
 import getDirTops from "./Tops"
-import { DirRate } from "src/types/rates.json"
+import { DirRates, DirTops } from "src/types/rates.json"
 import initialLoader from "../initialLoader"
 
 
 export default () => {
 
-    const dirTops = getDirTops(dbRates.getData(".dirRates") as {[key: string]: DirRate[]})
+    const allDirRates = dbRates.getData(".allDirRates") as {[key: string] : DirRates}
+    const allDirsTops = getDirTops(allDirRates) as {[key: string] : DirTops}
     lockExchangersWithErrors()
     initialLoader()
-    dbRates.push(".dirTops", dirTops)
+    dbRates.push(".allDirsTops", allDirsTops)
     dbRates.save()
     db.save()
     //const timeout = db.getData(".parser_setting.restart_after_sec")

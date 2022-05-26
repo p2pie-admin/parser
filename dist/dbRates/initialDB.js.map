@@ -1,1 +1,1 @@
-{"version":3,"file":"initialDB.js","sourceRoot":"","sources":["../../src/dbRates/initialDB.ts"],"names":[],"mappings":";;AAEA,MAAM,SAAS,GAAY;IACzB,QAAQ,EAAE,EAAE;IACZ,OAAO,EAAE,EAAE;CACZ,CAAC;AAEF,kBAAe,SAAS,CAAC"}
+{"version":3,"file":"initialDB.js","sourceRoot":"","sources":["../../src/dbRates/initialDB.ts"],"names":[],"mappings":";;AAEA,MAAM,SAAS,GAAY;IACzB,YAAY,EAAE,EAAE;IAChB,WAAW,EAAE,EAAE;CAChB,CAAC;AAEF,kBAAe,SAAS,CAAC"}

@@ -55,7 +55,6 @@ export default class RateFormatter {
           const cities = Object.keys(cityCodes).length && rate.city?._text && citiesHandler.formatCities(rate.city?._text, cityCodes)
 
           const dirRate = {
-            id: this.exchangerId,
             ...(rate.minfee?._text && parseFloat(rate.minfee?._text) > 0 ? {min_fee: rate.minfee._text} : {}),
             ...(rate.fromfee?._text && parseFloat(rate.fromfee?._text) > 0 ? {from_fee: rate.fromfee._text} : {}),
             ...(rate.tofee?._text && parseFloat(rate.tofee?._text) > 0 ? {to_fee: rate.tofee._text} : {}),
@@ -66,8 +65,8 @@ export default class RateFormatter {
             ...(rate.param?._text ? {param: rate.param._text} : {}),
             ...(cities ? {cities} : {}),
           } as DirRate
-
-          dbRates.push(`.dirRates.${dir}[]`, dirRate) // as ConvertedDirRates)
+         
+          dbRates.push(`.dirRates.${dir}.${this.exchangerId}`, dirRate) // as ConvertedDirRates)
 
         } catch (err) { 
           rateDataError = true

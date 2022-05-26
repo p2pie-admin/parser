@@ -12,8 +12,11 @@ export interface LinkAndID {
   ratesLink: string;
 }
 
-export interface DirRate  {
-  id: string;
+export interface DirRates {
+    [key: string]: Rate
+}
+
+export interface Rate  {
   course: number;
   min_fee: string;
   from_fee: string;
@@ -25,7 +28,9 @@ export interface DirRate  {
   cities?: {[key: string]: string[]};
 }
 
+export type ExchangerId = string
+
 export interface DirTops {
-  uniqueRates: { [key: string]: DirRate | null }; // это уникальные свойства
-  bestRates: DirRate[]; // это задачка с дождем, чтобы в зависимости от суммы выдавался результат
+  uniqueRates: { [key: string]: Rate | null }; // это уникальные свойства
+  bestRates: Rate[]; // это задачка с дождем, чтобы в зависимости от суммы выдавался результат
 }
