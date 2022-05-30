@@ -7,8 +7,8 @@ import fastifyStatic from "fastify-static";
 import getAllRates from "./rates/getAllRates";
 import path from "path";
 import db from "./db";
-import bulkStatusChange from "./dbRates/bulkStatusChange";
 import dbRates from "./dbRates";
+import statusChange from "./dbRates/statusChange";
 // import createExchangers from "./dbRates/createExchangers";
 //import bulkStatusChange from "./dbRates/bulkStatusChange";
 
@@ -78,8 +78,8 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    // bulkStatusChange("suspended", "active")
-    // bulkStatusChange("disabled", "active")
+    await statusChange("suspended", "active")
+    await statusChange("disabled", "active")
     await initialLoader();
     getAllRates()
   } catch (error) {

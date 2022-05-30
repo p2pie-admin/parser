@@ -1,9 +1,9 @@
 
 import db from "../../db";
-import { DirRates, Rate } from "../../types/rates.json";
+import { DirRates, Rate } from "../../types/rates";
 
 
-const findUniqueDirRates = (dirRates: DirRates): {[key: string]: DirRates | null} => {
+const findUniqueDirRates = (dirRates: DirRates): {[key: string]: DirRates} => {
   const filterOptions = db.getObject(
     ".parser_setting.filter_options"
   ) as string;
@@ -13,23 +13,23 @@ const findUniqueDirRates = (dirRates: DirRates): {[key: string]: DirRates | null
   // ));
 
   const uniqueDirRates = filterOptions.split("\n").reduce(
-    (res: { [key: string]: DirRates | null }, option) => {
+    (res: { [key: string]: DirRates }, option) => {
       switch (option) {
         case "optimal":
-          const optimalProperty = (rate: Rate) => rate.course ** 20 * rate.min.give;
-          res[option] = findUnique(dirRates, optimalProperty);
+          const optimalSelector = (rate: Rate) => rate.course ** 20 * rate.min.give;
+          res[option] = findUnique(dirRates, optimalSelector);
           break;
         case "best_course":
-          const courseProperty = (rate: Rate) => rate.course;
-          res[option] = findUnique(dirRates, courseProperty);
+          const courseSelector = (rate: Rate) => rate.course;
+          res[option] = findUnique(dirRates, courseSelector);
           break;
         case "lowest_min":
-          const minProperty = (rate: Rate) => rate.min.give;
-          res[option] = findUnique(dirRates, minProperty);
+          const minSelector = (rate: Rate) => rate.min.give;
+          res[option] = findUnique(dirRates, minSelector);
           break;
         case "top_max":
-          const maxProperty = (rate: Rate) => rate.max.give;
-          res[option] = findUnique(dirRates, maxProperty, false);
+          const maxSelector = (rate: Rate) => rate.max.give;
+          res[option] = findUnique(dirRates, maxSelector, false);
           break;
         default:
           return res;
@@ -42,9 +42,9 @@ const findUniqueDirRates = (dirRates: DirRates): {[key: string]: DirRates | null
   return uniqueDirRates;
 };
 
-const findUnique = (dirRates: DirRates, getProperty: Function, needLowest = true): DirRates => {
+const findUnique = (dirRates: DirRates, selector: Function, needLowest = true): DirRates => {
   //[...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
-  const sorted = [...Object.entries(dirRates)].sort((r1, r2) => getProperty(r1[1]) - getProperty(r2[1]));
+  const sorted = [...Object.entries(dirRates)].sort((r1, r2) => selector(r1[1]) - selector(r2[1]));
   const [exchangerId, rate] = needLowest ? sorted[0] : sorted.reverse()[0];
   return {[exchangerId]: rate}
 };

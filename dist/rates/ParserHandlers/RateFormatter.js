@@ -48,7 +48,7 @@ class RateFormatter {
                     const cities = Object.keys(cityCodes).length && ((_a = rate.city) === null || _a === void 0 ? void 0 : _a._text) && citiesHandler.formatCities((_b = rate.city) === null || _b === void 0 ? void 0 : _b._text, cityCodes);
                     const dirRate = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (((_c = rate.minfee) === null || _c === void 0 ? void 0 : _c._text) && parseFloat((_d = rate.minfee) === null || _d === void 0 ? void 0 : _d._text) > 0 ? { min_fee: rate.minfee._text } : {})), (((_e = rate.fromfee) === null || _e === void 0 ? void 0 : _e._text) && parseFloat((_f = rate.fromfee) === null || _f === void 0 ? void 0 : _f._text) > 0 ? { from_fee: rate.fromfee._text } : {})), (((_g = rate.tofee) === null || _g === void 0 ? void 0 : _g._text) && parseFloat((_h = rate.tofee) === null || _h === void 0 ? void 0 : _h._text) > 0 ? { to_fee: rate.tofee._text } : {})), { course,
                         min, max: max.give > reserve.give ? reserve : max, reserve }), (((_j = rate.param) === null || _j === void 0 ? void 0 : _j._text) ? { param: rate.param._text } : {})), (cities ? { cities } : {}));
-                    dbRates_1.default.push(`.dirRates.${dir}.${this.exchangerId}`, dirRate);
+                    dbRates_1.default.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate);
                 }
                 catch (err) {
                     rateDataError = true;

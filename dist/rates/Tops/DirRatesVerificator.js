@@ -12,7 +12,7 @@ class DirRatesVerificator {
         this.getVerified = (dirRates) => {
             const [average, SD] = this._getAverageAndSD(dirRates);
             return Object.entries(dirRates).reduce((okDirRates, [exchangerId, rate]) => {
-                const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD, exchangerId);
+                const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD);
                 if (rateWarnings.length)
                     this._addToProblematic("warnings", rateWarnings, exchangerId);
                 if (rateErrors.length)
@@ -22,7 +22,7 @@ class DirRatesVerificator {
                 return okDirRates;
             }, {});
         };
-        this._verifyRate = (rate, average, SD, dir) => {
+        this._verifyRate = (rate, average, SD) => {
             const { reserve, min, max } = rate;
             const rateErrors = [];
             const rateWarnings = [];
@@ -36,26 +36,26 @@ class DirRatesVerificator {
             ];
             const deviation = +((rate.course / average) * 100).toFixed(0);
             const errors = [
-                [min.give <= 0, `Минимум должен быть больше нуля в ${dir}`],
-                [reserve.give < min.give, `Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} в ${dir}`],
-                [max.give < min.give, `Максималка ${rate.max.give} меньше минималки ${rate.min.give} в ${dir}`],
+                [min.give <= 0, `Минимум должен быть больше нуля`],
+                [reserve.give < min.give, `Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `],
+                [max.give < min.give, `Максималка ${rate.max.give} меньше минималки ${rate.min.give} `],
                 [
                     rate.course < minCourse,
-                    `Курс составляет ${deviation}% от среднего, MIN: ${minCourse} в ${dir}`,
+                    `Курс составляет ${deviation}% от среднего, MIN: ${minCourse}`,
                 ],
                 [
                     rate.course > maxCourse,
-                    `Курс составляет ${deviation}% от среднего, MAX: ${maxCourse} в ${dir}`,
+                    `Курс составляет ${deviation}% от среднего, MAX: ${maxCourse}`,
                 ],
             ];
             const warnings = [
                 [
                     rate.course < lowCourse && rate.course > minCourse,
-                    `Курс составляет ${deviation}% от среднего, близко к MIN: ${minCourse} в ${dir}`,
+                    `Курс составляет ${deviation}% от среднего, близко к MIN: ${minCourse} `,
                 ],
                 [
                     rate.course > highCourse && rate.course < maxCourse,
-                    `Курс составляет ${deviation}% от среднего, близко к MAX: ${maxCourse} в ${dir}`,
+                    `Курс составляет ${deviation}% от среднего, близко к MAX: ${maxCourse} `,
                 ],
             ];
             for (let error of errors) {

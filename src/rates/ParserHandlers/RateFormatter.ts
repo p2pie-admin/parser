@@ -1,7 +1,7 @@
 
 
 import { RateData, ExchangerResponse } from "src/types/exchangerResp";
-import {  DirRate, Limit } from "src/types/rates.json";
+import {  Rate, Limit } from "../../types/rates";
 import ErrorHandler from "./ErrorHandler"
 import CitiesHandler from "./CitiesHandler";
 import db from "../../db";
@@ -64,9 +64,8 @@ export default class RateFormatter {
             reserve,
             ...(rate.param?._text ? {param: rate.param._text} : {}),
             ...(cities ? {cities} : {}),
-          } as DirRate
-         
-          dbRates.push(`.dirRates.${dir}.${this.exchangerId}`, dirRate) // as ConvertedDirRates)
+          } as Rate
+          dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate) // as ConvertedDirRates)
 
         } catch (err) { 
           rateDataError = true

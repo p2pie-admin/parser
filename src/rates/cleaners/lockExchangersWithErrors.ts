@@ -3,7 +3,7 @@ import  config  from "../../config.json";
 import { GraphQLClient } from "graphql-request";
 import { gql } from "graphql-request";
 import db from "../../db";
-import { Errors } from '../../types/rates.json';
+import { Errors } from '../../types/rates';
 import { ExchangerError } from "../../types/exchangerResp";
 import ErrorHandler from '../ParserHandlers/ErrorHandler';
 
@@ -35,9 +35,12 @@ async function lockExchangersWithErrors() {
 
       
       Object.entries(errors).map(async ([exchangerId, error] : [string, ExchangerError]) => {
-            if(error.isStatusChanged) return
+            if(!db.exists(`.exchangers.${exchangerId}`) || db.getData(`.errors.${exchangerId}.isStatusChanged`)) return
+
             const status = codesToDisable.find(code => code === error.code) ? "disabled"  : "suspended"
-            console.log(status === "disabled" ? `\u001b[1;31m disabling ${exchangerId}` : `\u001b[1;33m suspending ${exchangerId}`)
+            console.log(status === "disabled" ?
+             `\u001b[1;31m ${exchangerId}: waiting status change to disabled` :
+             `\u001b[1;33m ${exchangerId}: waiting status change to suspended`)
             try{             
                 await graphQLClient.request(mutation, {exchangerId, status});
                 const errorHandler = new ErrorHandler(exchangerId)

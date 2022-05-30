@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
   {
-    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 0, limit: 10000 }){
+    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 222 }){
       data{
         id
         attributes{
@@ -21,7 +21,6 @@ const ParserSettingQuery = gql`
       data{
         attributes{
           timeout
-          gap
           filter_options
           dirs_disabled
           cities

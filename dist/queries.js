@@ -4,7 +4,7 @@ exports.PmGroupsQuery = exports.ParserSettingQuery = exports.ExchangersQuery = v
 const graphql_request_1 = require("graphql-request");
 const ExchangersQuery = (0, graphql_request_1.gql) `
   {
-    exchangers(filters: {status: {in: ["active", "suspended"]}} pagination: { start: 0, limit: 10000 }){
+    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 222 }){
       data{
         id
         attributes{
@@ -23,7 +23,6 @@ const ParserSettingQuery = (0, graphql_request_1.gql) `
       data{
         attributes{
           timeout
-          gap
           filter_options
           dirs_disabled
           cities

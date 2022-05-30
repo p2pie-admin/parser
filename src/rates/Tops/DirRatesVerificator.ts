@@ -1,7 +1,7 @@
 import dbRates  from '../../dbRates';
 
 import { VerificationResult, Violation } from "../../types";
-import { DirRates, Rate } from "../../types/rates.json";
+import { DirRates, Rate } from "../../types/rates";
 import db from "../../db";
 import ErrorCreator from "../ParserHandlers/ErrorHandler";
 
@@ -27,7 +27,7 @@ export class DirRatesVerificator {
     getVerified = (dirRates: DirRates): DirRates => {
         const [average, SD] = this._getAverageAndSD(dirRates);
         return Object.entries(dirRates).reduce((okDirRates: DirRates, [exchangerId, rate]) => {
-            const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD, exchangerId);
+            const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD);
             if (rateWarnings.length) this._addToProblematic("warnings", rateWarnings, exchangerId);
             if (rateErrors.length) this._addToProblematic("errors", rateErrors, exchangerId);
             if (!rateErrors.length) okDirRates[exchangerId] = rate;
@@ -39,7 +39,6 @@ export class DirRatesVerificator {
         rate: Rate,
         average: number,
         SD: number,
-        dir: string
       ): VerificationResult => {
         const { reserve, min, max } = rate; // course = GET/GIVE
         const rateErrors: string[] = [];
@@ -58,27 +57,27 @@ export class DirRatesVerificator {
         const deviation = +((rate.course / average) * 100).toFixed(0);
       
         const errors: Violation[] = [
-          [min.give <= 0, `Минимум должен быть больше нуля в ${dir}`],
-          [reserve.give < min.give, `Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} в ${dir}`],
-          [max.give < min.give, `Максималка ${rate.max.give} меньше минималки ${rate.min.give} в ${dir}`],
+          [min.give <= 0, `Минимум должен быть больше нуля`],
+          [reserve.give < min.give, `Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `],
+          [max.give < min.give, `Максималка ${rate.max.give} меньше минималки ${rate.min.give} `],
           [
             rate.course < minCourse,
-            `Курс составляет ${deviation}% от среднего, MIN: ${minCourse} в ${dir}`,
+            `Курс составляет ${deviation}% от среднего, MIN: ${minCourse}`,
           ],
           [
             rate.course > maxCourse,
-            `Курс составляет ${deviation}% от среднего, MAX: ${maxCourse} в ${dir}`,
+            `Курс составляет ${deviation}% от среднего, MAX: ${maxCourse}`,
           ],
         ];
       
         const warnings: Violation[] = [
           [
             rate.course < lowCourse && rate.course > minCourse,
-            `Курс составляет ${deviation}% от среднего, близко к MIN: ${minCourse} в ${dir}`,
+            `Курс составляет ${deviation}% от среднего, близко к MIN: ${minCourse} `,
           ],
           [
             rate.course > highCourse && rate.course < maxCourse,
-            `Курс составляет ${deviation}% от среднего, близко к MAX: ${maxCourse} в ${dir}`,
+            `Курс составляет ${deviation}% от среднего, близко к MAX: ${maxCourse} `,
           ],
         ];
       

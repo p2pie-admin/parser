@@ -1,31 +1,37 @@
-
-
-import Parser from "./ParserHandlers/Parser";
-import { Exchanger } from "src/types/exchanger.json";
+import { Exchanger } from "src/types/exchanger";
 import db from "../db";
 import mainLoopLogic from "./MainLoopLogic";
+import Loop from "./Loop";
+
+type IdRateLinkPairs = {exchangerId: string; rates_link: string}[]
 
 const getAllRates = () => {
-    console.log("-= Rates Requested =-")
     const exchangers = db.getData('.exchangers') as {[key: string]: Exchanger}
+    const idRateLinkPairs = Object.entries(exchangers).map(([exchangerId, exchangerData]) => ({exchangerId, rates_link: exchangerData.rates_link})) as IdRateLinkPairs
 
-    const {timeout = 30_000, gap = 250} = db.getData(".parser_setting")
+    const {timeout = 30_000} = db.getData(".parser_setting")
 
-    const restartMainLoopIn = gap * Object.keys(exchangers).length + timeout + 2000
+    const gap = +(timeout / idRateLinkPairs.length).toFixed(0)
+    console.log(`will restart main loop in:  ${timeout / 1000 + 2}s with gap ${gap / 1000}s`)
   
     setInterval(() => {
       mainLoopLogic()
       console.log("MAIN LOOP RESTARTED")
-    }, restartMainLoopIn)
+    }, timeout + 2000)
 
-    const parser = new Parser(exchangers)
-    parser.pollExchangerLinks(gap)
-    console.log("will restart main loop in: ", restartMainLoopIn)
-    // getting all exchanger's rates_links and trying to request rates then sorting it by dirs..
-    // if error - adding it to errors list
+    
+    let leftToLoop = idRateLinkPairs.length
+  
+    idRateLinkPairs.map(async ({exchangerId, rates_link}, index) => {
+        await new Promise(resolve => setTimeout(resolve, index * gap)); 
+        // промежутки во времени между ∞ циклами четверть секунды
+        leftToLoop -= 1
+        console.log(`Loop for ${exchangerId} was started, ${leftToLoop} left`)
+        const loop = new Loop(exchangerId, rates_link)
+        loop.run()
+    }
+  )
+
 }
-
-
-
 
 export default getAllRates

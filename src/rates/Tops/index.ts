@@ -1,17 +1,13 @@
-import { DirRates, DirTops } from "../../types/rates.json";
+import { AllDirsRates, AllDirsTops, DirRates, DirTops } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique"
 
 
-type AllDirRates = {[key: string]: DirRates}
-type AllDirtops = {[key: string]: DirTops}
-
-
-const getDirTops = (allDirRates: AllDirRates) : AllDirtops => {
-  return Object.keys(allDirRates).reduce(
-    (allDirTops: AllDirtops, dir) => { 
-      allDirTops[dir] =  _getDirTop(allDirRates[dir], dir);
+const getDirTops = (allDirsRates: AllDirsRates) : AllDirsTops => {
+  return Object.keys(allDirsRates).reduce(
+    (allDirTops: AllDirsTops, dir) => { 
+      allDirTops[dir] =  _getDirTop(allDirsRates[dir], dir);
       return allDirTops;
     },
     {}
@@ -25,6 +21,7 @@ const _getDirTop = (dirRates: DirRates, dir: string): DirTops => {
   const verifiedRates = dirRatesVerificator.getVerified(dirRates);
   const bestRates = findBestDirRates(verifiedRates);
   const uniqueRates = findUniqueDirRates(verifiedRates);
+  
   const dirTops: DirTops = {
     uniqueRates,
     bestRates,

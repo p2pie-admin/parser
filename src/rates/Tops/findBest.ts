@@ -1,4 +1,4 @@
-import { DirRates } from "../../types/rates.json";
+import { DirRates } from "../../types/rates";
 
 interface Best {
   combinedSegment: Segment;

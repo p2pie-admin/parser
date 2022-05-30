@@ -1,4 +1,4 @@
-import { ExchangerWithId, ExchangerWithLoop } from './types/exchanger.json';
+import { ExchangerWithId, Exchanger } from './types/exchanger';
 import { GraphQLClient } from "graphql-request";
 import { ParserSettingQuery, ExchangersQuery, PmGroupsQuery } from "./queries";
 import config from "./config.json";
@@ -42,7 +42,7 @@ async function initialLoader() {
 
     const exchangersWithLoop = exchangersWithId.reduce((res:  {[key: string]: Exchanger}, ex: ExchangerWithId) => {
       const { id, ...rest } = ex
-      return {...res, [id]: {...rest} }
+      return {...res, [id]: {...rest, isLooped: false} }
     }, {})
     db.push(".exchangers", exchangersWithLoop)
 

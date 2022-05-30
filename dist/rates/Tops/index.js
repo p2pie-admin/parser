@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DirRatesVerificator_1 = require("./DirRatesVerificator");
 const findBest_1 = __importDefault(require("./findBest"));
 const findUnique_1 = __importDefault(require("./findUnique"));
-const getDirTops = (allDirRates) => {
-    return Object.keys(allDirRates).reduce((allDirTops, dir) => {
-        allDirTops[dir] = _getDirTop(allDirRates[dir], dir);
+const getDirTops = (allDirsRates) => {
+    return Object.keys(allDirsRates).reduce((allDirTops, dir) => {
+        allDirTops[dir] = _getDirTop(allDirsRates[dir], dir);
         return allDirTops;
     }, {});
 };

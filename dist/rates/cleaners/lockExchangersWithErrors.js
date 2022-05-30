@@ -26,10 +26,12 @@ async function lockExchangersWithErrors() {
         },
     });
     Object.entries(errors).map(async ([exchangerId, error]) => {
-        if (error.isStatusChanged)
+        if (!db_1.default.exists(`.exchangers.${exchangerId}`) || db_1.default.getData(`.errors.${exchangerId}.isStatusChanged`))
             return;
         const status = codesToDisable.find(code => code === error.code) ? "disabled" : "suspended";
-        console.log(status === "disabled" ? `\u001b[1;31m disabling ${exchangerId}` : `\u001b[1;33m suspending ${exchangerId}`);
+        console.log(status === "disabled" ?
+            `\u001b[1;31m ${exchangerId}: waiting status change to disabled` :
+            `\u001b[1;33m ${exchangerId}: waiting status change to suspended`);
         try {
             await graphQLClient.request(mutation, { exchangerId, status });
             const errorHandler = new ErrorHandler_1.default(exchangerId);

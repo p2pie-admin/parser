@@ -25,16 +25,23 @@ const getAllExchangerIds = (0, graphql_request_2.gql) `
     }
     }
 `;
-async function bulkStatusChange(fromStatus, toStatus) {
+async function statusChange(fromStatus, toStatus, exchangerId) {
     const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI, {
         headers: {
             authorization: `Bearer ${config_json_1.default.EXCHANGER_TOKEN}`,
         },
     });
-    const data = await graphQLClient.request(getAllExchangerIds, { status: fromStatus });
-    const exchangerIds = (0, normalizer_1.default)(data).exchangers.map(({ id }) => id);
-    console.log(exchangerIds);
+    let exchangerIds = [];
+    if (exchangerId) {
+        exchangerIds = [exchangerId];
+        console.log(`\u001b[1;34m ${exchangerId} wants to be active again`);
+    }
+    else {
+        const data = await graphQLClient.request(getAllExchangerIds, { status: fromStatus });
+        exchangerIds = (0, normalizer_1.default)(data).exchangers.map(({ id }) => id);
+        console.log(exchangerIds);
+    }
     exchangerIds.map(async (exchangerId) => await graphQLClient.request(updateExchanger, { exchangerId, status: toStatus }));
 }
-exports.default = bulkStatusChange;
-//# sourceMappingURL=bulkStatusChange.js.map
+exports.default = statusChange;
+//# sourceMappingURL=statusChange.js.map

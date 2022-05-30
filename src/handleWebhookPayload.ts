@@ -1,7 +1,7 @@
 import db from "./db";
 import initialLoader from "./initialLoader";
 import getAllRates from "./rates/getAllRates";
-import { Exchanger } from "./types/exchanger.json";
+import { Exchanger } from "./types/exchanger";
 
 async function handleWebhookPayload({model, event}: any) {
   if (

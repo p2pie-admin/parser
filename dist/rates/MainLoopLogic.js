@@ -9,12 +9,12 @@ const lockExchangersWithErrors_1 = __importDefault(require("./cleaners/lockExcha
 const Tops_1 = __importDefault(require("./Tops"));
 const initialLoader_1 = __importDefault(require("../initialLoader"));
 exports.default = () => {
-    const allDirRates = dbRates_1.default.getData(".allDirRates");
-    const allDirsTops = (0, Tops_1.default)(allDirRates);
+    const allDirsRates = dbRates_1.default.getData(".allDirsRates");
+    const allDirsTops = (0, Tops_1.default)(allDirsRates);
     (0, lockExchangersWithErrors_1.default)();
-    (0, initialLoader_1.default)();
     dbRates_1.default.push(".allDirsTops", allDirsTops);
     dbRates_1.default.save();
     db_1.default.save();
+    (0, initialLoader_1.default)();
 };
 //# sourceMappingURL=MainLoopLogic.js.map

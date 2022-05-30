@@ -26,7 +26,7 @@ const getAllExchangerIds = gql`
 
 type Status = "active" | "suspended" | "disabled"
 
-async function bulkStatusChange(fromStatus: Status, toStatus: Status) {
+async function statusChange(fromStatus: Status, toStatus: Status, exchangerId?: string | null) {
 
     const graphQLClient = new GraphQLClient(
       process.env.PORT ? config.STRAPI : config.LOCAL_STRAPI,
@@ -36,13 +36,19 @@ async function bulkStatusChange(fromStatus: Status, toStatus: Status) {
           },
         }
     );
+    let exchangerIds = []
+    if(exchangerId){
+      exchangerIds = [exchangerId]
+      console.log(`\u001b[1;34m ${exchangerId} wants to be active again`)
+    } else { // апдейтим всех
+      const data = await graphQLClient.request(getAllExchangerIds, {status: fromStatus})
+      exchangerIds = normalize(data).exchangers.map(({id}: {id: string}) => id)
+      console.log(exchangerIds);
+    }
 
-    const data = await graphQLClient.request(getAllExchangerIds, {status: fromStatus})
-    const exchangerIds = normalize(data).exchangers.map(({id}: {id: string}) => id)
-    console.log(exchangerIds);
     exchangerIds.map(async (exchangerId: string) => await graphQLClient.request(updateExchanger, {exchangerId, status: toStatus}))
     
 
 }
 
-export default bulkStatusChange
+export default statusChange

@@ -1,11 +1,10 @@
-import { Exchanger } from "./exchanger.json";
-import { DirRates, DirTops, Errors } from "./rates.json";
+import { Exchanger } from "./exchanger";
+import { DirRates, DirTops, Errors } from "./rates";
 
 
 interface ParserSetting {
   dirs_disabled: string;
   timeout: number;
-  gap: number;
   cities: { [key: string]: string };
   filter_options: string;
   SD_applied_from: number;

@@ -5,7 +5,6 @@ const initialDB: DB = {
   parser_setting: {
     dirs_disabled: "",
     timeout: 12000,
-    gap: 250,
     cities: {},
     filter_options: '',
     SD_applied_from: 8,

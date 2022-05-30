@@ -30,7 +30,7 @@ export default class ErrorCreator {
         "522": "Истекло время ожидания",
         "no-rates" : "Обменник ответил, но курсы не отдает",
         "json-parsing-error" : "Не удалось распарсить XML",
-        "data-error": "Курсы обмена некорректны",
+        "data-error": "Найден некорректный курс",
         "exchanger-custom-error": "Обменник сообщил об ошибке",
         "unknown-error": "Неизвестная ошибка"
     } as {[key in ErrorCode]: string}
@@ -39,7 +39,7 @@ export default class ErrorCreator {
     errorDefaultMessage = "Неизвестная ошибка"
 
     saveError = (code : ErrorCode | undefined = "unknown-error", serverRespMessage?: string | undefined): void  => {
-        console.error(`\u001b[1;31m Error! ${this.exchangerId} : ${this.errorCodesExplanation[code]}`)
+        console.error(`\u001b[1;31m ˟ ${this.exchangerId} : ${this.errorCodesExplanation[code] || "Код ошибки: " + code}`)
         if(db.exists(`.${this.type}.${this.exchangerId}`)) return
         db.push(`.${this.type}.${this.exchangerId}`, {
             code,
