@@ -43,7 +43,7 @@ async function initialLoader() {
     const exchangersWithId = (0, normalizer_1.default)(exchangersData.exchangers);
     const exchangersWithLoop = exchangersWithId.reduce((res, ex) => {
         const { id } = ex, rest = __rest(ex, ["id"]);
-        return Object.assign(Object.assign({}, res), { [id]: Object.assign(Object.assign({}, rest), { isLooped: false }) });
+        return Object.assign(Object.assign({}, res), { [id]: Object.assign({}, rest) });
     }, {});
     db_1.default.push(".exchangers", exchangersWithLoop);
     const sections = (0, normalizer_1.default)(pmGroupsData).selector.sections;

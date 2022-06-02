@@ -78,8 +78,8 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    await statusChange("suspended", "active")
-    await statusChange("disabled", "active")
+    // await statusChange("suspended", "active")
+    // await statusChange("disabled", "active")
     await initialLoader();
     getAllRates()
   } catch (error) {

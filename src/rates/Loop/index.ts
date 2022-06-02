@@ -9,6 +9,7 @@ import ErrorHandler from "../ParserHandlers/ErrorHandler";
 import CitiesHandler from "../ParserHandlers/CitiesHandler";
 import RateFormatter from "../ParserHandlers/RateFormatter";
 import { ExchangerResponse } from "src/types/exchangerResp";
+import getTimeouts from "../getTimeouts";
 
 
 export default class Loop {
@@ -23,7 +24,6 @@ export default class Loop {
 
     _getRate = (expireIn: number) => {
         const exchangerId = this.exchangerId // хз как this передать в then()
-        const start = new Date().getTime();
         axios
         .get(this.rates_link, {timeout: expireIn}) 
         .then(function (response) {
@@ -45,21 +45,9 @@ export default class Loop {
             const numberCode = message.match(/\d+/) && message.match(/\d+/)[0]
             const errorHandler = new ErrorHandler(exchangerId)           
             errorHandler.saveError(code || status || numberCode, message)
-            const end = new Date().getTime();
-            const time = end - start;
-            console.log('Execution time: ' + time);
         })
     }
 
-    _validateInterval = (intervalId: NodeJS.Timer) => {
-        
-        if(!db.exists(`.exchangers.${this.exchangerId}`)) {
-          // либо потому что автоматом сменился статус, либо вручную
-            console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : перестанет опрашиваться!`)
-            clearInterval(intervalId)
-            this._clearAllAssociatedRates()
-        } 
-    }
 
     _clearAllAssociatedRates = () => {
         const allDirsRates = dbRates.getData(".allDirsRates") as AllDirsRates
@@ -68,16 +56,16 @@ export default class Loop {
     }
 
     run = () => {
-        // ВЫПОЛНЯЕТСЯ ОДИН РАЗ, exchanger точно существует и active
-        const timeout = db.getData(".parser_setting.timeout") || 30_000 
-        // забираем timeout каждый раз заново, чтобы подхватить изменения
-        db.push(`.exchangers.${this.exchangerId}.isLooped`, true)
-        // единственный способ узнать опрашивается ли обменник
-
-        //const exchangerTimeout = status === "active" ? timeout : timeout * +(Math.random() * 10 + 10).toFixed(1) // x10 to x20 pause
-        const intervalId = setInterval(() => {
-          this._validateInterval(intervalId)
-          this._getRate(timeout - 2000)
+        const {timeout, expireIn} = getTimeouts()
+        setTimeout(() => {
+          if(!db.exists(`.exchangers.${this.exchangerId}`)) {
+            // либо потому что автоматом сменился статус, либо вручную
+              console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : Перестанет опрашиваться!`)
+              this._clearAllAssociatedRates()
+              return
+          } 
+          this._getRate(expireIn)
+          this.run()
         }, timeout)
     } 
 }

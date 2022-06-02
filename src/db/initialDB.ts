@@ -1,6 +1,7 @@
 import { DB } from "../types";
 
 const initialDB: DB = {
+  looped: [],
   dirs: {},
   parser_setting: {
     dirs_disabled: "",
@@ -15,7 +16,6 @@ const initialDB: DB = {
   errors: {},
   warnings: {},
   left_to_parse: 0,
-  stop_main_loop: false,
   possible_pm_codes: []
 };
 

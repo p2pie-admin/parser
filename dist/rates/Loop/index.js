@@ -10,11 +10,11 @@ const dbRates_1 = __importDefault(require("../../dbRates"));
 const ErrorHandler_1 = __importDefault(require("../ParserHandlers/ErrorHandler"));
 const CitiesHandler_1 = __importDefault(require("../ParserHandlers/CitiesHandler"));
 const RateFormatter_1 = __importDefault(require("../ParserHandlers/RateFormatter"));
+const getTimeouts_1 = __importDefault(require("../getTimeouts"));
 class Loop {
     constructor(exchangerId, rates_link) {
         this._getRate = (expireIn) => {
             const exchangerId = this.exchangerId;
-            const start = new Date().getTime();
             axios_1.default
                 .get(this.rates_link, { timeout: expireIn })
                 .then(function (response) {
@@ -35,17 +35,7 @@ class Loop {
                 const numberCode = message.match(/\d+/) && message.match(/\d+/)[0];
                 const errorHandler = new ErrorHandler_1.default(exchangerId);
                 errorHandler.saveError(code || status || numberCode, message);
-                const end = new Date().getTime();
-                const time = end - start;
-                console.log('Execution time: ' + time);
             });
-        };
-        this._validateInterval = (intervalId) => {
-            if (!db_1.default.exists(`.exchangers.${this.exchangerId}`)) {
-                console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : перестанет опрашиваться!`);
-                clearInterval(intervalId);
-                this._clearAllAssociatedRates();
-            }
         };
         this._clearAllAssociatedRates = () => {
             const allDirsRates = dbRates_1.default.getData(".allDirsRates");
@@ -53,11 +43,15 @@ class Loop {
             dbRates_1.default.push(".dirRates", allDirsRates);
         };
         this.run = () => {
-            const timeout = db_1.default.getData(".parser_setting.timeout") || 30000;
-            db_1.default.push(`.exchangers.${this.exchangerId}.isLooped`, true);
-            const intervalId = setInterval(() => {
-                this._validateInterval(intervalId);
-                this._getRate(timeout - 2000);
+            const { timeout, expireIn } = (0, getTimeouts_1.default)();
+            setTimeout(() => {
+                if (!db_1.default.exists(`.exchangers.${this.exchangerId}`)) {
+                    console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : Перестанет опрашиваться!`);
+                    this._clearAllAssociatedRates();
+                    return;
+                }
+                this._getRate(expireIn);
+                this.run();
             }, timeout);
         };
         this.exchangerId = exchangerId;

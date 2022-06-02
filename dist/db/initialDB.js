@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB = {
+    looped: [],
     dirs: {},
     parser_setting: {
         dirs_disabled: "",
@@ -15,7 +16,6 @@ const initialDB = {
     errors: {},
     warnings: {},
     left_to_parse: 0,
-    stop_main_loop: false,
     possible_pm_codes: []
 };
 exports.default = initialDB;

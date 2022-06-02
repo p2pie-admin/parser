@@ -6,10 +6,10 @@ import Loop from "../Loop"
 
 export default () => {
      const allExchangers = db.getData(".exchangers") as {[key: string]: Exchanger}
-     Object.entries(allExchangers).map(([exchangerId, exchangerData]) => {
-         if(!exchangerData.isLooped) {
-            const loop = new Loop(exchangerId)
-            loop.run()
-         }
-     })
+    //  Object.entries(allExchangers).map(([exchangerId, exchangerData]) => {
+    //      if(!exchangerData.isLooped) {
+    //         const loop = new Loop(exchangerId, exchangerData.rates_link)
+    //         loop.run()
+    //      }
+    //  })
 }

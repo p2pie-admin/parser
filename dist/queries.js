@@ -4,7 +4,7 @@ exports.PmGroupsQuery = exports.ParserSettingQuery = exports.ExchangersQuery = v
 const graphql_request_1 = require("graphql-request");
 const ExchangersQuery = (0, graphql_request_1.gql) `
   {
-    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 222 }){
+    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 100 }){
       data{
         id
         attributes{

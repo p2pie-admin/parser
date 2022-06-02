@@ -42,7 +42,7 @@ async function initialLoader() {
 
     const exchangersWithLoop = exchangersWithId.reduce((res:  {[key: string]: Exchanger}, ex: ExchangerWithId) => {
       const { id, ...rest } = ex
-      return {...res, [id]: {...rest, isLooped: false} }
+      return {...res, [id]: {...rest}}
     }, {})
     db.push(".exchangers", exchangersWithLoop)
 

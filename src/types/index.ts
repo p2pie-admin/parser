@@ -14,13 +14,13 @@ interface ParserSetting {
 
 
 interface DB {
+  looped: string[];
   dirs: { [key: string]: number }; // отслеживаем какие направления популярны
   parser_setting: ParserSetting;
   exchangers: {[key: string]: Exchanger}
   warnings: Errors;
   errors: Errors;
   left_to_parse: number;
-  stop_main_loop: boolean;
   possible_pm_codes: string[];
 }
 

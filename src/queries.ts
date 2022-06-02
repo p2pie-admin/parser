@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 const ExchangersQuery = gql`
   {
-    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 222 }){
+    exchangers(filters: { status: {in: ["active"]}} pagination: { start: 0, limit: 100 }){
       data{
         id
         attributes{
