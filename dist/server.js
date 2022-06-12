@@ -13,6 +13,7 @@ const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
 const dbRates_1 = __importDefault(require("./dbRates"));
+const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
 const server = (0, fastify_1.default)();
 exports.server = server;
 server.register(fastify_websocket_1.default);
@@ -55,6 +56,8 @@ server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
 const start = async () => {
     try {
         await server.listen(process.env.PORT || 5000, "0.0.0.0");
+        await (0, statusChange_1.default)("suspended", "active");
+        await (0, statusChange_1.default)("disabled", "active");
         await (0, initialLoader_1.default)();
         (0, getAllRates_1.default)();
     }

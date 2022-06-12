@@ -35,7 +35,7 @@ export default class Loop {
       
             if(wereRatesReceived && JSONres.rates?.item) {
             //status === "suspended" && statusChange("suspended", "active", exchangerId)
-            console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсы получены ${JSONres.rates?.item.length}`)
+            console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсов получено : ${JSONres.rates?.item.length}`)
             const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, JSONres.rates?.item)
             rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities) // пишет в JSОN файл
             }

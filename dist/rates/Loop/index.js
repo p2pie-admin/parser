@@ -25,7 +25,7 @@ class Loop {
                 const rateFormatter = new RateFormatter_1.default(exchangerId);
                 const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
                 if (wereRatesReceived && ((_a = JSONres.rates) === null || _a === void 0 ? void 0 : _a.item)) {
-                    console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсы получены ${(_b = JSONres.rates) === null || _b === void 0 ? void 0 : _b.item.length}`);
+                    console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсов получено : ${(_b = JSONres.rates) === null || _b === void 0 ? void 0 : _b.item.length}`);
                     const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_c = JSONres.rates) === null || _c === void 0 ? void 0 : _c.item);
                     rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities);
                 }

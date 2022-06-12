@@ -12,8 +12,8 @@ import statusChange from "./dbRates/statusChange";
 // import createExchangers from "./dbRates/createExchangers";
 //import bulkStatusChange from "./dbRates/bulkStatusChange";
 
-
 const server = fastify();
+
 server.register(websocket);
 server.register(fastifyStatic, {
   root: path.join(__dirname, "../public"),
@@ -29,10 +29,11 @@ server.get("/parser_setting", async function (_, reply) {
 });
 
 server.get("/exchangers", async function (_, reply) {
-  const exchangers = db.getData(".exchangers")
-  reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
+  const exchangers = db.getData(".exchangers");
+  reply.send(
+    JSON.stringify(exchangers.length ? exchangers : "no active exchangers!")
+  );
 });
-
 
 server.get("/warnings", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".warnings")));
@@ -42,23 +43,28 @@ server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-
-
-server.post("/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf", async function (request: any, reply) {
-  // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
-  if (request?.body?.model) await handleWebhookPayload(request?.body);
-  reply.send(request?.body || "error");
-});
+server.post(
+  "/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf",
+  async function (request: any, reply) {
+    // эта херня слушает вебхуку и срабатывает при апдейте exchangers или parser_setting
+    if (request?.body?.model) await handleWebhookPayload(request?.body);
+    reply.send(request?.body || "error");
+  }
+);
 
 type myReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
 
 server.get("/dir=:dirId/tops=:tops", async function (request: myReq, reply) {
   const { dirId, tops } = request.params;
   if (dirId && dirId.length < 20 && dirId.includes("_")) {
-      reply.send(JSON.stringify(dbRates.getData(tops === "true" ? ".dirTops" : ".dirRates")));
+    reply.send(
+      JSON.stringify(
+        dbRates.getData(tops === "true" ? ".dirTops" : ".dirRates")
+      )
+    );
   } else {
     reply.send("wrong request");
-    reply.code(500)
+    reply.code(500);
   }
 });
 
@@ -78,15 +84,15 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    // await statusChange("suspended", "active")
-    // await statusChange("disabled", "active")
+    await statusChange("suspended", "active");
+    await statusChange("disabled", "active");
     await initialLoader();
-    getAllRates()
+    getAllRates();
   } catch (error) {
     server.log.error(error);
     process.exit(1);
   }
-}; 
+};
 
 start();
 

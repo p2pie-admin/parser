@@ -206,6 +206,11 @@
             "status": "active",
             "rates_link": "https://internetmoney.exchange/exportxml.xml"
         },
+        "859": {
+            "name": "CryptoBox",
+            "status": "active",
+            "rates_link": "https://cryptobox.in.ua/export.xml"
+        },
         "860": {
             "name": "Exwp",
             "status": "active",
@@ -231,10 +236,20 @@
             "status": "active",
             "rates_link": "https://spasibo.kz/rates/rates.xml"
         },
+        "867": {
+            "name": "1Обмен",
+            "status": "active",
+            "rates_link": "https://1obmen.ru/request-exportxml.xml?lang=ru"
+        },
         "869": {
             "name": "PrivatCash",
             "status": "active",
             "rates_link": "https://privat.cash/request-exportxml.xml?lang=ru"
+        },
+        "870": {
+            "name": "Agcash",
+            "status": "active",
+            "rates_link": "https://agcash.ru/request-exportxml.xml"
         },
         "871": {
             "name": "Ym-Change",
@@ -246,30 +261,50 @@
             "status": "active",
             "rates_link": "http://rates.magnatus.com/exported_rates.php?format=2"
         },
+        "873": {
+            "name": "ChangeNow",
+            "status": "active",
+            "rates_link": "https://market-info-standard-v2.changenow.io/?api_key=9b8e5"
+        },
         "874": {
             "name": "Money-Office",
             "status": "active",
             "rates_link": "https://money-office.com/request-exportxml.xml"
+        },
+        "875": {
+            "name": "Excoin",
+            "status": "active",
+            "rates_link": "https://excoin.in/exportxml.xml"
         },
         "877": {
             "name": "PayWallet",
             "status": "active",
             "rates_link": "https://paywallet.cc/rates/export.xml"
         },
+        "878": {
+            "name": "Обменник.ws",
+            "status": "active",
+            "rates_link": "https://obmennik.ws/ru/export/xml"
+        },
         "879": {
             "name": "BestObmen",
             "status": "active",
             "rates_link": "https://bestobmen.su/request-exportxml.xml"
+        },
+        "881": {
+            "name": "CrypTorg",
+            "status": "active",
+            "rates_link": "https://api.cryptorg.com/ru/export/xml"
         },
         "882": {
             "name": "WM-Sha",
             "status": "active",
             "rates_link": "https://wm-sha.ru/export.xml"
         },
-        "883": {
-            "name": "Вобменка",
+        "884": {
+            "name": "EuroBitcoins",
             "status": "active",
-            "rates_link": "https://vobmenka.com/exportxml.xml"
+            "rates_link": "https://eurobitcoins.org/request-exportxml.xml?lang=ru"
         },
         "885": {
             "name": "Treddr",
@@ -280,6 +315,16 @@
             "name": "Биток777",
             "status": "active",
             "rates_link": "https://bitok777.net/request-exportxml.xml"
+        },
+        "887": {
+            "name": "Vmex",
+            "status": "active",
+            "rates_link": "https://vmex.info/export.php"
+        },
+        "888": {
+            "name": "Good-Exchanger",
+            "status": "active",
+            "rates_link": "https://good-exchanger.com/request-exportxml.xml?lang=ru"
         },
         "889": {
             "name": "TimeSale",
@@ -311,10 +356,50 @@
             "status": "active",
             "rates_link": "https://obmenneg.com/monitor.xml"
         },
-        "908": {
-            "name": "365Cash",
+        "898": {
+            "name": "BonkyPay",
             "status": "active",
-            "rates_link": "https://365cash.co/bestchange.xml"
+            "rates_link": "https://bonkypay.com/request-exportxml.xml"
+        },
+        "900": {
+            "name": "SolidChangerNet",
+            "status": "active",
+            "rates_link": "https://solidchanger.net/request-exportxml.xml"
+        },
+        "901": {
+            "name": "IceBtc",
+            "status": "active",
+            "rates_link": "https://icebtc.org/request-exportxml.xml"
+        },
+        "902": {
+            "name": "КупиБит",
+            "status": "active",
+            "rates_link": "https://kupibit.com/request-exportxml.xml?lang=ru"
+        },
+        "903": {
+            "name": "Z-Exchange",
+            "status": "active",
+            "rates_link": "https://z-exchange.ru/request-exportxml.xml?lang=ru"
+        },
+        "904": {
+            "name": "WMChange24",
+            "status": "active",
+            "rates_link": "https://wmchange24.net/export.xml"
+        },
+        "905": {
+            "name": "BTC-Online",
+            "status": "active",
+            "rates_link": "https://btc-online.net/request-exportxml.xml?lang=ru"
+        },
+        "906": {
+            "name": "GetCoins",
+            "status": "active",
+            "rates_link": "https://getcoins.cc/valuta_main.xml"
+        },
+        "909": {
+            "name": "Bchange",
+            "status": "active",
+            "rates_link": "https://bchange.cc/courses.xml"
         },
         "910": {
             "name": "XeBit",
@@ -326,6 +411,41 @@
             "status": "active",
             "rates_link": "https://wmstar.club/f79a9290c3e77b31/rates.xml"
         },
+        "913": {
+            "name": "24Online",
+            "status": "active",
+            "rates_link": "https://24online.cc/exportxml.xml"
+        },
+        "914": {
+            "name": "WestChange",
+            "status": "active",
+            "rates_link": "https://westchange.top/request-exportxml.xml?lang=ru"
+        },
+        "915": {
+            "name": "Bitcoin24Pro",
+            "status": "active",
+            "rates_link": "https://bitcoin24.pro/request-exportxml.xml"
+        },
+        "916": {
+            "name": "Qiwex",
+            "status": "active",
+            "rates_link": "https://qiwex.cc/qiwexinfo.xml"
+        },
+        "917": {
+            "name": "КриптоРай",
+            "status": "active",
+            "rates_link": "https://cryptor.ai/request-exportxml.xml?lang=ru"
+        },
+        "918": {
+            "name": "WMT",
+            "status": "active",
+            "rates_link": "https://wmt.am/request-exportxml.xml?lang=ru"
+        },
+        "919": {
+            "name": "ОбменОМ",
+            "status": "active",
+            "rates_link": "http://obmenom.com/rates.xml"
+        },
         "920": {
             "name": "RealExchange",
             "status": "active",
@@ -336,95 +456,110 @@
             "status": "active",
             "rates_link": "https://yochange.com/courses.xml"
         },
+        "923": {
+            "name": "Обменник-UZ",
+            "status": "active",
+            "rates_link": "https://obmennik-uz.ru/request-exportxml.xml?lang=ru"
+        },
+        "924": {
+            "name": "Fex24",
+            "status": "active",
+            "rates_link": "https://fex24.com/rates.html?sType=estandarts_xml"
+        },
         "925": {
             "name": "RuBitok",
             "status": "active",
             "rates_link": "https://rubitok.com/export.xml"
         },
-        "926": {
-            "name": "AlfaCashier",
+        "928": {
+            "name": "4ange",
             "status": "active",
-            "rates_link": "https://www.alfacashier.io/api/rates"
+            "rates_link": "https://4ange.me/valuta.xml"
         },
-        "931": {
-            "name": "BTCe-Obmen",
+        "934": {
+            "name": "ChangerClub",
             "status": "active",
-            "rates_link": "https://btce-obmen.com/request-exportxml.xml"
-        },
-        "932": {
-            "name": "CryptoBroker",
-            "status": "active",
-            "rates_link": "https://cryptobroker.pro/rates-export/xml"
+            "rates_link": "https://api.changer.club/v1/rates/xml"
         },
         "939": {
             "name": "SmartWM",
             "status": "active",
             "rates_link": "https://smartwm.ru/exchange-rates-xml"
         },
-        "940": {
-            "name": "ExchangeMoscow",
+        "941": {
+            "name": "ValidLine",
             "status": "active",
-            "rates_link": "https://exchange.moscow/request-exportxml.xml?lang=ru"
+            "rates_link": "https://valid-line.com/rates/"
         },
-        "946": {
-            "name": "LocalBitcoinsBy",
+        "944": {
+            "name": "BitShopPro",
             "status": "active",
-            "rates_link": "https://localbitcoins.by/rates.xml"
+            "rates_link": "https://bitshoppro.ru/request-exportxml.xml"
         },
-        "947": {
-            "name": "HASchange",
+        "949": {
+            "name": "GramBit",
             "status": "active",
-            "rates_link": "https://haschange.com/monitor.xml"
+            "rates_link": "https://grambit.net/request-exportxml.xml?lang=ru"
         },
-        "952": {
-            "name": "ByWare",
+        "954": {
+            "name": "ExHub",
             "status": "active",
-            "rates_link": "https://byware.net/byware_rates.xml"
-        },
-        "953": {
-            "name": "CashAdmin",
-            "status": "active",
-            "rates_link": "https://cashadmin.ru/request-exportxml.xml?lang=ru"
+            "rates_link": "https://exhub.ru/rates/rates.xml"
         },
         "959": {
             "name": "Coins-Trade",
             "status": "active",
             "rates_link": "https://coins-trade.ru/public/rates.xml"
         },
-        "967": {
-            "name": "Shift-Money",
+        "962": {
+            "name": "EmExchanger",
             "status": "active",
-            "rates_link": "https://shift-money.com/export/xml"
-        },
-        "968": {
-            "name": "ExMoney",
-            "status": "active",
-            "rates_link": "https://exmoney.me/exportxml.xml"
+            "rates_link": "https://emexchanger.com/ru/rates/emexchanger_xml.aspx"
         },
         "972": {
             "name": "Обмен.cc",
             "status": "active",
             "rates_link": "https://obmen.cc/rates.xml"
         },
-        "974": {
-            "name": "Delets",
+        "976": {
+            "name": "1Exchanger",
             "status": "active",
-            "rates_link": "https://delets.online/site/rates"
+            "rates_link": "https://1exchanger.com/request-exportxml.xml?lang=ru"
+        },
+        "977": {
+            "name": "Livex",
+            "status": "active",
+            "rates_link": "https://livex.pro/request-exportxml.xml?lang=ru"
+        },
+        "982": {
+            "name": "AllWMCash",
+            "status": "active",
+            "rates_link": "https://allwm.cash/export_courses.php"
         },
         "987": {
             "name": "BroExchange",
             "status": "active",
             "rates_link": "https://bro.exchange/request-exportxml.xml"
         },
+        "995": {
+            "name": "Vip-Money",
+            "status": "active",
+            "rates_link": "https://vip-money.net/request-exportxml.xml?lang=ru"
+        },
+        "999": {
+            "name": "Bit-Exchange",
+            "status": "active",
+            "rates_link": "https://bit-exchange.org/request-exportxml.xml?lang=ru"
+        },
         "1001": {
             "name": "Vip-Obmen",
             "status": "active",
             "rates_link": "https://vip-obmen.money/request-exportxml.xml?lang=ru"
         },
-        "1009": {
-            "name": "LasloBit",
+        "1002": {
+            "name": "Trust7",
             "status": "active",
-            "rates_link": "https://laslobit.cc/request-exportxml.xml?lang=ru"
+            "rates_link": "https://trust7.cc/site/exportxml"
         },
         "1019": {
             "name": "LeoExchanger",
@@ -436,110 +571,50 @@
             "status": "active",
             "rates_link": "https://www.ru-bas.ru/service/export/xml"
         },
-        "1028": {
-            "name": "P2PChange",
+        "1023": {
+            "name": "Coinchange24",
             "status": "active",
-            "rates_link": "https://p2pchange.is/rates.txt"
-        },
-        "1030": {
-            "name": "Makoli",
-            "status": "active",
-            "rates_link": "https://makoli.com/request-exportxml.xml"
+            "rates_link": "https://coinchange24.online/request-exportxml.xml"
         },
         "1031": {
             "name": "Changelly",
             "status": "active",
             "rates_link": "https://api.changelly.com/public/currencies-rates"
         },
-        "1034": {
-            "name": "ObmenoFF",
+        "1037": {
+            "name": "ChangeMoney24",
             "status": "active",
-            "rates_link": "https://obmenoff.cc/request-exportxml.xml?lang=ru"
+            "rates_link": "https://changemoney24.ru/request-exportxml.xml"
         },
-        "1038": {
-            "name": "MinedTrade",
+        "1040": {
+            "name": "Perfect-Change",
             "status": "active",
-            "rates_link": "https://minedtrade.com/request-exportxml.xml?lang=ru"
+            "rates_link": "https://perfect-change.com/exportxml.xml"
         },
-        "1041": {
-            "name": "NewCoin-X",
+        "1048": {
+            "name": "BTC-Волга",
             "status": "active",
-            "rates_link": "https://newcoin-x.com/request-exportxml.xml?lang=ru"
+            "rates_link": "https://btc-volga.com/request-exportxml.xml?lang=ru"
         },
-        "1044": {
-            "name": "ОбменДенег",
+        "1063": {
+            "name": "BitPro",
             "status": "active",
-            "rates_link": "https://obmendeneg.org/export/xml"
-        },
-        "1047": {
-            "name": "BetaTransfer",
-            "status": "active",
-            "rates_link": "https://betatransfer.net/request-exportxml.xml?lang=ru"
-        },
-        "1050": {
-            "name": "BitHunter",
-            "status": "active",
-            "rates_link": "https://bithunter.io/xml/rates.xml"
-        },
-        "1054": {
-            "name": "DarkVip",
-            "status": "active",
-            "rates_link": "https://darkvip.net/request-exportxml.xml?lang=ru"
-        },
-        "1056": {
-            "name": "PAY2DAY.TOP",
-            "status": "active",
-            "rates_link": "https://pay2day.top/request-exportxml.xml"
-        },
-        "1061": {
-            "name": "FastExchange",
-            "status": "active",
-            "rates_link": "https://fastexchange.center/exportxml.xml"
+            "rates_link": "https://bitpro.pro/request-exportxml.xml"
         },
         "1067": {
             "name": "WmCurrency",
             "status": "active",
             "rates_link": "https://wmcurrency.com/export/monitor/1"
         },
-        "1069": {
-            "name": "I-Obmen",
-            "status": "active",
-            "rates_link": "https://i-obmen.bz/request-exportxml.xml?lang=ru"
-        },
-        "1071": {
-            "name": "EggChange",
-            "status": "active",
-            "rates_link": "https://eggchange.net/request-exportxml.xml"
-        },
         "1076": {
             "name": "4money",
             "status": "active",
             "rates_link": "https://4money.me/request-exportxml.xml"
         },
-        "1080": {
-            "name": "Coindrop",
-            "status": "active",
-            "rates_link": "https://coindrop.trade/public/rates.xml"
-        },
-        "1089": {
-            "name": "El-Change",
-            "status": "active",
-            "rates_link": "https://el-change.com/request-exportxml.xml"
-        },
         "1092": {
             "name": "BtcTenge",
             "status": "active",
             "rates_link": "https://btctenge.com/request-exportxml.xml"
-        },
-        "1093": {
-            "name": "Sunduk",
-            "status": "active",
-            "rates_link": "https://sunduk.su/request-exportxml.xml?lang=ru"
-        },
-        "1098": {
-            "name": "Change-X",
-            "status": "active",
-            "rates_link": "https://change-x.cc/request-exportxml.xml"
         },
         "1099": {
             "name": "VV-Obmen",
@@ -551,150 +626,75 @@
             "status": "active",
             "rates_link": "https://bitcoin24.com.ua/ajax/cours.xml"
         },
-        "1110": {
-            "name": "Gofast",
+        "1111": {
+            "name": "WMCentre",
             "status": "active",
-            "rates_link": "https://gofast.cash/request-exportxml.xml"
+            "rates_link": "https://wmcentre.kz/export/xml"
         },
-        "1116": {
-            "name": "Tochkaobmena",
+        "1160": {
+            "name": "RamonCash",
             "status": "active",
-            "rates_link": "https://tochkaobmena.com/request-exportxml.xml"
-        },
-        "1118": {
-            "name": "Oneexchanger",
-            "status": "active",
-            "rates_link": "https://oneexchanger.com/exportxml.xml"
-        },
-        "1121": {
-            "name": "BelkaPay",
-            "status": "active",
-            "rates_link": "https://belkapay.com/panel/export-rates/type/xml"
-        },
-        "1127": {
-            "name": "CryptoMoney",
-            "status": "active",
-            "rates_link": "https://cryptomoney.pro/request-exportxml.xml?hcron=gkjnl67mkmgvh45jj78"
-        },
-        "1145": {
-            "name": "1-Online",
-            "status": "active",
-            "rates_link": "https://1-online.ru/exportxml.xml"
-        },
-        "1157": {
-            "name": "BitPride-Exchange",
-            "status": "active",
-            "rates_link": "https://bitpride-exchange.ru/request-exportxml.xml?lang=ru"
-        },
-        "1163": {
-            "name": "WikiPays",
-            "status": "active",
-            "rates_link": "https://wikipays.com/request-exportxml.xml"
-        },
-        "1169": {
-            "name": "Bigexchange24",
-            "status": "active",
-            "rates_link": "https://bigexchange24.com/request-exportxml.xml?lang=ru"
-        },
-        "1175": {
-            "name": "Zombie.cash",
-            "status": "active",
-            "rates_link": "https://zombie.cash/service/export/xml"
-        },
-        "1181": {
-            "name": "E-Scrooge",
-            "status": "active",
-            "rates_link": "https://e-scrooge.is/export/kurses.xml"
-        },
-        "1193": {
-            "name": "WMZ",
-            "status": "active",
-            "rates_link": "https://wmz.one/request-exportxml.xml?lang=ru"
-        },
-        "1199": {
-            "name": "SBitcoin",
-            "status": "active",
-            "rates_link": "https://sbitcoin.ru/exportxml.xml"
+            "rates_link": "https://ramon.cash/site/rates"
         },
         "1206": {
             "name": "4pay",
             "status": "active",
             "rates_link": "https://4pay.in/request-exportxml.xml"
         },
-        "1212": {
-            "name": "Pridechange",
+        "1213": {
+            "name": "ExchangeYourMoney",
             "status": "active",
-            "rates_link": "https://pridechange.com/exportxml.xml"
-        },
-        "1218": {
-            "name": "ChangeHero",
-            "status": "active",
-            "rates_link": "https://api.changehero.io/v3/allchange"
+            "rates_link": "https://exchangeyourmoney.com/request-exportxml.xml?lang=ru"
         },
         "1219": {
             "name": "Stylebtc",
             "status": "active",
             "rates_link": "https://stylebtc.com/request-exportxml.xml"
         },
-        "1224": {
-            "name": "Smart-Exchanger",
+        "1225": {
+            "name": "Coin-Bank",
             "status": "active",
-            "rates_link": "https://smart-exchanger.com/request-exportxml.xml?lang=ru"
+            "rates_link": "https://coin-bank.co/request-exportxml.xml?lang=ru"
         },
-        "1230": {
-            "name": "Bestbit",
+        "1231": {
+            "name": "Apmie",
             "status": "active",
-            "rates_link": "http://bestbit.com.ua/request-exportxml.xml?lang=ru"
-        },
-        "1236": {
-            "name": "WMSell",
-            "status": "active",
-            "rates_link": "https://wmsell.biz/request-exportxml.xml?lang=ru"
+            "rates_link": "https://apmie.com/rates.xml"
         },
         "1237": {
             "name": "A-Exchange",
             "status": "active",
             "rates_link": "https://a-exchange.com/export.xml"
         },
-        "1242": {
-            "name": "Eurobit",
-            "status": "active",
-            "rates_link": "https://xml.eurobit.cc/valuta.xml"
-        },
         "1243": {
             "name": "MyChanger",
             "status": "active",
             "rates_link": "https://mychanger.biz/feed.xml"
         },
-        "1260": {
-            "name": "SuperChange",
+        "1249": {
+            "name": "RoyalCash",
             "status": "active",
-            "rates_link": "https://superchange.is/export.php?type=1"
+            "rates_link": "https://royal.cash/valuta.xml"
+        },
+        "1255": {
+            "name": "Cryptonex",
+            "status": "active",
+            "rates_link": "https://cronex.top/monitor.xml"
         },
         "1261": {
             "name": "Paspar",
             "status": "active",
             "rates_link": "https://paspar.net/kurses2.xml"
         },
-        "1266": {
-            "name": "24Zone",
-            "status": "active",
-            "rates_link": "https://24.zone/request-exportxml.xml"
-        },
         "1267": {
             "name": "Coin24",
             "status": "active",
             "rates_link": "https://coin24.com.ua/api/xml/rate"
         },
-        "1272": {
-            "name": "Itez",
+        "1273": {
+            "name": "AllCash",
             "status": "active",
-            "rates_link": "https://api.itez.com/api/public/exchange/bestchange.xml"
-        },
-        "1278": {
-            "name": "PayBTC",
-            "status": "active",
-            "rates_link": "https://paybtc.pro/export.xml"
+            "rates_link": "https://all.cash/valuta.xml"
         }
     },
     "errors": {},
@@ -702,15 +702,16 @@
     "left_to_parse": 0,
     "possible_pm_codes": [
         "ETH",
-        "ADA",
+        "USDTERC20",
         "DOT",
-        "BNB",
-        "BTC",
         "XDG",
+        "NEO",
         "SBERRUB",
         "SBERUSD",
+        "SUPSBER",
         "QWRUB",
         "QWUSD",
-        "ADVCUSD"
+        "ADVCUSD",
+        "ADVCRUB"
     ]
 }
