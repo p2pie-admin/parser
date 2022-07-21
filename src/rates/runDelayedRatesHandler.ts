@@ -4,14 +4,14 @@ import lockExchangersWithErrors from "./cleaners/lockExchangersWithErrors"
 import getDirTops from "./Tops"
 import { DirRates, DirTops } from "src/types/rates"
 import initialLoader from "../initialLoader"
-import getTimeouts from "./getTimeouts"
+import {restartRatesHandlerIn} from "./timeouts"
 
 
 
 const runDelayedRatesHandler = () => {
 
-    const {restartRatesHandlerIn} = getTimeouts()
     console.log(`\u001b[1;34m Анализ курсов начнется через ${restartRatesHandlerIn / 1000}c`)
+   
     setTimeout(() => {
         const allDirsRates = dbRates.getData(".allDirsRates") as {[key: string] : DirRates}
         const allDirsTops = getDirTops(allDirsRates) as {[key: string] : DirTops}

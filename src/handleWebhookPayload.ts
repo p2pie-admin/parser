@@ -1,9 +1,9 @@
-import db from "./db";
-import initialLoader from "./initialLoader";
-import getAllRates from "./rates/getAllRates";
-import { Exchanger } from "./types/exchanger";
+// import db from "./db";
+// import initialLoader from "./initialLoader";
+// import getAllRates from "./rates/getAllRates";
+// import { Exchanger } from "./types/exchanger";
 
-async function handleWebhookPayload({model, event}: any) {
+async function handleWebhookPayload({ model }: any) {
   if (
     model === "parser_setting" ||
     model === "exchanger"

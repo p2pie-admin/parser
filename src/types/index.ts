@@ -1,10 +1,8 @@
 import { Exchanger } from "./exchanger";
 import { DirRates, DirTops, Errors } from "./rates";
 
-
 interface ParserSetting {
   dirs_disabled: string;
-  timeout: number;
   cities: { [key: string]: string };
   filter_options: string;
   SD_applied_from: number;
@@ -12,12 +10,17 @@ interface ParserSetting {
   SD_worst_rates: number;
 }
 
+type Top = {
+  id: string;
+  code: string;
+};
 
 interface DB {
   looped: string[];
   dirs: { [key: string]: number }; // отслеживаем какие направления популярны
+  tops: Top[];
   parser_setting: ParserSetting;
-  exchangers: {[key: string]: Exchanger}
+  exchangers: { [key: string]: Exchanger };
   warnings: Errors;
   errors: Errors;
   left_to_parse: number;
@@ -32,16 +35,8 @@ interface VerificationResult {
 }
 
 interface DBRATES {
-  allDirsRates: {[key: string]: DirRates};
-  allDirsTops: {[key: string]: DirTops};
+  allDirsRates: { [key: string]: DirRates };
+  allDirsTops: { [key: string]: DirTops };
 }
 
-
-
-export {
-  DB,
-  DBRATES,
-  ParserSetting,
-  Violation,
-  VerificationResult,
-};
+export { DB, DBRATES, ParserSetting, Violation, VerificationResult, Top };

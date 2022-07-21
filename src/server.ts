@@ -1,20 +1,24 @@
 import fastify, { FastifyRequest } from "fastify";
-import initialLoader from "./initialLoader";
+
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
+import initialLoader from "./initialLoader";
 import getAllRates from "./rates/getAllRates";
+import statusChange from "./dbRates/statusChange";
 import path from "path";
 import db from "./db";
-import dbRates from "./dbRates";
-import statusChange from "./dbRates/statusChange";
+import { JsonDB } from "node-json-db";
+import { Config } from "node-json-db/dist/lib/JsonDBConfig";
+
 // import createExchangers from "./dbRates/createExchangers";
 //import bulkStatusChange from "./dbRates/bulkStatusChange";
 
 const server = fastify();
 
 server.register(websocket);
+
 server.register(fastifyStatic, {
   root: path.join(__dirname, "../public"),
   prefix: "/public/",
@@ -55,11 +59,16 @@ server.post(
 type myReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
 
 server.get("/dir=:dirId/tops=:tops", async function (request: myReq, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
   const { dirId, tops } = request.params;
   if (dirId && dirId.length < 20 && dirId.includes("_")) {
+    const dbRatesDev = new JsonDB(new Config("dbRatesDev", false, true, "."));
+
     reply.send(
       JSON.stringify(
-        dbRates.getData(tops === "true" ? ".dirTops" : ".dirRates")
+        dbRatesDev.getData(
+          tops === "true" ? `.allDirsTops.${dirId}` : `.allDirsRates.${dirId}`
+        )
       )
     );
   } else {

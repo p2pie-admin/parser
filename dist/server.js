@@ -5,15 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.server = void 0;
 const fastify_1 = __importDefault(require("fastify"));
-const initialLoader_1 = __importDefault(require("./initialLoader"));
 const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload"));
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
 const fastify_static_1 = __importDefault(require("fastify-static"));
+const initialLoader_1 = __importDefault(require("./initialLoader"));
 const getAllRates_1 = __importDefault(require("./rates/getAllRates"));
+const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
-const dbRates_1 = __importDefault(require("./dbRates"));
-const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
+const node_json_db_1 = require("node-json-db");
+const JsonDBConfig_1 = require("node-json-db/dist/lib/JsonDBConfig");
 const server = (0, fastify_1.default)();
 exports.server = server;
 server.register(fastify_websocket_1.default);
@@ -44,9 +45,11 @@ server.post("/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf", async function (reque
     reply.send((request === null || request === void 0 ? void 0 : request.body) || "error");
 });
 server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
     const { dirId, tops } = request.params;
     if (dirId && dirId.length < 20 && dirId.includes("_")) {
-        reply.send(JSON.stringify(dbRates_1.default.getData(tops === "true" ? ".dirTops" : ".dirRates")));
+        const dbRatesDev = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config("dbRatesDev", false, true, "."));
+        reply.send(JSON.stringify(dbRatesDev.getData(tops === "true" ? `.allDirsTops.${dirId}` : `.allDirsRates.${dirId}`)));
     }
     else {
         reply.send("wrong request");

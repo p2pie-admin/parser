@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-async function handleWebhookPayload({ model, event }) {
+async function handleWebhookPayload({ model }) {
     if (model === "parser_setting" ||
         model === "exchanger") {
     }

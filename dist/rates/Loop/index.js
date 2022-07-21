@@ -10,7 +10,7 @@ const dbRates_1 = __importDefault(require("../../dbRates"));
 const ErrorHandler_1 = __importDefault(require("../ParserHandlers/ErrorHandler"));
 const CitiesHandler_1 = __importDefault(require("../ParserHandlers/CitiesHandler"));
 const RateFormatter_1 = __importDefault(require("../ParserHandlers/RateFormatter"));
-const getTimeouts_1 = __importDefault(require("../getTimeouts"));
+const timeouts_1 = require("../timeouts");
 class Loop {
     constructor(exchangerId, rates_link) {
         this._getRate = (expireIn) => {
@@ -43,16 +43,15 @@ class Loop {
             dbRates_1.default.push(".dirRates", allDirsRates);
         };
         this.run = () => {
-            const { timeout, expireIn } = (0, getTimeouts_1.default)();
             setTimeout(() => {
                 if (!db_1.default.exists(`.exchangers.${this.exchangerId}`)) {
                     console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : Перестанет опрашиваться!`);
                     this._clearAllAssociatedRates();
                     return;
                 }
-                this._getRate(expireIn);
+                this._getRate(timeouts_1.expireIn);
                 this.run();
-            }, timeout);
+            }, timeouts_1.timeout);
         };
         this.exchangerId = exchangerId;
         this.rates_link = rates_link;

@@ -5,25 +5,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../db"));
 const findUniqueDirRates = (dirRates) => {
+    if (!Object.keys(dirRates).length)
+        return {};
     try {
-        const filterOptions = db_1.default.getObject(".parser_setting.filter_options");
-        const uniqueDirRates = filterOptions.split("\n").reduce((res, option) => {
-            switch (option) {
+        const filterOptions = db_1.default.getObject(".tops");
+        const uniqueDirRates = filterOptions.reduce((res, { code }) => {
+            switch (code) {
                 case "optimal":
                     const optimalSelector = (rate) => rate.course ** 20 * rate.min.give;
-                    res[option] = findUniqueDirRate(dirRates, optimalSelector);
+                    res[code] = findUniqueDirRate(dirRates, optimalSelector);
                     break;
                 case "best_course":
                     const courseSelector = (rate) => rate.course;
-                    res[option] = findUniqueDirRate(dirRates, courseSelector);
+                    res[code] = findUniqueDirRate(dirRates, courseSelector, false);
                     break;
-                case "lowest_min":
+                case "low_min":
                     const minSelector = (rate) => rate.min.give;
-                    res[option] = findUniqueDirRate(dirRates, minSelector);
+                    res[code] = findUniqueDirRate(dirRates, minSelector);
                     break;
                 case "top_max":
                     const maxSelector = (rate) => rate.max.give;
-                    res[option] = findUniqueDirRate(dirRates, maxSelector, false);
+                    res[code] = findUniqueDirRate(dirRates, maxSelector, false);
                     break;
                 default:
                     return res;

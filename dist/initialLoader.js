@@ -20,8 +20,10 @@ const config_json_1 = __importDefault(require("./config.json"));
 const db_1 = __importDefault(require("./db"));
 const normalizer_1 = __importDefault(require("./normalizer"));
 const getCodes = (pm_group) => {
-    return pm_group.options.map(option => ((option === null || option === void 0 ? void 0 : option.code) ||
-        (pm_group.prefix && pm_group.prefix !== (option === null || option === void 0 ? void 0 : option.currency.code) && pm_group.prefix + (option === null || option === void 0 ? void 0 : option.currency.code)) ||
+    return pm_group.options.map((option) => ((option === null || option === void 0 ? void 0 : option.code) ||
+        (pm_group.prefix &&
+            pm_group.prefix !== (option === null || option === void 0 ? void 0 : option.currency.code) &&
+            pm_group.prefix + (option === null || option === void 0 ? void 0 : option.currency.code)) ||
         (option === null || option === void 0 ? void 0 : option.currency.code)).toUpperCase());
 };
 const getPossiblePmCodesFromSections = (sections) => {
@@ -30,16 +32,19 @@ const getPossiblePmCodesFromSections = (sections) => {
 };
 async function initialLoader() {
     const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI);
-    const [parserData, exchangersData, pmGroupsData] = await Promise.all([queries_1.ParserSettingQuery, queries_1.ExchangersQuery, queries_1.PmGroupsQuery].map(async (query) => {
+    const [parserSettingsData, exchangersData, pmGroupsData, topsData,] = await Promise.all([queries_1.ParserSettingQuery, queries_1.ExchangersQuery, queries_1.PmGroupsQuery, queries_1.TopsQuery].map(async (query) => {
         try {
-            return await graphQLClient.request(query);
+            return await graphQLClient
+                .request(query)
+                .catch((e) => console.error("start strapi first! ", e));
         }
         catch (err) {
             console.error(err);
             return null;
         }
     }));
-    db_1.default.push(".parser_setting", (0, normalizer_1.default)(parserData.parserSetting));
+    db_1.default.push(".tops", (0, normalizer_1.default)(topsData.tops));
+    db_1.default.push(".parser_setting", (0, normalizer_1.default)(parserSettingsData.parserSetting));
     const exchangersWithId = (0, normalizer_1.default)(exchangersData.exchangers);
     const exchangersWithLoop = exchangersWithId.reduce((res, ex) => {
         const { id } = ex, rest = __rest(ex, ["id"]);

@@ -1,23 +1,23 @@
-
-import { ExchangerError } from 'src/types/exchangerResp';
+import { ExchangerError } from "src/types/exchangerResp";
 
 export type Sides = "give" | "get";
 export type Limit = { [key in Sides]: number };
 
 export interface Errors {
-    [key: string]: ExchangerError;
-  }
-  
+  [key: string]: ExchangerError;
+}
+
 export interface LinkAndID {
   exchangerId: string;
   ratesLink: string;
 }
 
 export interface DirRates {
-    [key: string]: Rate
+  [key: string]: Rate;
 }
 
-export interface Rate  {
+export interface Rate {
+  name: string;
   course: number;
   min_fee: string;
   from_fee: string;
@@ -26,16 +26,15 @@ export interface Rate  {
   max: Limit;
   reserve: Limit;
   param: string;
-  cities?: {[key: string]: string[]};
+  cities?: { [key: string]: string[] };
 }
 
-export type ExchangerId = string
+export type ExchangerId = string;
 
 export interface DirTops {
   uniqueRates: { [key: string]: DirRates }; // это уникальные свойства
   bestRates: DirRates; // это задачка с дождем, чтобы в зависимости от суммы выдавался результат
 }
 
-
-export type AllDirsRates = {[key: string]: DirRates}
-export type AllDirsTops = {[key: string]: DirTops}
+export type AllDirsRates = { [key: string]: DirRates };
+export type AllDirsTops = { [key: string]: DirTops };

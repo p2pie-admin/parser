@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const normalize = (data) => {
-    const isObject = (data) => Object.prototype.toString.call(data) === '[object Object]';
-    const isArray = (data) => Object.prototype.toString.call(data) === '[object Array]';
+const normalizer = (data) => {
+    const isObject = (data) => Object.prototype.toString.call(data) === "[object Object]";
+    const isArray = (data) => Object.prototype.toString.call(data) === "[object Array]";
     const flatten = (data) => {
         if (!data.attributes)
             return data;
         return Object.assign({ id: data.id }, data.attributes);
     };
     if (isArray(data)) {
-        return data.map((item) => normalize(item));
+        return data.map((item) => normalizer(item));
     }
     if (isObject(data)) {
         if (isArray(data.data)) {
@@ -25,11 +25,11 @@ const normalize = (data) => {
             data = flatten(data);
         }
         for (const key in data) {
-            data[key] = normalize(data[key]);
+            data[key] = normalizer(data[key]);
         }
         return data;
     }
     return data;
 };
-exports.default = normalize;
+exports.default = normalizer;
 //# sourceMappingURL=normalizer.js.map
