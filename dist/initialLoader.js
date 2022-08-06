@@ -43,6 +43,8 @@ async function initialLoader() {
             return null;
         }
     }));
+    if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData)
+        console.log("strapi data error");
     db_1.default.push(".tops", (0, normalizer_1.default)(topsData.tops));
     db_1.default.push(".parser_setting", (0, normalizer_1.default)(parserSettingsData.parserSetting));
     const exchangersWithId = (0, normalizer_1.default)(exchangersData.exchangers);

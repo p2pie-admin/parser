@@ -5,12 +5,11 @@ import handleWebhookPayload from "./handleWebhookPayload";
 import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import initialLoader from "./initialLoader";
-import getAllRates from "./rates/getAllRates";
+import startMainFlow from "./startMainFlow";
 import statusChange from "./dbRates/statusChange";
 import path from "path";
 import db from "./db";
-import { JsonDB } from "node-json-db";
-import { Config } from "node-json-db/dist/lib/JsonDBConfig";
+import dbRates from "./dbRates";
 
 // import createExchangers from "./dbRates/createExchangers";
 //import bulkStatusChange from "./dbRates/bulkStatusChange";
@@ -62,11 +61,9 @@ server.get("/dir=:dirId/tops=:tops", async function (request: myReq, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
   const { dirId, tops } = request.params;
   if (dirId && dirId.length < 20 && dirId.includes("_")) {
-    const dbRatesDev = new JsonDB(new Config("dbRatesDev", false, true, "."));
-
     reply.send(
       JSON.stringify(
-        dbRatesDev.getData(
+        dbRates.getData(
           tops === "true" ? `.allDirsTops.${dirId}` : `.allDirsRates.${dirId}`
         )
       )
@@ -96,7 +93,7 @@ const start = async () => {
     await statusChange("suspended", "active");
     await statusChange("disabled", "active");
     await initialLoader();
-    getAllRates();
+    startMainFlow();
   } catch (error) {
     server.log.error(error);
     process.exit(1);

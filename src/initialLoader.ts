@@ -59,6 +59,8 @@ async function initialLoader() {
       }
     ) as any[]
   );
+  if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData)
+    console.log("strapi data error");
 
   db.push(".tops", normalizer(topsData.tops));
   db.push(".parser_setting", normalizer(parserSettingsData.parserSetting));

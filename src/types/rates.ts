@@ -1,11 +1,5 @@
-import { ExchangerError } from "src/types/exchangerResp";
-
 export type Sides = "give" | "get";
 export type Limit = { [key in Sides]: number };
-
-export interface Errors {
-  [key: string]: ExchangerError;
-}
 
 export interface LinkAndID {
   exchangerId: string;

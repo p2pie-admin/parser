@@ -34,13 +34,13 @@ class RateFormatter {
                 var _a, _b, _c, _d, _e, _f, _g, _h, _j;
                 try {
                     const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`;
-                    if (!possible_pm_codes.find((code) => code === rate.from._text.toUpperCase()))
+                    if (!possible_pm_codes.find((code) => code === rate.from._text.toUpperCase()) ||
+                        !possible_pm_codes.find((code) => code === rate.to._text.toUpperCase()))
                         return;
-                    if (!possible_pm_codes.find((code) => code === rate.to._text.toUpperCase()))
-                        return;
-                    if (dirs_disabled
-                        .split("\n")
-                        .find((dir_disabled) => dir_disabled.toUpperCase() === dir))
+                    if (dirs_disabled &&
+                        dirs_disabled
+                            .split("\n")
+                            .find((dir_disabled) => dir_disabled.toUpperCase() === dir))
                         return;
                     const course = +rate.in._text / +rate.out._text;
                     const min = this.transformLimit(rate.minamount._text, +course, dir);

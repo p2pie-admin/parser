@@ -1,5 +1,6 @@
 import { Exchanger } from "./exchanger";
-import { DirRates, DirTops, Errors } from "./rates";
+import { ExchangerErrors } from "./exchangerResp";
+import { DirRates, DirTops } from "./rates";
 
 interface ParserSetting {
   dirs_disabled: string;
@@ -15,15 +16,26 @@ type Top = {
   code: string;
 };
 
+type Timeouts = {
+  getRatesIn: number;
+  expireIn: number;
+  restartRatesHandlerIn: number;
+};
+
+interface DirData {
+  errors: { [key: string]: string[] };
+  warnings: { [key: string]: string[] };
+  times_called: number;
+}
+
 interface DB {
-  looped: string[];
-  dirs: { [key: string]: number }; // отслеживаем какие направления популярны
+  looped: { [key: string]: boolean };
+  timeouts: Timeouts;
+  dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны
   tops: Top[];
   parser_setting: ParserSetting;
   exchangers: { [key: string]: Exchanger };
-  warnings: Errors;
-  errors: Errors;
-  left_to_parse: number;
+  errors: ExchangerErrors;
   possible_pm_codes: string[];
 }
 
@@ -34,9 +46,19 @@ interface VerificationResult {
   rateWarnings: string[];
 }
 
+type ErrorTypes = "errors" | "warnings" | "rate_errors";
+
 interface DBRATES {
   allDirsRates: { [key: string]: DirRates };
   allDirsTops: { [key: string]: DirTops };
 }
 
-export { DB, DBRATES, ParserSetting, Violation, VerificationResult, Top };
+export {
+  DB,
+  DBRATES,
+  ParserSetting,
+  Violation,
+  VerificationResult,
+  Top,
+  ErrorTypes,
+};

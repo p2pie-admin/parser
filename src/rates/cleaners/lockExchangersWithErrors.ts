@@ -1,59 +1,77 @@
-import { ErrorCode } from 'src/types/exchangerResp';
-import  config  from "../../config.json";
-import { GraphQLClient } from "graphql-request";
-import { gql } from "graphql-request";
-import db from "../../db";
-import { Errors } from '../../types/rates';
-import { ExchangerError } from "../../types/exchangerResp";
-import ErrorHandler from '../ParserHandlers/ErrorHandler';
+// import { ErrorCode } from "src/types/exchangerResp";
+// import config from "../../config.json";
+// import { GraphQLClient } from "graphql-request";
+// import { gql } from "graphql-request";
+// import db from "../../db";
+// import { Errors } from "../../types/rates";
+// import { ExchangerError } from "../../types/exchangerResp";
 
+// const mutation = gql`
+//   mutation UpdateExchangerStatus(
+//     $exchangerId: ID!
+//     $status: ENUM_EXCHANGER_STATUS
+//   ) {
+//     updateExchanger(id: $exchangerId, data: { status: $status }) {
+//       data {
+//         id
+//       }
+//     }
+//   }
+// `;
 
-const mutation = gql`
-    mutation UpdateExchangerStatus($exchangerId: ID!, $status: ENUM_EXCHANGER_STATUS) {
-    updateExchanger(id: $exchangerId, data: {   status: $status}) {
-          data {
-            id
-          }
-      }
-    }
-`
+// const codesToDisable: ErrorCode[] = [
+//   "ECONNREFUSED",
+//   "EPERM",
+//   "404",
+//   "403",
+//   "unknown-error",
+//   "json-parsing-error",
+// ];
 
-const codesToDisable: ErrorCode[] = ["ECONNREFUSED", "EPERM", "404", "403", "unknown-error","data-error", "json-parsing-error"]
+// async function lockExchangersWithErrors() {
+//   const errors = db.getData(".errors") as Errors;
 
-async function lockExchangersWithErrors() {
+//   const graphQLClient = new GraphQLClient(
+//     process.env.PORT ? config.STRAPI : config.LOCAL_STRAPI,
+//     {
+//       headers: {
+//         authorization: `Bearer ${config.EXCHANGER_TOKEN}`,
+//       },
+//     }
+//   );
 
-      const errors = db.getData(".errors") as Errors
+//   console.log(`\u001b ________________________________________________ `);
+//   Object.entries(errors).map(
+//     async ([exchangerId, error]: [string, ExchangerError]) => {
+//       if (
+//         !db.exists(`.exchangers.${exchangerId}`) ||
+//         !db.getData(`.looped.${exchangerId}`) ||
+//         db.getData(`.errors.${exchangerId}.isStatusChanged`)
+//       )
+//         return;
 
-      const graphQLClient = new GraphQLClient(
-        process.env.PORT ? config.STRAPI : config.LOCAL_STRAPI,
-        {
-            headers: {
-              authorization: `Bearer ${config.EXCHANGER_TOKEN}`,
-            },
-          }
-      );
+//       const status = codesToDisable.find((code) => code === error.code)
+//         ? "disabled"
+//         : "suspended";
+//       console.log(
+//         status === "disabled"
+//           ? `\u001b[1;31m ${exchangerId}: waiting status change to disabled`
+//           : `\u001b[1;33m ${exchangerId}: waiting status change to suspended`
+//       );
 
-      
-      Object.entries(errors).map(async ([exchangerId, error] : [string, ExchangerError]) => {
-            if(!db.exists(`.exchangers.${exchangerId}`) || db.getData(`.errors.${exchangerId}.isStatusChanged`)) return
+//       try {
+//         db.push(`.looped.${exchangerId}`, false);
+//         db.push(`.errors.${exchangerId}.isStatusChanged`, true);
+//         db.delete(`.exchangers.${exchangerId}`);
+//         await graphQLClient.request(mutation, { exchangerId, status });
+//         return;
+//       } catch (err) {
+//         console.error("Exchanger locker failed: ", err.message);
+//         return;
+//       }
+//     }
+//   );
+//   console.log(`\u001b ________________________________________________ `);
+// }
 
-            const status = codesToDisable.find(code => code === error.code) ? "disabled"  : "suspended"
-            console.log(status === "disabled" ?
-             `\u001b[1;31m ${exchangerId}: waiting status change to disabled` :
-             `\u001b[1;33m ${exchangerId}: waiting status change to suspended`)
-            try{             
-                await graphQLClient.request(mutation, {exchangerId, status});
-                const errorHandler = new ErrorHandler(exchangerId)
-                errorHandler.setErrorStatusChanged(true) 
-                return
-            } catch (err){
-                console.error("Exchanger locker failed: ", err.message)
-                return
-            }
-
-
-      })
-}
-
-  
-  export default lockExchangersWithErrors;
+// export default lockExchangersWithErrors;

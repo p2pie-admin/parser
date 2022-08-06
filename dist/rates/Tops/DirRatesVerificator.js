@@ -4,70 +4,75 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DirRatesVerificator = void 0;
-const dbRates_1 = __importDefault(require("../../dbRates"));
 const db_1 = __importDefault(require("../../db"));
-const ErrorHandler_1 = __importDefault(require("../ParserHandlers/ErrorHandler"));
 class DirRatesVerificator {
     constructor(dir) {
         this.getVerified = (dirRates) => {
             const [average, SD] = this._getAverageAndSD(dirRates);
-            return Object.entries(dirRates).reduce((okDirRates, [exchangerId, rate]) => {
-                const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD);
+            const okDirRates = Object.entries(dirRates).reduce((okDirRates, [exchangerId, rate]) => {
+                const { rateErrors, rateWarnings } = this._verifyRate(rate, average, SD, Object.keys(dirRates).length);
                 if (rateWarnings.length)
-                    this._addToProblematic("warnings", rateWarnings, exchangerId);
+                    db_1.default.push(`.dirs.${this.dir}.warnings.${exchangerId}`, rateWarnings);
                 if (rateErrors.length)
-                    this._addToProblematic("errors", rateErrors, exchangerId);
+                    db_1.default.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors);
                 if (!rateErrors.length)
                     okDirRates[exchangerId] = rate;
                 return okDirRates;
             }, {});
+            return okDirRates;
         };
-        this._verifyRate = (rate, average, SD) => {
+        this._verifyRate = (rate, average, SD, ratesAmount) => {
             const { reserve, min, max } = rate;
-            const rateErrors = [];
-            const rateWarnings = [];
+            let rateErrors = [];
+            let rateWarnings = [];
             const [minCourse, maxCourse] = [
-                average - SD * this.SD_worst_dirRates,
-                average + SD * this.SD_best_dirRates,
+                average - SD * this.SD_worst,
+                average + SD * this.SD_best,
             ];
             const [lowCourse, highCourse] = [
-                average - SD * (this.SD_worst_dirRates > 2 ? this.SD_worst_dirRates - 1 : 2),
-                average + SD * (this.SD_best_dirRates > 2 ? this.SD_best_dirRates - 1 : 2),
+                average - SD * (this.SD_worst > 2 ? this.SD_worst - 1 : 2),
+                average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
             ];
             const deviation = +((rate.course / average) * 100).toFixed(0);
-            const errors = [
-                [min.give <= 0, `Минимум должен быть больше нуля`],
-                [reserve.give < min.give, `Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `],
-                [max.give < min.give, `Максималка ${rate.max.give} меньше минималки ${rate.min.give} `],
+            const rate_errors = [
+                [min.give <= 0, ` Минимум должен быть больше нуля`],
+                [
+                    reserve.give < min.give,
+                    ` Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `,
+                ],
+                [
+                    max.give < min.give,
+                    ` Максималка ${rate.max.give} меньше минималки ${rate.min.give} `,
+                ],
                 [
                     rate.course < minCourse,
-                    `Курс составляет ${deviation}% от среднего, MIN: ${minCourse}`,
+                    ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, MIN: ${minCourse} `,
                 ],
                 [
                     rate.course > maxCourse,
-                    `Курс составляет ${deviation}% от среднего, MAX: ${maxCourse}`,
+                    ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, MAX: ${maxCourse} `,
                 ],
             ];
             const warnings = [
                 [
                     rate.course < lowCourse && rate.course > minCourse,
-                    `Курс составляет ${deviation}% от среднего, близко к MIN: ${minCourse} `,
+                    ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, слишком близко к MIN: ${minCourse} `,
                 ],
                 [
                     rate.course > highCourse && rate.course < maxCourse,
-                    `Курс составляет ${deviation}% от среднего, близко к MAX: ${maxCourse} `,
+                    ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, слишком близко к MAX: ${maxCourse} `,
                 ],
             ];
-            for (let error of errors) {
-                const [errorCondition, message] = error;
+            for (let rate_error of rate_errors) {
+                const [errorCondition, message] = rate_error;
                 if (errorCondition) {
-                    rateErrors.push(message);
+                    rateErrors = [...rateErrors, message];
                 }
             }
             for (let warning of warnings) {
                 const [warningCondition, message] = warning;
                 if (warningCondition) {
-                    rateWarnings.push(message);
+                    rateWarnings = [...rateWarnings, message];
                 }
             }
             return {
@@ -88,16 +93,12 @@ class DirRatesVerificator {
                 (cropped.length - 1));
             return [average, SD];
         };
-        this._addToProblematic = (type, texts, exchangerId) => {
-            const errorCreator = new ErrorHandler_1.default(exchangerId, type);
-            errorCreator.saveError("data-error", JSON.stringify(texts));
-            dbRates_1.default.delete(`.dirRates.${this.dir}.${exchangerId}`);
-        };
-        const { SD_applied_from, SD_best_dirRates, SD_worst_dirRates } = db_1.default.getData(".parser_setting");
+        this._addToProblematic = () => { };
+        const { SD_applied_from, SD_best, SD_worst } = db_1.default.getData(".parser_setting");
         this.dir = dir;
         this.SD_applied_from = SD_applied_from;
-        this.SD_best_dirRates = SD_best_dirRates;
-        this.SD_worst_dirRates = SD_worst_dirRates;
+        this.SD_best = SD_best;
+        this.SD_worst = SD_worst;
     }
 }
 exports.DirRatesVerificator = DirRatesVerificator;

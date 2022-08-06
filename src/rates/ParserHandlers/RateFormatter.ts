@@ -44,10 +44,7 @@ export default class RateFormatter {
         if (
           !possible_pm_codes.find(
             (code) => code === rate.from._text.toUpperCase()
-          )
-        )
-          return;
-        if (
+          ) ||
           !possible_pm_codes.find(
             (code) => code === rate.to._text.toUpperCase()
           )
@@ -55,6 +52,7 @@ export default class RateFormatter {
           return;
         // если запрещенные направления, тоже скипаем
         if (
+          dirs_disabled &&
           dirs_disabled
             .split("\n")
             .find((dir_disabled) => dir_disabled.toUpperCase() === dir)

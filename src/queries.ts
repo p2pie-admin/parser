@@ -4,7 +4,7 @@ const ExchangersQuery = gql`
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 100000 }
+      pagination: { start: 0, limit: 1000 }
     ) {
       data {
         id

@@ -4,17 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../db"));
+const config_json_1 = __importDefault(require("../../config.json"));
+const graphql_request_1 = require("graphql-request");
 class ErrorCreator {
     constructor(exchangerId, type) {
         this.errorCodesExplanation = {
-            "ENOTFOUND": "Соединение не установлено",
-            "ECONNREFUSED": "По данному IP:PORT ничто не слушает",
-            "ECONNRESET": "Соединение сорвалось",
-            "ETIMEDOUT": "Истекло время ожидания",
-            "ECONNABORTED": "Соединение сорвалось",
-            "CERT_HAS_EXPIRED": "Сертификат устарел",
-            "ERR_FR_TOO_MANY_REDIRECTS": "Превышено число перенаправлений",
-            "EPERM": "Нет разрешения",
+            ENOTFOUND: "Соединение не установлено",
+            ECONNREFUSED: "По данному IP:PORT ничто не слушает",
+            ECONNRESET: "Соединение сорвалось",
+            ETIMEDOUT: "Истекло время ожидания",
+            ECONNABORTED: "Соединение сорвалось",
+            CERT_HAS_EXPIRED: "Сертификат устарел",
+            ERR_FR_TOO_MANY_REDIRECTS: "Превышено число перенаправлений",
+            EPERM: "Нет разрешения",
             "307": "Соединение перенаправлено",
             "403": "Соединение запрещено",
             "404": "Страница не найдена",
@@ -25,25 +27,69 @@ class ErrorCreator {
             "json-parsing-error": "Не удалось распарсить XML",
             "data-error": "Найден некорректный курс",
             "exchanger-custom-error": "Обменник сообщил об ошибке",
-            "unknown-error": "Неизвестная ошибка"
+            "unknown-error": "Неизвестная ошибка",
         };
         this.errorDefaultMessage = "Неизвестная ошибка";
         this.saveError = (code = "unknown-error", serverRespMessage) => {
             console.error(`\u001b[1;31m ˟ ${this.exchangerId} : ${this.errorCodesExplanation[code] || "Код ошибки: " + code}`);
-            if (db_1.default.exists(`.${this.type}.${this.exchangerId}`))
-                return;
             db_1.default.push(`.${this.type}.${this.exchangerId}`, {
                 code,
                 devMessage: this.errorCodesExplanation[code],
                 serverRespMessage,
-                isStatusChanged: false
+                isStatusChanged: false,
             });
+            if (this.type === "errors")
+                this.lockExchanger(code);
         };
         this.setErrorStatusChanged = (isChanged) => {
             db_1.default.push(`.${this.type}.${this.exchangerId}.isStatusChanged`, isChanged);
         };
         this.deleteError = () => {
             db_1.default.delete(`.${this.type}.${this.exchangerId}`);
+        };
+        this.lockExchanger = (code) => {
+            const mutation = (0, graphql_request_1.gql) `
+      mutation UpdateExchangerStatus(
+        $exchangerId: ID!
+        $status: ENUM_EXCHANGER_STATUS
+      ) {
+        updateExchanger(id: $exchangerId, data: { status: $status }) {
+          data {
+            id
+          }
+        }
+      }
+    `;
+            const codesToDisable = [
+                "ECONNREFUSED",
+                "EPERM",
+                "404",
+                "403",
+                "unknown-error",
+                "json-parsing-error",
+            ];
+            const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI, {
+                headers: {
+                    authorization: `Bearer ${config_json_1.default.EXCHANGER_TOKEN}`,
+                },
+            });
+            const status = codesToDisable.find((c) => c === code)
+                ? "disabled"
+                : "suspended";
+            try {
+                db_1.default.push(`.looped.${this.exchangerId}`, false);
+                db_1.default.push(`.errors.${this.exchangerId}.isStatusChanged`, true);
+                db_1.default.delete(`.exchangers.${this.exchangerId}`);
+                graphQLClient.request(mutation, {
+                    exchangerId: this.exchangerId,
+                    status,
+                });
+                return;
+            }
+            catch (err) {
+                console.error("Exchanger locker failed: ", this.exchangerId, err.message);
+                return;
+            }
         };
         this.exchangerId = exchangerId;
         this.type = type || "errors";

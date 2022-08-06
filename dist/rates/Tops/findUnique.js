@@ -17,7 +17,7 @@ const findUniqueDirRates = (dirRates) => {
                     break;
                 case "best_course":
                     const courseSelector = (rate) => rate.course;
-                    res[code] = findUniqueDirRate(dirRates, courseSelector, false);
+                    res[code] = findUniqueDirRate(dirRates, courseSelector);
                     break;
                 case "low_min":
                     const minSelector = (rate) => rate.min.give;

@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB = {
-    looped: [],
+    looped: {},
+    timeouts: {
+        getRatesIn: 20000,
+        expireIn: 18000,
+        restartRatesHandlerIn: 22000,
+    },
     dirs: {},
     tops: [],
     parser_setting: {
@@ -14,8 +19,6 @@ const initialDB = {
     },
     exchangers: {},
     errors: {},
-    warnings: {},
-    left_to_parse: 0,
     possible_pm_codes: [],
 };
 exports.default = initialDB;

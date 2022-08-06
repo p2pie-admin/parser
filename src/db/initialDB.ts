@@ -1,7 +1,12 @@
 import { DB } from "../types";
 
 const initialDB: DB = {
-  looped: [],
+  looped: {},
+  timeouts: {
+    getRatesIn: 20_000,
+    expireIn: 18_000,
+    restartRatesHandlerIn: 22_000,
+  },
   dirs: {},
   tops: [],
   parser_setting: {
@@ -14,8 +19,6 @@ const initialDB: DB = {
   },
   exchangers: {},
   errors: {},
-  warnings: {},
-  left_to_parse: 0,
   possible_pm_codes: [],
 };
 
