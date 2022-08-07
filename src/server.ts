@@ -34,7 +34,9 @@ server.get("/parser_setting", async function (_, reply) {
 server.get("/exchangers", async function (_, reply) {
   const exchangers = db.getData(".exchangers");
   reply.send(
-    JSON.stringify(exchangers.length ? exchangers : "no active exchangers!")
+    JSON.stringify(
+      Object.keys(exchangers).length ? exchangers : "no active exchangers!"
+    )
   );
 });
 
@@ -55,9 +57,24 @@ server.post(
   }
 );
 
-type myReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
+type dirReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
+type possiblePairsReq = FastifyRequest<{ Params: { code: string } }>;
 
-server.get("/dir=:dirId/tops=:tops", async function (request: myReq, reply) {
+server.get(
+  "/possible_pairs/code=:code",
+  async function (request: possiblePairsReq, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
+    const { code } = request.params;
+    if (code && code.length < 8) {
+      reply.send(
+        JSON.stringify(db.getData(`.possible_pairs.${code.toUpperCase()}`))
+      );
+    }
+    reply.send(JSON.stringify(db.getData(".parser_setting")));
+  }
+);
+
+server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
   const { dirId, tops } = request.params;
   if (dirId && dirId.length < 20 && dirId.includes("_")) {

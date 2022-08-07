@@ -20,6 +20,7 @@ const initialDB: DB = {
   exchangers: {},
   errors: {},
   possible_pm_codes: [],
+  possible_pairs: {},
 };
 
 export default initialDB;

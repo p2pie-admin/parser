@@ -29,7 +29,7 @@ server.get("/parser_setting", async function (_, reply) {
 });
 server.get("/exchangers", async function (_, reply) {
     const exchangers = db_1.default.getData(".exchangers");
-    reply.send(JSON.stringify(exchangers.length ? exchangers : "no active exchangers!"));
+    reply.send(JSON.stringify(Object.keys(exchangers).length ? exchangers : "no active exchangers!"));
 });
 server.get("/warnings", async function (_, reply) {
     reply.send(JSON.stringify(db_1.default.getData(".warnings")));
@@ -42,6 +42,14 @@ server.post("/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf", async function (reque
     if ((_a = request === null || request === void 0 ? void 0 : request.body) === null || _a === void 0 ? void 0 : _a.model)
         await (0, handleWebhookPayload_1.default)(request === null || request === void 0 ? void 0 : request.body);
     reply.send((request === null || request === void 0 ? void 0 : request.body) || "error");
+});
+server.get("/possible_pairs/code=:code", async function (request, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
+    const { code } = request.params;
+    if (code && code.length < 8) {
+        reply.send(JSON.stringify(db_1.default.getData(`.possible_pairs.${code.toUpperCase()}`)));
+    }
+    reply.send(JSON.stringify(db_1.default.getData(".parser_setting")));
 });
 server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
     reply.header("Access-Control-Allow-Origin", "*");

@@ -4,6 +4,7 @@ import dbRates from "./dbRates";
 import statusChange from "./dbRates/statusChange";
 import initialLoader from "./initialLoader";
 import Loop from "./rates/Loop";
+import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
 
 import getDirTops from "./rates/Tops";
 import { DirRates, DirTops } from "./types/rates";
@@ -31,6 +32,7 @@ const startMainFlow = () => {
       console.log("Suspended -> Active");
       await statusChange("suspended", "active");
       await initialLoader();
+      dirsExistHandler();
     }
 
     //initTimeouts(exchangers);

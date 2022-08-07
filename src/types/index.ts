@@ -25,7 +25,6 @@ type Timeouts = {
 interface DirData {
   errors: { [key: string]: string[] };
   warnings: { [key: string]: string[] };
-  times_called: number;
 }
 
 interface DB {
@@ -37,6 +36,7 @@ interface DB {
   exchangers: { [key: string]: Exchanger };
   errors: ExchangerErrors;
   possible_pm_codes: string[];
+  possible_pairs: { [key: string]: string[] };
 }
 
 type Violation = [boolean, string];

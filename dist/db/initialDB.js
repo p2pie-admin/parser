@@ -20,6 +20,7 @@ const initialDB = {
     exchangers: {},
     errors: {},
     possible_pm_codes: [],
+    possible_pairs: {},
 };
 exports.default = initialDB;
 //# sourceMappingURL=initialDB.js.map

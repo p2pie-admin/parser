@@ -66,7 +66,7 @@ export class DirRatesVerificator {
       average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
     ];
 
-    const deviation = +((rate.course / average) * 100).toFixed(0);
+    const deviation = +((rate.course / average - 1) * 100).toFixed(0);
 
     const rate_errors: Violation[] = [
       [min.give <= 0, ` Минимум должен быть больше нуля`],
@@ -80,22 +80,22 @@ export class DirRatesVerificator {
       ],
       [
         rate.course < minCourse,
-        ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, MIN: ${minCourse} `,
+        ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, MIN: ${minCourse} `,
       ],
       [
         rate.course > maxCourse,
-        ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, MAX: ${maxCourse} `,
+        ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, MAX: ${maxCourse} `,
       ],
     ];
 
     const warnings: Violation[] = [
       [
         rate.course < lowCourse && rate.course > minCourse,
-        ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, слишком близко к MIN: ${minCourse} `,
+        ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, близко к MIN границе: ${minCourse} `,
       ],
       [
         rate.course > highCourse && rate.course < maxCourse,
-        ` Курс ${rate.course} составляет ${deviation}% от среднего ${average} среди ${ratesAmount} предложений, слишком близко к MAX: ${maxCourse} `,
+        ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, близко к MAX границе: ${maxCourse} `,
       ],
     ];
 
