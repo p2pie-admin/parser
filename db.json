@@ -4177,6 +4177,12 @@
             "rates_link": "https://spasibo.kz/rates/rates.xml",
             "logo": null
         },
+        "867": {
+            "name": "1Обмен",
+            "tag": null,
+            "rates_link": "https://1obmen.ru/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "868": {
             "name": "24ObmenCom",
             "tag": null,
@@ -4187,6 +4193,12 @@
             "name": "PrivatCash",
             "tag": null,
             "rates_link": "https://privat.cash/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "870": {
+            "name": "Agcash",
+            "tag": null,
+            "rates_link": "https://agcash.ru/request-exportxml.xml",
             "logo": null
         },
         "871": {
@@ -4213,6 +4225,12 @@
             "rates_link": "https://money-office.com/request-exportxml.xml",
             "logo": null
         },
+        "875": {
+            "name": "Excoin",
+            "tag": null,
+            "rates_link": "https://excoin.in/exportxml.xml",
+            "logo": null
+        },
         "876": {
             "name": "5Минут",
             "tag": null,
@@ -4223,6 +4241,12 @@
             "name": "PayWallet",
             "tag": null,
             "rates_link": "https://paywallet.cc/rates/export.xml",
+            "logo": null
+        },
+        "878": {
+            "name": "Обменник.ws",
+            "tag": null,
+            "rates_link": "https://obmennik.ws/ru/export/xml",
             "logo": null
         },
         "879": {
@@ -4273,6 +4297,18 @@
             "rates_link": "https://bitok777.net/request-exportxml.xml",
             "logo": null
         },
+        "887": {
+            "name": "Vmex",
+            "tag": null,
+            "rates_link": "https://vmex.info/export.php",
+            "logo": null
+        },
+        "888": {
+            "name": "Good-Exchanger",
+            "tag": null,
+            "rates_link": "https://good-exchanger.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "889": {
             "name": "TimeSale",
             "tag": null,
@@ -4321,6 +4357,12 @@
             "rates_link": "https://obmenneg.com/monitor.xml",
             "logo": null
         },
+        "898": {
+            "name": "BonkyPay",
+            "tag": null,
+            "rates_link": "https://bonkypay.com/request-exportxml.xml",
+            "logo": null
+        },
         "899": {
             "name": "4Exchange",
             "tag": null,
@@ -4333,10 +4375,28 @@
             "rates_link": "https://solidchanger.net/request-exportxml.xml",
             "logo": null
         },
+        "901": {
+            "name": "IceBtc",
+            "tag": null,
+            "rates_link": "https://icebtc.org/request-exportxml.xml",
+            "logo": null
+        },
         "902": {
             "name": "КупиБит",
             "tag": null,
             "rates_link": "https://kupibit.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "903": {
+            "name": "Z-Exchange",
+            "tag": null,
+            "rates_link": "https://z-exchange.ru/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "904": {
+            "name": "WMChange24",
+            "tag": null,
+            "rates_link": "https://wmchange24.net/export.xml",
             "logo": null
         },
         "905": {
@@ -4405,6 +4465,12 @@
             "rates_link": "https://bitcoin24.pro/request-exportxml.xml",
             "logo": null
         },
+        "916": {
+            "name": "Qiwex",
+            "tag": null,
+            "rates_link": "https://qiwex.cc/qiwexinfo.xml",
+            "logo": null
+        },
         "917": {
             "name": "КриптоРай",
             "tag": null,
@@ -4471,6 +4537,12 @@
             "rates_link": "https://geeexchange.com/6989/exportxml.xml",
             "logo": null
         },
+        "928": {
+            "name": "4ange",
+            "tag": null,
+            "rates_link": "https://4ange.me/valuta.xml",
+            "logo": null
+        },
         "929": {
             "name": "Alfa-Trades",
             "tag": null,
@@ -4501,10 +4573,28 @@
             "rates_link": "https://bitobmen.net/request-exportxml.xml?lang=ru",
             "logo": null
         },
+        "934": {
+            "name": "ChangerClub",
+            "tag": null,
+            "rates_link": "https://api.changer.club/v1/rates/xml",
+            "logo": null
+        },
         "935": {
             "name": "Rapid-Obmen",
             "tag": null,
             "rates_link": "https://rapid-obmen.com/request-exportxml.xml",
+            "logo": null
+        },
+        "936": {
+            "name": "SuperChangeNet",
+            "tag": null,
+            "rates_link": "https://api.superchange.net/v1/rates/xml",
+            "logo": null
+        },
+        "937": {
+            "name": "Ex-Money",
+            "tag": null,
+            "rates_link": "https://ex-money.cc/valuta.xml",
             "logo": null
         },
         "938": {
@@ -4543,6 +4633,12 @@
             "rates_link": "https://monex.me/rates.html?sType=estandarts_xml",
             "logo": null
         },
+        "944": {
+            "name": "BitShopPro",
+            "tag": null,
+            "rates_link": "https://bitshoppro.ru/request-exportxml.xml",
+            "logo": null
+        },
         "945": {
             "name": "BtcPro24",
             "tag": null,
@@ -4567,6 +4663,12 @@
             "rates_link": "https://ru-change.cc/request-exportxml.xml?lang=ru",
             "logo": null
         },
+        "949": {
+            "name": "GramBit",
+            "tag": null,
+            "rates_link": "https://grambit.net/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "950": {
             "name": "HoBit",
             "tag": null,
@@ -4577,6 +4679,12 @@
             "name": "Smart-Pays",
             "tag": null,
             "rates_link": "https://smart-pays.com/request-exportxml.xml",
+            "logo": null
+        },
+        "952": {
+            "name": "ByWare",
+            "tag": null,
+            "rates_link": "https://byware.net/byware_rates.xml",
             "logo": null
         },
         "953": {
@@ -4609,10 +4717,28 @@
             "rates_link": "https://bitcoin24.su/request-exportxml.xml",
             "logo": null
         },
+        "958": {
+            "name": "Obmen4you",
+            "tag": null,
+            "rates_link": "https://obmen4you.com/exportxml.xml",
+            "logo": null
+        },
         "959": {
             "name": "Coins-Trade",
             "tag": null,
             "rates_link": "https://coins-trade.ru/public/rates.xml",
+            "logo": null
+        },
+        "960": {
+            "name": "Bixter",
+            "tag": null,
+            "rates_link": "https://bixter.org/valuta.xml",
+            "logo": null
+        },
+        "961": {
+            "name": "Fair-Exchange",
+            "tag": null,
+            "rates_link": "https://fair-exchange.ru/exportxml.xml",
             "logo": null
         },
         "962": {
@@ -4637,6 +4763,12 @@
             "name": "Real-Bit",
             "tag": null,
             "rates_link": "https://real-bit.ru/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "966": {
+            "name": "Qipri",
+            "tag": null,
+            "rates_link": "https://qipri.com/request-exportxml.xml?lang=ru",
             "logo": null
         },
         "967": {
@@ -4679,6 +4811,12 @@
             "name": "Coinex24",
             "tag": null,
             "rates_link": "https://coinex24.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "974": {
+            "name": "Delets",
+            "tag": null,
+            "rates_link": "https://delets.online/site/rates",
             "logo": null
         },
         "975": {
@@ -4739,6 +4877,12 @@
             "name": "Обменник24",
             "tag": null,
             "rates_link": "https://obmennik24.net/rates/export/xml",
+            "logo": null
+        },
+        "985": {
+            "name": "Ex-code",
+            "tag": null,
+            "rates_link": "https://ex-code.ru/request-exportxml.xml",
             "logo": null
         },
         "986": {
@@ -4843,10 +4987,22 @@
             "rates_link": "https://trust7.cc/site/exportxml",
             "logo": null
         },
+        "1003": {
+            "name": "E-Obmen",
+            "tag": null,
+            "rates_link": "https://e-obmen.net/export.php",
+            "logo": null
+        },
         "1004": {
             "name": "CoinPayMaster",
             "tag": null,
             "rates_link": "https://coinpaymaster.com/API/GetCoursesWP",
+            "logo": null
+        },
+        "1005": {
+            "name": "Капуста",
+            "tag": null,
+            "rates_link": "https://kapysta.online/request-exportxml.xml",
             "logo": null
         },
         "1006": {
@@ -4867,6 +5023,18 @@
             "rates_link": "https://obmenka.online/request-exportxml.xml?lang=ru",
             "logo": null
         },
+        "1009": {
+            "name": "LasloBit",
+            "tag": null,
+            "rates_link": "https://laslobit.cc/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1010": {
+            "name": "Обменник.ua",
+            "tag": null,
+            "rates_link": "https://obmennik.ua/export/xml",
+            "logo": null
+        },
         "1011": {
             "name": "Биток",
             "tag": null,
@@ -4877,6 +5045,12 @@
             "name": "FixedFloat",
             "tag": null,
             "rates_link": "https://fixedfloat.com/rates.xml",
+            "logo": null
+        },
+        "1013": {
+            "name": "Fenix-Pay",
+            "tag": null,
+            "rates_link": "https://fenix-pay.com/curses",
             "logo": null
         },
         "1014": {
@@ -4901,6 +5075,12 @@
             "name": "ArmChange",
             "tag": null,
             "rates_link": "https://idram.armchange.ru/request-exportxml.xml",
+            "logo": null
+        },
+        "1018": {
+            "name": "SaxoBit",
+            "tag": null,
+            "rates_link": "https://saxobit.com/export.xml",
             "logo": null
         },
         "1019": {
@@ -4933,6 +5113,12 @@
             "rates_link": "https://coinchange24.online/request-exportxml.xml",
             "logo": null
         },
+        "1024": {
+            "name": "CryptoCash",
+            "tag": null,
+            "rates_link": "https://cryptocash.finance/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "1025": {
             "name": "V-Obmen24",
             "tag": null,
@@ -4955,6 +5141,12 @@
             "name": "P2PChange",
             "tag": null,
             "rates_link": "https://p2pchange.is/rates.txt",
+            "logo": null
+        },
+        "1029": {
+            "name": "Lionex",
+            "tag": null,
+            "rates_link": "https://lionex.net/rates.xml",
             "logo": null
         },
         "1030": {
@@ -5059,10 +5251,22 @@
             "rates_link": "https://api.ecashme.com/ru/export/xml",
             "logo": null
         },
+        "1047": {
+            "name": "BetaTransfer",
+            "tag": null,
+            "rates_link": "https://betatransfer.net/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "1048": {
             "name": "BTC-Волга",
             "tag": null,
             "rates_link": "https://btc-volga.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1049": {
+            "name": "SwapCoin",
+            "tag": null,
+            "rates_link": "https://swapcoin.cc/valuta.xml",
             "logo": null
         },
         "1050": {
@@ -5075,6 +5279,18 @@
             "name": "AlfaExchange",
             "tag": null,
             "rates_link": "https://alfa.exchange/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1052": {
+            "name": "PayGet",
+            "tag": null,
+            "rates_link": "https://payget.pro/valuta.xml",
+            "logo": null
+        },
+        "1053": {
+            "name": "Owm24",
+            "tag": null,
+            "rates_link": "http://owm24.com/res/xml/expcurses.xml",
             "logo": null
         },
         "1054": {
@@ -5185,6 +5401,12 @@
             "rates_link": "https://eggchange.net/request-exportxml.xml",
             "logo": null
         },
+        "1072": {
+            "name": "PayMarket",
+            "tag": null,
+            "rates_link": "https://paymarket.cc/valuta.xml",
+            "logo": null
+        },
         "1073": {
             "name": "КэшБанк",
             "tag": null,
@@ -5209,6 +5431,12 @@
             "rates_link": "https://4money.me/request-exportxml.xml",
             "logo": null
         },
+        "1077": {
+            "name": "JPMarket",
+            "tag": null,
+            "rates_link": "https://jpmarket.cc/valuta.xml",
+            "logo": null
+        },
         "1078": {
             "name": "Cashex",
             "tag": null,
@@ -5225,6 +5453,12 @@
             "name": "Coindrop",
             "tag": null,
             "rates_link": "https://coindrop.trade/public/rates.xml",
+            "logo": null
+        },
+        "1081": {
+            "name": "FastChange",
+            "tag": null,
+            "rates_link": "https://fastchange.me/valuta.xml",
             "logo": null
         },
         "1082": {
@@ -5293,6 +5527,18 @@
             "rates_link": "https://btctenge.com/request-exportxml.xml",
             "logo": null
         },
+        "1093": {
+            "name": "Sunduk",
+            "tag": null,
+            "rates_link": "https://sunduk.su/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1094": {
+            "name": "24coin",
+            "tag": null,
+            "rates_link": "https://24coin.pro/request-exportxml.xml",
+            "logo": null
+        },
         "1095": {
             "name": "WMStream",
             "tag": null,
@@ -5309,6 +5555,12 @@
             "name": "ObmenEW",
             "tag": null,
             "rates_link": "https://obmenew.com/monitor.xml",
+            "logo": null
+        },
+        "1098": {
+            "name": "Change-X",
+            "tag": null,
+            "rates_link": "https://change-x.cc/request-exportxml.xml",
             "logo": null
         },
         "1099": {
@@ -5341,6 +5593,12 @@
             "rates_link": "https://api.001k.exchange/exportxmlfile",
             "logo": null
         },
+        "1104": {
+            "name": "HotRate",
+            "tag": null,
+            "rates_link": "https://hotrate.io/export/rates.xml",
+            "logo": null
+        },
         "1105": {
             "name": "Биткоин24",
             "tag": null,
@@ -5351,6 +5609,12 @@
             "name": "Micro-exchange",
             "tag": null,
             "rates_link": "https://micro-exchange.ru/request-exportxml.xml",
+            "logo": null
+        },
+        "1107": {
+            "name": "MultiChange",
+            "tag": null,
+            "rates_link": "https://multichange.net/valuta.xml",
             "logo": null
         },
         "1108": {
@@ -5369,6 +5633,18 @@
             "name": "Gofast",
             "tag": null,
             "rates_link": "https://gofast.cash/request-exportxml.xml",
+            "logo": null
+        },
+        "1111": {
+            "name": "WMCentre",
+            "tag": null,
+            "rates_link": "https://wmcentre.kz/export/xml",
+            "logo": null
+        },
+        "1112": {
+            "name": "WmPayCash",
+            "tag": null,
+            "rates_link": "https://wmpaycash.com/export/xml",
             "logo": null
         },
         "1113": {
@@ -5395,16 +5671,34 @@
             "rates_link": "https://tochkaobmena.com/request-exportxml.xml",
             "logo": null
         },
+        "1117": {
+            "name": "Your-Monetka",
+            "tag": null,
+            "rates_link": "https://your-monetka.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "1118": {
             "name": "Oneexchanger",
             "tag": null,
             "rates_link": "https://oneexchanger.com/exportxml.xml",
             "logo": null
         },
+        "1119": {
+            "name": "Receive-Money",
+            "tag": null,
+            "rates_link": "https://receive-money.biz/exportxml.xml",
+            "logo": null
+        },
         "1120": {
             "name": "Auto.cashout",
             "tag": null,
             "rates_link": "https://auto.cashout.biz/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1121": {
+            "name": "BelkaPay",
+            "tag": null,
+            "rates_link": "https://belkapay.com/panel/export-rates/type/xml",
             "logo": null
         },
         "1122": {
@@ -5461,6 +5755,12 @@
             "rates_link": "https://bissonexchange.net/request-exportxml.xml",
             "logo": null
         },
+        "1131": {
+            "name": "Pay-Today",
+            "tag": null,
+            "rates_link": "https://pay-today.cc/request-exportxml.xml",
+            "logo": null
+        },
         "1132": {
             "name": "BTC24pro",
             "tag": null,
@@ -5471,6 +5771,12 @@
             "name": "BrokenBit",
             "tag": null,
             "rates_link": "https://brokenbit.xyz/api/v1/coin-pairs/xml?partner_id=xxx",
+            "logo": null
+        },
+        "1134": {
+            "name": "LiCash",
+            "tag": null,
+            "rates_link": "https://licash.top/request-exportxml.xml",
             "logo": null
         },
         "1135": {
@@ -5519,6 +5825,12 @@
             "name": "ObmenAT",
             "tag": null,
             "rates_link": "https://obmenat.com/public/rates.xml",
+            "logo": null
+        },
+        "1143": {
+            "name": "101Крипта",
+            "tag": null,
+            "rates_link": "https://101crypta.com/export/export/export-xml/",
             "logo": null
         },
         "1144": {
@@ -5575,6 +5887,12 @@
             "rates_link": "https://btcsale.biz/filename.xml",
             "logo": null
         },
+        "1153": {
+            "name": "Platov",
+            "tag": null,
+            "rates_link": "https://platov.cc/site/rates",
+            "logo": null
+        },
         "1154": {
             "name": "HD-Change",
             "tag": null,
@@ -5611,10 +5929,22 @@
             "rates_link": "https://kassa.cc/valuta.xml",
             "logo": null
         },
+        "1160": {
+            "name": "RamonCash",
+            "tag": null,
+            "rates_link": "https://ramon.cash/site/rates",
+            "logo": null
+        },
         "1161": {
             "name": "PMCash",
             "tag": null,
             "rates_link": "https://pmcash.kz/export/xml",
+            "logo": null
+        },
+        "1162": {
+            "name": "Ripae",
+            "tag": null,
+            "rates_link": "https://ripae.net/exportxml.xml",
             "logo": null
         },
         "1163": {
@@ -5627,6 +5957,12 @@
             "name": "BigPay",
             "tag": null,
             "rates_link": "https://bigpay.eu/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1165": {
+            "name": "FastWM",
+            "tag": null,
+            "rates_link": "https://fastwm.biz/export/xml",
             "logo": null
         },
         "1166": {
@@ -5657,6 +5993,12 @@
             "name": "MegaChange",
             "tag": null,
             "rates_link": "https://www.megachange.ru/exportxml.xml",
+            "logo": null
+        },
+        "1171": {
+            "name": "CryptoChange24",
+            "tag": null,
+            "rates_link": "https://cryptochange24.com/request-exportxml.xml",
             "logo": null
         },
         "1172": {
@@ -5707,6 +6049,12 @@
             "rates_link": "https://1bit.group/rates-export/xml",
             "logo": null
         },
+        "1180": {
+            "name": "CryptoBar",
+            "tag": null,
+            "rates_link": "https://cryptobar.cc/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "1181": {
             "name": "E-Scrooge",
             "tag": null,
@@ -5717,6 +6065,12 @@
             "name": "KZobmen",
             "tag": null,
             "rates_link": "https://kzobmen.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1183": {
+            "name": "WorldChange",
+            "tag": null,
+            "rates_link": "https://worldchange.cc/export/xml",
             "logo": null
         },
         "1184": {
@@ -5735,6 +6089,12 @@
             "name": "BestCoin",
             "tag": null,
             "rates_link": "https://api.bestcoin.cc/xrates/export/bestchange",
+            "logo": null
+        },
+        "1187": {
+            "name": "CoinShop24",
+            "tag": null,
+            "rates_link": "https://coinshop24.net/currency_rates.xml",
             "logo": null
         },
         "1188": {
@@ -5759,6 +6119,12 @@
             "name": "C1kWorld",
             "tag": null,
             "rates_link": "https://c1k.world/exportxmlfile",
+            "logo": null
+        },
+        "1192": {
+            "name": "Ukr-Obmen",
+            "tag": null,
+            "rates_link": "https://ukr-obmen.com/monitor.xml",
             "logo": null
         },
         "1193": {
@@ -5827,16 +6193,46 @@
             "rates_link": "https://ferma.cc/valuta.xml",
             "logo": null
         },
+        "1204": {
+            "name": "1WM",
+            "tag": null,
+            "rates_link": "https://1wm.kz/exportxml.xml",
+            "logo": null
+        },
+        "1205": {
+            "name": "CryptoHome",
+            "tag": null,
+            "rates_link": "https://cryptohome.me/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
         "1206": {
             "name": "4pay",
             "tag": null,
             "rates_link": "https://4pay.in/request-exportxml.xml",
             "logo": null
         },
+        "1207": {
+            "name": "MasterChange",
+            "tag": null,
+            "rates_link": "https://master-change.com.ua/export.xml",
+            "logo": null
+        },
         "1208": {
             "name": "24BestEx",
             "tag": null,
             "rates_link": "https://24bestex.com/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1209": {
+            "name": "Сash2pay",
+            "tag": null,
+            "rates_link": "https://cash2pay.pro/course.xml",
+            "logo": null
+        },
+        "1210": {
+            "name": "Bithub",
+            "tag": null,
+            "rates_link": "https://bithub.im/request-exportxml.xml",
             "logo": null
         },
         "1211": {
@@ -5849,6 +6245,12 @@
             "name": "Pridechange",
             "tag": null,
             "rates_link": "https://pridechange.com/exportxml.xml",
+            "logo": null
+        },
+        "1213": {
+            "name": "ExchangeYourMoney",
+            "tag": null,
+            "rates_link": "https://exchangeyourmoney.com/request-exportxml.xml?lang=ru",
             "logo": null
         },
         "1214": {
@@ -5867,6 +6269,12 @@
             "name": "BitBits",
             "tag": null,
             "rates_link": "https://bitbits.org/exportxml.xml",
+            "logo": null
+        },
+        "1217": {
+            "name": "СуперОбменка",
+            "tag": null,
+            "rates_link": "https://superobmenka.com/export/xml",
             "logo": null
         },
         "1218": {
@@ -5915,6 +6323,12 @@
             "name": "Coin-Bank",
             "tag": null,
             "rates_link": "https://coin-bank.co/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1226": {
+            "name": "ChBy",
+            "tag": null,
+            "rates_link": "https://chby.ru/request-exportxml.xml?lang=ru",
             "logo": null
         },
         "1227": {
@@ -6007,6 +6421,12 @@
             "rates_link": "https://tyt.cash/request-exportxml.xml?lang=ru",
             "logo": null
         },
+        "1242": {
+            "name": "Eurobit",
+            "tag": null,
+            "rates_link": "https://xml.eurobit.cc/valuta.xml",
+            "logo": null
+        },
         "1243": {
             "name": "MyChanger",
             "tag": null,
@@ -6043,10 +6463,22 @@
             "rates_link": "https://papa-change.com/request-exportxml.xml",
             "logo": null
         },
+        "1249": {
+            "name": "RoyalCash",
+            "tag": null,
+            "rates_link": "https://royal.cash/valuta.xml",
+            "logo": null
+        },
         "1250": {
             "name": "Teslaobmen",
             "tag": null,
             "rates_link": "https://www.teslaobmen.com/service/export/xml",
+            "logo": null
+        },
+        "1251": {
+            "name": "Msk-Exchange",
+            "tag": null,
+            "rates_link": "https://msk-exchange.ru/public/rates.xml",
             "logo": null
         },
         "1252": {
@@ -6067,10 +6499,28 @@
             "rates_link": "https://ob-men.com/request-exportxml.xml?lang=ru",
             "logo": null
         },
+        "1255": {
+            "name": "Cryptonex",
+            "tag": null,
+            "rates_link": "https://cronex.top/monitor.xml",
+            "logo": null
+        },
+        "1256": {
+            "name": "Hellmel",
+            "tag": null,
+            "rates_link": "https://hellmel.com/rates.xml",
+            "logo": null
+        },
         "1257": {
             "name": "Olbionex",
             "tag": null,
             "rates_link": "https://olbionex.com/request-exportxml.xml",
+            "logo": null
+        },
+        "1258": {
+            "name": "WMChange",
+            "tag": null,
+            "rates_link": "https://wmchange.in.ua/export.xml",
             "logo": null
         },
         "1259": {
@@ -6133,6 +6583,18 @@
             "rates_link": "https://bitpayes.com/exportxml.htm",
             "logo": null
         },
+        "1269": {
+            "name": "Easy-Changer",
+            "tag": null,
+            "rates_link": "https://easy-changer.ru/request-exportxml.xml?lang=ru",
+            "logo": null
+        },
+        "1270": {
+            "name": "Keine-Exchange",
+            "tag": null,
+            "rates_link": "https://keine-exchange.com/exportxml.xml",
+            "logo": null
+        },
         "1271": {
             "name": "Cripthub",
             "tag": null,
@@ -6143,6 +6605,18 @@
             "name": "Itez",
             "tag": null,
             "rates_link": "https://api.itez.com/api/public/exchange/bestchange.xml",
+            "logo": null
+        },
+        "1273": {
+            "name": "AllCash",
+            "tag": null,
+            "rates_link": "https://all.cash/valuta.xml",
+            "logo": null
+        },
+        "1274": {
+            "name": "Best-wallet",
+            "tag": null,
+            "rates_link": "https://best-wallet.net/exportxml.xml",
             "logo": null
         },
         "1275": {
