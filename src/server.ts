@@ -10,9 +10,8 @@ import statusChange from "./dbRates/statusChange";
 import path from "path";
 import db from "./db";
 import dbRates from "./dbRates";
-
-// import createExchangers from "./dbRates/createExchangers";
-//import bulkStatusChange from "./dbRates/bulkStatusChange";
+import { DirData } from "./types";
+import { AllDirsRates } from "./types/rates";
 
 const server = fastify();
 
@@ -27,11 +26,8 @@ server.get("/", async function (_, reply) {
   reply.sendFile("menu.html");
 });
 
-server.get("/parser_setting", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".parser_setting")));
-});
-
 server.get("/exchangers", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
   const exchangers = db.getData(".exchangers");
   reply.send(
     JSON.stringify(
@@ -40,12 +36,36 @@ server.get("/exchangers", async function (_, reply) {
   );
 });
 
-server.get("/warnings", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".warnings")));
+server.get("/errors", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
+  reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-server.get("/errors", async function (_, reply) {
-  reply.send(JSON.stringify(db.getData(".errors")));
+interface DirDataWithTotalRates extends DirData {
+  totalRates: number;
+}
+
+server.get("/dirs", (_, reply) => {
+  reply.header("Access-Control-Allow-Origin", "*");
+  const allDirRates = dbRates.getData(".allDirsRates") as AllDirsRates;
+  const totalRatesByDir = Object.entries(allDirRates).reduce(
+    (res: { [key: string]: number }, [code, dirRate]) => {
+      res = { ...res, [code]: Object.keys(dirRate).length };
+      return res;
+    },
+    {}
+  );
+  const dirs = db.getData(`.dirs`) as { [key: string]: DirData };
+  const dirsWithTotalRates = Object.entries(dirs).reduce(
+    (res: { [key: string]: DirDataWithTotalRates }, [code, dirData]) => {
+      return {
+        ...res,
+        [code]: { ...dirData, totalRates: totalRatesByDir[code] },
+      };
+    },
+    {}
+  );
+  reply.send(JSON.stringify(dirsWithTotalRates));
 });
 
 server.post(
@@ -85,6 +105,14 @@ server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
         )
       )
     );
+    try {
+      const dirData = db.getData(`.dirs.${dirId}`) as DirData;
+      if (!dirData) return;
+      const visits = dirData.times_visited ? dirData.times_visited : 0;
+      db.push(`.dirs.${dirId}.times_visited`, visits + 1);
+    } catch (e) {
+      console.log(e);
+    }
   } else {
     reply.send("wrong request");
     reply.code(500);
@@ -107,10 +135,10 @@ const start = async () => {
   try {
     //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    await statusChange("suspended", "active");
-    await statusChange("disabled", "active");
-    await initialLoader();
-    startMainFlow();
+    // await statusChange("suspended", "active");
+    // await statusChange("disabled", "active");
+    // await initialLoader();
+    // startMainFlow();
   } catch (error) {
     server.log.error(error);
     process.exit(1);

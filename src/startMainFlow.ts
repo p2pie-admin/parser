@@ -3,7 +3,7 @@ import db from "./db";
 import dbRates from "./dbRates";
 import statusChange from "./dbRates/statusChange";
 import initialLoader from "./initialLoader";
-import Loop from "./rates/Loop";
+import Loop from "./rates/ParserHandlers/Loop";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
 
 import getDirTops from "./rates/Tops";

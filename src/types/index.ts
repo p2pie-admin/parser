@@ -2,7 +2,7 @@ import { Exchanger } from "./exchanger";
 import { ExchangerErrors } from "./exchangerResp";
 import { DirRates, DirTops } from "./rates";
 
-interface ParserSetting {
+export interface ParserSetting {
   dirs_disabled: string;
   cities: { [key: string]: string };
   filter_options: string;
@@ -11,23 +11,24 @@ interface ParserSetting {
   SD_worst_rates: number;
 }
 
-type Top = {
+export type Top = {
   id: string;
   code: string;
 };
 
-type Timeouts = {
+export type Timeouts = {
   getRatesIn: number;
   expireIn: number;
   restartRatesHandlerIn: number;
 };
 
-interface DirData {
+export interface DirData {
   errors: { [key: string]: string[] };
   warnings: { [key: string]: string[] };
+  times_visited: number;
 }
 
-interface DB {
+export interface DB {
   looped: { [key: string]: boolean };
   timeouts: Timeouts;
   dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны
@@ -39,26 +40,16 @@ interface DB {
   possible_pairs: { [key: string]: string[] };
 }
 
-type Violation = [boolean, string];
+export type Violation = [boolean, string];
 
-interface VerificationResult {
+export interface VerificationResult {
   rateErrors: string[];
   rateWarnings: string[];
 }
 
-type ErrorTypes = "errors" | "warnings" | "rate_errors";
+export type ErrorTypes = "errors" | "warnings" | "rate_errors";
 
-interface DBRATES {
+export interface DBRATES {
   allDirsRates: { [key: string]: DirRates };
   allDirsTops: { [key: string]: DirTops };
 }
-
-export {
-  DB,
-  DBRATES,
-  ParserSetting,
-  Violation,
-  VerificationResult,
-  Top,
-  ErrorTypes,
-};

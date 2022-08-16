@@ -33,10 +33,11 @@ export default class RateFormatter {
     const cityCodes = db.getData(".parser_setting.cities") as {
       [key: string]: string;
     };
+    const totalRatesAmount = rates ? rates.length : 0;
     const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string;
     const possible_pm_codes = db.getData(".possible_pm_codes") as string[];
     let rateDataError = false;
-
+    db.push(`.exchangers.${this.exchangerId}.total_rates`, totalRatesAmount);
     rates.map((rate) => {
       try {
         const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`;

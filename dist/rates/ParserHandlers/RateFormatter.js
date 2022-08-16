@@ -27,9 +27,11 @@ class RateFormatter {
         };
         this.formatAndMatchRatesWithDirs = (rates) => {
             const cityCodes = db_1.default.getData(".parser_setting.cities");
+            const totalRatesAmount = rates ? rates.length : 0;
             const dirs_disabled = db_1.default.getData(".parser_setting.dirs_disabled");
             const possible_pm_codes = db_1.default.getData(".possible_pm_codes");
             let rateDataError = false;
+            db_1.default.push(`.exchangers.${this.exchangerId}.total_rates`, totalRatesAmount);
             rates.map((rate) => {
                 var _a, _b, _c, _d, _e, _f, _g, _h, _j;
                 try {

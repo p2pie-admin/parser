@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DirRatesVerificator = void 0;
+exports.round = exports.DirRatesVerificator = void 0;
 const db_1 = __importDefault(require("../../db"));
 class DirRatesVerificator {
     constructor(dir) {
@@ -37,30 +37,26 @@ class DirRatesVerificator {
             const rate_errors = [
                 [min.give <= 0, ` Минимум должен быть больше нуля`],
                 [
-                    reserve.give < min.give,
-                    ` Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `,
-                ],
-                [
                     max.give < min.give,
-                    ` Максималка ${rate.max.give} меньше минималки ${rate.min.give} `,
+                    ` Максималка ${(0, exports.round)(rate.max.give)} ${this.dir.split("_")[0]} меньше минималки ${(0, exports.round)(rate.min.give)} ${this.dir.split("_")[0]}`,
                 ],
                 [
                     rate.course < minCourse,
-                    ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, MIN: ${minCourse} `,
+                    ` Курс ${(0, exports.round)(rate.course)} на ${deviation}% меньше среднего ${(0, exports.round)(average)} от ${ratesAmount} предложений, MIN: ${(0, exports.round)(minCourse)} `,
                 ],
                 [
                     rate.course > maxCourse,
-                    ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, MAX: ${maxCourse} `,
+                    ` Курс ${(0, exports.round)(rate.course)} на ${deviation}% больше среднего ${(0, exports.round)(average)} от ${ratesAmount} предложений, MAX: ${(0, exports.round)(maxCourse)} `,
                 ],
             ];
             const warnings = [
                 [
                     rate.course < lowCourse && rate.course > minCourse,
-                    ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, близко к MIN границе: ${minCourse} `,
+                    ` Курс ${(0, exports.round)(rate.course)} на ${deviation}% меньше среднего ${(0, exports.round)(average)} от ${(0, exports.round)(ratesAmount)} предложений, близко к MIN границе: ${(0, exports.round)(minCourse)} `,
                 ],
                 [
                     rate.course > highCourse && rate.course < maxCourse,
-                    ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, близко к MAX границе: ${maxCourse} `,
+                    ` Курс ${(0, exports.round)(rate.course)} на ${deviation}% больше среднего ${(0, exports.round)(average)} от ${(0, exports.round)(ratesAmount)} предложений, близко к MAX границе: ${(0, exports.round)(maxCourse)} `,
                 ],
             ];
             for (let rate_error of rate_errors) {
@@ -102,4 +98,12 @@ class DirRatesVerificator {
     }
 }
 exports.DirRatesVerificator = DirRatesVerificator;
+const round = (amount) => {
+    const factor = 4;
+    if (amount === 0)
+        return 0;
+    const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
+    return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
+};
+exports.round = round;
 //# sourceMappingURL=DirRatesVerificator.js.map

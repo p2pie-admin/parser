@@ -71,31 +71,41 @@ export class DirRatesVerificator {
     const rate_errors: Violation[] = [
       [min.give <= 0, ` Минимум должен быть больше нуля`],
       [
-        reserve.give < min.give,
-        ` Резерв ${rate.reserve.give} меньше минималки ${rate.min.give} `,
-      ],
-      [
         max.give < min.give,
-        ` Максималка ${rate.max.give} меньше минималки ${rate.min.give} `,
+        ` Максималка ${round(rate.max.give)} ${
+          this.dir.split("_")[0]
+        } меньше минималки ${round(rate.min.give)} ${this.dir.split("_")[0]}`,
       ],
       [
         rate.course < minCourse,
-        ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, MIN: ${minCourse} `,
+        ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(
+          average
+        )} от ${ratesAmount} предложений, MIN: ${round(minCourse)} `,
       ],
       [
         rate.course > maxCourse,
-        ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, MAX: ${maxCourse} `,
+        ` Курс ${round(rate.course)} на ${deviation}% больше среднего ${round(
+          average
+        )} от ${ratesAmount} предложений, MAX: ${round(maxCourse)} `,
       ],
     ];
 
     const warnings: Violation[] = [
       [
         rate.course < lowCourse && rate.course > minCourse,
-        ` Курс ${rate.course} на ${deviation}% меньше среднего ${average} от ${ratesAmount} предложений, близко к MIN границе: ${minCourse} `,
+        ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(
+          average
+        )} от ${round(ratesAmount)} предложений, близко к MIN границе: ${round(
+          minCourse
+        )} `,
       ],
       [
         rate.course > highCourse && rate.course < maxCourse,
-        ` Курс ${rate.course} на ${deviation}% больше среднего ${average} от ${ratesAmount} предложений, близко к MAX границе: ${maxCourse} `,
+        ` Курс ${round(rate.course)} на ${deviation}% больше среднего ${round(
+          average
+        )} от ${round(ratesAmount)} предложений, близко к MAX границе: ${round(
+          maxCourse
+        )} `,
       ],
     ];
 
@@ -142,3 +152,10 @@ export class DirRatesVerificator {
 
   _addToProblematic = () => {};
 }
+
+export const round = (amount: number) => {
+  const factor = 4;
+  if (amount === 0) return 0;
+  const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
+  return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
+};

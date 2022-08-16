@@ -8,9 +8,6 @@ const fastify_1 = __importDefault(require("fastify"));
 const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload"));
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
 const fastify_static_1 = __importDefault(require("fastify-static"));
-const initialLoader_1 = __importDefault(require("./initialLoader"));
-const startMainFlow_1 = __importDefault(require("./startMainFlow"));
-const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
 const dbRates_1 = __importDefault(require("./dbRates"));
@@ -24,18 +21,27 @@ server.register(fastify_static_1.default, {
 server.get("/", async function (_, reply) {
     reply.sendFile("menu.html");
 });
-server.get("/parser_setting", async function (_, reply) {
-    reply.send(JSON.stringify(db_1.default.getData(".parser_setting")));
-});
 server.get("/exchangers", async function (_, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
     const exchangers = db_1.default.getData(".exchangers");
     reply.send(JSON.stringify(Object.keys(exchangers).length ? exchangers : "no active exchangers!"));
 });
-server.get("/warnings", async function (_, reply) {
-    reply.send(JSON.stringify(db_1.default.getData(".warnings")));
-});
 server.get("/errors", async function (_, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
     reply.send(JSON.stringify(db_1.default.getData(".errors")));
+});
+server.get("/dirs", (_, reply) => {
+    reply.header("Access-Control-Allow-Origin", "*");
+    const allDirRates = dbRates_1.default.getData(".allDirsRates");
+    const totalRatesByDir = Object.entries(allDirRates).reduce((res, [code, dirRate]) => {
+        res = Object.assign(Object.assign({}, res), { [code]: Object.keys(dirRate).length });
+        return res;
+    }, {});
+    const dirs = db_1.default.getData(`.dirs`);
+    const dirsWithTotalRates = Object.entries(dirs).reduce((res, [code, dirData]) => {
+        return Object.assign(Object.assign({}, res), { [code]: Object.assign(Object.assign({}, dirData), { totalRates: totalRatesByDir[code] }) });
+    }, {});
+    reply.send(JSON.stringify(dirsWithTotalRates));
 });
 server.post("/cASTintOncHARtIVERyPHerAwBASintOncHITl82Kf", async function (request, reply) {
     var _a;
@@ -56,6 +62,16 @@ server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
     const { dirId, tops } = request.params;
     if (dirId && dirId.length < 20 && dirId.includes("_")) {
         reply.send(JSON.stringify(dbRates_1.default.getData(tops === "true" ? `.allDirsTops.${dirId}` : `.allDirsRates.${dirId}`)));
+        try {
+            const dirData = db_1.default.getData(`.dirs.${dirId}`);
+            if (!dirData)
+                return;
+            const visits = dirData.times_visited ? dirData.times_visited : 0;
+            db_1.default.push(`.dirs.${dirId}.times_visited`, visits + 1);
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
     else {
         reply.send("wrong request");
@@ -65,10 +81,6 @@ server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
 const start = async () => {
     try {
         await server.listen(process.env.PORT || 5000, "0.0.0.0");
-        await (0, statusChange_1.default)("suspended", "active");
-        await (0, statusChange_1.default)("disabled", "active");
-        await (0, initialLoader_1.default)();
-        (0, startMainFlow_1.default)();
     }
     catch (error) {
         server.log.error(error);

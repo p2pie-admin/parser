@@ -14,6 +14,7 @@ export type Exchanger = {
   rates_link: string;
   tag: string | null;
   logo: Logo;
+  total_rates: number;
   // rating: Rating; потом добавим
 };
 
