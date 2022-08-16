@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"rm dbRates.json\" \"rm db.json\" \"nodedist/server.js\" ",
+    "start": "concurrently \"rm dbRates.json\" \"rm db.json\" \"node dist/server.js\" ",
     "dev": "concurrently \"nodemon dist/server.js\" \"tsc -w\" ",
     "dev2": "concurrently \"rm dbRates.json\" \"rm db.json\" \"nodemon dist/server.js\" \"tsc -w\" ",
     "watch": "tsc -w",

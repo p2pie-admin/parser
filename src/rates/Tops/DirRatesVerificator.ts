@@ -1,6 +1,6 @@
+import db from "../../db";
 import { VerificationResult, Violation } from "../../types";
 import { DirRates, Rate } from "../../types/rates";
-import db from "../../db";
 
 export class DirRatesVerificator {
   dir: string;
@@ -52,7 +52,7 @@ export class DirRatesVerificator {
     SD: number,
     ratesAmount: number
   ): VerificationResult => {
-    const { reserve, min, max } = rate; // course = GET/GIVE
+    const { min, max } = rate; // course = GET/GIVE
     let rateErrors: string[] = [];
     let rateWarnings: string[] = [];
     const [minCourse, maxCourse] = [

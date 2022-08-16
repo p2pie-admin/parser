@@ -22,7 +22,7 @@ class DirRatesVerificator {
             return okDirRates;
         };
         this._verifyRate = (rate, average, SD, ratesAmount) => {
-            const { reserve, min, max } = rate;
+            const { min, max } = rate;
             let rateErrors = [];
             let rateWarnings = [];
             const [minCourse, maxCourse] = [
