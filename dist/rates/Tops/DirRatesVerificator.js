@@ -100,10 +100,10 @@ class DirRatesVerificator {
 exports.DirRatesVerificator = DirRatesVerificator;
 const round = (amount) => {
     const factor = 4;
-    if (amount === 0)
+    if (!amount)
         return 0;
     const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
-    return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
+    return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude || 0);
 };
 exports.round = round;
 //# sourceMappingURL=DirRatesVerificator.js.map

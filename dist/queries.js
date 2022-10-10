@@ -12,9 +12,10 @@ const ExchangersQuery = (0, graphql_request_1.gql) `
         id
         attributes {
           name
+          admin_rating
           tag
           rates_link
-          logo {
+          logo {  
             data {
               attributes {
                 alternativeText

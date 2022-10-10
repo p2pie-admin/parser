@@ -90,7 +90,7 @@ export default class ErrorCreator {
     ];
 
     const graphQLClient = new GraphQLClient(
-      process.env.PORT ? config.STRAPI : config.LOCAL_STRAPI,
+      process.env.PORT ? config.STRAPI : config.DEV_STRAPI,
       {
         headers: {
           authorization: `Bearer ${config.EXCHANGER_TOKEN}`,

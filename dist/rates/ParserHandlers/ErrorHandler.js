@@ -68,7 +68,7 @@ class ErrorCreator {
                 "unknown-error",
                 "json-parsing-error",
             ];
-            const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI, {
+            const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.DEV_STRAPI, {
                 headers: {
                     authorization: `Bearer ${config_json_1.default.EXCHANGER_TOKEN}`,
                 },

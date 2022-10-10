@@ -37,7 +37,7 @@ const getPossiblePmCodesFromSections = (sections: Section[]): string[] => {
 
 async function initialLoader() {
   const graphQLClient = new GraphQLClient(
-    process.env.PORT ? config.STRAPI : config.LOCAL_STRAPI
+    process.env.PORT ? config.STRAPI : config.DEV_STRAPI
   );
 
   const [

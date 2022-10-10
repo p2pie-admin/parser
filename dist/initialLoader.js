@@ -31,7 +31,7 @@ const getPossiblePmCodesFromSections = (sections) => {
     return pmGroups.reduce((allPmCodes, pmGroup) => [...allPmCodes, ...getCodes(pmGroup)], []);
 };
 async function initialLoader() {
-    const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.LOCAL_STRAPI);
+    const graphQLClient = new graphql_request_1.GraphQLClient(process.env.PORT ? config_json_1.default.STRAPI : config_json_1.default.DEV_STRAPI);
     const [parserSettingsData, exchangersData, pmGroupsData, topsData,] = await Promise.all([queries_1.ParserSettingQuery, queries_1.ExchangersQuery, queries_1.PmGroupsQuery, queries_1.TopsQuery].map(async (query) => {
         try {
             return await graphQLClient

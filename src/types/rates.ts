@@ -12,6 +12,7 @@ export interface DirRates {
 
 export interface Rate {
   name: string;
+  admin_rating: number;
   course: number;
   min_fee: string;
   from_fee: string;

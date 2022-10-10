@@ -3,7 +3,7 @@ declare global {
     interface ProcessEnv {
       RATES_PROVIDER: string;
       STRAPI: string;
-      LOCAL_STRAPI: string;
+      DEV_STRAPI: string;
     }
   }
 }

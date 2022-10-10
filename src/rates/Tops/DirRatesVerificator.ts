@@ -155,7 +155,7 @@ export class DirRatesVerificator {
 
 export const round = (amount: number) => {
   const factor = 4;
-  if (amount === 0) return 0;
+  if (!amount) return 0; // тут иногда каким-то образом прилетает null
   const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
-  return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude);
+  return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude || 0);
 };

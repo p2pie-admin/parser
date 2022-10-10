@@ -52,8 +52,9 @@ class RateFormatter {
                     const cities = Object.keys(cityCodes).length &&
                         ((_a = rate.city) === null || _a === void 0 ? void 0 : _a._text) &&
                         citiesHandler.formatCities((_b = rate.city) === null || _b === void 0 ? void 0 : _b._text, cityCodes);
-                    const { name, tag, logo } = db_1.default.getData(`.exchangers.${this.exchangerId}`);
+                    const { name, tag, logo, admin_rating } = db_1.default.getData(`.exchangers.${this.exchangerId}`);
                     const dirRate = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ name,
+                        admin_rating,
                         tag,
                         logo }, (((_c = rate.minfee) === null || _c === void 0 ? void 0 : _c._text) && parseFloat((_d = rate.minfee) === null || _d === void 0 ? void 0 : _d._text) > 0
                         ? { min_fee: rate.minfee._text }

@@ -9,7 +9,6 @@ const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload")
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
 const fastify_static_1 = __importDefault(require("fastify-static"));
 const initialLoader_1 = __importDefault(require("./initialLoader"));
-const startMainFlow_1 = __importDefault(require("./startMainFlow"));
 const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
@@ -87,7 +86,6 @@ const start = async () => {
         await (0, statusChange_1.default)("suspended", "active");
         await (0, statusChange_1.default)("disabled", "active");
         await (0, initialLoader_1.default)();
-        (0, startMainFlow_1.default)();
     }
     catch (error) {
         server.log.error(error);

@@ -73,11 +73,12 @@ export default class RateFormatter {
           Object.keys(cityCodes).length &&
           rate.city?._text &&
           citiesHandler.formatCities(rate.city?._text, cityCodes);
-        const { name, tag, logo } = db.getData(
+        const { name, tag, logo, admin_rating } = db.getData(
           `.exchangers.${this.exchangerId}`
         ); // сразу забираем данные обменника для отображения в таблице и свайпере
         const dirRate = {
           name,
+          admin_rating,
           tag,
           logo,
           ...(rate.minfee?._text && parseFloat(rate.minfee?._text) > 0

@@ -5,11 +5,8 @@ import initialDB from "./initialDB";
 
 const dbRates = new JsonDB(new Config("dbRates", false, true, ".")); // save after each push = false, readable = true
 if (!Object.keys(dbRates.getObject<DBRATES>(".")).length) {
-    dbRates.push(".", initialDB); // initialization
-    dbRates.save();
+  dbRates.push(".", initialDB); // initialization
+  dbRates.save();
 }
 
 export default dbRates;
-
-
-

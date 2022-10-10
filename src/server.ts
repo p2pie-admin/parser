@@ -138,7 +138,7 @@ const start = async () => {
     await statusChange("suspended", "active");
     await statusChange("disabled", "active");
     await initialLoader();
-    startMainFlow();
+    // startMainFlow();
   } catch (error) {
     server.log.error(error);
     process.exit(1);
