@@ -9,7 +9,7 @@ const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload")
 const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
 const fastify_static_1 = __importDefault(require("fastify-static"));
 const initialLoader_1 = __importDefault(require("./initialLoader"));
-const statusChange_1 = __importDefault(require("./dbRates/statusChange"));
+const startMainFlow_1 = __importDefault(require("./startMainFlow"));
 const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./db"));
 const dbRates_1 = __importDefault(require("./dbRates"));
@@ -83,14 +83,13 @@ server.get("/dir=:dirId/tops=:tops", async function (request, reply) {
 const start = async () => {
     try {
         await server.listen(process.env.PORT || 5000, "0.0.0.0");
-        await (0, statusChange_1.default)("suspended", "active");
-        await (0, statusChange_1.default)("disabled", "active");
-        await (0, initialLoader_1.default)();
     }
     catch (error) {
         server.log.error(error);
         process.exit(1);
     }
+    await (0, initialLoader_1.default)();
+    (0, startMainFlow_1.default)();
 };
 start();
 //# sourceMappingURL=server.js.map

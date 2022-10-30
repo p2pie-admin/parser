@@ -133,16 +133,17 @@ server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
 
 const start = async () => {
   try {
-    //createExchangers() call to initilize exchangers from links JSON
     await server.listen(process.env.PORT || 5000, "0.0.0.0");
-    await statusChange("suspended", "active");
-    await statusChange("disabled", "active");
-    await initialLoader();
-    // startMainFlow();
   } catch (error) {
     server.log.error(error);
     process.exit(1);
   }
+
+  // createExchangers() call to initilize exchangers from links JSON
+  // await statusChange("suspended", "active");
+  // await statusChange("disabled", "active");
+  await initialLoader();
+  startMainFlow();
 };
 
 start();
