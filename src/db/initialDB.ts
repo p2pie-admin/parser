@@ -1,6 +1,7 @@
 import { DB } from "../types";
 
 const initialDB: DB = {
+  jwt: "",
   looped: {},
   timeouts: {
     getRatesIn: 20_000,

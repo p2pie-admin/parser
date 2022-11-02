@@ -1,4 +1,4 @@
-import { RateData } from "src/types/exchangerResp";
+import { RateData } from "../../types/exchangerResp";
 import ErrorHandler from "./ErrorHandler";
 // import db from "../../db"
 
@@ -31,7 +31,7 @@ export default class CitiesHandler {
       );
     } catch (err) {
       const exchangerHandler = new ErrorHandler(exchangerId);
-      exchangerHandler.saveError("data-error", err.message);
+      exchangerHandler.saveError("data-error", "couldn't load cities");
       return [];
     }
   };

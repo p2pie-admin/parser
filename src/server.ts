@@ -12,6 +12,10 @@ import db from "./db";
 import dbRates from "./dbRates";
 import { DirData } from "./types";
 import { AllDirsRates } from "./types/rates";
+import dotenv from "dotenv";
+import auth from "./gql/auth";
+
+dotenv.config();
 
 const server = fastify();
 
@@ -55,6 +59,7 @@ server.get("/dirs", (_, reply) => {
     },
     {}
   );
+
   const dirs = db.getData(`.dirs`) as { [key: string]: DirData };
   const dirsWithTotalRates = Object.entries(dirs).reduce(
     (res: { [key: string]: DirDataWithTotalRates }, [code, dirData]) => {
@@ -142,8 +147,9 @@ const start = async () => {
   // createExchangers() call to initilize exchangers from links JSON
   // await statusChange("suspended", "active");
   // await statusChange("disabled", "active");
+  await auth();
   await initialLoader();
-  startMainFlow();
+  // startMainFlow();
 };
 
 start();

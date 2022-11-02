@@ -29,6 +29,7 @@ export interface DirData {
 }
 
 export interface DB {
+  jwt: string;
   looped: { [key: string]: boolean };
   timeouts: Timeouts;
   dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны

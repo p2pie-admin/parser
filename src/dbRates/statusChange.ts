@@ -1,7 +1,8 @@
-import config from "../config.json";
-import { GraphQLClient } from "graphql-request";
+import { config } from "dotenv";
+
 import { gql } from "graphql-request";
-import normalize from "../normalizer";
+import callStrapi from "../gql/callStrapi";
+import normalize from "../gql/normalizer";
 
 const updateExchanger = gql`
   mutation UpdateExchangerStatus(
@@ -36,32 +37,23 @@ async function statusChange(
   toStatus: Status,
   exchangerId?: string | null
 ) {
-  const graphQLClient = new GraphQLClient(
-    process.env.PORT ? config.STRAPI : config.DEV_STRAPI,
-    {
-      headers: {
-        authorization: `Bearer ${config.EXCHANGER_TOKEN}`,
-      },
-    }
-  );
   let exchangerIds = [];
   if (exchangerId) {
     exchangerIds = [exchangerId];
     console.log(`\u001b[1;34m ${exchangerId} wants to be active again`);
   } else {
     // апдейтим всех
-    const data = await graphQLClient.request(getAllExchangerIds, {
+    const data = await callStrapi(getAllExchangerIds, {
       status: fromStatus,
     });
-    exchangerIds = normalize(data).exchangers.map(
-      ({ id }: { id: string }) => id
-    );
+
+    exchangerIds = data.exchangers.map(({ id }: { id: string }) => id);
     console.log(exchangerIds);
   }
 
   exchangerIds.map(
     async (exchangerId: string) =>
-      await graphQLClient.request(updateExchanger, {
+      await callStrapi(updateExchanger, {
         exchangerId,
         status: toStatus,
       })

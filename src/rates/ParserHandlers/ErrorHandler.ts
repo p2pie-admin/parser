@@ -1,8 +1,9 @@
 import db from "../../db";
-import { ErrorCode, ExchangerError } from "src/types/exchangerResp";
-import config from "../../config.json";
+import { ErrorCode, ExchangerError } from "../../types/exchangerResp";
 import { gql, GraphQLClient } from "graphql-request";
-import { ErrorTypes } from "src/types";
+import { ErrorTypes } from "../../types";
+import callStrapi from "../../gql/callStrapi";
+import { LockExchangerMutation } from "../../gql/queries";
 
 export default class ErrorCreator {
   exchangerId: string;
@@ -89,30 +90,23 @@ export default class ErrorCreator {
       "json-parsing-error",
     ];
 
-    const graphQLClient = new GraphQLClient(
-      process.env.PORT ? config.STRAPI : config.DEV_STRAPI,
-      {
-        headers: {
-          authorization: `Bearer ${config.EXCHANGER_TOKEN}`,
-        },
-      }
-    );
-
     const status = codesToDisable.find((c) => c === code)
       ? "disabled"
       : "suspended";
+
+    callStrapi(LockExchangerMutation, {
+      exchangerId: this.exchangerId,
+      status,
+    });
 
     try {
       db.push(`.looped.${this.exchangerId}`, false);
       db.push(`.errors.${this.exchangerId}.isStatusChanged`, true);
       db.delete(`.exchangers.${this.exchangerId}`);
-      graphQLClient.request(mutation, {
-        exchangerId: this.exchangerId,
-        status,
-      });
+
       return;
     } catch (err) {
-      console.error("Exchanger locker failed: ", this.exchangerId, err.message);
+      console.error("Exchanger locker failed: ", this.exchangerId, err || "");
       return;
     }
   };

@@ -1,5 +1,5 @@
 import db from "../../db";
-import { AllDirsRates } from "src/types/rates";
+import { AllDirsRates } from "../../types/rates";
 import dbRates from "../../dbRates";
 
 const dirsExistHandler = () => {

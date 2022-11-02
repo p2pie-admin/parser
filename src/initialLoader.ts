@@ -1,15 +1,14 @@
 import { ExchangerWithId, Exchanger } from "./types/exchanger";
-import { GraphQLClient } from "graphql-request";
 import {
   ParserSettingQuery,
   ExchangersQuery,
   PmGroupsQuery,
   TopsQuery,
-} from "./queries";
-import config from "./config.json";
+} from "./gql/queries";
 import db from "./db";
-import normalizer from "./normalizer";
+import normalizer from "./gql/normalizer";
 import { Section, PmGroup } from "./types/section.json";
+import callStrapi from "./gql/callStrapi";
 
 const getCodes = (pm_group: PmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
@@ -36,10 +35,6 @@ const getPossiblePmCodesFromSections = (sections: Section[]): string[] => {
 };
 
 async function initialLoader() {
-  const graphQLClient = new GraphQLClient(
-    process.env.PORT ? config.STRAPI : config.DEV_STRAPI
-  );
-
   const [
     parserSettingsData,
     exchangersData,
@@ -48,26 +43,22 @@ async function initialLoader() {
   ] = await Promise.all(
     [ParserSettingQuery, ExchangersQuery, PmGroupsQuery, TopsQuery].map(
       async (query) => {
-        try {
-          return await graphQLClient
-            .request(query)
-            .catch((e) => console.error("start strapi first! ", e));
-        } catch (err) {
-          console.error(err);
-          return null;
-        }
+        return await callStrapi(query);
       }
     ) as any[]
   );
-  if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData)
-    console.log("strapi data error");
 
-  db.push(".tops", normalizer(topsData.tops));
-  db.push(".parser_setting", normalizer(parserSettingsData.parserSetting));
+  if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData) {
+    console.log(`📕 \u001b[1;31m Strapi initial data error!`);
 
-  const exchangersWithId = normalizer(
-    exchangersData.exchangers
-  ) as ExchangerWithId[];
+    return;
+  }
+  console.log("📗 \u001b[1;32m The initial data was received...");
+
+  db.push(".tops", topsData.tops);
+  db.push(".parser_setting", parserSettingsData.parserSetting);
+
+  const exchangersWithId = exchangersData.exchangers;
 
   const exchangersWithLoop = exchangersWithId.reduce(
     (res: { [key: string]: Exchanger }, ex: ExchangerWithId) => {
@@ -78,11 +69,10 @@ async function initialLoader() {
   );
   db.push(".exchangers", exchangersWithLoop);
 
-  const sections = normalizer(pmGroupsData).selector.sections as Section[];
+  const sections = pmGroupsData?.selector?.sections as Section[];
   db.push(".possible_pm_codes", getPossiblePmCodesFromSections(sections));
 
   db.save();
-  console.log("-= Parser settings and exchangers were updated! =-");
 }
 
 export default initialLoader;

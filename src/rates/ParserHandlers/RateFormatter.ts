@@ -1,4 +1,4 @@
-import { RateData, ExchangerResponse } from "src/types/exchangerResp";
+import { RateData, ExchangerResponse } from "../../types/exchangerResp";
 import { Rate, Limit } from "../../types/rates";
 import ErrorHandler from "./ErrorHandler";
 import CitiesHandler from "./CitiesHandler";

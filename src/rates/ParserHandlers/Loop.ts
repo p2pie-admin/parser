@@ -1,12 +1,13 @@
+import { DirRates } from "./../../types/rates";
 import axios from "axios";
 import db from "../../db";
 import XML2JSON from "xml-js";
 import dbRates from "../../dbRates";
-import { AllDirsRates } from "src/types/rates";
+import { AllDirsRates } from "../../types/rates";
 import ErrorHandler from "../ParserHandlers/ErrorHandler";
 import CitiesHandler from "../ParserHandlers/CitiesHandler";
 import RateFormatter from "../ParserHandlers/RateFormatter";
-import { ExchangerResponse } from "src/types/exchangerResp";
+import { ExchangerResponse } from "../../types/exchangerResp";
 
 export default class Loop {
   exchangerId: string;
@@ -90,7 +91,7 @@ const xmlToJson = (
   try {
     res = JSON.parse(XML2JSON.xml2json(data, options)) as ExchangerResponse;
   } catch ({ message }) {
-    errorHandler.saveError("json-parsing-error", message);
+    errorHandler.saveError("json-parsing-error", (message as any) || "...");
   }
   return res;
 };

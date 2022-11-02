@@ -1,4 +1,4 @@
-import { Top } from "src/types";
+import { Top } from "../../types";
 import db from "../../db";
 import { DirRates, Rate } from "../../types/rates";
 

@@ -1,4 +1,4 @@
-import { Exchanger } from "src/types/exchanger";
+import { Exchanger } from "./types/exchanger";
 import db from "./db";
 import dbRates from "./dbRates";
 import statusChange from "./dbRates/statusChange";
