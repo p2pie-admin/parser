@@ -4,11 +4,11 @@
   "license": "MIT",
   "main": "server.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "yarn build && node build/server.js",
     "dev": "nodemon",
     "dev2": "concurrently \"rm dbRates.json\" \"rm db.json\" \"nodemon dist/server.js\" \"tsc -w\" ",
     "watch": "tsc -w",
-    "test": "jest"
+    "build": "rimraf ./build && tsc"
   },
   "dependencies": {
     "@fastify/cors": "8.0.0",
@@ -23,15 +23,19 @@
     "graphql-request": "^3.6.1",
     "node-fetch": "2",
     "node-json-db": "^1.4.1",
+    "piscina": "^3.2.0",
     "simple-json-db": "^1.2.3",
     "xml-js": "^1.6.11",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/jest": "^27.5.0",
     "@types/node": "^16.11.12",
     "@types/ws": "^8.2.2",
     "concurrently": "^6.4.0",
     "nodemon": "^2.0.14",
+    "ts-jest": "^28.0.1",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "tsconfig.json": "^1.0.10",
