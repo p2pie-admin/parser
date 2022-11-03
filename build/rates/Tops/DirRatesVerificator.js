@@ -14,27 +14,22 @@ class DirRatesVerificator {
                 if (rateWarnings.length)
                     db_1.default.push(`.dirs.${this.dir}.warnings.${exchangerId}`, rateWarnings);
                 if (rateErrors.length)
-                    db_1.default.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors); //
-                //dbRates.delete(`.dirRates.${this.dir}.${exchangerId}`);
+                    db_1.default.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors);
                 if (!rateErrors.length)
                     okDirRates[exchangerId] = rate;
                 return okDirRates;
             }, {});
             return okDirRates;
-            // this._addToProblematic("warnings", w, exchangerId);
-            // this._addToProblematic("rate_errors", e, exchangerId);
         };
         this._verifyRate = (rate, average, SD, ratesAmount) => {
-            const { min, max } = rate; // course = GET/GIVE
+            const { min, max } = rate;
             let rateErrors = [];
             let rateWarnings = [];
             const [minCourse, maxCourse] = [
-                // for errors
                 average - SD * this.SD_worst,
                 average + SD * this.SD_best,
             ];
             const [lowCourse, highCourse] = [
-                // for warnings
                 average - SD * (this.SD_worst > 2 ? this.SD_worst - 1 : 2),
                 average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
             ];
@@ -82,18 +77,13 @@ class DirRatesVerificator {
             };
         };
         this._getAverageAndSD = (dirRates) => {
-            // чтобы не мутировать dirRates, копируем курсы
             const courses = Object.values(dirRates).map((rate) => rate.course);
             const length = courses.length;
-            // если мало курсов, отображаем все
             if (length <= this.SD_applied_from)
                 return [0, Infinity];
-            // столько обрежем с обеих сторон, чтобы убрать сильнейшие отклонения от среднего
             const toCropp = Math.round(Math.pow(length, 0.5) - Math.pow(length, 0.2));
-            // сортируем массив и обрезаем хвосты
             const sorted = courses.sort((a, b) => a - b);
             const cropped = sorted.splice(toCropp, length - toCropp * 2);
-            // считаем среднее и стандартное отклонение
             const average = cropped.reduce((sum, i) => (sum = sum + i), 0) / cropped.length;
             const SD = Math.sqrt(cropped.reduce((sum, i) => (sum = sum + (i - average) ** 2), 0) /
                 (cropped.length - 1));
@@ -111,8 +101,9 @@ exports.DirRatesVerificator = DirRatesVerificator;
 const round = (amount) => {
     const factor = 4;
     if (!amount)
-        return 0; // тут иногда каким-то образом прилетает null
+        return 0;
     const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
     return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude || 0);
 };
 exports.round = round;
+//# sourceMappingURL=DirRatesVerificator.js.map

@@ -16,7 +16,6 @@ class Loop {
             const getRatesIn = db_1.default.getData(".timeouts.getRatesIn");
             setTimeout(() => {
                 if (!db_1.default.exists(`.exchangers.${this.exchangerId}`)) {
-                    // либо потому что автоматом сменился статус, либо вручную
                     console.log(`\u001b[1;34m ⓘ ${this.exchangerId} : Перестанет опрашиваться!`);
                     this._clearAllAssociatedRates();
                     return;
@@ -26,7 +25,7 @@ class Loop {
             }, getRatesIn);
         };
         this._getRates = () => {
-            const { exchangerId, rates_link } = this; // хз как this передать в then()
+            const { exchangerId, rates_link } = this;
             const expireIn = db_1.default.getData(".timeouts.expireIn");
             axios_1.default
                 .get(rates_link, { timeout: expireIn })
@@ -35,15 +34,12 @@ class Loop {
                 const errorHandler = new ErrorHandler_1.default(exchangerId);
                 const citiesHandler = new CitiesHandler_1.default();
                 const rateFormatter = new RateFormatter_1.default(exchangerId);
-                //  //  //  //  //  //  //  //
                 const JSONres = xmlToJson(errorHandler, response === null || response === void 0 ? void 0 : response.data);
-                //  //  //  //  //  //  //  //
                 const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
                 if (wereRatesReceived && ((_a = JSONres.rates) === null || _a === void 0 ? void 0 : _a.item)) {
-                    //status === "suspended" && statusChange("suspended", "active", exchangerId)
                     console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсов получено : ${(_b = JSONres.rates) === null || _b === void 0 ? void 0 : _b.item.length}`);
                     const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_c = JSONres.rates) === null || _c === void 0 ? void 0 : _c.item);
-                    rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities); // пишет в JSОN файл
+                    rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities);
                 }
             })
                 .catch(function (err) {
@@ -63,7 +59,6 @@ class Loop {
     }
 }
 exports.default = Loop;
-/////////////// + helper:
 const xmlToJson = (errorHandler, data) => {
     const options = {
         compact: true,
@@ -79,3 +74,4 @@ const xmlToJson = (errorHandler, data) => {
     }
     return res;
 };
+//# sourceMappingURL=Loop.js.map

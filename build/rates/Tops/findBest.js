@@ -10,8 +10,6 @@ class Segment {
             if (this.min <= segment.min && this.max >= segment.max)
                 return true;
             return false;
-            // _____
-            //  ___
         };
         this.intersects = (segment) => {
             if (!this.min || !this.max)
@@ -20,16 +18,10 @@ class Segment {
                 return true;
             if (this.min <= segment.min && this.max >= segment.min)
                 return true;
-            // __
-            //  __
             if (this.min >= segment.min && this.min <= segment.max)
                 return true;
-            //  __
-            // __
             if (this.min >= segment.min && this.max <= segment.max)
                 return true;
-            //  __
-            // ____
             return false;
         };
         this.combine = (segment) => {
@@ -48,7 +40,6 @@ class Segment {
 }
 const findBestDirRates = (dirRates) => {
     const bestCourseAsc = [...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
-    // ASC - малое к большему
     const best = bestCourseAsc.reduce((best, [id, rate]) => {
         const rateSegment = new Segment(rate.min.give, rate.max.give);
         if (best.combinedSegment.covers(rateSegment))
@@ -61,3 +52,4 @@ const findBestDirRates = (dirRates) => {
     return best.dirRates;
 };
 exports.default = findBestDirRates;
+//# sourceMappingURL=findBest.js.map

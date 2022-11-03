@@ -10,8 +10,6 @@ const dbRates_1 = __importDefault(require("../../dbRates"));
 class RateFormatter {
     constructor(exchangerId) {
         this.transformLimit = (limit, course, dir) => {
-            // валюта минималки и максималки - это или валюта, указанная в поле или валюта отдаю
-            // (если это просто число)
             const limitCurFromXML = limit.split(" ")[1];
             const limitValue = parseFloat(limit);
             const [givePm, getPm] = dir.split("_");
@@ -38,11 +36,9 @@ class RateFormatter {
                 var _a, _b, _c, _d, _e, _f, _g, _h, _j;
                 try {
                     const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`;
-                    // если хоть одна платежка в dir не из cms, скипаем
                     if (!possible_pm_codes.find((code) => code === rate.from._text.toUpperCase()) ||
                         !possible_pm_codes.find((code) => code === rate.to._text.toUpperCase()))
                         return;
-                    // если запрещенные направления, тоже скипаем
                     if (dirs_disabled &&
                         dirs_disabled
                             .split("\n")
@@ -56,7 +52,7 @@ class RateFormatter {
                     const cities = Object.keys(cityCodes).length &&
                         ((_a = rate.city) === null || _a === void 0 ? void 0 : _a._text) &&
                         citiesHandler.formatCities((_b = rate.city) === null || _b === void 0 ? void 0 : _b._text, cityCodes);
-                    const { name, tag, logo, admin_rating } = db_1.default.getData(`.exchangers.${this.exchangerId}`); // сразу забираем данные обменника для отображения в таблице и свайпере
+                    const { name, tag, logo, admin_rating } = db_1.default.getData(`.exchangers.${this.exchangerId}`);
                     const dirRate = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ name,
                         admin_rating,
                         tag,
@@ -68,7 +64,7 @@ class RateFormatter {
                         ? { to_fee: rate.tofee._text }
                         : {})), { course,
                         min, max: max.give > reserve.give ? reserve : max, reserve }), (((_j = rate.param) === null || _j === void 0 ? void 0 : _j._text) ? { param: rate.param._text } : {})), (cities ? { cities } : {}));
-                    dbRates_1.default.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
+                    dbRates_1.default.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate);
                 }
                 catch (err) {
                     rateDataError = true;
@@ -100,3 +96,4 @@ class RateFormatter {
     }
 }
 exports.default = RateFormatter;
+//# sourceMappingURL=RateFormatter.js.map

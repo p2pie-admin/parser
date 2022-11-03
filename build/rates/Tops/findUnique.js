@@ -9,9 +9,6 @@ const findUniqueDirRates = (dirRates) => {
         return {};
     try {
         const filterOptions = db_1.default.getObject(".tops");
-        // const dirRatesWithoutFees = Object.fromEntries(Object.entries(dirRates).filter(
-        //   ([_, rate]) => !rate.from_fee && !rate.to_fee && !rate.min_fee
-        // ));
         const uniqueDirRates = filterOptions.reduce((res, { code }) => {
             switch (code) {
                 case "optimal":
@@ -43,9 +40,9 @@ const findUniqueDirRates = (dirRates) => {
     }
 };
 const findUniqueDirRate = (dirRates, selector, needLowest = true) => {
-    //[...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
     const sorted = [...Object.entries(dirRates)].sort((r1, r2) => selector(r1[1]) - selector(r2[1]));
     const [exchangerId, rate] = needLowest ? sorted[0] : sorted.reverse()[0];
     return { [exchangerId]: rate };
 };
 exports.default = findUniqueDirRates;
+//# sourceMappingURL=findUnique.js.map

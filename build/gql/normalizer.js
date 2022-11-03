@@ -1,5 +1,4 @@
 "use strict";
-// костыль против матрешки из data , attributes
 Object.defineProperty(exports, "__esModule", { value: true });
 const normalizer = (data) => {
     const isObject = (data) => Object.prototype.toString.call(data) === "[object Object]";
@@ -33,3 +32,4 @@ const normalizer = (data) => {
     return data;
 };
 exports.default = normalizer;
+//# sourceMappingURL=normalizer.js.map

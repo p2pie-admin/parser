@@ -24,3 +24,4 @@ const initialDB = {
     possible_pairs: {},
 };
 exports.default = initialDB;
+//# sourceMappingURL=initialDB.js.map

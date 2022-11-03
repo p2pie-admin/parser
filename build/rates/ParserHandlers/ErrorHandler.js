@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../db"));
-const graphql_request_1 = require("graphql-request");
 const callStrapi_1 = __importDefault(require("../../gql/callStrapi"));
 const queries_1 = require("../../gql/queries");
 class ErrorCreator {
@@ -32,7 +31,6 @@ class ErrorCreator {
         };
         this.errorDefaultMessage = "Неизвестная ошибка";
         this.saveError = (code = "unknown-error", serverRespMessage) => {
-            //if (db.exists(`.${this.type}.${this.exchangerId}`)) return;
             console.error(`\u001b[1;31m ˟ ${this.exchangerId} : ${this.errorCodesExplanation[code] || "Код ошибки: " + code}`);
             db_1.default.push(`.${this.type}.${this.exchangerId}`, {
                 code,
@@ -50,18 +48,6 @@ class ErrorCreator {
             db_1.default.delete(`.${this.type}.${this.exchangerId}`);
         };
         this.lockExchanger = (code) => {
-            const mutation = (0, graphql_request_1.gql) `
-      mutation UpdateExchangerStatus(
-        $exchangerId: ID!
-        $status: ENUM_EXCHANGER_STATUS
-      ) {
-        updateExchanger(id: $exchangerId, data: { status: $status }) {
-          data {
-            id
-          }
-        }
-      }
-    `;
             const codesToDisable = [
                 "ECONNREFUSED",
                 "EPERM",
@@ -93,3 +79,4 @@ class ErrorCreator {
     }
 }
 exports.default = ErrorCreator;
+//# sourceMappingURL=ErrorHandler.js.map

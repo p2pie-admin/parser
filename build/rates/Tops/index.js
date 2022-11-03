@@ -13,7 +13,6 @@ const getDirTops = (allDirsRates) => {
     }, {});
 };
 const _getDirTop = (dirRates, dir) => {
-    // several steps to transform, sort and filter rates
     const dirRatesVerificator = new DirRatesVerificator_1.DirRatesVerificator(dir);
     const verifiedRates = dirRatesVerificator.getVerified(dirRates);
     const bestRates = (0, findBest_1.default)(verifiedRates);
@@ -25,3 +24,4 @@ const _getDirTop = (dirRates, dir) => {
     return dirTops;
 };
 exports.default = getDirTops;
+//# sourceMappingURL=index.js.map

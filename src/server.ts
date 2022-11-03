@@ -1,5 +1,5 @@
+// @ts-nocheck
 import fastify, { FastifyRequest } from "fastify";
-
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
 //import websocket from "fastify-websocket";
