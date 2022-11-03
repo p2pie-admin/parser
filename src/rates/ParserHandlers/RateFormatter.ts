@@ -13,19 +13,23 @@ export default class RateFormatter {
   }
 
   transformLimit = (limit: string, course: number, dir: string): Limit => {
-    const limitCur = limit.split(" ")[1];
+    // валюта минималки и максималки - это или валюта, указанная в поле или валюта отдаю
+    // (если это просто число)
+    const limitCurFromXML = limit.split(" ")[1];
     const limitValue = parseFloat(limit);
     const [givePm, getPm] = dir.split("_");
-    const give = givePm.includes(limitCur)
-      ? limitValue
-      : getPm.includes(limitCur)
-      ? limitValue * course
-      : 0;
-    const get = getPm.includes(limitCur)
-      ? limitValue
-      : givePm.includes(limitCur)
-      ? limitValue / course
-      : 0;
+    const give =
+      !limitCurFromXML || givePm.includes(limitCurFromXML)
+        ? limitValue
+        : getPm.includes(limitCurFromXML)
+        ? limitValue * course
+        : 0;
+    const get =
+      !limitCurFromXML || getPm.includes(limitCurFromXML)
+        ? limitValue
+        : givePm.includes(limitCurFromXML)
+        ? limitValue / course
+        : 0;
     return { give, get };
   };
 

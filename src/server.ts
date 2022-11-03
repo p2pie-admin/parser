@@ -6,7 +6,7 @@ import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import initialLoader from "./initialLoader";
 import startMainFlow from "./startMainFlow";
-import statusChange from "./dbRates/statusChange";
+import statusChange from "./statusChange";
 import path from "path";
 import db from "./db";
 import dbRates from "./dbRates";
@@ -145,11 +145,11 @@ const start = async () => {
   }
 
   // createExchangers() call to initilize exchangers from links JSON
-  // await statusChange("suspended", "active");
-  // await statusChange("disabled", "active");
+  await statusChange("suspended", "active");
+  await statusChange("disabled", "active");
   await auth();
   await initialLoader();
-  // startMainFlow();
+  startMainFlow();
 };
 
 start();

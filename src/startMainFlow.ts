@@ -1,7 +1,7 @@
 import { Exchanger } from "./types/exchanger";
 import db from "./db";
 import dbRates from "./dbRates";
-import statusChange from "./dbRates/statusChange";
+import statusChange from "./statusChange";
 import initialLoader from "./initialLoader";
 import Loop from "./rates/ParserHandlers/Loop";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";

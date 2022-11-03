@@ -1,8 +1,8 @@
 import { config } from "dotenv";
 
 import { gql } from "graphql-request";
-import callStrapi from "../gql/callStrapi";
-import normalize from "../gql/normalizer";
+import callStrapi from "./gql/callStrapi";
+import normalize from "./gql/normalizer";
 
 const updateExchanger = gql`
   mutation UpdateExchangerStatus(
@@ -40,7 +40,7 @@ async function statusChange(
   let exchangerIds = [];
   if (exchangerId) {
     exchangerIds = [exchangerId];
-    console.log(`\u001b[1;34m ${exchangerId} wants to be active again`);
+    console.log(`📘 \u001b[1;34m ${exchangerId} wants to be active again`);
   } else {
     // апдейтим всех
     const data = await callStrapi(getAllExchangerIds, {
@@ -48,7 +48,10 @@ async function statusChange(
     });
 
     exchangerIds = data.exchangers.map(({ id }: { id: string }) => id);
-    console.log(exchangerIds);
+    exchangerIds.length &&
+      console.log(
+        `📘 \u001b[1;34m Changed statuses from ${fromStatus} to ${toStatus} for exhangers: ${exchangerIds}`
+      );
   }
 
   exchangerIds.map(
