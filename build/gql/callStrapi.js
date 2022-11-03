@@ -23,7 +23,7 @@ const headers = jwt
         authorization: `Bearer ${jwt}`,
     }
     : {};
-const strapiLink = process.env.STRAPI;
+const strapiLink = process.env.DEV_STRAPI;
 if (!strapiLink)
     console.log("📙 \u001b[1;33m strapiLink is: ", strapiLink);
 const callStrapi = (query, variables) => __awaiter(void 0, void 0, void 0, function* () {

@@ -2,7 +2,7 @@ import fastify, { FastifyRequest } from "fastify";
 
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
-import websocket from "fastify-websocket";
+//import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
 import initialLoader from "./initialLoader";
 import startMainFlow from "./startMainFlow";
@@ -19,7 +19,7 @@ dotenv.config();
 
 const server = fastify();
 
-server.register(websocket);
+//server.register(websocket);
 
 server.register(fastifyStatic, {
   root: path.join(__dirname, "../public"),

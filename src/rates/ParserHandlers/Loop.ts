@@ -1,4 +1,3 @@
-import { DirRates } from "./../../types/rates";
 import axios from "axios";
 import db from "../../db";
 import XML2JSON from "xml-js";

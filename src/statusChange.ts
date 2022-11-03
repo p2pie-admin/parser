@@ -1,8 +1,5 @@
-import { config } from "dotenv";
-
 import { gql } from "graphql-request";
 import callStrapi from "./gql/callStrapi";
-import normalize from "./gql/normalizer";
 
 const updateExchanger = gql`
   mutation UpdateExchangerStatus(

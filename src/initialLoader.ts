@@ -6,7 +6,7 @@ import {
   TopsQuery,
 } from "./gql/queries";
 import db from "./db";
-import normalizer from "./gql/normalizer";
+
 import { Section, PmGroup } from "./types/section.json";
 import callStrapi from "./gql/callStrapi";
 

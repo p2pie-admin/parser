@@ -16,7 +16,7 @@ exports.server = void 0;
 const fastify_1 = __importDefault(require("fastify"));
 //import handleDirRequest from "./dirs/handleDirRequest";
 const handleWebhookPayload_1 = __importDefault(require("./handleWebhookPayload"));
-const fastify_websocket_1 = __importDefault(require("fastify-websocket"));
+//import websocket from "fastify-websocket";
 const fastify_static_1 = __importDefault(require("fastify-static"));
 const initialLoader_1 = __importDefault(require("./initialLoader"));
 const startMainFlow_1 = __importDefault(require("./startMainFlow"));
@@ -29,7 +29,7 @@ const auth_1 = __importDefault(require("./gql/auth"));
 dotenv_1.default.config();
 const server = (0, fastify_1.default)();
 exports.server = server;
-server.register(fastify_websocket_1.default);
+//server.register(websocket);
 server.register(fastify_static_1.default, {
     root: path_1.default.join(__dirname, "../public"),
     prefix: "/public/",

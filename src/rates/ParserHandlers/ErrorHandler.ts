@@ -1,6 +1,5 @@
 import db from "../../db";
 import { ErrorCode, ExchangerError } from "../../types/exchangerResp";
-import { gql, GraphQLClient } from "graphql-request";
 import { ErrorTypes } from "../../types";
 import callStrapi from "../../gql/callStrapi";
 import { LockExchangerMutation } from "../../gql/queries";
@@ -68,19 +67,6 @@ export default class ErrorCreator {
   };
 
   lockExchanger = (code: ErrorCode) => {
-    const mutation = gql`
-      mutation UpdateExchangerStatus(
-        $exchangerId: ID!
-        $status: ENUM_EXCHANGER_STATUS
-      ) {
-        updateExchanger(id: $exchangerId, data: { status: $status }) {
-          data {
-            id
-          }
-        }
-      }
-    `;
-
     const codesToDisable: ErrorCode[] = [
       "ECONNREFUSED",
       "EPERM",
