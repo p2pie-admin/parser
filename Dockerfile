@@ -14,5 +14,5 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
-EXPOSE 5432
+EXPOSE 5000
 CMD [ "yarn", "start" ]

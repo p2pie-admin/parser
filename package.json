@@ -28,7 +28,6 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "@types/fastify-static": "^2.2.1",
     "@types/node": "^16.11.12",
     "@types/ws": "^8.2.2",
     "concurrently": "^6.4.0",

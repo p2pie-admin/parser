@@ -11,7 +11,7 @@ const headers = jwt
     }
   : ({} as {});
 
-const strapiLink = process.env.DEV_STRAPI!;
+const strapiLink = process.env.STRAPI!;
 
 if (!strapiLink) console.log("📙 \u001b[1;33m strapiLink is: ", strapiLink);
 

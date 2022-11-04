@@ -138,7 +138,8 @@ server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
 
 const start = async () => {
   try {
-    await server.listen(process.env.PORT || 5000, "0.0.0.0");
+    // HOST IS IMPORTANT, OTHERWISE DOCKER PORT EXPOSE NOT WORKING
+    await server.listen({ port: +(process.env.PORT || 5000), host: "0.0.0.0" });
   } catch (error) {
     server.log.error(error);
     process.exit(1);
