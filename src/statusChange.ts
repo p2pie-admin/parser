@@ -1,31 +1,5 @@
-import { gql } from "graphql-request";
 import callStrapi from "./gql/callStrapi";
-
-const updateExchanger = gql`
-  mutation UpdateExchangerStatus(
-    $exchangerId: ID!
-    $status: ENUM_EXCHANGER_STATUS
-  ) {
-    updateExchanger(id: $exchangerId, data: { status: $status }) {
-      data {
-        id
-      }
-    }
-  }
-`;
-
-const getAllExchangerIds = gql`
-  query getAllExchangerIds($status: String) {
-    exchangers(
-      filters: { status: { eq: $status } }
-      pagination: { start: 1, limit: 1000 }
-    ) {
-      data {
-        id
-      }
-    }
-  }
-`;
+import { getAllExchangerIds, updateExchanger } from "./gql/queries";
 
 type Status = "active" | "suspended" | "disabled";
 
@@ -43,12 +17,16 @@ async function statusChange(
     const data = await callStrapi(getAllExchangerIds, {
       status: fromStatus,
     });
-
-    exchangerIds = data.exchangers.map(({ id }: { id: string }) => id);
-    exchangerIds.length &&
-      console.log(
-        `📘 \u001b[1;34m Changed statuses from ${fromStatus} to ${toStatus} for exhangers: ${exchangerIds}`
+    !data &&
+      console.error(
+        `📙 \u001b[1;33m No exchangers received! fromStatus: ${fromStatus} / toStatus: ${toStatus} / exchangerId: ${exchangerId}. JWT token might be outdated!`
       );
+    exchangerIds = data.exchangers.map(({ id }: { id: string }) => id);
+    exchangerIds.length
+      ? console.log(
+          `📘 \u001b[1;34m Changed statuses from ${fromStatus} to ${toStatus} for exhangers: ${exchangerIds}`
+        )
+      : console.error(`📙 \u001b[1;33m No exchangers received! `);
   }
 
   exchangerIds.map(

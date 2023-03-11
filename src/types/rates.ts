@@ -12,24 +12,24 @@ export interface DirRates {
 
 export interface Rate {
   name: string;
-  admin_rating: number;
+  tags?: string[];
+  admin_rating: number | null;
   course: number;
-  min_fee: string;
-  from_fee: string;
-  to_fee: string;
+  min_fee?: string;
+  from_fee?: string;
+  to_fee?: string;
   min: Limit;
   max: Limit;
   reserve: Limit;
-  param: string;
+  param?: string;
   cities?: { [key: string]: string[] };
+}
+
+export interface FullRate extends Rate {
+  exchangerId: string;
 }
 
 export type ExchangerId = string;
 
-export interface DirTops {
-  uniqueRates: { [key: string]: DirRates }; // это уникальные свойства
-  bestRates: DirRates; // это задачка с дождем, чтобы в зависимости от суммы выдавался результат
-}
-
 export type AllDirsRates = { [key: string]: DirRates };
-export type AllDirsTops = { [key: string]: DirTops };
+export type AllDirsTops = { [key: string]: FullRate[] };

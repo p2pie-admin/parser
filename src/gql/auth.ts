@@ -12,7 +12,7 @@ const auth = async () => {
     db.save();
     return;
   }
-  console.error("couldn't authtorize!");
+  console.error("📙 \u001b[1;33m couldn't authtorize!");
 };
 
 export default auth;

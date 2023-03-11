@@ -1,10 +1,10 @@
 import { gql } from "graphql-request";
 
-const ExchangersQuery = gql`
+export const ExchangersQuery = gql`
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 10000 }
+      pagination: { start: 0, limit: 20 }
     ) {
       data {
         id
@@ -27,7 +27,7 @@ const ExchangersQuery = gql`
   }
 `;
 
-const ParserSettingQuery = gql`
+export const ParserSettingQuery = gql`
   {
     parserSetting {
       data {
@@ -37,13 +37,14 @@ const ParserSettingQuery = gql`
           SD_applied_from
           SD_best
           SD_worst
+          pause_between_loops
         }
       }
     }
   }
 `;
 
-const PmGroupsQuery = gql`
+export const PmGroupsQuery = gql`
   {
     selector {
       data {
@@ -77,7 +78,7 @@ const PmGroupsQuery = gql`
   }
 `;
 
-const TopsQuery = gql`
+export const TopsQuery = gql`
   {
     tops {
       data {
@@ -137,4 +138,28 @@ export const LockExchangerMutation = gql`
   }
 `;
 
-export { ExchangersQuery, ParserSettingQuery, PmGroupsQuery, TopsQuery };
+export const updateExchanger = gql`
+  mutation UpdateExchangerStatus(
+    $exchangerId: ID!
+    $status: ENUM_EXCHANGER_STATUS
+  ) {
+    updateExchanger(id: $exchangerId, data: { status: $status }) {
+      data {
+        id
+      }
+    }
+  }
+`;
+
+export const getAllExchangerIds = gql`
+  query getAllExchangerIds($status: String) {
+    exchangers(
+      filters: { status: { eq: $status } }
+      pagination: { start: 1, limit: 1000 }
+    ) {
+      data {
+        id
+      }
+    }
+  }
+`;

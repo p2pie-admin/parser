@@ -146,9 +146,9 @@ const start = async () => {
   }
 
   // createExchangers() call to initilize exchangers from links JSON
+  await auth();
   await statusChange("suspended", "active");
   await statusChange("disabled", "active");
-  await auth();
   await initialLoader();
   startMainFlow();
 };

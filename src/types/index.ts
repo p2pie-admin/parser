@@ -1,6 +1,6 @@
 import { Exchanger } from "./exchanger";
 import { ExchangerErrors } from "./exchangerResp";
-import { DirRates, DirTops } from "./rates";
+import { DirRates, FullRate } from "./rates";
 
 export interface ParserSetting {
   dirs_disabled: string;
@@ -52,5 +52,5 @@ export type ErrorTypes = "errors" | "warnings" | "rate_errors";
 
 export interface DBRATES {
   allDirsRates: { [key: string]: DirRates };
-  allDirsTops: { [key: string]: DirTops };
+  allDirsTops: { [key: string]: FullRate[] };
 }

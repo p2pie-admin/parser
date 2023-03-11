@@ -7,7 +7,7 @@ import Loop from "./rates/ParserHandlers/Loop";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
 
 import getDirTops from "./rates/Tops";
-import { DirRates, DirTops } from "./types/rates";
+import { DirRates, FullRate } from "./types/rates";
 
 type InewIDLinkPairs = {
   exchangerId: string;
@@ -35,7 +35,6 @@ const startMainFlow = () => {
       dirsExistHandler();
     }
 
-    //initTimeouts(exchangers);
     loopNewExchangers(exchangers);
     calculateTops();
 
@@ -85,15 +84,17 @@ const calculateTops = () => {
   const allDirsRates = dbRates.getData(".allDirsRates") as {
     [key: string]: DirRates;
   };
-  const allDirsTops = getDirTops(allDirsRates) as { [key: string]: DirTops };
+  const allDirsTops = getDirTops(allDirsRates) as { [key: string]: FullRate[] };
   dbRates.push(".allDirsTops", allDirsTops);
 };
 
 const initTimeouts = (exchangers: Exchangers) => {
   const exchangersLength = Object.keys(exchangers).length;
   // для 100 обменников
-  const getRatesIn =
+  const pauseBetweenLoops = db.getData(".parser_setting.pause_between_loops");
+  let getRatesIn =
     exchangersLength * 300 > 12_000 ? exchangersLength * 300 : 12_000;
+  getRatesIn += +pauseBetweenLoops * 1000;
   // опрос первого в очереди обменника начнется через 30 сек, минимально 12 секунд
   const expireIn = getRatesIn - 2_000;
   // и ожидание ответа первого прекратится через 28 сек
