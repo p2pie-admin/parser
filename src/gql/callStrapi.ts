@@ -24,6 +24,7 @@ const callStrapi = async (query: any, variables?: any) => {
     const res = normalizer(data);
     return res;
   } catch (err) {
+    console.log(err);
     console.error("📙 \u001b[1;33m -- GQL ERROR -- ");
     console.error("📙 \u001b[1;33m JWT exists:", jwt && jwt.length > 5);
     console.log("📓 \u001b[1;35m Trying to reconnect in 5s...");

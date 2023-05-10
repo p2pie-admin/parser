@@ -4,7 +4,7 @@ export const ExchangersQuery = gql`
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 20 }
+      pagination: { start: 0, limit: 20000 }
     ) {
       data {
         id
@@ -80,11 +80,24 @@ export const PmGroupsQuery = gql`
 
 export const TopsQuery = gql`
   {
-    tops {
+    topParameters {
       data {
         id
         attributes {
           code
+          parameter {
+            id
+            en_description
+            ru_description
+            icon {
+              data {
+                attributes {
+                  alternativeText
+                  url
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -125,20 +138,7 @@ export const CreateExchangersMutation = gql`
   }
 `;
 
-export const LockExchangerMutation = gql`
-  mutation UpdateExchangerStatus(
-    $exchangerId: ID!
-    $status: ENUM_EXCHANGER_STATUS
-  ) {
-    updateExchanger(id: $exchangerId, data: { status: $status }) {
-      data {
-        id
-      }
-    }
-  }
-`;
-
-export const updateExchanger = gql`
+export const updateExchangerStatus = gql`
   mutation UpdateExchangerStatus(
     $exchangerId: ID!
     $status: ENUM_EXCHANGER_STATUS
@@ -159,6 +159,83 @@ export const getAllExchangerIds = gql`
     ) {
       data {
         id
+      }
+    }
+  }
+`;
+
+export const buySellsQuery = gql`
+  {
+    buySells {
+      data {
+        id
+        attributes {
+          currencies {
+            data {
+              id
+              attributes {
+                code
+              }
+            }
+          }
+          pm {
+            data {
+              id
+              attributes {
+                code
+                pm_group {
+                  data {
+                    id
+                    attributes {
+                      en_name
+                      ru_name
+                      prefix
+                      options {
+                        ... on ComponentSelectorSubgroup {
+                          id
+                          name
+                          code
+                          currency {
+                            data {
+                              id
+                              attributes {
+                                code
+                                accuracy
+                              }
+                            }
+                          }
+                        }
+                        ... on ComponentSelectorCurrency {
+                          id
+                          currency {
+                            data {
+                              id
+                              attributes {
+                                code
+                                accuracy
+                              }
+                            }
+                          }
+                        }
+                      }
+                      color
+
+                      icon {
+                        data {
+                          id
+                          attributes {
+                            alternativeText
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

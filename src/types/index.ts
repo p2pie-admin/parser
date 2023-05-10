@@ -11,11 +11,6 @@ export interface ParserSetting {
   SD_worst_rates: number;
 }
 
-export type Top = {
-  id: string;
-  code: string;
-};
-
 export type Timeouts = {
   getRatesIn: number;
   expireIn: number;
@@ -33,7 +28,7 @@ export interface DB {
   looped: { [key: string]: boolean };
   timeouts: Timeouts;
   dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны
-  tops: Top[];
+  topCodes: string[];
   parser_setting: ParserSetting;
   exchangers: { [key: string]: Exchanger };
   errors: ExchangerErrors;

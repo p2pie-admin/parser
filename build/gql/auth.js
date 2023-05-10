@@ -16,7 +16,7 @@ const auth = async () => {
         db_1.default.save();
         return;
     }
-    console.error("couldn't authtorize!");
+    console.error("📙 \u001b[1;33m couldn't authtorize!");
 };
 exports.default = auth;
 //# sourceMappingURL=auth.js.map

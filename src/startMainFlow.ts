@@ -5,7 +5,7 @@ import statusChange from "./statusChange";
 import initialLoader from "./initialLoader";
 import Loop from "./rates/ParserHandlers/Loop";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
-
+import process from "process";
 import getDirTops from "./rates/Tops";
 import { DirRates, FullRate } from "./types/rates";
 
@@ -37,7 +37,10 @@ const startMainFlow = () => {
 
     loopNewExchangers(exchangers);
     calculateTops();
-
+    // MEMORY USAGE
+    for (const [key, value] of Object.entries(process.memoryUsage())) {
+      console.log(`Memory usage by ${key}, ${value / 1000000}MB `);
+    }
     dbRates.save();
     db.save();
   }, restartRatesHandlerIn);

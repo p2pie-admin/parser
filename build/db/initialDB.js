@@ -9,7 +9,7 @@ const initialDB = {
         restartRatesHandlerIn: 22000,
     },
     dirs: {},
-    tops: [],
+    topCodes: [],
     parser_setting: {
         dirs_disabled: "",
         cities: {},

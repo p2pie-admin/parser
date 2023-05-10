@@ -59,7 +59,7 @@ class ErrorCreator {
             const status = codesToDisable.find((c) => c === code)
                 ? "disabled"
                 : "suspended";
-            (0, callStrapi_1.default)(queries_1.LockExchangerMutation, {
+            (0, callStrapi_1.default)(queries_1.updateExchangerStatus, {
                 exchangerId: this.exchangerId,
                 status,
             });

@@ -15,21 +15,19 @@ export default class RateFormatter {
   transformLimit = (limit: string, course: number, dir: string): Limit => {
     // валюта минималки и максималки - это или валюта, указанная в поле или валюта отдаю
     // (если это просто число)
-    const limitCurFromXML = limit.split(" ")[1];
+    const limitCurrencyFromXML = limit.split(" ")[1];
     const limitValue = parseFloat(limit);
     const [givePm, getPm] = dir.split("_");
-    const give =
-      !limitCurFromXML || givePm.includes(limitCurFromXML)
-        ? limitValue
-        : getPm.includes(limitCurFromXML)
-        ? limitValue * course
-        : 0;
-    const get =
-      !limitCurFromXML || getPm.includes(limitCurFromXML)
-        ? limitValue
-        : givePm.includes(limitCurFromXML)
-        ? limitValue / course
-        : 0;
+    let [give, get] = [0, 0];
+
+    [give, get] = !limitCurrencyFromXML
+      ? [limitValue, limitValue / course] // если не указаны валюты в лимитах, то предполагаем, что это в валюте give
+      : givePm.includes(limitCurrencyFromXML)
+      ? [limitValue, limitValue / course]
+      : getPm.includes(limitCurrencyFromXML)
+      ? [limitValue * course, limitValue]
+      : [0, 0];
+
     return { give, get };
   };
 
@@ -98,7 +96,9 @@ export default class RateFormatter {
           min,
           max: max.give > reserve.give ? reserve : max,
           reserve,
-          ...(rate.param?._text ? { param: rate.param._text } : {}),
+          ...(rate.param?._text
+            ? { parameterCodes: rate.param._text.split(", ") || [] }
+            : {}),
           ...(cities ? { cities } : {}),
         } as Rate;
         dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)

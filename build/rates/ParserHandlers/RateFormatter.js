@@ -63,7 +63,9 @@ class RateFormatter {
                         : {})), (((_g = rate.tofee) === null || _g === void 0 ? void 0 : _g._text) && parseFloat((_h = rate.tofee) === null || _h === void 0 ? void 0 : _h._text) > 0
                         ? { to_fee: rate.tofee._text }
                         : {})), { course,
-                        min, max: max.give > reserve.give ? reserve : max, reserve }), (((_j = rate.param) === null || _j === void 0 ? void 0 : _j._text) ? { param: rate.param._text } : {})), (cities ? { cities } : {}));
+                        min, max: max.give > reserve.give ? reserve : max, reserve }), (((_j = rate.param) === null || _j === void 0 ? void 0 : _j._text)
+                        ? { parameters: rate.param._text.split(", ") || [] }
+                        : {})), (cities ? { cities } : {}));
                     dbRates_1.default.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate);
                 }
                 catch (err) {

@@ -43,7 +43,7 @@ export default class Loop {
         const citiesHandler = new CitiesHandler();
         const rateFormatter = new RateFormatter(exchangerId);
         //  //  //  //  //  //  //  //
-        const JSONres = xmlToJson(errorHandler, response?.data);
+        let JSONres = xmlToJson(errorHandler, response?.data);
         //  //  //  //  //  //  //  //
         const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
 
@@ -52,11 +52,13 @@ export default class Loop {
           console.log(
             `\u001b[1;32m ✔ ${exchangerId} : Курсов получено : ${JSONres.rates?.item.length}`
           );
-          const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(
+          let ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(
             exchangerId,
             JSONres.rates?.item
           );
           rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities); // пишет в JSОN файл
+          JSONres = {};
+          ratesDataWithGroupedCities = [];
         }
       })
       .catch(function (err) {

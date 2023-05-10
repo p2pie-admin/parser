@@ -1,17 +1,19 @@
-import { Top } from "../../types";
 import db from "../../db";
 import { DirRates, Rate } from "../../types/rates";
 
-const addTag = (
+const addTopParameter = (
   prevUniqueDirRates: DirRates,
-  tag: string,
+  topParameter: string,
   [exchId, rate]: [exchId: string, rate: Rate]
 ) => {
   return {
     ...prevUniqueDirRates,
     [exchId]: {
       ...rate,
-      tags: [...(prevUniqueDirRates[exchId]?.tags || []), tag],
+      parameterCodes: [
+        ...(prevUniqueDirRates[exchId]?.parameterCodes || []),
+        topParameter,
+      ],
     },
   };
 };
@@ -19,18 +21,18 @@ const addTag = (
 const findUniqueDirRates = (dirRates: DirRates): DirRates => {
   if (!Object.keys(dirRates).length) return {};
   try {
-    const filterOptions = db.getObject(".tops") as Top[];
+    const filterOptions = db.getObject(".topCodes") as string[];
 
     // const dirRatesWithoutFees = Object.fromEntries(Object.entries(dirRates).filter(
     //   ([_, rate]) => !rate.from_fee && !rate.to_fee && !rate.min_fee
     // ));
 
-    const uniqueDirRates = filterOptions.reduce((res: DirRates, { code }) => {
+    const uniqueDirRates = filterOptions.reduce((res: DirRates, code) => {
       switch (code) {
         case "optimal":
           const optimalSelector = (rate: Rate) =>
             rate.course ** 20 * rate.min.give;
-          res = addTag(
+          res = addTopParameter(
             res,
             "optimal",
             findUniqueDirRate(dirRates, optimalSelector)
@@ -38,7 +40,7 @@ const findUniqueDirRates = (dirRates: DirRates): DirRates => {
           break;
         case "best_course":
           const courseSelector = (rate: Rate) => rate.course;
-          res = addTag(
+          res = addTopParameter(
             res,
             "best_course",
             findUniqueDirRate(dirRates, courseSelector)
@@ -46,7 +48,7 @@ const findUniqueDirRates = (dirRates: DirRates): DirRates => {
           break;
         case "low_min":
           const minSelector = (rate: Rate) => rate.min.give;
-          res = addTag(
+          res = addTopParameter(
             res,
             "low_min",
             findUniqueDirRate(dirRates, minSelector)
@@ -54,15 +56,15 @@ const findUniqueDirRates = (dirRates: DirRates): DirRates => {
           break;
         case "top_max":
           const maxSelector = (rate: Rate) => rate.max.give;
-          res = addTag(
+          res = addTopParameter(
             res,
             "top_max",
-            findUniqueDirRate(dirRates, maxSelector)
+            findUniqueDirRate(dirRates, maxSelector, false)
           );
           break;
         case "top_rating":
           const topRatingSelector = (rate: Rate) => rate.admin_rating;
-          res = addTag(
+          res = addTopParameter(
             res,
             "top_rating",
             findUniqueDirRate(dirRates, topRatingSelector)

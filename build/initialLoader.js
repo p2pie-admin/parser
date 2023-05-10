@@ -38,7 +38,7 @@ async function initialLoader() {
         return;
     }
     console.log("📗 \u001b[1;32m The initial data was received...");
-    db_1.default.push(".tops", topsData.tops);
+    db_1.default.push(".topCodes", topsData.topParameters.map((p) => p.code));
     db_1.default.push(".parser_setting", parserSettingsData.parserSetting);
     const exchangersWithId = exchangersData.exchangers;
     const exchangersWithLoop = exchangersWithId.reduce((res, ex) => {

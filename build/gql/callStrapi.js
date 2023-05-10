@@ -14,7 +14,7 @@ const headers = jwt
         authorization: `Bearer ${jwt}`,
     }
     : {};
-const strapiLink = process.env.DEV_STRAPI;
+const strapiLink = process.env.STRAPI;
 if (!strapiLink)
     console.log("📙 \u001b[1;33m strapiLink is: ", strapiLink);
 const callStrapi = async (query, variables) => {
@@ -27,8 +27,10 @@ const callStrapi = async (query, variables) => {
         return res;
     }
     catch (err) {
-        console.error("📙 \u001b[1;33m -- GQL ERROR -- ", err);
-        return null;
+        console.log(err);
+        console.error("📙 \u001b[1;33m -- GQL ERROR -- ");
+        console.error("📙 \u001b[1;33m JWT exists:", jwt && jwt.length > 5);
+        console.log("📓 \u001b[1;35m Trying to reconnect in 5s...");
     }
 };
 exports.default = callStrapi;

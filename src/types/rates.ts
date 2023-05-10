@@ -12,7 +12,7 @@ export interface DirRates {
 
 export interface Rate {
   name: string;
-  tags?: string[];
+  tag: string;
   admin_rating: number | null;
   course: number;
   min_fee?: string;
@@ -21,7 +21,7 @@ export interface Rate {
   min: Limit;
   max: Limit;
   reserve: Limit;
-  param?: string;
+  parameterCodes?: string[];
   cities?: { [key: string]: string[] };
 }
 

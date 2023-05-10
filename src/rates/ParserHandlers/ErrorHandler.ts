@@ -2,7 +2,7 @@ import db from "../../db";
 import { ErrorCode, ExchangerError } from "../../types/exchangerResp";
 import { ErrorTypes } from "../../types";
 import callStrapi from "../../gql/callStrapi";
-import { LockExchangerMutation } from "../../gql/queries";
+import { updateExchangerStatus } from "../../gql/queries";
 
 export default class ErrorCreator {
   exchangerId: string;
@@ -80,7 +80,7 @@ export default class ErrorCreator {
       ? "disabled"
       : "suspended";
 
-    callStrapi(LockExchangerMutation, {
+    callStrapi(updateExchangerStatus, {
       exchangerId: this.exchangerId,
       status,
     });

@@ -34,12 +34,14 @@ class Loop {
                 const errorHandler = new ErrorHandler_1.default(exchangerId);
                 const citiesHandler = new CitiesHandler_1.default();
                 const rateFormatter = new RateFormatter_1.default(exchangerId);
-                const JSONres = xmlToJson(errorHandler, response === null || response === void 0 ? void 0 : response.data);
+                let JSONres = xmlToJson(errorHandler, response === null || response === void 0 ? void 0 : response.data);
                 const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
                 if (wereRatesReceived && ((_a = JSONres.rates) === null || _a === void 0 ? void 0 : _a.item)) {
                     console.log(`\u001b[1;32m ✔ ${exchangerId} : Курсов получено : ${(_b = JSONres.rates) === null || _b === void 0 ? void 0 : _b.item.length}`);
-                    const ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_c = JSONres.rates) === null || _c === void 0 ? void 0 : _c.item);
+                    let ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(exchangerId, (_c = JSONres.rates) === null || _c === void 0 ? void 0 : _c.item);
                     rateFormatter.formatAndMatchRatesWithDirs(ratesDataWithGroupedCities);
+                    JSONres = {};
+                    ratesDataWithGroupedCities = [];
                 }
             })
                 .catch(function (err) {

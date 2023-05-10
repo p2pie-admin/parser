@@ -9,6 +9,7 @@ const statusChange_1 = __importDefault(require("./statusChange"));
 const initialLoader_1 = __importDefault(require("./initialLoader"));
 const Loop_1 = __importDefault(require("./rates/ParserHandlers/Loop"));
 const DirsExistHandler_1 = __importDefault(require("./rates/ParserHandlers/DirsExistHandler"));
+const process_1 = __importDefault(require("process"));
 const Tops_1 = __importDefault(require("./rates/Tops"));
 const startMainFlow = () => {
     const firstTimeExchangers = db_1.default.getData(".exchangers");
@@ -28,6 +29,9 @@ const startMainFlow = () => {
         }
         loopNewExchangers(exchangers);
         calculateTops();
+        for (const [key, value] of Object.entries(process_1.default.memoryUsage())) {
+            console.log(`Memory usage by ${key}, ${value / 1000000}MB `);
+        }
         dbRates_1.default.save();
         db_1.default.save();
     }, restartRatesHandlerIn);
@@ -64,7 +68,9 @@ const calculateTops = () => {
 };
 const initTimeouts = (exchangers) => {
     const exchangersLength = Object.keys(exchangers).length;
-    const getRatesIn = exchangersLength * 300 > 12000 ? exchangersLength * 300 : 12000;
+    const pauseBetweenLoops = db_1.default.getData(".parser_setting.pause_between_loops");
+    let getRatesIn = exchangersLength * 300 > 12000 ? exchangersLength * 300 : 12000;
+    getRatesIn += +pauseBetweenLoops * 1000;
     const expireIn = getRatesIn - 2000;
     const restartRatesHandlerIn = getRatesIn + 8000;
     db_1.default.push(".timeouts", {

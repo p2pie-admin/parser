@@ -7,14 +7,15 @@ const dirsExistHandler = () => {
   const possiblePmCodes = db.getData(".possible_pm_codes") as string[];
 
   const possibleDirs = possiblePmCodes.reduce(
-    (res: string[], leftPm) => [
+    (res: string[], leftCode) => [
       ...res,
-      ...possiblePmCodes.map((rightPm) => `${leftPm}_${rightPm}`),
+      ...possiblePmCodes.map((rightCode) => `${leftCode}_${rightCode}`),
     ],
     []
   );
 
   const possiblePairs = possibleDirs.reduce(
+    // for showing on selector if dirs exist
     (possiblePairs: { [key: string]: string[] }, possibleDir) => {
       const dirRates = allDirsRates[possibleDir];
       if (!dirRates || !Object.keys(dirRates).length) return possiblePairs;

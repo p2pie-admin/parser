@@ -4,6 +4,7 @@ import {
   ExchangersQuery,
   PmGroupsQuery,
   TopsQuery,
+  buySellsQuery,
 } from "./gql/queries";
 import db from "./db";
 
@@ -40,22 +41,36 @@ async function initialLoader() {
     exchangersData,
     pmGroupsData,
     topsData,
+    buySellsData,
   ] = await Promise.all(
-    [ParserSettingQuery, ExchangersQuery, PmGroupsQuery, TopsQuery].map(
-      async (query) => {
-        return await callStrapi(query);
-      }
-    ) as any[]
+    [
+      ParserSettingQuery,
+      ExchangersQuery,
+      PmGroupsQuery,
+      TopsQuery,
+      buySellsQuery,
+    ].map(async (query) => {
+      return await callStrapi(query);
+    }) as any[]
   );
 
-  if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData) {
+  if (
+    !parserSettingsData ||
+    !exchangersData ||
+    !pmGroupsData ||
+    !topsData ||
+    !buySellsData
+  ) {
     console.log(`📕 \u001b[1;31m Strapi initial data error!`);
-
     return;
   }
   console.log("📗 \u001b[1;32m The initial data was received...");
 
-  db.push(".tops", topsData.tops);
+  db.push(
+    ".topCodes",
+    topsData.topParameters.map((p: any) => p.code)
+  );
+  db.push(".buySells", buySellsData.buySells);
   db.push(".parser_setting", parserSettingsData.parserSetting);
 
   const exchangersWithId = exchangersData.exchangers;

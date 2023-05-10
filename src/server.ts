@@ -1,4 +1,3 @@
-// @ts-nocheck
 import fastify, { FastifyRequest } from "fastify";
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
@@ -11,9 +10,12 @@ import path from "path";
 import db from "./db";
 import dbRates from "./dbRates";
 import { DirData } from "./types";
-import { AllDirsRates } from "./types/rates";
+import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
 import auth from "./gql/auth";
+import callStrapi from "./gql/callStrapi";
+
+import getBuySellsRates from "./rates/Statistics/bestRatesHandler";
 
 dotenv.config();
 
@@ -43,6 +45,12 @@ server.get("/exchangers", async function (_, reply) {
 server.get("/errors", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
   reply.send(JSON.stringify(db.getData(".errors")));
+});
+
+server.get("/best", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
+  const bestRates = getBuySellsRates();
+  reply.send(JSON.stringify(bestRates));
 });
 
 interface DirDataWithTotalRates extends DirData {
@@ -150,7 +158,7 @@ const start = async () => {
   await statusChange("suspended", "active");
   await statusChange("disabled", "active");
   await initialLoader();
-  startMainFlow();
+  // startMainFlow();
 };
 
 start();
