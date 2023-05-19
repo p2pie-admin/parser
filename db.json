@@ -1,5 +1,5 @@
 {
-    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjgzNjc3MzAxLCJleHAiOjE2ODYyNjkzMDF9.TMcsyJVVIQx5eobrv5MeBrsZKj_xfJaQmyaNPwUvZVI",
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjg0NTI2NjExLCJleHAiOjE2ODcxMTg2MTF9.OsWLkhweoPlqitMEYKuEXVhNPTBdpcBCGUXHKZYuSk0",
     "looped": {},
     "timeouts": {
         "getRatesIn": 20000,
@@ -248,8 +248,8 @@
         },
         "861": {
             "name": "CryptoHonest",
-            "admin_rating": null,
-            "tag": null,
+            "admin_rating": 3.7,
+            "tag": "pro",
             "rates_link": "https://cryptohonest.ru/request-exportxml.xml?lang=ru",
             "logo": null
         },
