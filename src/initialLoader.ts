@@ -4,12 +4,14 @@ import {
   ExchangersQuery,
   PmGroupsQuery,
   TopsQuery,
-  buySellsQuery,
+  PopularPmsQuery,
 } from "./gql/queries";
 import db from "./db";
 
 import { Section, PmGroup } from "./types/section.json";
 import callStrapi from "./gql/callStrapi";
+import { pmPointerToPm, pmsToDirs } from "./rates/Statistics/helper";
+import { IPmPointer } from "./types/pms";
 
 const getCodes = (pm_group: PmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
@@ -41,26 +43,20 @@ async function initialLoader() {
     exchangersData,
     pmGroupsData,
     topsData,
-    buySellsData,
+    popularPms,
   ] = await Promise.all(
     [
       ParserSettingQuery,
       ExchangersQuery,
       PmGroupsQuery,
       TopsQuery,
-      buySellsQuery,
+      PopularPmsQuery,
     ].map(async (query) => {
       return await callStrapi(query);
     }) as any[]
   );
 
-  if (
-    !parserSettingsData ||
-    !exchangersData ||
-    !pmGroupsData ||
-    !topsData ||
-    !buySellsData
-  ) {
+  if (!parserSettingsData || !exchangersData || !pmGroupsData || !topsData) {
     console.log(`📕 \u001b[1;31m Strapi initial data error!`);
     return;
   }
@@ -70,8 +66,13 @@ async function initialLoader() {
     ".topCodes",
     topsData.topParameters.map((p: any) => p.code)
   );
-  db.push(".buySells", buySellsData.buySells);
+
   db.push(".parser_setting", parserSettingsData.parserSetting);
+
+  const pointers = popularPms.pms as IPmPointer[];
+  const pms = pointers.map((pointer) => pmPointerToPm(pointer));
+  const popularDirs = pmsToDirs(pms);
+  db.push(".popular_dirs", popularDirs);
 
   const exchangersWithId = exchangersData.exchangers;
 

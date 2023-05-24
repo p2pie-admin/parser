@@ -164,71 +164,57 @@ export const getAllExchangerIds = gql`
   }
 `;
 
-export const buySellsQuery = gql`
+export const PopularPmsQuery = gql`
   {
-    buySells {
+    pms(filters: { popular_as: { ne: "none" } }) {
       data {
         id
         attributes {
-          currencies {
+          code
+          popular_as
+          pm_group {
             data {
               id
               attributes {
-                code
-              }
-            }
-          }
-          pm {
-            data {
-              id
-              attributes {
-                code
-                pm_group {
+                en_name
+                ru_name
+                prefix
+                options {
+                  ... on ComponentSelectorSubgroup {
+                    id
+                    name
+                    code
+                    currency {
+                      data {
+                        id
+                        attributes {
+                          code
+                          accuracy
+                        }
+                      }
+                    }
+                  }
+                  ... on ComponentSelectorCurrency {
+                    id
+                    currency {
+                      data {
+                        id
+                        attributes {
+                          code
+                          accuracy
+                        }
+                      }
+                    }
+                  }
+                }
+                color
+
+                icon {
                   data {
                     id
                     attributes {
-                      en_name
-                      ru_name
-                      prefix
-                      options {
-                        ... on ComponentSelectorSubgroup {
-                          id
-                          name
-                          code
-                          currency {
-                            data {
-                              id
-                              attributes {
-                                code
-                                accuracy
-                              }
-                            }
-                          }
-                        }
-                        ... on ComponentSelectorCurrency {
-                          id
-                          currency {
-                            data {
-                              id
-                              attributes {
-                                code
-                                accuracy
-                              }
-                            }
-                          }
-                        }
-                      }
-                      color
-
-                      icon {
-                        data {
-                          id
-                          attributes {
-                            alternativeText
-                            url
-                          }
-                        }
-                      }
+                      alternativeText
+                      url
                     }
                   }
                 }

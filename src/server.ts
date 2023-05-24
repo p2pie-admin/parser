@@ -14,8 +14,8 @@ import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
 import auth from "./gql/auth";
 import callStrapi from "./gql/callStrapi";
-
-import getBuySellsRates from "./rates/Statistics/bestRatesHandler";
+import { IPopularDirs } from "./types/pms";
+import { getPopularRates } from "./rates/Statistics/getPopularRates";
 
 dotenv.config();
 
@@ -47,9 +47,9 @@ server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-server.get("/best", async function (_, reply) {
+server.get("/popular_rates", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  const bestRates = getBuySellsRates();
+  const bestRates = getPopularRates();
   reply.send(JSON.stringify(bestRates));
 });
 
@@ -119,8 +119,9 @@ server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
       )
     );
     try {
+      const dirDataExists = db.exists(`.dirs.${dirId}`);
+      if (!dirDataExists) return;
       const dirData = db.getData(`.dirs.${dirId}`) as DirData;
-      if (!dirData) return;
       const visits = dirData.times_visited ? dirData.times_visited : 0;
       db.push(`.dirs.${dirId}.times_visited`, visits + 1);
     } catch (e) {
@@ -158,7 +159,7 @@ const start = async () => {
   await statusChange("suspended", "active");
   await statusChange("disabled", "active");
   await initialLoader();
-  // startMainFlow();
+  //startMainFlow();
 };
 
 start();

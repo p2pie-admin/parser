@@ -1,0 +1,30 @@
+import { DirRates } from "src/types/rates";
+import db from "../../db";
+import dbRates from "../../dbRates";
+import { IPopularDirRates, IPopularDirs } from "src/types/pms";
+import { ISide } from "src/types/selector";
+
+const findBestRateByDir = (dir: string, fiatIndex: number) => {
+  const dirRatesExist = dbRates.exists(`.allDirsRates.${dir}`);
+  if (!dirRatesExist) return;
+  const dirRates = dbRates.getData(`.allDirsRates.${dir}`) as DirRates;
+  const [exchangerId, rate] = [...Object.entries(dirRates)].sort(
+    (r1, r2) => r1[1].course - r2[1].course
+  )[0];
+  return {
+    exchangerId,
+    course: fiatIndex ? 1 / rate.course : rate.course,
+    fiat: dir.split("_")[fiatIndex],
+  };
+};
+
+export const getPopularRates = () => {
+  const popularDirs = db.getData(".popular_dirs") as IPopularDirs;
+  return Object.entries(popularDirs).reduce((res, [cryptoCode, sides]) => {
+    const [buyCourses, sellCourses] = [
+      sides.buy.map((dir) => findBestRateByDir(dir, 0)),
+      sides.sell.map((dir) => findBestRateByDir(dir, 1)),
+    ];
+    return { ...res, [cryptoCode]: { buy: buyCourses, sell: sellCourses } };
+  }, {});
+};

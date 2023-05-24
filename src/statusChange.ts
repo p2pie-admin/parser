@@ -26,7 +26,7 @@ async function statusChange(
       ? console.log(
           `📘 \u001b[1;34m Changed statuses from ${fromStatus} to ${toStatus} for exhangers: ${exchangerIds}`
         )
-      : console.error(`📙 \u001b[1;33m No exchangers received! `);
+      : console.error(`📙 \u001b[1;33m No exchanger statuses to be changed! `);
   }
 
   exchangerIds.map(

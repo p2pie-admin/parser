@@ -69,6 +69,7 @@ interface IPm {
   subgroup_name?: string; // ERC-20 отобразить в подгруппе
   icon?: IImage;
   fiat?: IFiatRates;
+  popular_as?: string;
   possible_pairs?: string[];
   tag?: string;
   color: string;

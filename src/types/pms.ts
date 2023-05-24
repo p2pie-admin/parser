@@ -4,6 +4,7 @@ export interface IPmPointer {
   id: string;
   code: string;
   pm_group: IPmGroup;
+  popular_as?: string;
 }
 
 interface IPmGroup {
@@ -33,7 +34,16 @@ interface ICurrency {
   accuracy: string;
 }
 
-export interface IBuySell {
-  pm: IPmPointer;
-  currencies: ICurrency[];
+export interface IPopularDirs {
+  [key: string]: {
+    buy: string[];
+    sell: string[];
+  };
+}
+
+export interface IPopularDirRates {
+  [key: string]: {
+    buy: { [key: string]: number };
+    sell: { [key: string]: number };
+  };
 }

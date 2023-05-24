@@ -1,4 +1,4 @@
-import { IPmPointer } from "src/types/pms";
+import { IPmPointer, IPopularDirs } from "src/types/pms";
 import { IOption, IPm, IPmGroup } from "src/types/selector";
 
 export const capitalize = (s: string | undefined) => {
@@ -29,7 +29,10 @@ export const singlePmHasUnmetPairs = (pm: IPm, possiblePairs?: string[]) => {
   return true;
 };
 
-export const getPmsFromPmGroup = (pm_group: IPmGroup): IPm[] => {
+export const getPmsFromPmGroup = (
+  pm_group: IPmGroup,
+  popular_as?: string
+): IPm[] => {
   return pm_group.options.map((option) => {
     const code = getOptionCode(option, pm_group?.prefix);
     const subgroup_name = option.name && option.name.toUpperCase();
@@ -50,14 +53,31 @@ export const getPmsFromPmGroup = (pm_group: IPmGroup): IPm[] => {
       icon: pm_group.icon,
       color: pm_group.color,
       tag,
+      popular_as,
     };
   });
 };
 
-export const getPmByCode = (pointer: IPmPointer): IPm | undefined => {
-  const { code, pm_group } = pointer;
+export const pmPointerToPm = (pointer: IPmPointer): IPm | undefined => {
+  // from frontend
+  const { code, pm_group, popular_as } = pointer;
   if (!pm_group?.options) return;
-  const pms = getPmsFromPmGroup(pm_group);
+  const pms = getPmsFromPmGroup(pm_group, popular_as);
   if (!code) return pms[0];
   return pms.find((pm) => pm.code.toLowerCase() == code.toLowerCase());
+};
+
+export const pmsToDirs = (pms: (IPm | undefined)[]): IPopularDirs => {
+  if (!pms || !pms.length || pms.find((pm) => !pm)) return {};
+  const cryptoCodes = pms
+    .filter((pm) => pm!.popular_as === "crypto")
+    .map((pm) => pm!.code);
+  const fiatCodes = pms
+    .filter((pm) => pm!.popular_as === "fiat")
+    .map((pm) => pm!.code);
+  return cryptoCodes.reduce((dirs: IPopularDirs, cryptoCode) => {
+    const c2f = fiatCodes.map((fiatCode) => `${cryptoCode}_${fiatCode}`);
+    const f2c = fiatCodes.map((fiatCode) => `${fiatCode}_${cryptoCode}`);
+    return { ...dirs, [cryptoCode]: { buy: [...f2c], sell: [...c2f] } };
+  }, {});
 };
