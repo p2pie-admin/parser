@@ -1,22 +1,22 @@
 // import { handmadeBestRates, handmadeWrongRates } from "./handmadeExamples";
 // import { DirRates, Rate } from "src/types/rates";
 
-// // const isBestRate = (rates: Rate[], testedRate: Rate): boolean => {
-// //   if (!rates.length) {
-// //     console.log("no rates received!");
-// //     return false;
-// //   }
-// //   // курс один из лучших, если выходит за пределы всех
-// //   const testedRateCourseBest = rates.find(
-// //     //чем меньше курс, тем он выгоднее
-// //     (rate) => rate.course <= testedRate.course
-// //   );
-// //   // если нет такого курса, который бы был меньше по минималке
-// // ?
-// //   if (testedRateCourseBest || testedRateMinBest || testedRateMaxBest)
-// //     return true;
-// //   return false;
-// // };
+// const isBestRate = (rates: Rate[], testedRate: Rate): boolean => {
+//   if (!rates.length) {
+//     console.log("no rates received!");
+//     return false;
+//   }
+//   // курс один из лучших, если выходит за пределы всех
+//   const testedRateCourseBest = rates.find(
+//     //чем меньше курс, тем он выгоднее
+//     (rate) => rate.course <= testedRate.course
+//   );
+//   // если нет такого курса, который бы был меньше по минималке
+
+//   if (testedRateCourseBest || testedRateMinBest || testedRateMaxBest)
+//     return true;
+//   return false;
+// };
 
 // const testBestRates = (bestRates: DirRates) => {
 //   const trulyBest = Object.entries(bestRates).reduce(

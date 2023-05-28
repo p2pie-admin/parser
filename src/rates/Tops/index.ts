@@ -2,7 +2,6 @@ import { AllDirsRates, AllDirsTops, DirRates, Rate } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique";
-import { testBest } from "./testBest";
 
 interface FullRate extends Rate {
   exchangerId: string;
@@ -22,7 +21,7 @@ const deleteProps = (obj: DirRates, prop: string[]): DirRates => {
   return obj;
 };
 
-const _getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
+export const getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
   // several steps to transform, sort and filter rates
   const dirRatesVerificator = new DirRatesVerificator(dir);
   const verifiedRates = dirRatesVerificator.getVerified(dirRates);
@@ -32,19 +31,22 @@ const _getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
     Object.keys(uniqueRates)
   );
   const bestRates = findBestDirRates(ratesWithoutUnique);
-
-  testBest(bestRates, dir);
+  console.log(
+    Object.values(bestRates)
+      .sort((r1, r2) => +r2.course - +r1.course)
+      .reverse()
+  );
 
   const dirTops: FullRate[] = [
     ...dirRatesIntoArray(uniqueRates),
     ...dirRatesIntoArray(bestRates),
-  ];
+  ].sort((a, b) => a.course - b.course);
   return dirTops;
 };
 
 const getDirTops = (allDirsRates: AllDirsRates): AllDirsTops => {
   return Object.keys(allDirsRates).reduce((allDirTops: AllDirsTops, dir) => {
-    allDirTops[dir] = _getDirTop(allDirsRates[dir], dir);
+    allDirTops[dir] = getDirTop(allDirsRates[dir], dir);
     return allDirTops;
   }, {});
 };

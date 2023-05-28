@@ -13,9 +13,8 @@ import { DirData } from "./types";
 import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
 import auth from "./gql/auth";
-import callStrapi from "./gql/callStrapi";
-import { IPopularDirs } from "./types/pms";
 import { getPopularRates } from "./rates/Statistics/getPopularRates";
+import { getDirTop } from "./rates/Tops";
 
 dotenv.config();
 
@@ -159,7 +158,20 @@ const start = async () => {
   await statusChange("suspended", "active");
   await statusChange("disabled", "active");
   await initialLoader();
-  //startMainFlow();
+  startMainFlow();
+  // const testDirRates = dbRates.getData(".allDirsRates.BTC_TCSBRUB");
+  // console.log("total length: ", Object.keys(testDirRates).length);
+  // const res = getDirTop(testDirRates, "BTC_TCSBRUB");
+  // console.log("best length: ", res.length);
+  // res.map((rate) =>
+  //   console.log(
+  //     `min:${rate.min.give} max:${rate.max.give} course:${(
+  //       1 /
+  //       rate.course /
+  //       10000
+  //     ).toFixed(0)}`
+  //   )
+  // );
 };
 
 start();

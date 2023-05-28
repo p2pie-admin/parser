@@ -22,6 +22,13 @@ class Segment {
     //  ___
   };
 
+  smallerThan = (segment: Segment) => {
+    if (!this.min || !this.max) return true;
+    if (!segment.min || !segment.max) return false;
+    if (segment.max - segment.min > this.max - this.min) return true;
+    return false;
+  };
+
   intersects = (segment: Segment) => {
     if (!this.min || !this.max) return true;
     if (!segment.min || !segment.max) return true;
@@ -46,30 +53,31 @@ class Segment {
         segment.max && segment.max > this.max ? segment.max : this.max;
       return new Segment(min, max);
     }
+    if (this.smallerThan(segment)) return segment;
     return this;
   };
 }
 
 const findBestDirRates = (dirRates: DirRates): DirRates => {
-
-  const bestCourseAsc = [...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
+  const bestCoursesAsc = [...Object.entries(dirRates)]
+    .sort((r1, r2) => +r2[1].course - +r1[1].course)
+    .reverse();
   // ASC - малое к большему
-  const best = bestCourseAsc.reduce(
+  const best = bestCoursesAsc.reduce(
     (best: Best, [id, rate]) => {
-      const rateSegment = new Segment(
-        rate.min.give,
-        rate.max.give
-      );
+      const rateSegment = new Segment(rate.min.give, rate.max.give);
+      // console.log(`${best.combinedSegment.min?.toFixed(4) || 0}_${best.combinedSegment.max?.toFixed(4) || 0} |  ${rateSegment.min?.toFixed(4)}_${rateSegment.max?.toFixed(4)}`);
       if (best.combinedSegment.covers(rateSegment)) return best;
+      // console.log(Object.values(best.dirRates).map((r) => r.min?.give?.toFixed(4) + "_" + r.max?.give?.toFixed(4));
+      // console.log(`added: ${rateSegment.min?.toFixed(4)}_${rateSegment.max?.toFixed(4)}`);
       return {
         combinedSegment: best.combinedSegment.combine(rateSegment),
-        dirRates: {...best.dirRates, [id]: rate}
+        dirRates: { ...best.dirRates, [id]: rate },
       };
-      
     },
     { combinedSegment: new Segment(null, null), dirRates: {} }
   );
-  return best.dirRates
+  return best.dirRates;
 };
 
 export default findBestDirRates;
