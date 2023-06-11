@@ -36,13 +36,18 @@ export default class CitiesHandler {
     }
   };
 
-  formatCities = (cities: string, cityList: { [key: string]: string }) => {
+  formatCities = (
+    languageIndex: number,
+    cities: string,
+    cityList: { [key: string]: string[] }
+  ) => {
     //  "MSCW/SPB/..." ----> "Russia" : { "Saint-Petersburg", "Moscow"}
+
     return cities
       .split("/")
       .reduce((accumulator: { [key: string]: string[] }, cityCode: string) => {
         let [city, country] = cityList[cityCode]
-          ? cityList[cityCode].split(",")
+          ? cityList[cityCode][languageIndex].split(",")
           : [null, null];
         if (city && country) {
           country = country.replace(" ", "");

@@ -33,7 +33,7 @@ export default class RateFormatter {
 
   formatAndMatchRatesWithDirs = (rates: RateData[]): void => {
     const cityCodes = db.getData(".parser_setting.cities") as {
-      [key: string]: string;
+      [key: string]: string[];
     };
     const totalRatesAmount = rates ? rates.length : 0;
     const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string;
@@ -70,11 +70,15 @@ export default class RateFormatter {
           +course,
           dir
         );
+
         const citiesHandler = new CitiesHandler();
-        const cities =
-          Object.keys(cityCodes).length &&
-          rate.city?._text &&
-          citiesHandler.formatCities(rate.city?._text, cityCodes);
+        let cities = {};
+        if (Object.keys(cityCodes).length && rate.city?._text) {
+          const ru = citiesHandler.formatCities(0, rate.city?._text, cityCodes);
+          const en = citiesHandler.formatCities(1, rate.city?._text, cityCodes);
+          cities = {ru, en};
+        }
+
         const { name, tag, logo, admin_rating } = db.getData(
           `.exchangers.${this.exchangerId}`
         ); // сразу забираем данные обменника для отображения в таблице и свайпере
@@ -99,7 +103,7 @@ export default class RateFormatter {
           ...(rate.param?._text
             ? { parameterCodes: rate.param._text.split(", ") || [] }
             : {}),
-          ...(cities ? { cities } : {}),
+          ...{ cities },
         } as Rate;
         dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
       } catch (err) {

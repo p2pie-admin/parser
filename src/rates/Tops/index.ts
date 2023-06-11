@@ -31,11 +31,7 @@ export const getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
     Object.keys(uniqueRates)
   );
   const bestRates = findBestDirRates(ratesWithoutUnique);
-  console.log(
-    Object.values(bestRates)
-      .sort((r1, r2) => +r2.course - +r1.course)
-      .reverse()
-  );
+
 
   const dirTops: FullRate[] = [
     ...dirRatesIntoArray(uniqueRates),
