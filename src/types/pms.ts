@@ -1,5 +1,3 @@
-import { IPm } from "./selector";
-
 export interface IPmPointer {
   id: string;
   code: string;

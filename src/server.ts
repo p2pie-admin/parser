@@ -12,9 +12,10 @@ import dbRates from "./dbRates";
 import { DirData } from "./types";
 import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
-import auth from "./gql/auth";
+import auth from "./startParser";
 import { getPopularRates } from "./rates/Statistics/getPopularRates";
 import { getDirTop } from "./rates/Tops";
+import startParser from "./startParser";
 
 dotenv.config();
 
@@ -144,7 +145,7 @@ server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
 //   });
 // });
 
-const start = async () => {
+const startServer = async () => {
   try {
     // HOST IS IMPORTANT, OTHERWISE DOCKER PORT EXPOSE NOT WORKING
     await server.listen({ port: +(process.env.PORT || 5000), host: "0.0.0.0" });
@@ -153,12 +154,8 @@ const start = async () => {
     process.exit(1);
   }
 
-  // createExchangers() call to initilize exchangers from links JSON
-  await auth();
-  await statusChange("suspended", "active");
-  await statusChange("disabled", "active");
-  await initialLoader();
-  startMainFlow();
+  startParser();
+
   // const testDirRates = dbRates.getData(".allDirsRates.BTC_TCSBRUB");
   // console.log("total length: ", Object.keys(testDirRates).length);
   // const res = getDirTop(testDirRates, "BTC_TCSBRUB");
@@ -174,6 +171,6 @@ const start = async () => {
   // );
 };
 
-start();
+startServer();
 
 export { server };
