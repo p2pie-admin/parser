@@ -23,7 +23,6 @@
     "graphql-request": "^3.6.1",
     "node-fetch": "2",
     "node-json-db": "^1.4.1",
-    "simple-json-db": "^1.2.3",
     "xml-js": "^1.6.11",
     "xmldom": "^0.6.0"
   },

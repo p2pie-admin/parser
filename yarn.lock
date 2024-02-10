@@ -1569,11 +1569,6 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.5.tgz#9e3e8cc0c75a99472b44321033a7702e7738252f"
   integrity sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ==
 
-simple-json-db@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/simple-json-db/-/simple-json-db-1.2.3.tgz#ea7256bbbb1205b4af079f9bed2611e33401bce7"
-  integrity sha512-eL8u7YkcHidSaUvmolPooTPjxvMYd+IglSaxjnf13Tg1KQXcpoXlLOa38n4LillfQhgJuCgmUbCYERPl5fmY+w==
-
 sonic-boom@^1.0.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-1.4.1.tgz#d35d6a74076624f12e6f917ade7b9d75e918f53e"

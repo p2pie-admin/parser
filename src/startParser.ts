@@ -23,7 +23,9 @@ const startParser = async () => {
     await statusChange("suspended", "active");
     await statusChange("disabled", "active");
     await initialLoader();
+
     startMainFlow();
+
     return;
   }
   console.error("📙 \u001b[1;33m couldn't authtorize");

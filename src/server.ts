@@ -3,19 +3,19 @@ import fastify, { FastifyRequest } from "fastify";
 import handleWebhookPayload from "./handleWebhookPayload";
 //import websocket from "fastify-websocket";
 import fastifyStatic from "fastify-static";
-import initialLoader from "./initialLoader";
-import startMainFlow from "./startMainFlow";
-import statusChange from "./statusChange";
+
 import path from "path";
 import db from "./db";
 import dbRates from "./dbRates";
 import { DirData } from "./types";
 import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
-import auth from "./startParser";
+
 import { getPopularRates } from "./rates/Statistics/getPopularRates";
-import { getDirTop } from "./rates/Tops";
+
 import startParser from "./startParser";
+import rememberDirVisits from "./tests/rememberDirVisits";
+import { handleDirRequest } from "./helper";
 
 dotenv.config();
 
@@ -90,7 +90,7 @@ server.post(
   }
 );
 
-type dirReq = FastifyRequest<{ Params: { dirId: string; tops: string } }>;
+type dirReq = FastifyRequest<{ Params: { dirId: string; type: string } }>;
 type possiblePairsReq = FastifyRequest<{ Params: { code: string } }>;
 
 server.get(
@@ -107,30 +107,12 @@ server.get(
   }
 );
 
-server.get("/dir=:dirId/tops=:tops", async function (request: dirReq, reply) {
+server.get("/dir=:dirId/type=:type", async function (request: dirReq, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  const { dirId, tops } = request.params;
-  if (dirId && dirId.length < 20 && dirId.includes("_")) {
-    reply.send(
-      JSON.stringify(
-        dbRates.getData(
-          tops === "true" ? `.allDirsTops.${dirId}` : `.allDirsRates.${dirId}`
-        )
-      )
-    );
-    try {
-      const dirDataExists = db.exists(`.dirs.${dirId}`);
-      if (!dirDataExists) return;
-      const dirData = db.getData(`.dirs.${dirId}`) as DirData;
-      const visits = dirData.times_visited ? dirData.times_visited : 0;
-      db.push(`.dirs.${dirId}.times_visited`, visits + 1);
-    } catch (e) {
-      console.log(e);
-    }
-  } else {
-    reply.send("wrong request");
-    reply.code(500);
-  }
+  const { dirId, type } = request.params;
+  const sendFunction = (data: any) => reply.send(JSON.stringify(data));
+
+  handleDirRequest(sendFunction, dirId, type);
 });
 
 // server.get("/websocket", { websocket: true }, (connection) => {
@@ -155,20 +137,6 @@ const startServer = async () => {
   }
 
   startParser();
-
-  // const testDirRates = dbRates.getData(".allDirsRates.BTC_TCSBRUB");
-  // console.log("total length: ", Object.keys(testDirRates).length);
-  // const res = getDirTop(testDirRates, "BTC_TCSBRUB");
-  // console.log("best length: ", res.length);
-  // res.map((rate) =>
-  //   console.log(
-  //     `min:${rate.min.give} max:${rate.max.give} course:${(
-  //       1 /
-  //       rate.course /
-  //       10000
-  //     ).toFixed(0)}`
-  //   )
-  // );
 };
 
 startServer();

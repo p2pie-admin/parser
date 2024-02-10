@@ -26,6 +26,7 @@ const callStrapi = async (query: any, variables?: any) => {
   } catch (err) {
     console.error("📙 \u001b[1;33m -- GQL ERROR -- ");
     console.error("📙 \u001b[1;33m JWT exists:", jwt && jwt.length > 5);
+    console.error(err);
   }
 };
 

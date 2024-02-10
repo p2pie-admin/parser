@@ -15,6 +15,7 @@ export interface Rate {
   tag: string;
   admin_rating: number | null;
   course: number;
+  p2pRatio?: number;
   min_fee?: string;
   from_fee?: string;
   to_fee?: string;

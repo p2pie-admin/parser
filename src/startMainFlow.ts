@@ -5,9 +5,11 @@ import statusChange from "./statusChange";
 import initialLoader from "./initialLoader";
 import Loop from "./rates/ParserHandlers/Loop";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
-import process from "process";
 import getDirTops from "./rates/Tops";
 import { DirRates, FullRate } from "./types/rates";
+import checkRates from "./tests/checkRates";
+import memoryUsage from "./tests/memoryUsage";
+import addP2PRates from "./rates/P2P";
 
 type InewIDLinkPairs = {
   exchangerId: string;
@@ -23,24 +25,26 @@ const startMainFlow = () => {
   );
   db.push(".looped", {});
   loopNewExchangers(firstTimeExchangers); // первичный
+  addP2PRates(); // первичный
   let globalLoopsDone = 1;
 
+  // REPEATING >>>
   setInterval(async () => {
     const exchangers = db.getData(".exchangers") as Exchangers;
     globalLoopsDone += 1;
     if (globalLoopsDone % 5 === 0) {
-      console.log("Suspended -> Active");
-      await statusChange("suspended", "active");
+      //console.log("Transfering: Suspended -> Active");
+      //await statusChange("suspended", "active");
       await initialLoader();
       dirsExistHandler();
     }
 
     loopNewExchangers(exchangers);
     calculateTops();
-    // MEMORY USAGE
-    for (const [key, value] of Object.entries(process.memoryUsage())) {
-      console.log(`Memory usage by ${key}, ${value / 1000000}MB `);
-    }
+    addP2PRates(); // добавляем курсы p2p
+    checkRates(); // эта функция собирает статистику курсов
+    memoryUsage();
+
     dbRates.save();
     db.save();
   }, restartRatesHandlerIn);
