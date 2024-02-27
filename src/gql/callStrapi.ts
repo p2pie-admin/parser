@@ -11,8 +11,9 @@ const headers = jwt
     }
   : ({} as {});
 
-const strapiLink = process.env.STRAPI!;
-
+const env = process.env.NODE_ENV || "development";
+const strapiLink =
+  env === "production" ? process.env.STRAPI! : process.env.DEV_STRAPI!;
 if (!strapiLink) console.log("📙 \u001b[1;33m strapiLink is: ", strapiLink);
 
 const callStrapi = async (query: any, variables?: any) => {

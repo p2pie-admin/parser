@@ -14,7 +14,6 @@ const addP2PRates = async () => {
     console.log("📗 \u001b[1;32m Added P2P rates");
     return;
   }
-
   console.log("📕 \u001b[1;31m Failed to load P2P rates");
 };
 

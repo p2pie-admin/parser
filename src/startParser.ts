@@ -4,8 +4,10 @@ import callStrapi from "./gql/callStrapi";
 import initialLoader from "./initialLoader";
 import statusChange from "./statusChange";
 import startMainFlow from "./startMainFlow";
+import dotenv from "dotenv";
 
 const startParser = async () => {
+  dotenv.config();
   const data = await callStrapi(AuthMutation);
   if (!data) {
     console.log(
@@ -24,7 +26,7 @@ const startParser = async () => {
     await statusChange("disabled", "active");
     await initialLoader();
 
-    startMainFlow();
+    Number(process.env.LOOP) && startMainFlow();
 
     return;
   }

@@ -67,6 +67,7 @@ export interface IP2PStep {
 
 export interface IOrder {
   uid: string;
+  ip?: string;
   name?: string;
   status?: "active" | "suspended" | "disabled";
   info?: string;
