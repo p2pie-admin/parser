@@ -6,11 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const initialDB_1 = __importDefault(require("./initialDB"));
 const node_json_db_1 = require("node-json-db");
 const JsonDBConfig_1 = require("node-json-db/dist/lib/JsonDBConfig");
-const db = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config("db", false, true, "."));
+const db = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config("db", false, true, ".")); // save after each push = false, readable = true
 if (!Object.keys(db.getObject(".")).length) {
     db.resetData({});
-    db.push(".", initialDB_1.default);
+    db.push(".", initialDB_1.default); // initialization
     db.save();
 }
 exports.default = db;
-//# sourceMappingURL=index.js.map

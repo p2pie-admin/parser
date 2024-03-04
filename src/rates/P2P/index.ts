@@ -1,4 +1,4 @@
-import { IOrder } from "src/types/p2p";
+import { IOrder } from "../../types/p2p";
 import callStrapi from "../../gql/callStrapi";
 import addP2PDirs from "./addP2PDirs";
 import { ordersQuery } from "./queries";
@@ -14,7 +14,7 @@ const addP2PRates = async () => {
     console.log("📗 \u001b[1;32m Added P2P rates");
     return;
   }
-  console.log("📕 \u001b[1;31m Failed to load P2P rates");
+  console.log("📕 \u001b[1;31m Failed to load or no active orders");
 };
 
 export default addP2PRates;

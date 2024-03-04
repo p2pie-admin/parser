@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 
 const startParser = async () => {
   dotenv.config();
+  db.push(".jwt", undefined); //чистим старый токен
   const data = await callStrapi(AuthMutation);
   if (!data) {
     console.log(

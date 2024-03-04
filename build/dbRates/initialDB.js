@@ -5,4 +5,3 @@ const initialDB = {
     allDirsTops: {}
 };
 exports.default = initialDB;
-//# sourceMappingURL=initialDB.js.map

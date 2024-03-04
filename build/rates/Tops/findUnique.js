@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../db"));
 const addTopParameter = (prevUniqueDirRates, topParameter, [exchId, rate]) => {
     var _a;
-    return Object.assign(Object.assign({}, prevUniqueDirRates), { [exchId]: Object.assign(Object.assign({}, rate), { parameters: [
-                ...(((_a = prevUniqueDirRates[exchId]) === null || _a === void 0 ? void 0 : _a.parameters) || []),
+    return Object.assign(Object.assign({}, prevUniqueDirRates), { [exchId]: Object.assign(Object.assign({}, rate), { parameterCodes: [
+                ...(((_a = prevUniqueDirRates[exchId]) === null || _a === void 0 ? void 0 : _a.parameterCodes) || []),
                 topParameter,
             ] }) });
 };
@@ -16,6 +16,9 @@ const findUniqueDirRates = (dirRates) => {
         return {};
     try {
         const filterOptions = db_1.default.getObject(".topCodes");
+        // const dirRatesWithoutFees = Object.fromEntries(Object.entries(dirRates).filter(
+        //   ([_, rate]) => !rate.from_fee && !rate.to_fee && !rate.min_fee
+        // ));
         const uniqueDirRates = filterOptions.reduce((res, code) => {
             switch (code) {
                 case "optimal":
@@ -51,9 +54,9 @@ const findUniqueDirRates = (dirRates) => {
     }
 };
 const findUniqueDirRate = (dirRates, selector, needLowest = true) => {
+    //[...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
     const sorted = [...Object.entries(dirRates)].sort((r1, r2) => selector(r1[1]) - selector(r2[1]));
     const [exchangerId, rate] = needLowest ? sorted[0] : sorted.reverse()[0];
     return [exchangerId, rate];
 };
 exports.default = findUniqueDirRates;
-//# sourceMappingURL=findUnique.js.map

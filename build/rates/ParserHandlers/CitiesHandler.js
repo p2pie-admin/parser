@@ -4,9 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ErrorHandler_1 = __importDefault(require("./ErrorHandler"));
+// import db from "../../db"
 class CitiesHandler {
     constructor() {
         this.groupRatesDataCities = (exchangerId, ratesData) => {
+            // {... cities: "VRN"} -> {... cities: "VRN/MSK/SPB"}
             try {
                 return ratesData.reduce((groupedRatesData, rateData) => {
                     var _a, _b;
@@ -29,12 +31,13 @@ class CitiesHandler {
                 return [];
             }
         };
-        this.formatCities = (cities, cityList) => {
+        this.formatCities = (languageIndex, cities, cityList) => {
+            //  "MSCW/SPB/..." ----> "Russia" : { "Saint-Petersburg", "Moscow"}
             return cities
                 .split("/")
                 .reduce((accumulator, cityCode) => {
                 let [city, country] = cityList[cityCode]
-                    ? cityList[cityCode].split(",")
+                    ? cityList[cityCode][languageIndex].split(",")
                     : [null, null];
                 if (city && country) {
                     country = country.replace(" ", "");
@@ -48,4 +51,3 @@ class CitiesHandler {
     }
 }
 exports.default = CitiesHandler;
-//# sourceMappingURL=CitiesHandler.js.map

@@ -31,6 +31,7 @@ class ErrorCreator {
         };
         this.errorDefaultMessage = "Неизвестная ошибка";
         this.saveError = (code = "unknown-error", serverRespMessage) => {
+            //if (db.exists(`.${this.type}.${this.exchangerId}`)) return;
             console.error(`\u001b[1;31m ˟ ${this.exchangerId} : ${this.errorCodesExplanation[code] || "Код ошибки: " + code}`);
             db_1.default.push(`.${this.type}.${this.exchangerId}`, {
                 code,
@@ -79,4 +80,3 @@ class ErrorCreator {
     }
 }
 exports.default = ErrorCreator;
-//# sourceMappingURL=ErrorHandler.js.map

@@ -145,4 +145,3 @@ exports.handmadeBestRates = {
         param: "manual",
     },
 };
-//# sourceMappingURL=handmadeExamples.js.map

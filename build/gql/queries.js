@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllExchangerIds = exports.updateExchangerStatus = exports.CreateExchangersMutation = exports.AuthMutation = exports.TopsQuery = exports.PmGroupsQuery = exports.ParserSettingQuery = exports.ExchangersQuery = void 0;
+exports.PopularPmsQuery = exports.getAllExchangerIds = exports.updateExchangerStatus = exports.CreateExchangersMutation = exports.AuthMutation = exports.TopsQuery = exports.PmGroupsQuery = exports.ParserSettingQuery = exports.ExchangersQuery = void 0;
 const graphql_request_1 = require("graphql-request");
 exports.ExchangersQuery = (0, graphql_request_1.gql) `
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 20000 }
+      pagination: { start: 0, limit: 400000 }
     ) {
       data {
         id
@@ -88,7 +88,6 @@ exports.TopsQuery = (0, graphql_request_1.gql) `
             id
             en_description
             ru_description
-            color
             icon {
               data {
                 attributes {
@@ -159,4 +158,65 @@ exports.getAllExchangerIds = (0, graphql_request_1.gql) `
     }
   }
 `;
-//# sourceMappingURL=queries.js.map
+exports.PopularPmsQuery = (0, graphql_request_1.gql) `
+  {
+    pms(filters: { popular_as: { ne: "none" } }) {
+      data {
+        id
+        attributes {
+          code
+          popular_as
+          pm_group {
+            data {
+              id
+              attributes {
+                en_name
+                ru_name
+                prefix
+                options {
+                  ... on ComponentSelectorSubgroup {
+                    id
+                    name
+                    code
+                    currency {
+                      data {
+                        id
+                        attributes {
+                          code
+                          accuracy
+                        }
+                      }
+                    }
+                  }
+                  ... on ComponentSelectorCurrency {
+                    id
+                    currency {
+                      data {
+                        id
+                        attributes {
+                          code
+                          accuracy
+                        }
+                      }
+                    }
+                  }
+                }
+                color
+
+                icon {
+                  data {
+                    id
+                    attributes {
+                      alternativeText
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

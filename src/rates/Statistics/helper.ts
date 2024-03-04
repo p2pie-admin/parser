@@ -1,5 +1,5 @@
-import { IPmPointer, IPopularDirs } from "src/types/pms";
-import { IOption, IPm, IPmGroup } from "src/types/selector";
+import { IPmPointer, IPopularDirs } from "../../types/pms";
+import { IOption, IPm, IPmGroup } from "../../types/selector";
 
 export const capitalize = (s: string | undefined) => {
   if (typeof s !== "string") return "";

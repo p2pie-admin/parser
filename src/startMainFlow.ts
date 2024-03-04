@@ -98,20 +98,25 @@ const calculateTops = () => {
 const initTimeouts = (exchangers: Exchangers) => {
   const exchangersLength = Object.keys(exchangers).length;
   // для 100 обменников
-  const pauseBetweenLoops = db.getData(".parser_setting.pause_between_loops");
-  let getRatesIn =
-    exchangersLength * 300 > 12_000 ? exchangersLength * 300 : 12_000;
-  getRatesIn += +pauseBetweenLoops * 1000;
-  // опрос первого в очереди обменника начнется через 30 сек, минимально 12 секунд
-  const expireIn = getRatesIn - 2_000;
-  // и ожидание ответа первого прекратится через 28 сек
-  const restartRatesHandlerIn = getRatesIn + 8_000;
-  db.push(".timeouts", {
-    getRatesIn, // time between first and last exchanger rates call
-    expireIn,
-    restartRatesHandlerIn,
-  });
-  return { getRatesIn, expireIn, restartRatesHandlerIn };
+  try {
+    const pauseBetweenLoops = db.getData(".parser_setting.pause_between_loops");
+    let getRatesIn =
+      exchangersLength * 300 > 12_000 ? exchangersLength * 300 : 12_000;
+    getRatesIn += +pauseBetweenLoops * 1000;
+    // опрос первого в очереди обменника начнется через 30 сек, минимально 12 секунд
+    const expireIn = getRatesIn - 2_000;
+    // и ожидание ответа первого прекратится через 28 сек
+    const restartRatesHandlerIn = getRatesIn + 8_000;
+    db.push(".timeouts", {
+      getRatesIn, // time between first and last exchanger rates call
+      expireIn,
+      restartRatesHandlerIn,
+    });
+    return { getRatesIn, expireIn, restartRatesHandlerIn };
+  } catch (err) {
+    console.log(`📕 \u001b[1;31m Restarting in default 50s`);
+    return { restartRatesHandlerIn: 50000 };
+  }
   // каждые 38 сек будет производиться обработка урожая
 };
 

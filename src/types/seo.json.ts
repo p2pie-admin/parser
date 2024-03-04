@@ -5,7 +5,7 @@ export interface ISeo {
   id: string;
   metaTitle: string;
   metaDescription: string;
-  metaImage: Blob;
+  //metaImage: Blob;
   metaSocial: any[];
   keywords?: string;
   metaRobots?: string;

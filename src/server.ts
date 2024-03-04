@@ -2,7 +2,7 @@ import fastify, { FastifyRequest } from "fastify";
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
 //import websocket from "fastify-websocket";
-import fastifyStatic from "fastify-static";
+//import fastifyStatic from "fastify-static";
 
 import path from "path";
 import db from "./db";
@@ -23,14 +23,14 @@ const server = fastify();
 
 //server.register(websocket);
 
-server.register(fastifyStatic, {
-  root: path.join(__dirname, "../public"),
-  prefix: "/public/",
-});
+// server.register(fastifyStatic, {
+//   root: path.join(__dirname, "../public"),
+//   prefix: "/public/",
+// });
 
-server.get("/", async function (_, reply) {
-  reply.sendFile("menu.html");
-});
+// server.get("/", async function (_, reply) {
+//   reply.sendFile("menu.html");
+// });
 
 server.get("/exchangers", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
@@ -130,15 +130,16 @@ server.get("/dir=:dirId/type=:type", async function (request: dirReq, reply) {
 const startServer = async () => {
   try {
     // HOST IS IMPORTANT, OTHERWISE DOCKER PORT EXPOSE NOT WORKING
-    await server.listen({ port: +(process.env.PORT || 5000), host: "0.0.0.0" });
+    await server.listen({
+      port: +(process.env.PARSER_PORT || 5000),
+      host: "0.0.0.0",
+    });
   } catch (error) {
     server.log.error(error);
     process.exit(1);
   }
-
-  startParser();
 };
 
 startServer();
-
+console.log(" -------------------------- STARTED -------------------------- ");
 export { server };

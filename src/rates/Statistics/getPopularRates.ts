@@ -1,8 +1,8 @@
-import { DirRates } from "src/types/rates";
+import { DirRates } from "../../types/rates";
 import db from "../../db";
 import dbRates from "../../dbRates";
-import { IPopularDirRates, IPopularDirs } from "src/types/pms";
-import { ISide } from "src/types/selector";
+import { IPopularDirRates, IPopularDirs } from "../../types/pms";
+import { ISide } from "../../types/selector";
 
 const findBestRateByDir = (dir: string, fiatIndex: number) => {
   const dirRatesExist = dbRates.exists(`.allDirsRates.${dir}`);

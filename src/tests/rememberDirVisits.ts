@@ -1,5 +1,5 @@
 import db from "../db";
-import { DirData } from "src/types";
+import { DirData } from "../types";
 
 export default (dirId: string) => {
   try {
