@@ -1,5 +1,5 @@
 {
-    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA4OTk1MzcwLCJleHAiOjE3MTE1ODczNzB9.KPMINfvuMRkFvmlFOvB1QJurELiuxejmKMfruMvnInE",
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzEwNTMxMjg1LCJleHAiOjE3MTMxMjMyODV9.GVmu8Nw7iGSYJozjdUn-2Le6KHWwiSOts1maRWJEb38",
     "looped": {
         "856": true,
         "857": false,
@@ -21861,7 +21861,7 @@
         "SD_applied_from": 5,
         "SD_best": 4,
         "SD_worst": 5,
-        "pause_between_loops": 5
+        "pause_between_loops": 800
     },
     "exchangers": {
         "856": {

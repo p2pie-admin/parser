@@ -20,6 +20,7 @@ const db_1 = __importDefault(require("./db"));
 const dbRates_1 = __importDefault(require("./dbRates"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const getPopularRates_1 = require("./rates/Statistics/getPopularRates");
+const startParser_1 = __importDefault(require("./startParser"));
 const helper_1 = require("./helper");
 dotenv_1.default.config();
 const server = (0, fastify_1.default)();
@@ -110,6 +111,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
             port: +(process.env.PARSER_PORT || 5000),
             host: "0.0.0.0",
         });
+        (0, startParser_1.default)();
     }
     catch (error) {
         server.log.error(error);

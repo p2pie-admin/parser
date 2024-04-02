@@ -134,6 +134,8 @@ const startServer = async () => {
       port: +(process.env.PARSER_PORT || 5000),
       host: "0.0.0.0",
     });
+
+    startParser();
   } catch (error) {
     server.log.error(error);
     process.exit(1);
