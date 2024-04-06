@@ -79,9 +79,8 @@ export default class RateFormatter {
         //   cities = {ru, en};
         // }
 
-        const { name, tag, logo, admin_rating, rates_link } = db.getData(
-          `.exchangers.${this.exchangerId}`
-        ); // сразу забираем данные обменника для отображения в таблице и свайпере
+        const { name, tag, logo, admin_rating, ref_link, rates_link } =
+          db.getData(`.exchangers.${this.exchangerId}`); // сразу забираем данные обменника для отображения в таблице и свайпере
         const dirRate = {
           name,
           admin_rating,
@@ -104,7 +103,13 @@ export default class RateFormatter {
             ? { parameterCodes: rate.param._text.split(", ") || [] }
             : {}),
           cities: rate.city?._text,
-          rates_link,
+          ref_link:
+            ref_link ||
+            rates_link
+              .replace("https://", "___")
+              .split("/")[0]
+              .replace("___", "https://"),
+          last_time_updated: Date.now(),
         } as Rate;
         dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
       } catch (err) {

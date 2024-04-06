@@ -1,4 +1,5 @@
 import dbRates from "./dbRates";
+import { FullRate } from "./types/rates";
 
 export const handleDirRequest = (
   send: Function,
@@ -18,15 +19,16 @@ export const handleDirRequest = (
       break;
     case "tops+p2p":
       if (!dirP2PExist && !dirTopsExist) send([]);
-      const dirP2P = dirP2PExist ? dbRates.getData(`.allDirsP2P.${dirId}`) : [];
+      const dirP2P = dirP2PExist
+        ? (dbRates.getData(`.allDirsP2P.${dirId}`) as FullRate[])
+        : [];
       const dirTops = dirTopsExist
-        ? dbRates.getData(`.allDirsTops.${dirId}`)
+        ? (dbRates.getData(`.allDirsTops.${dirId}`) as FullRate[])
         : [];
       send([...dirTops, ...dirP2P]);
       break;
     default:
-      dirRatesExist
-        ? send(dbRates.getData(`.allDirsRates.${dirId}`))
-        : send([]);
+      send("Try this slug: /dir=BTC_SBERRUB/type=tops+p2p");
+      break;
   }
 };

@@ -91,8 +91,8 @@ const xmlToJson = (
   let res = {} as ExchangerResponse;
   try {
     res = JSON.parse(XML2JSON.xml2json(data, options)) as ExchangerResponse;
-  } catch ({ message }) {
-    errorHandler.saveError("json-parsing-error", (message as any) || "...");
+  } catch (e) {
+    errorHandler.saveError("json-parsing-error", (e as any) || "...");
   }
   return res;
 };

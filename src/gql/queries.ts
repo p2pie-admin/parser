@@ -4,7 +4,7 @@ export const ExchangersQuery = gql`
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 5000 }
+      pagination: { start: 0, limit: 50 }
     ) {
       data {
         id
@@ -13,6 +13,7 @@ export const ExchangersQuery = gql`
           admin_rating
           tag
           rates_link
+          ref_link
           logo {
             data {
               attributes {

@@ -9,9 +9,8 @@ export class DirRatesVerificator {
   SD_worst: number;
 
   constructor(dir: string) {
-    const { SD_applied_from, SD_best, SD_worst } = db.getData(
-      ".parser_setting"
-    );
+    const { SD_applied_from, SD_best, SD_worst } =
+      db.getData(".parser_setting");
     this.dir = dir;
     this.SD_applied_from = SD_applied_from;
     this.SD_best = SD_best;
@@ -91,6 +90,7 @@ export class DirRatesVerificator {
     ];
 
     const warnings: Violation[] = [
+      [!rate.p2pRatio && !rate.ref_link, `Отсутствует рефералка`],
       [
         rate.course < lowCourse && rate.course > minCourse,
         ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(

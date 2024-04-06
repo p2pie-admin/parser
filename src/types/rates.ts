@@ -24,7 +24,8 @@ export interface Rate {
   reserve: Limit;
   parameterCodes?: string[];
   cities?: { [key: string]: string[] };
-  rates_link?: string;
+  ref_link?: string;
+  last_time_updated?: number;
 }
 
 export interface FullRate extends Rate {

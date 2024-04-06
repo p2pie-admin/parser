@@ -12,10 +12,11 @@ export type Exchanger = {
   name: string;
   status: ExchangerStatus;
   rates_link: string;
+  ref_link?: string;
   tag: string | null;
   logo: Logo;
   total_rates: number;
-  // rating: Rating; потом добавим
+  admin_rating: number;
 };
 
 export interface ExchangerWithId extends Exchanger {
