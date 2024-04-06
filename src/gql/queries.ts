@@ -1,10 +1,13 @@
 import { gql } from "graphql-request";
+import dotenv from "dotenv";
+dotenv.config();
+const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 1000);
 
 export const ExchangersQuery = gql`
   {
     exchangers(
       filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 50 }
+      pagination: { start: 0, limit: ${toLoop} }
     ) {
       data {
         id

@@ -27,7 +27,7 @@ const startParser = async () => {
     await statusChange("disabled", "active");
     await initialLoader();
 
-    Number(process.env.LOOP) && startMainFlow();
+    Number(process.env.EXCHANGERS_TO_LOOP) && startMainFlow();
 
     return;
   }
