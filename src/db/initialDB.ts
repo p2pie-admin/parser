@@ -20,7 +20,7 @@ const initialDB: DB = {
   },
   exchangers: {},
   errors: {},
-  possible_pm_codes: [],
+  all_pm_codes_that_exist: [],
   possible_pairs: {},
 };
 

@@ -61,7 +61,7 @@ import { IPm } from "../../types/selector";
 //       "cities": "ekb/kzn/krasn/msk/nsk/rsnd/spb/sochi/stam/dubai/ervn/alm/tbil/antl"
 //   },
 
-const addDirsToDB = (uid: string, dirCodes: string[], rateData: FullRate) => {
+const addDirsToDB = (dirCodes: string[], rateData: FullRate) => {
   dirCodes.map((dirCode) => {
     // создаем новое направление если не существует
     const prevDirRatesExist = dbRates.exists(`.allDirsP2P.${dirCode}`);
@@ -135,7 +135,7 @@ export default (order: IOrder) => {
       (give) => gets.map((get) => getDirCode(give, get))[0]
     );
 
-    addDirsToDB(uid, dirCodes, rateData);
+    addDirsToDB(dirCodes, rateData);
   });
   return;
 };

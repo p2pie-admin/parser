@@ -90,7 +90,7 @@ export class DirRatesVerificator {
     ];
 
     const warnings: Violation[] = [
-      [!rate.p2pRatio && !rate.ref_link, `Отсутствует рефералка`],
+      // [!rate.p2pRatio && !rate.ref_link, `Отсутствует рефералка`],
       [
         rate.course < lowCourse && rate.course > minCourse,
         ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(

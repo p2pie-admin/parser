@@ -4,15 +4,17 @@ import dbRates from "../../dbRates";
 
 const dirsExistHandler = () => {
   const allDirsRates = dbRates.getData(".allDirsRates") as AllDirsRates;
-  const possiblePmCodes = db.getData(".possible_pm_codes") as string[];
+  const allPmCodesThatExist = db.getData(
+    ".all_pm_codes_that_exist"
+  ) as string[];
 
-  const possibleDirs = possiblePmCodes.reduce(
+  const possibleDirs = allPmCodesThatExist.reduce(
     (res: string[], leftCode) => [
       ...res,
-      ...possiblePmCodes.map((rightCode) => `${leftCode}_${rightCode}`),
+      ...allPmCodesThatExist.map((rightCode) => `${leftCode}_${rightCode}`),
     ],
     []
-  );
+  ); // getting all possible pairs [A]_[B]
 
   const possiblePairs = possibleDirs.reduce(
     // for showing on selector if dirs exist

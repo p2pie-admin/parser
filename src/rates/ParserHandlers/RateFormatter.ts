@@ -37,7 +37,9 @@ export default class RateFormatter {
     // };
     const totalRatesAmount = rates ? rates.length : 0;
     const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string;
-    const possible_pm_codes = db.getData(".possible_pm_codes") as string[];
+    const all_pm_codes_that_exist = db.getData(
+      ".all_pm_codes_that_exist"
+    ) as string[];
     let rateDataError = false;
     db.push(`.exchangers.${this.exchangerId}.total_rates`, totalRatesAmount);
     rates.map((rate) => {
@@ -45,10 +47,10 @@ export default class RateFormatter {
         const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`;
         // если хоть одна платежка в dir не из cms, скипаем
         if (
-          !possible_pm_codes.find(
+          !all_pm_codes_that_exist.find(
             (code) => code === rate.from._text.toUpperCase()
           ) ||
-          !possible_pm_codes.find(
+          !all_pm_codes_that_exist.find(
             (code) => code === rate.to._text.toUpperCase()
           )
         )

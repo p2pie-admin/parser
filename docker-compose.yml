@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  converter:
+  parser:
     container_name: parser
     build:
       context: .

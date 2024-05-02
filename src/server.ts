@@ -2,35 +2,32 @@ import fastify, { FastifyRequest } from "fastify";
 //import handleDirRequest from "./dirs/handleDirRequest";
 import handleWebhookPayload from "./handleWebhookPayload";
 //import websocket from "fastify-websocket";
-//import fastifyStatic from "fastify-static";
-
-import path from "path";
+import fastifyStatic from "@fastify/static";
 import db from "./db";
 import dbRates from "./dbRates";
 import { DirData } from "./types";
 import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
-
 import { getPopularRates } from "./rates/Statistics/getPopularRates";
 
 import startParser from "./startParser";
-import rememberDirVisits from "./tests/rememberDirVisits";
+
 import { handleDirRequest } from "./helper";
 
 dotenv.config();
 
-const server = fastify();
+const server = fastify({ logger: true });
 
 //server.register(websocket);
 
-// server.register(fastifyStatic, {
-//   root: path.join(__dirname, "../public"),
-//   prefix: "/public/",
-// });
+server.register(fastifyStatic, {
+  root: __dirname,
+  // prefix: "/public/",
+});
 
-// server.get("/", async function (_, reply) {
-//   reply.sendFile("menu.html");
-// });
+server.get("/", async function (_, reply) {
+  return reply.sendFile("menu.html");
+});
 
 server.get("/exchangers", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
@@ -47,7 +44,7 @@ server.get("/errors", async function (_, reply) {
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-server.get("/popular_rates", async function (_, reply) {
+server.get("/top_rates_preview", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
   const bestRates = getPopularRates();
   reply.send(JSON.stringify(bestRates));
@@ -92,6 +89,14 @@ server.post(
 
 type dirReq = FastifyRequest<{ Params: { dirId: string; type: string } }>;
 type possiblePairsReq = FastifyRequest<{ Params: { code: string } }>;
+
+server.get(
+  "/possible_pairs",
+  async function (request: possiblePairsReq, reply) {
+    reply.header("Access-Control-Allow-Origin", "*");
+    reply.send(JSON.stringify(db.getData(`.possible_pairs`)));
+  }
+);
 
 server.get(
   "/possible_pairs/code=:code",

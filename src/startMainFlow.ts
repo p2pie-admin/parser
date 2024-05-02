@@ -10,6 +10,8 @@ import { DirRates, FullRate } from "./types/rates";
 import checkRates from "./tests/checkRates";
 import memoryUsage from "./tests/memoryUsage";
 import addP2PRates from "./rates/P2P";
+import dotenv from "dotenv";
+import auth from "./gql/auth";
 
 type InewIDLinkPairs = {
   exchangerId: string;
@@ -17,7 +19,15 @@ type InewIDLinkPairs = {
 }[];
 type Exchangers = { [key: string]: Exchanger };
 
-const startMainFlow = () => {
+const startMainFlow = async () => {
+  dotenv.config();
+  await auth();
+  // createExchangers() call to initilize exchangers from links JSON
+  await statusChange("suspended", "active");
+  await statusChange("disabled", "active");
+  await initialLoader();
+  if (!Number(process.env.EXCHANGERS_TO_LOOP)) return;
+
   const firstTimeExchangers = db.getData(".exchangers") as Exchangers;
   const { restartRatesHandlerIn } = initTimeouts(firstTimeExchangers);
   console.log(

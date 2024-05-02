@@ -32,7 +32,7 @@ export interface DB {
   parser_setting: ParserSetting;
   exchangers: { [key: string]: Exchanger };
   errors: ExchangerErrors;
-  possible_pm_codes: string[];
+  all_pm_codes_that_exist: string[];
   possible_pairs: { [key: string]: string[] };
 }
 

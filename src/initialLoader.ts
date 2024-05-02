@@ -26,7 +26,7 @@ const getCodes = (pm_group: PmGroup): string[] => {
   );
 };
 
-const getPossiblePmCodesFromSections = (sections: Section[]): string[] => {
+const getallPmCodesThatExistFromSections = (sections: Section[]): string[] => {
   const pmGroups = sections.reduce(
     (res: PmGroup[], section) => [...res, ...section.pm_groups],
     []
@@ -86,7 +86,10 @@ async function initialLoader() {
   db.push(".exchangers", exchangersWithLoop);
 
   const sections = pmGroupsData?.selector?.sections as Section[];
-  db.push(".possible_pm_codes", getPossiblePmCodesFromSections(sections));
+  db.push(
+    ".all_pm_codes_that_exist",
+    getallPmCodesThatExistFromSections(sections)
+  );
 
   db.save();
 }
