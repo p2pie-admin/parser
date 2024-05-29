@@ -11,6 +11,9 @@ export const handleDirRequest = (
   const dirP2PExist = dbRates.exists(`.allDirsP2P.${dirId}`);
 
   switch (type) {
+    case "all":
+      send(dbRates.getData(`.allDirsRates.${dirId}`));
+      break;
     case "p2p":
       dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);
       break;

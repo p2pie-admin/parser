@@ -8,7 +8,10 @@ import dbRates from "./dbRates";
 import { DirData } from "./types";
 import { AllDirsRates, AllDirsTops } from "./types/rates";
 import dotenv from "dotenv";
-import { getPopularRates } from "./rates/Statistics/getPopularRates";
+import {
+  getPopularRates,
+  getSimilarRates,
+} from "./rates/Statistics/getPopularRates";
 
 import startParser from "./startParser";
 
@@ -24,13 +27,31 @@ server.register(fastifyStatic, {
   root: __dirname,
   // prefix: "/public/",
 });
-
 server.get("/", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
+  return reply.send(`Примеры запросов:
+  \nОтфильтрованные курсы для BTC_CASHRUB: /dir=BTC_CASHRUB/type=tops
+  \nВсе курсы для BTC_CASHRUB: /dir=BTC_CASHRUB/type=all
+  \nВозможные пары для BTC: /possible_pairs/code=BTC
+  \nВсе возможные пары: /possible_pairs
+  \nСписок обменников: /exchangers
+  \nЗаранее посчитанные лучшие популярные курсы: /top
+  \nОшибки по обменникам: /errors
+  \nОшибки по направлениям: /dirs
+  \nВсе существующие курсы: /all_rates
+  \nПохожие курсы: /similar/dir=:dirId
+  `);
+});
+
+server.get("/menu", async function (_, reply) {
   return reply.sendFile("menu.html");
 });
 
+server.get("/ping", async function (_, reply) {
+  return reply.send("pong");
+});
+
 server.get("/exchangers", async function (_, reply) {
-  reply.header("Access-Control-Allow-Origin", "*");
   const exchangers = db.getData(".exchangers");
   reply.send(
     JSON.stringify(
@@ -40,14 +61,27 @@ server.get("/exchangers", async function (_, reply) {
 });
 
 server.get("/errors", async function (_, reply) {
-  reply.header("Access-Control-Allow-Origin", "*");
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
-server.get("/top_rates_preview", async function (_, reply) {
-  reply.header("Access-Control-Allow-Origin", "*");
+server.get("/top", async function (_, reply) {
   const bestRates = getPopularRates();
   reply.send(JSON.stringify(bestRates));
+});
+server.get("/similar/dirs=:dirsString", async function (request, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
+  const { dirsString } = request.params as { dirsString: string };
+  const dirs = dirsString.split(",");
+  if (!dirs || !dirs.length) {
+    reply.send("wrong dirs, try /similar/dirs=BTC_SBERRUB,BTC_TCSBRUB");
+    return;
+  }
+  reply.send(JSON.stringify(getSimilarRates(dirs)));
+});
+
+server.get("/all_rates", async function (_, reply) {
+  const allRates = dbRates.getData(`.allDirsRates`);
+  reply.send(JSON.stringify(allRates));
 });
 
 interface DirDataWithTotalRates extends DirData {
@@ -116,7 +150,6 @@ server.get("/dir=:dirId/type=:type", async function (request: dirReq, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
   const { dirId, type } = request.params;
   const sendFunction = (data: any) => reply.send(JSON.stringify(data));
-
   handleDirRequest(sendFunction, dirId, type);
 });
 

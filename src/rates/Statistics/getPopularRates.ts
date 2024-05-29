@@ -18,6 +18,20 @@ const findBestRateByDir = (dir: string, fiatIndex: number) => {
   };
 };
 
+const findBestCourseByDir = (dir: string) => {
+  const dirRatesExist = dbRates.exists(`.allDirsRates.${dir}`);
+  if (!dirRatesExist) return;
+  const dirRates = dbRates.getData(`.allDirsRates.${dir}`) as DirRates;
+  const [exchangerId, rate] = [...Object.entries(dirRates)].sort(
+    (r1, r2) => r1[1].course - r2[1].course
+  )[0];
+  return rate.course;
+};
+
+export const getSimilarRates = (dirs: string[]) => {
+  return dirs.map((dir) => findBestCourseByDir(dir));
+};
+
 export const getPopularRates = () => {
   const popularDirs = db.getData(".popular_dirs") as IPopularDirs;
   return Object.entries(popularDirs).reduce((res, [cryptoCode, sides]) => {

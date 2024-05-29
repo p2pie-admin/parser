@@ -1,5 +1,5 @@
 {
-    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE0NjY4MzMxLCJleHAiOjE3MTcyNjAzMzF9.RlW_RW4fLY9szT6Rs57ZbPHS1Ao6kvDYJcPBG6G1ehc",
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE3MDI0MDkyLCJleHAiOjE3MTk2MTYwOTJ9.ZOjeUOOT1-MPYWl2wDqT3xf2D3oERFhzE6qpX-yOaZ4",
     "looped": {
         "856": true,
         "857": false,
@@ -11192,20 +11192,32 @@
         "SD_applied_from": 5,
         "SD_best": 4,
         "SD_worst": 5,
-        "pause_between_loops": 800
+        "pause_between_loops": 500
     },
     "exchangers": {
+        "855": {
+            "name": "N-Change",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://n-change.net/courses.xml",
+            "ref_link": null,
+            "logo": null
+        },
         "856": {
             "name": "BitStore",
             "admin_rating": 4.4,
             "tag": null,
             "rates_link": "https://api.bitstore.ws/xrates/export/bestchange",
             "ref_link": "https://bitstore.ws/?refer_id=104868",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitstore_b5015f8a9b.png"
-            },
-            "total_rates": 49
+            "logo": null
+        },
+        "857": {
+            "name": "Buycoin",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://api.buycoin.cash/xml/rate",
+            "ref_link": null,
+            "logo": null
         },
         "858": {
             "name": "InternetMoney",
@@ -11213,8 +11225,7 @@
             "tag": null,
             "rates_link": "https://internetmoney.exchange/exportxml.xml",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 118
+            "logo": null
         },
         "859": {
             "name": "CryptoBox",
@@ -11224,14 +11235,21 @@
             "ref_link": null,
             "logo": null
         },
+        "860": {
+            "name": "Exwp",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "http://exwp.com/estandards/kurs_xml.html",
+            "ref_link": null,
+            "logo": null
+        },
         "861": {
             "name": "CryptoHonest",
             "admin_rating": 3.7,
             "tag": "pro",
             "rates_link": "https://cryptohonest.ru/request-exportxml.xml?lang=ru",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 2
+            "logo": null
         },
         "862": {
             "name": "Coco-Pay",
@@ -11239,8 +11257,7 @@
             "tag": null,
             "rates_link": "https://coco-pay.com/request-exportxml.xml?lang=ru",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 252
+            "logo": null
         },
         "863": {
             "name": "Belqi",
@@ -11248,11 +11265,7 @@
             "tag": null,
             "rates_link": "https://belqi.net/request-exportxml.xml",
             "ref_link": "https://belqi.net/?rid=3769",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/belqi_e57a2c295a.png"
-            },
-            "total_rates": 163
+            "logo": null
         },
         "865": {
             "name": "100BtcKiev",
@@ -11260,10 +11273,7 @@
             "tag": null,
             "rates_link": "https://100btc.kiev.ua/request-exportxml.xml?lang=ru",
             "ref_link": null,
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/btckiev100_064e9c4f71.png"
-            }
+            "logo": null
         },
         "866": {
             "name": "Спасибо",
@@ -11271,8 +11281,7 @@
             "tag": null,
             "rates_link": "https://spasibo.kz/rates/rates.xml",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 44
+            "logo": null
         },
         "867": {
             "name": "111Обмен",
@@ -11280,11 +11289,15 @@
             "tag": null,
             "rates_link": "https://111obmen.com/service/export/xml",
             "ref_link": "https://111obmen.com/ref/pD1hq0kvv7v",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/111obmen_544435116c.png"
-            },
-            "total_rates": 1391
+            "logo": null
+        },
+        "869": {
+            "name": "PrivatCash",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://privat.cash/request-exportxml.xml?lang=ru",
+            "ref_link": null,
+            "logo": null
         },
         "870": {
             "name": "Agcash",
@@ -11292,11 +11305,7 @@
             "tag": null,
             "rates_link": "https://www.agcash.ru/service/export/xml/OL1hq13f72q/",
             "ref_link": "https://www.agcash.ru/ref/nR1hq13f72q/",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/ag_e3416603e7.png"
-            },
-            "total_rates": 131
+            "logo": null
         },
         "871": {
             "name": "Ym-Change",
@@ -11312,8 +11321,15 @@
             "tag": null,
             "rates_link": "http://rates.magnatus.com/exported_rates.php?format=2",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 392
+            "logo": null
+        },
+        "873": {
+            "name": "ChangeNow",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://market-info-standard-v2.changenow.io/?api_key=9b8e5",
+            "ref_link": null,
+            "logo": null
         },
         "874": {
             "name": "Money-Office",
@@ -11321,8 +11337,15 @@
             "tag": null,
             "rates_link": "https://money-office.com/request-exportxml.xml",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 5
+            "logo": null
+        },
+        "875": {
+            "name": "Excoin",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://excoin.in/exportxml.xml",
+            "ref_link": null,
+            "logo": null
         },
         "876": {
             "name": "5Минут",
@@ -11330,11 +11353,7 @@
             "tag": null,
             "rates_link": "https://5min.su/request-exportxml.xml",
             "ref_link": "https://5min.su/?rid=30297",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/5min_3d8018a414.png"
-            },
-            "total_rates": 3
+            "logo": null
         },
         "877": {
             "name": "PayWallet",
@@ -11344,17 +11363,29 @@
             "ref_link": null,
             "logo": null
         },
+        "878": {
+            "name": "Обменник.ws",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://obmennik.ws/ru/export/xml",
+            "ref_link": null,
+            "logo": null
+        },
         "879": {
             "name": "BestObmen",
             "admin_rating": 4.25,
             "tag": null,
             "rates_link": "https://bestobmen.su/request-exportxml.xml",
             "ref_link": "https://bestobmen.su/?rid=2649",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bestobmen_9c858dda32.png"
-            },
-            "total_rates": 30
+            "logo": null
+        },
+        "880": {
+            "name": "Иеремия76",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://ieremia76.com/request-exportxml.xml?lang=ru",
+            "ref_link": null,
+            "logo": null
         },
         "881": {
             "name": "CrypTorg",
@@ -11370,8 +11401,15 @@
             "tag": null,
             "rates_link": "https://wm-sha.ru/export.xml",
             "ref_link": null,
-            "logo": null,
-            "total_rates": 12
+            "logo": null
+        },
+        "883": {
+            "name": "Вобменка",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://vobmenka.com/exportxml.xml",
+            "ref_link": null,
+            "logo": null
         },
         "884": {
             "name": "EuroBitcoins",
@@ -11459,10 +11497,7 @@
             "tag": null,
             "rates_link": "https://acryptoexchange.com/request-exportxml.xml?lang=ru",
             "ref_link": null,
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/acrypto_cc93fb72d4.png"
-            }
+            "logo": null
         },
         "895": {
             "name": "Enter-Change",
@@ -11502,10 +11537,7 @@
             "tag": null,
             "rates_link": "https://4ex.cash/rates.html?sType=xml",
             "ref_link": "https://4ex.cash/?15819",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/4ex_008e37eb40.png"
-            }
+            "logo": null
         },
         "900": {
             "name": "SolidChangerNet",
@@ -11553,10 +11585,7 @@
             "tag": null,
             "rates_link": "https://btc-online.net/request-exportxml.xml?lang=en",
             "ref_link": "https://btc-online.net/?rid=34495",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/btc_online_e8083f3fff.png"
-            }
+            "logo": null
         },
         "906": {
             "name": "GetCoins",
@@ -11580,10 +11609,7 @@
             "tag": null,
             "rates_link": "https://365cash.co/bestchange.xml",
             "ref_link": "https://365cash.co/?rid=87978",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/365cash_951b28b711.png"
-            }
+            "logo": null
         },
         "909": {
             "name": "Bchange",
@@ -11591,10 +11617,15 @@
             "tag": null,
             "rates_link": "https://bchange.cc/courses.xml",
             "ref_link": "http://bchange.cc?ref=b3dfdcf2759f0d217e7044528644a836",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bchange_281a72f0cc.png"
-            }
+            "logo": null
+        },
+        "910": {
+            "name": "XeBit",
+            "admin_rating": null,
+            "tag": null,
+            "rates_link": "https://xebit.ru/export-rates-xml",
+            "ref_link": null,
+            "logo": null
         },
         "911": {
             "name": "ObmennCom",
@@ -11617,14 +11648,6 @@
             "admin_rating": null,
             "tag": null,
             "rates_link": "https://westchange.top/request-exportxml.xml?lang=ru",
-            "ref_link": null,
-            "logo": null
-        },
-        "916": {
-            "name": "Qiwex",
-            "admin_rating": null,
-            "tag": null,
-            "rates_link": "https://qiwex.cc/qiwexinfo.xml",
             "ref_link": null,
             "logo": null
         },
@@ -11706,10 +11729,7 @@
             "tag": null,
             "rates_link": "https://www.alfacashier.io/api/rates",
             "ref_link": "https://www.alfa.cash/?rid=2f7ae816",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/alh_d802c9bb03.png"
-            }
+            "logo": null
         },
         "927": {
             "name": "GeeExchange",
@@ -11725,10 +11745,7 @@
             "tag": null,
             "rates_link": "https://4ange.me/valuta.xml",
             "ref_link": "https://4ange.me/?R=17115750428810",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/4change_a79c8914f6.png"
-            }
+            "logo": null
         },
         "929": {
             "name": "Alfa-Trades",
@@ -11736,10 +11753,7 @@
             "tag": null,
             "rates_link": "https://alfa-trades.com/request-exportxml.xml?lang=ru",
             "ref_link": "https://alfa-trades.com/?rid=2867",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/alfa_04e7f80380.png"
-            }
+            "logo": null
         },
         "930": {
             "name": "ElectronBank",
@@ -11763,10 +11777,7 @@
             "tag": null,
             "rates_link": "https://bitobmen.net/request-exportxml.xml?lang=ru",
             "ref_link": "https://bitobmen.net/?rid=27869",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitobmen_e4d936f93c.png"
-            }
+            "logo": null
         },
         "934": {
             "name": "ChangerClub",
@@ -11958,10 +11969,7 @@
             "tag": null,
             "rates_link": "https://bitcoin24.su/request-exportxml.xml?lang=ru",
             "ref_link": "https://bitcoin24.su/?rid=6152",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitok24_f09a831811.png"
-            }
+            "logo": null
         },
         "958": {
             "name": "Obmen4you",
@@ -12145,10 +12153,7 @@
             "tag": null,
             "rates_link": "https://7money.co/utils/export?type=xml",
             "ref_link": "https://7money.co/?rid=19433",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/7money_27d04a9271.png"
-            }
+            "logo": null
         },
         "981": {
             "name": "ObmenAT24",
@@ -12212,10 +12217,7 @@
             "tag": null,
             "rates_link": "https://big-changer.ru/request-exportxml.xml",
             "ref_link": "https://big-changer.ru/?rid=9464",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bigchanger_ff7764e3d5.png"
-            }
+            "logo": null
         },
         "989": {
             "name": "Obmenka24",
@@ -12415,10 +12417,7 @@
             "tag": null,
             "rates_link": "https://armchange.ru/request-exportxml.xml",
             "ref_link": "https://armchange.ru/?rid=3050",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/arm_f8c74530fb.png"
-            }
+            "logo": null
         },
         "1018": {
             "name": "SaxoBit",
@@ -12618,10 +12617,7 @@
             "tag": null,
             "rates_link": "https://366.cash/request-exportxml.xml",
             "ref_link": null,
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/366_4cb49668bd.png"
-            }
+            "logo": null
         },
         "1043": {
             "name": "CashTransfers",
@@ -12661,10 +12657,7 @@
             "tag": null,
             "rates_link": "https://betatransfer.org/request-exportxml.xml?lang=ru",
             "ref_link": "https://betatransfer.org/?rid=27802",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/betatransfer_86260715b9.png"
-            }
+            "logo": null
         },
         "1048": {
             "name": "BTC-Волга",
@@ -12672,10 +12665,7 @@
             "tag": null,
             "rates_link": "https://btc-volga.com/request-exportxml.xml",
             "ref_link": "https://btc-volga.com/?rid=52",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/volga_418f58f0f5.png"
-            }
+            "logo": null
         },
         "1049": {
             "name": "SwapCoin",
@@ -12691,10 +12681,7 @@
             "tag": null,
             "rates_link": "https://bithunter.io/xml/rates.xml",
             "ref_link": "https://bithunter.io/?ref=660a01fa8c199",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bithunter_6a12a1e887.png"
-            }
+            "logo": null
         },
         "1051": {
             "name": "AlfaExchange",
@@ -12702,10 +12689,7 @@
             "tag": null,
             "rates_link": "https://alfa.exchange/request-exportxml.xml?lang=en",
             "ref_link": "https://alfa.exchange/en/?profit=2964",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/alfa_eks_12be775bf1.png"
-            }
+            "logo": null
         },
         "1052": {
             "name": "PayGet",
@@ -12801,10 +12785,7 @@
             "tag": null,
             "rates_link": "https://bitpro.pro/request-exportxml.xml",
             "ref_link": "https://bitpro.pro/?rid=31681",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitspro_1df832bfeb.png"
-            }
+            "logo": null
         },
         "1064": {
             "name": "Сатоши",
@@ -12908,10 +12889,7 @@
             "tag": null,
             "rates_link": "https://4money.me/request-exportxml.xml",
             "ref_link": "https://4money.me/?rid=809",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/4money_89d56e5c5c.png"
-            }
+            "logo": null
         },
         "1077": {
             "name": "JPMarket",
@@ -12975,10 +12953,7 @@
             "tag": null,
             "rates_link": "https://alfabit.org/api/exchage.xml",
             "ref_link": "https://alfabit.org?rid=1024745",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/alfabit_35c82f987f.png"
-            }
+            "logo": null
         },
         "1086": {
             "name": "ElectronExchange",
@@ -13010,10 +12985,7 @@
             "tag": null,
             "rates_link": "https://bitality.cc/API/GetCoursesWP",
             "ref_link": "https://bitality.cc?r=66923",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitality_2c79aa1380.png"
-            }
+            "logo": null
         },
         "1091": {
             "name": "Buy-Bitcoins",
@@ -13085,10 +13057,7 @@
             "tag": null,
             "rates_link": "https://bit-exchanger.me/export.xml",
             "ref_link": "https://bit-exchanger.me/?partner=3117097001",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitexchanger_a5b9ef113a.png"
-            }
+            "logo": null
         },
         "1101": {
             "name": "Wubill",
@@ -13112,10 +13081,7 @@
             "tag": null,
             "rates_link": "https://api.001k.exchange/exportxmlfile",
             "ref_link": " https://001k.exchange/ru?secret=yjn5etozajnuizmmzjyh",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/001k_copy_13694c214c.png"
-            }
+            "logo": null
         },
         "1104": {
             "name": "HotRate",
@@ -13275,10 +13241,7 @@
             "tag": null,
             "rates_link": "http://24obmen.org/rates.xml",
             "ref_link": "http://24obmen.org/?ref=32229",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/24obmen_55f55bee47.png"
-            }
+            "logo": null
         },
         "1126": {
             "name": "BitokBy",
@@ -13590,10 +13553,7 @@
             "tag": null,
             "rates_link": "https://100bitcoins.com/request-exportxml.xml",
             "ref_link": "https://100bitcoins.com/?rid=1025",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/100btc_7786791517.png"
-            }
+            "logo": null
         },
         "1170": {
             "name": "MegaChange",
@@ -13657,10 +13617,7 @@
             "tag": null,
             "rates_link": "https://bazarmoney.ru/request-exportxml.xml",
             "ref_link": "https://bazarmoney.ru/?rid=7481",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bazaar_732d060950.png"
-            }
+            "logo": null
         },
         "1180": {
             "name": "CryptoBar",
@@ -13828,10 +13785,7 @@
             "tag": "pro",
             "rates_link": "https://bseit.com/bseit-rates.xml",
             "ref_link": "https://bseit.com/?ref=l3L7",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bseit_ec5eee3a95.png"
-            }
+            "logo": null
         },
         "1203": {
             "name": "Ферма",
@@ -13847,10 +13801,7 @@
             "tag": null,
             "rates_link": "https://1wm.kz/exportxml.xml",
             "ref_link": "https://1wm.io/en/?rid=1290450",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/w1_a8747fdf9f.png"
-            }
+            "logo": null
         },
         "1205": {
             "name": "CryptoHome",
@@ -13874,10 +13825,7 @@
             "tag": null,
             "rates_link": "https://24bestex.com/request-exportxml.xml?lang=ru",
             "ref_link": "https://24bestex.com/en/?rid=34495",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bestex_466c6eb2c3.png"
-            }
+            "logo": null
         },
         "1209": {
             "name": "Сash2pay",
@@ -13973,10 +13921,7 @@
             "tag": null,
             "rates_link": "https://abcobmen.com/valuta.xml",
             "ref_link": "https://abcobmen.com/?ref=17115773116472",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/abs_6f4c92ec10.png"
-            }
+            "logo": null
         },
         "1222": {
             "name": "Paytiz",
@@ -14032,10 +13977,7 @@
             "tag": null,
             "rates_link": "https://btc-obmennik.com/request-exportxml.xml?lang=ru",
             "ref_link": "https://btc-obmennik.com/?rid=41921",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/btc_a54896acae.png"
-            }
+            "logo": null
         },
         "1229": {
             "name": "Global-ex",
@@ -14091,10 +14033,7 @@
             "tag": null,
             "rates_link": "https://a-exchange.com/export.xml",
             "ref_link": null,
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/a_ex_928c20a74d.png"
-            }
+            "logo": null
         },
         "1239": {
             "name": "MoneyChange",
@@ -14224,14 +14163,6 @@
             "ref_link": null,
             "logo": null
         },
-        "1255": {
-            "name": "Cryptonex",
-            "admin_rating": null,
-            "tag": null,
-            "rates_link": "https://cronex.top/monitor.xml",
-            "ref_link": null,
-            "logo": null
-        },
         "1256": {
             "name": "Hellmel",
             "admin_rating": null,
@@ -14334,10 +14265,7 @@
             "tag": null,
             "rates_link": "https://bitpayes.com/exportxml.htm",
             "ref_link": "https://bitpayes.com/?Partners=21873",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/bitpayes_54278b8a9a.png"
-            }
+            "logo": null
         },
         "1269": {
             "name": "Easy-Changer",
@@ -14377,10 +14305,7 @@
             "tag": null,
             "rates_link": "https://xml.all.cash/valuta.xml",
             "ref_link": "https://all.cash?refCode=22345310105",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/allcash_e13c89f4bf.png"
-            }
+            "logo": null
         },
         "1274": {
             "name": "Best-wallet",
@@ -14388,10 +14313,7 @@
             "tag": null,
             "rates_link": "https://best-wallet.net/exportxml.xml",
             "ref_link": "https://best-wallet.net?rid=6937",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/best_wallet_b79d8e5374.png"
-            }
+            "logo": null
         },
         "1275": {
             "name": "Cashtrade",
@@ -14431,10 +14353,7 @@
             "tag": null,
             "rates_link": "https://eezy.cash/documentation/",
             "ref_link": null,
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/eezycash_c5ec212a09.png"
-            }
+            "logo": null
         },
         "1280": {
             "name": "eezy.cash",
@@ -14442,10 +14361,7 @@
             "tag": null,
             "rates_link": "https://eezy.cash/request-exportxml.xml",
             "ref_link": "https://eezy.cash/en/?rid=570",
-            "logo": {
-                "alternativeText": null,
-                "url": "/uploads/eezy_414a2337d5.png"
-            }
+            "logo": null
         }
     },
     "errors": {
@@ -14959,6 +14875,23 @@
         }
     },
     "all_pm_codes_that_exist": [
+        "QWRUB",
+        "QWUSD",
+        "SBERRUB",
+        "HLKTRY",
+        "HLKTRY",
+        "ZRTTRY",
+        "OPTKGS",
+        "P24UAH",
+        "GPBRUB",
+        "KSPBKZT",
+        "TCSBRUB",
+        "TCSBRUB",
+        "TRY",
+        "CASHRUB",
+        "CASHUSD",
+        "THB",
+        "GEL",
         "BTC",
         "EOS",
         "CAKE",
@@ -14973,6 +14906,9 @@
         "USDTERC20",
         "USDTTRC20",
         "USDTTRCBLK",
+        "USDTERC20",
+        "USDTTRC20",
+        "USDTTRCBLK",
         "ADA",
         "BNB",
         "NEO",
@@ -14980,18 +14916,20 @@
         "XRP",
         "XDG",
         "DOT",
-        "TCSBRUB",
         "ADVCUSD",
         "ADVCRUB",
-        "QWRUB",
-        "QWUSD",
-        "SBERRUB",
-        "HLKTRY",
-        "ZRTTRY",
-        "OPTKGS",
-        "TRY",
-        "CASHRUB",
-        "CASHUSD"
+        "ADVCUSD",
+        "ADVCRUB",
+        "RMTFCNY",
+        "RMTFKGS",
+        "RMTFEUR",
+        "RMTFGEL",
+        "RMTFUAH",
+        "RMTFTRY",
+        "RMTFKZT",
+        "RMTFRUB",
+        "RMTFUSD",
+        "RMTFTHB"
     ],
     "possible_pairs": {
         "BTC": [
@@ -15580,46 +15518,46 @@
         ]
     },
     "popular_dirs": {
-        "USDTTRC20": {
+        "BTC": {
             "buy": [
-                "TCSBRUB_USDTTRC20",
-                "CASHRUB_USDTTRC20",
-                "CASHUSD_USDTTRC20",
-                "SBERRUB_USDTTRC20"
+                "TCSBRUB_BTC",
+                "SBERRUB_BTC",
+                "CASHUSD_BTC",
+                "CASHRUB_BTC"
             ],
             "sell": [
-                "USDTTRC20_TCSBRUB",
-                "USDTTRC20_CASHRUB",
-                "USDTTRC20_CASHUSD",
-                "USDTTRC20_SBERRUB"
+                "BTC_TCSBRUB",
+                "BTC_SBERRUB",
+                "BTC_CASHUSD",
+                "BTC_CASHRUB"
             ]
         },
         "ETH": {
             "buy": [
                 "TCSBRUB_ETH",
-                "CASHRUB_ETH",
+                "SBERRUB_ETH",
                 "CASHUSD_ETH",
-                "SBERRUB_ETH"
+                "CASHRUB_ETH"
             ],
             "sell": [
                 "ETH_TCSBRUB",
-                "ETH_CASHRUB",
+                "ETH_SBERRUB",
                 "ETH_CASHUSD",
-                "ETH_SBERRUB"
+                "ETH_CASHRUB"
             ]
         },
-        "BTC": {
+        "USDTTRC20": {
             "buy": [
-                "TCSBRUB_BTC",
-                "CASHRUB_BTC",
-                "CASHUSD_BTC",
-                "SBERRUB_BTC"
+                "TCSBRUB_USDTTRC20",
+                "SBERRUB_USDTTRC20",
+                "CASHUSD_USDTTRC20",
+                "CASHRUB_USDTTRC20"
             ],
             "sell": [
-                "BTC_TCSBRUB",
-                "BTC_CASHRUB",
-                "BTC_CASHUSD",
-                "BTC_SBERRUB"
+                "USDTTRC20_TCSBRUB",
+                "USDTTRC20_SBERRUB",
+                "USDTTRC20_CASHUSD",
+                "USDTTRC20_CASHRUB"
             ]
         }
     }
