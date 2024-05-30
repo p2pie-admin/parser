@@ -12,6 +12,7 @@ import { Section, PmGroup } from "./types/section.json";
 import callStrapi from "./gql/callStrapi";
 import { pmPointerToPm, pmsToDirs } from "./rates/Statistics/helper";
 import { IPmPointer } from "./types/pms";
+import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
 
 const getCodes = (pm_group: PmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
@@ -90,7 +91,7 @@ async function initialLoader() {
     ".all_pm_codes_that_exist",
     getallPmCodesThatExistFromSections(sections)
   );
-
+  dirsExistHandler();
   db.save();
 }
 

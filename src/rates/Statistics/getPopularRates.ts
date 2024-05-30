@@ -25,7 +25,7 @@ const findBestCourseByDir = (dir: string) => {
   const [exchangerId, rate] = [...Object.entries(dirRates)].sort(
     (r1, r2) => r1[1].course - r2[1].course
   )[0];
-  return rate.course;
+  return [rate.course, Object.keys(dirRates).length];
 };
 
 export const getSimilarRates = (dirs: string[]) => {

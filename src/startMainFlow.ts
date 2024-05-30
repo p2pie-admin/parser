@@ -46,7 +46,6 @@ const startMainFlow = async () => {
       //console.log("Transfering: Suspended -> Active");
       //await statusChange("suspended", "active");
       await initialLoader();
-      dirsExistHandler();
     }
 
     loopNewExchangers(exchangers);

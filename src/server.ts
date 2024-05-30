@@ -39,7 +39,7 @@ server.get("/", async function (_, reply) {
   \nОшибки по обменникам: /errors
   \nОшибки по направлениям: /dirs
   \nВсе существующие курсы: /all_rates
-  \nПохожие курсы: /similar/dir=:dirId
+  \nПохожие курсы: /similar/dirs=BTC_SBERRUB,BTC_TCSBRUB,BTC_CASHRUB
   `);
 });
 
