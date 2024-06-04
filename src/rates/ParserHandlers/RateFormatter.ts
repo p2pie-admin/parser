@@ -40,19 +40,32 @@ export default class RateFormatter {
     const all_pm_codes_that_exist = db.getData(
       ".all_pm_codes_that_exist"
     ) as string[];
+    const alternative_pm_codes = db.getData(
+      ".alternative_pm_codes"
+    ) as string[][];
+    const codes = [
+      ...all_pm_codes_that_exist,
+      ...alternative_pm_codes.map((c) => c[1]),
+    ];
     let rateDataError = false;
     db.push(`.exchangers.${this.exchangerId}.total_rates`, totalRatesAmount);
     rates.map((rate) => {
       try {
-        const dir = `${rate.from._text.toUpperCase()}_${rate.to._text.toUpperCase()}`;
+        let [from, to] = [
+          rate.from._text.toUpperCase(),
+          rate.to._text.toUpperCase(),
+        ];
+        const fromIsAlt = alternative_pm_codes.find((code) => code[1] == from);
+        const toIsAlt = alternative_pm_codes.find((code) => code[1] == to);
+        (fromIsAlt || toIsAlt) &&
+          console.log("unusual rate: ", fromIsAlt, toIsAlt);
+        if (fromIsAlt) from = fromIsAlt[0];
+        if (toIsAlt) to = toIsAlt[0];
+        const dir = `${from}_${to}`;
         // если хоть одна платежка в dir не из cms, скипаем
         if (
-          !all_pm_codes_that_exist.find(
-            (code) => code === rate.from._text.toUpperCase()
-          ) ||
-          !all_pm_codes_that_exist.find(
-            (code) => code === rate.to._text.toUpperCase()
-          )
+          !codes.find((code) => code === from) ||
+          !codes.find((code) => code === to)
         )
           return;
         // если запрещенные направления, тоже скипаем

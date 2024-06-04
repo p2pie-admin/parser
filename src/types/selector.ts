@@ -44,6 +44,7 @@ interface IImage {
 interface IOption {
   name?: string;
   code?: string;
+  alternative_codes?: string;
   currency: ICurrency;
 }
 

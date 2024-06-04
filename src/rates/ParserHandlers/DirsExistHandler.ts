@@ -30,8 +30,6 @@ const dirsExistHandler = () => {
     {}
   );
   db.push(".possible_pairs", possiblePairs);
-  db.save();
-  console.log(possiblePairs);
 };
 
 export default dirsExistHandler;

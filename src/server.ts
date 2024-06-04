@@ -52,6 +52,7 @@ server.get("/ping", async function (_, reply) {
 });
 
 server.get("/exchangers", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
   const exchangers = db.getData(".exchangers");
   reply.send(
     JSON.stringify(
@@ -61,10 +62,12 @@ server.get("/exchangers", async function (_, reply) {
 });
 
 server.get("/errors", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
   reply.send(JSON.stringify(db.getData(".errors")));
 });
 
 server.get("/top", async function (_, reply) {
+  reply.header("Access-Control-Allow-Origin", "*");
   const bestRates = getPopularRates();
   reply.send(JSON.stringify(bestRates));
 });

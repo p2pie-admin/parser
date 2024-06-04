@@ -8,13 +8,13 @@ import {
 } from "./gql/queries";
 import db from "./db";
 
-import { Section, PmGroup } from "./types/section.json";
 import callStrapi from "./gql/callStrapi";
 import { pmPointerToPm, pmsToDirs } from "./rates/Statistics/helper";
 import { IPmPointer } from "./types/pms";
 import dirsExistHandler from "./rates/ParserHandlers/DirsExistHandler";
+import { IOption, IPmGroup, ISection } from "./types/selector";
 
-const getCodes = (pm_group: PmGroup): string[] => {
+const getCodes = (pm_group: IPmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
   return pm_group.options.map((option) =>
     (
@@ -27,13 +27,39 @@ const getCodes = (pm_group: PmGroup): string[] => {
   );
 };
 
-const getallPmCodesThatExistFromSections = (sections: Section[]): string[] => {
+const getAlternativeCodes = (pm_group: IPmGroup): string[][] => {
+  return pm_group.options.reduce(
+    (codes: string[][], option) => [
+      ...codes,
+      ...(option.code && option.alternative_codes
+        ? [[option.code.toUpperCase(), option.alternative_codes.toUpperCase()]]
+        : []),
+    ],
+    []
+  );
+};
+
+const getAllPmCodesThatExistFromSections = (sections: ISection[]): string[] => {
   const pmGroups = sections.reduce(
-    (res: PmGroup[], section) => [...res, ...section.pm_groups],
+    (res: IPmGroup[], section) => [...res, ...section.pm_groups],
     []
   );
   return pmGroups.reduce(
     (allPmCodes: string[], pmGroup) => [...allPmCodes, ...getCodes(pmGroup)],
+    []
+  );
+};
+
+const getAlternativePmCodes = (sections: ISection[]): string[][] => {
+  const pmGroups = sections.reduce(
+    (res: IPmGroup[], section) => [...res, ...section.pm_groups],
+    []
+  );
+  return pmGroups.reduce(
+    (allPmCodes: string[][], pmGroup) => [
+      ...allPmCodes,
+      ...getAlternativeCodes(pmGroup),
+    ],
     []
   );
 };
@@ -74,9 +100,7 @@ async function initialLoader() {
   const pms = pointers.map((pointer) => pmPointerToPm(pointer));
   const popularDirs = pmsToDirs(pms);
   db.push(".popular_dirs", popularDirs);
-
   const exchangersWithId = exchangersData.exchangers;
-
   const exchangersWithLoop = exchangersWithId.reduce(
     (res: { [key: string]: Exchanger }, ex: ExchangerWithId) => {
       const { id, ...rest } = ex;
@@ -86,11 +110,12 @@ async function initialLoader() {
   );
   db.push(".exchangers", exchangersWithLoop);
 
-  const sections = pmGroupsData?.selector?.sections as Section[];
+  const sections = pmGroupsData?.selector?.sections as ISection[];
   db.push(
     ".all_pm_codes_that_exist",
-    getallPmCodesThatExistFromSections(sections)
+    getAllPmCodesThatExistFromSections(sections)
   );
+  db.push(".alternative_pm_codes", getAlternativePmCodes(sections));
   dirsExistHandler();
   db.save();
 }

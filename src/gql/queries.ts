@@ -61,6 +61,7 @@ export const PmGroupsQuery = gql`
                   options {
                     ... on ComponentSelectorSubgroup {
                       code
+                      alternative_codes
                     }
                     ... on ComponentSelectorCurrency {
                       currency {
