@@ -2,11 +2,36 @@ import { RateData } from "../../types/exchangerResp";
 import ErrorHandler from "./ErrorHandler";
 // import db from "../../db"
 
+// changed this
+
+// "VORON": [
+//   "Воронеж, Россия",
+//   "Voronezh, Russia"
+// ],
+
+// to this
+
+// {
+//   "closest_cities": ["ANAPA","NOVOR","GDZ"],
+//   "coordinates": [45.0003,37.325],
+//   "en_country_name": "Russia",
+//   "en_name": "Anapa",
+//   "preposition": "Анапе",
+//   "ru_country_name": "Россия",
+//   "ru_name": "Анапа",
+//   "population": 0,
+//   "codes": ["AAQ","ANP"]
+// },
+
 export default class CitiesHandler {
   groupRatesDataCities = (
     exchangerId: string,
     ratesData: RateData[]
   ): RateData[] => {
+    console.log(
+      "ratesData",
+      ratesData.filter((d) => d.city)
+    );
     // {... cities: "VRN"} -> {... cities: "VRN/MSK/SPB"}
     try {
       return ratesData.reduce(
@@ -35,27 +60,27 @@ export default class CitiesHandler {
       return [];
     }
   };
-
-  formatCities = (
-    languageIndex: number,
-    cities: string,
-    cityList: { [key: string]: string[] }
-  ) => {
-    //  "MSCW/SPB/..." ----> "Russia" : { "Saint-Petersburg", "Moscow"}
-
-    return cities
-      .split("/")
-      .reduce((accumulator: { [key: string]: string[] }, cityCode: string) => {
-        let [city, country] = cityList[cityCode]
-          ? cityList[cityCode][languageIndex].split(",")
-          : [null, null];
-        if (city && country) {
-          country = country.replace(" ", "");
-          accumulator[country] = accumulator[country]
-            ? [...accumulator[country], city]
-            : [city];
-        }
-        return accumulator;
-      }, {});
-  };
 }
+
+//     //  "MSCW/SPB/..." ----> "Russia" : { "Saint-Petersburg", "Moscow"}
+//   formatCities = (
+//     languageIndex: number,
+//     cities: string,
+//     cityList: { [key: string]: string[] }
+//   ) => {
+//     return cities
+//       .split("/")
+//       .reduce((accumulator: { [key: string]: string[] }, cityCode: string) => {
+//         let [city, country] = cityList[cityCode]
+//           ? cityList[cityCode][languageIndex].split(",")
+//           : [null, null];
+//         if (city && country) {
+//           country = country.replace(" ", "");
+//           accumulator[country] = accumulator[country]
+//             ? [...accumulator[country], city]
+//             : [city];
+//         }
+//         return accumulator;
+//       }, {});
+//   };
+// }

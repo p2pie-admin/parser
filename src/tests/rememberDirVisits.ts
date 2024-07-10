@@ -3,11 +3,11 @@ import { DirData } from "../types";
 
 export default (dirId: string) => {
   try {
-    const dirDataExists = db.exists(`.dirs.${dirId}`);
+    const dirDataExists = await db.exists(`.dirs.${dirId}`);
     if (!dirDataExists) return;
-    const dirData = db.getData(`.dirs.${dirId}`) as DirData;
+    const dirData = (await db.getData(`.dirs.${dirId}`)) as DirData;
     const visits = dirData.times_visited ? dirData.times_visited : 0;
-    db.push(`.dirs.${dirId}.times_visited`, visits + 1);
+    await db.push(`.dirs.${dirId}.times_visited`, visits + 1);
   } catch (e) {
     console.log(e);
   }

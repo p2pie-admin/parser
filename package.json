@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "yarn build && node build/SERVER.js",
-    "start2": "concurrently \"rm dbRates.json\" \"rm db.json\" \"node build/server.js\"",
+    "start2": "concurrently \"rm dbRates.json\" \"rm await db.json\" \"node build/server.js\"",
     "dev": "nodemon",
-    "dev2": "concurrently \"rm dbRates.json\" \"rm db.json\" \"nodemon dist/server.js\" \"tsc -w\" ",
+    "dev2": "concurrently \"rm dbRates.json\" \"rm await db.json\" \"nodemon dist/server.js\" \"tsc -w\" ",
     "watch": "tsc -w",
     "build": "rimraf ./build && tsc"
   },
@@ -15,6 +15,7 @@
     "@fastify/cors": "8.0.0",
     "@fastify/static": "^7.0.3",
     "@types/node-fetch": "2",
+    "@types/redis": "^4.0.11",
     "axios": "^0.26.1",
     "dotenv": "^10.0.0",
     "fastify": "^4.26.2",
@@ -23,7 +24,8 @@
     "graphql": "^16.0.1",
     "graphql-request": "^3.6.1",
     "node-fetch": "2",
-    "node-json-db": "^1.4.1",
+    "node-json-db": "^2.3.0",
+    "redis": "^4.6.15",
     "xml-js": "^1.6.11",
     "xmldom": "^0.6.0"
   },

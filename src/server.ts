@@ -12,10 +12,10 @@ import {
   getPopularRates,
   getSimilarRates,
 } from "./rates/Statistics/getPopularRates";
-
-import startParser from "./startParser";
-
-import { handleDirRequest } from "./helper";
+import { handleDirRequest, menu, mylog } from "./helper";
+import auth from "./gql/auth";
+import startMainFlow from "./startMainFlow";
+import { getData } from "./redis";
 
 dotenv.config();
 
@@ -29,22 +29,16 @@ server.register(fastifyStatic, {
 });
 server.get("/", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  return reply.send(`Примеры запросов:
-  \nОтфильтрованные курсы для BTC_CASHRUB: /dir=BTC_CASHRUB/type=tops
-  \nВсе курсы для BTC_CASHRUB: /dir=BTC_CASHRUB/type=all
-  \nВозможные пары для BTC: /possible_pairs/code=BTC
-  \nВсе возможные пары: /possible_pairs
-  \nСписок обменников: /exchangers
-  \nЗаранее посчитанные лучшие популярные курсы: /top
-  \nОшибки по обменникам: /errors
-  \nОшибки по направлениям: /dirs
-  \nВсе существующие курсы: /all_rates
-  \nПохожие курсы: /similar/dirs=BTC_SBERRUB,BTC_TCSBRUB,BTC_CASHRUB
-  `);
+  return reply.send(menu);
 });
 
 server.get("/menu", async function (_, reply) {
   return reply.sendFile("menu.html");
+});
+
+server.get("/topCodes", async function (_, reply) {
+  const topCodes = await getData("topCodes");
+  return reply.send(topCodes);
 });
 
 server.get("/ping", async function (_, reply) {
@@ -53,7 +47,7 @@ server.get("/ping", async function (_, reply) {
 
 server.get("/exchangers", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  const exchangers = db.getData(".exchangers");
+  const exchangers = await db.getData(".exchangers");
   reply.send(
     JSON.stringify(
       Object.keys(exchangers).length ? exchangers : "no active exchangers!"
@@ -63,7 +57,7 @@ server.get("/exchangers", async function (_, reply) {
 
 server.get("/errors", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  reply.send(JSON.stringify(db.getData(".errors")));
+  reply.send(JSON.stringify(await db.getData(".errors")));
 });
 
 server.get("/top", async function (_, reply) {
@@ -91,9 +85,9 @@ interface DirDataWithTotalRates extends DirData {
   totalRates: number;
 }
 
-server.get("/dirs", (_, reply) => {
+server.get("/dirs", async (_, reply) => {
   reply.header("Access-Control-Allow-Origin", "*");
-  const allDirRates = dbRates.getData(".allDirsRates") as AllDirsRates;
+  const allDirRates = (await dbRates.getData(".allDirsRates")) as AllDirsRates;
   const totalRatesByDir = Object.entries(allDirRates).reduce(
     (res: { [key: string]: number }, [code, dirRate]) => {
       res = { ...res, [code]: Object.keys(dirRate).length };
@@ -102,7 +96,7 @@ server.get("/dirs", (_, reply) => {
     {}
   );
 
-  const dirs = db.getData(`.dirs`) as { [key: string]: DirData };
+  const dirs = (await db.getData(`.dirs`)) as { [key: string]: DirData };
   const dirsWithTotalRates = Object.entries(dirs).reduce(
     (res: { [key: string]: DirDataWithTotalRates }, [code, dirData]) => {
       return {
@@ -131,7 +125,7 @@ server.get(
   "/possible_pairs",
   async function (request: possiblePairsReq, reply) {
     reply.header("Access-Control-Allow-Origin", "*");
-    reply.send(JSON.stringify(db.getData(`.possible_pairs`)));
+    reply.send(JSON.stringify(await db.getData(`.possible_pairs`)));
   }
 );
 
@@ -142,10 +136,12 @@ server.get(
     const { code } = request.params;
     if (code && code.length < 8) {
       reply.send(
-        JSON.stringify(db.getData(`.possible_pairs.${code.toUpperCase()}`))
+        JSON.stringify(
+          await db.getData(`.possible_pairs.${code.toUpperCase()}`)
+        )
       );
     }
-    reply.send(JSON.stringify(db.getData(".parser_setting")));
+    reply.send(JSON.stringify(await db.getData(".parser_setting")));
   }
 );
 
@@ -175,14 +171,17 @@ const startServer = async () => {
       port: +(process.env.PARSER_PORT || 5000),
       host: "0.0.0.0",
     });
-
-    startParser();
+    //await auth();
+    startMainFlow();
   } catch (error) {
-    server.log.error(error);
+    mylog(String(error), "error");
     process.exit(1);
   }
 };
 
 startServer();
-console.log(" -------------------------- STARTED -------------------------- ");
+mylog(
+  " -------------------------- STARTED -------------------------- ",
+  "success"
+);
 export { server };

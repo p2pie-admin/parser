@@ -6,19 +6,20 @@ export type Logo = {
   url: string;
 };
 
-export type ExchangerStatus = "active" | "suspended" | "disabled";
+export type IExchangerStatus = "active" | "suspended" | "disabled";
 
-export type Exchanger = {
+export type IExchanger = {
   name: string;
-  status: ExchangerStatus;
+  status: IExchangerStatus;
   rates_link: string;
   ref_link?: string;
-  tag: string | null;
-  logo: Logo;
-  total_rates: number;
-  admin_rating: number;
+  tag?: string | null;
+  logo?: Logo;
+  total_rates?: number;
+  admin_rating?: number;
+  loopId?: number | NodeJS.Timeout;
 };
 
-export interface ExchangerWithId extends Exchanger {
+export interface IExchangerWithId extends IExchanger {
   id: string;
 }

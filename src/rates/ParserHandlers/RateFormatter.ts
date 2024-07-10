@@ -1,7 +1,7 @@
 import { RateData, ExchangerResponse } from "../../types/exchangerResp";
 import { Rate, Limit } from "../../types/rates";
 import ErrorHandler from "./ErrorHandler";
-import CitiesHandler from "./CitiesHandler";
+
 import db from "../../db";
 import dbRates from "../../dbRates";
 
@@ -32,23 +32,29 @@ export default class RateFormatter {
   };
 
   formatAndMatchRatesWithDirs = (rates: RateData[]): void => {
-    // const cityCodes = db.getData(".parser_setting.cities") as {
+    // const cityCodes = await db.getData(".parser_setting.cities") as {
     //   [key: string]: string[];
     // };
     const totalRatesAmount = rates ? rates.length : 0;
-    const dirs_disabled = db.getData(".parser_setting.dirs_disabled") as string;
-    const all_pm_codes_that_exist = db.getData(
+    await db.push(
+      `.exchangers.${this.exchangerId}.total_rates`,
+      totalRatesAmount
+    );
+    const dirs_disabled = (await db.getData(
+      ".parser_setting.dirs_disabled"
+    )) as string;
+    const all_pm_codes_that_exist = (await db.getData(
       ".all_pm_codes_that_exist"
-    ) as string[];
-    const alternative_pm_codes = db.getData(
+    )) as string[];
+    const alternative_pm_codes = (await db.getData(
       ".alternative_pm_codes"
-    ) as string[][];
+    )) as string[][];
     const codes = [
       ...all_pm_codes_that_exist,
       ...alternative_pm_codes.map((c) => c[1]),
     ];
     let rateDataError = false;
-    db.push(`.exchangers.${this.exchangerId}.total_rates`, totalRatesAmount);
+
     rates.map((rate) => {
       try {
         let [from, to] = [
@@ -57,8 +63,7 @@ export default class RateFormatter {
         ];
         const fromIsAlt = alternative_pm_codes.find((code) => code[1] == from);
         const toIsAlt = alternative_pm_codes.find((code) => code[1] == to);
-        (fromIsAlt || toIsAlt) &&
-          console.log("unusual rate: ", fromIsAlt, toIsAlt);
+
         if (fromIsAlt) from = fromIsAlt[0];
         if (toIsAlt) to = toIsAlt[0];
         const dir = `${from}_${to}`;
@@ -86,16 +91,8 @@ export default class RateFormatter {
           dir
         );
 
-        // const citiesHandler = new CitiesHandler();
-        // let cities = {};
-        // if (Object.keys(cityCodes).length && rate.city?._text) {
-        //   const ru = citiesHandler.formatCities(0, rate.city?._text, cityCodes);
-        //   const en = citiesHandler.formatCities(1, rate.city?._text, cityCodes);
-        //   cities = {ru, en};
-        // }
-
         const { name, tag, logo, admin_rating, ref_link, rates_link } =
-          db.getData(`.exchangers.${this.exchangerId}`); // сразу забираем данные обменника для отображения в таблице и свайпере
+          await db.getData(`.exchangers.${this.exchangerId}`); // сразу забираем данные обменника для отображения в таблице и свайпере
         const dirRate = {
           name,
           admin_rating,

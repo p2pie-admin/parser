@@ -41,14 +41,14 @@ export default class ErrorCreator {
     code: ErrorCode | undefined = "unknown-error",
     serverRespMessage?: string | undefined
   ): void => {
-    //if (db.exists(`.${this.type}.${this.exchangerId}`)) return;
+    //if (await db.exists(`.${this.type}.${this.exchangerId}`)) return;
 
     console.error(
       `\u001b[1;31m ˟ ${this.exchangerId} : ${
         this.errorCodesExplanation[code] || "Код ошибки: " + code
       }`
     );
-    db.push(`.${this.type}.${this.exchangerId}`, {
+    await db.push(`.${this.type}.${this.exchangerId}`, {
       code,
       devMessage: this.errorCodesExplanation[code],
       serverRespMessage,
@@ -59,11 +59,14 @@ export default class ErrorCreator {
   };
 
   setErrorStatusChanged = (isChanged: boolean) => {
-    db.push(`.${this.type}.${this.exchangerId}.isStatusChanged`, isChanged);
+    await db.push(
+      `.${this.type}.${this.exchangerId}.isStatusChanged`,
+      isChanged
+    );
   };
 
   deleteError = () => {
-    db.delete(`.${this.type}.${this.exchangerId}`);
+    await db.delete(`.${this.type}.${this.exchangerId}`);
   };
 
   lockExchanger = (code: ErrorCode) => {
@@ -86,9 +89,9 @@ export default class ErrorCreator {
     });
 
     try {
-      db.push(`.looped.${this.exchangerId}`, false);
-      db.push(`.errors.${this.exchangerId}.isStatusChanged`, true);
-      db.delete(`.exchangers.${this.exchangerId}`);
+      await db.push(`.looped.${this.exchangerId}`, false);
+      await db.push(`.errors.${this.exchangerId}.isStatusChanged`, true);
+      await db.delete(`.exchangers.${this.exchangerId}`);
 
       return;
     } catch (err) {

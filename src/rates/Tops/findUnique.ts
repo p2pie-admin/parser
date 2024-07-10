@@ -21,7 +21,7 @@ const addTopParameter = (
 const findUniqueDirRates = (dirRates: DirRates): DirRates => {
   if (!Object.keys(dirRates).length) return {};
   try {
-    const filterOptions = db.getObject(".topCodes") as string[];
+    const filterOptions = (await db.getObject(".topCodes")) as string[];
 
     // const dirRatesWithoutFees = Object.fromEntries(Object.entries(dirRates).filter(
     //   ([_, rate]) => !rate.from_fee && !rate.to_fee && !rate.min_fee

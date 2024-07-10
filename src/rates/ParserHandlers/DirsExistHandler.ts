@@ -1,12 +1,11 @@
-import db from "../../db";
 import { AllDirsRates } from "../../types/rates";
-import dbRates from "../../dbRates";
+import { getData, setData } from "../../redis";
 
-const dirsExistHandler = () => {
-  const allDirsRates = dbRates.getData(".allDirsRates") as AllDirsRates;
-  const allPmCodesThatExist = db.getData(
-    ".all_pm_codes_that_exist"
-  ) as string[];
+const dirsExistHandler = async () => {
+  const allDirsRates = (await getData("allDirsRates")) as AllDirsRates;
+  const allPmCodesThatExist = (await getData(
+    "all_pm_codes_that_exist"
+  )) as string[];
 
   const possibleDirs = allPmCodesThatExist.reduce(
     (res: string[], leftCode) => [
@@ -29,7 +28,8 @@ const dirsExistHandler = () => {
     },
     {}
   );
-  db.push(".possible_pairs", possiblePairs);
+  console.log("possiblePairs", possiblePairs);
+  setData("possible_pairs", possiblePairs);
 };
 
 export default dirsExistHandler;

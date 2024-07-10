@@ -9,8 +9,9 @@ export class DirRatesVerificator {
   SD_worst: number;
 
   constructor(dir: string) {
-    const { SD_applied_from, SD_best, SD_worst } =
-      db.getData(".parser_setting");
+    const { SD_applied_from, SD_best, SD_worst } = await db.getData(
+      ".parser_setting"
+    );
     this.dir = dir;
     this.SD_applied_from = SD_applied_from;
     this.SD_best = SD_best;
@@ -29,9 +30,12 @@ export class DirRatesVerificator {
           Object.keys(dirRates).length
         );
         if (rateWarnings.length)
-          db.push(`.dirs.${this.dir}.warnings.${exchangerId}`, rateWarnings);
+          await db.push(
+            `.dirs.${this.dir}.warnings.${exchangerId}`,
+            rateWarnings
+          );
         if (rateErrors.length)
-          db.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors); //
+          await db.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors); //
         //dbRates.delete(`.dirRates.${this.dir}.${exchangerId}`);
         if (!rateErrors.length) okDirRates[exchangerId] = rate;
         return okDirRates;

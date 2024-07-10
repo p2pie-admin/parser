@@ -1,6 +1,18 @@
-import { Exchanger } from "./exchanger";
+import { IExchangerWithId } from "./exchanger";
 import { ExchangerErrors } from "./exchangerResp";
 import { DirRates, FullRate } from "./rates";
+
+export interface ICity {
+  codes: string[];
+  en_name: string;
+  ru_name: string;
+  population: number;
+  coordinates: number[];
+  preposition: string;
+  closest_cities: string[];
+  en_country_name: string;
+  ru_country_name: string;
+}
 
 export interface ParserSetting {
   dirs_disabled: string;
@@ -25,12 +37,10 @@ export interface DirData {
 
 export interface DB {
   jwt: string;
-  looped: { [key: string]: boolean };
-  timeouts: Timeouts;
   dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны
   topCodes: string[];
   parser_setting: ParserSetting;
-  exchangers: { [key: string]: Exchanger };
+  exchangers: IExchangerWithId[];
   errors: ExchangerErrors;
   all_pm_codes_that_exist: string[][];
   alternative_pm_codes: string[];

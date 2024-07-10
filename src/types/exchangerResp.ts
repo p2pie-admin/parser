@@ -15,6 +15,7 @@ interface RateData {
   tofee?: RateField;
   param?: RateField;
   city?: RateField;
+  cityCourses?: { [key: string]: number };
 }
 
 interface ExchangerResponse {

@@ -2,12 +2,6 @@ import { DB } from "../types";
 
 const initialDB: DB = {
   jwt: "",
-  looped: {},
-  timeouts: {
-    getRatesIn: 20_000,
-    expireIn: 18_000,
-    restartRatesHandlerIn: 22_000,
-  },
   dirs: {},
   topCodes: [],
   parser_setting: {
@@ -18,7 +12,7 @@ const initialDB: DB = {
     SD_best_rates: 4,
     SD_worst_rates: 5,
   },
-  exchangers: {},
+  exchangers: [],
   errors: {},
   all_pm_codes_that_exist: [],
   alternative_pm_codes: [],

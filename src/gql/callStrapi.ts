@@ -11,7 +11,7 @@ const strapiLink =
 if (!strapiLink) console.log("📙 \u001b[1;33m strapiLink is: ", strapiLink);
 
 const callStrapi = async (query: any, variables?: any) => {
-  const jwt = db.getData(".jwt");
+  const jwt = await db.getData(".jwt");
   const headers = jwt
     ? {
         authorization: `Bearer ${jwt}`,
