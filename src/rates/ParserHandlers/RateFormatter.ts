@@ -130,7 +130,7 @@ export default class RateFormatter {
     });
     if (rateDataError) {
       const errorHandler = new ErrorHandler(this.exchangerId);
-      errorHandler.saveError(
+      errorHandler.sendError(
         "data-error",
         "Данные курсов частично отсутствуют или имеют некорректный формат"
       );
@@ -141,18 +141,18 @@ export default class RateFormatter {
     const errorHandler = new ErrorHandler(this.exchangerId);
 
     if (!exchangerResponse) {
-      errorHandler.saveError("404");
+      errorHandler.sendError("404");
       return false;
     }
     if (exchangerResponse.error) {
-      errorHandler.saveError(
+      errorHandler.sendError(
         "exchanger-custom-error",
         exchangerResponse?.error?._text
       );
       return false;
     }
     if (!exchangerResponse.rates?.item?.length) {
-      errorHandler.saveError("no-rates");
+      errorHandler.sendError("no-rates");
       return false;
     }
     return true;

@@ -1,43 +1,37 @@
-import db from "./db";
-
 import { mylog } from "./helper";
-
 import reload from "./loops/reload";
+import { getData } from "./redis";
+
 import slowLoop from "./loops/slow";
+import startWorkers from "./loops/fast";
 
-import { IExchangerWithId } from "./types/exchanger";
-
-let globalLoopsDone = 0;
+let loopIdx = 1;
 
 const startMainFlow = async () => {
   // initial
   await reload();
-  const exchangers = (await db.getData(".exchangers")) as IExchangerWithId[];
-  const restartIn = 333 * exchangers.length + 8_000;
-  mylog(`Parsing process will last ~ ${(restartIn / 1000).toFixed(0)}s`);
+
+  const pauseBetweenLoops = await getData("parser_setting:pause_between_loops");
+  mylog(`Pause between loops: ${pauseBetweenLoops}s`, "info");
+  await startWorkers();
   runLoops();
 
   setInterval(async () => {
     runLoops();
-  }, restartIn);
+  }, pauseBetweenLoops * 1000);
 };
 
 const runLoops = async () => {
   // REPEATING >>>
-  if (!globalLoopsDone) {
-    // initial, need return because 0 % 7 === 0 true
-    await slowLoop();
-    globalLoopsDone += 1;
-    return;
-  }
-  if (globalLoopsDone % 7 === 0) {
+  if (loopIdx % 7 === 0) {
     await slowLoop();
   }
-  if (globalLoopsDone % 83 === 0) {
+  if (loopIdx % 83 === 0) {
     await reload();
   }
-  mylog(`Loops completed: ${globalLoopsDone}`, "success");
-  globalLoopsDone += 1;
+
+  mylog(`Loop #${loopIdx}`, "success");
+  loopIdx += 1;
 };
 
 export default startMainFlow;

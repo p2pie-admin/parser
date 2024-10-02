@@ -1,5 +1,4 @@
-import { IExchangerWithId } from "./exchanger";
-import { ExchangerErrors } from "./exchangerResp";
+import { IExchanger } from "./exchanger";
 import { DirRates, FullRate } from "./rates";
 
 export interface ICity {
@@ -40,21 +39,11 @@ export interface DB {
   dirs: { [key: string]: DirData }; // отслеживаем какие направления популярны
   topCodes: string[];
   parser_setting: ParserSetting;
-  exchangers: IExchangerWithId[];
-  errors: ExchangerErrors;
+  exchangers: IExchanger[];
   all_pm_codes_that_exist: string[][];
   alternative_pm_codes: string[];
   possible_pairs: { [key: string]: string[] };
 }
-
-export type Violation = [boolean, string];
-
-export interface VerificationResult {
-  rateErrors: string[];
-  rateWarnings: string[];
-}
-
-export type ErrorTypes = "errors" | "warnings" | "rate_errors";
 
 export interface DBRATES {
   allDirsRates: { [key: string]: DirRates };

@@ -56,7 +56,7 @@ export default class CitiesHandler {
       );
     } catch (err) {
       const exchangerHandler = new ErrorHandler(exchangerId);
-      exchangerHandler.saveError("data-error", "couldn't load cities");
+      exchangerHandler.sendError("data-error", "couldn't load cities");
       return [];
     }
   };

@@ -32,12 +32,11 @@ export const getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
   );
   const bestRates = findBestDirRates(ratesWithoutUnique);
 
-
-  const dirTops: FullRate[] = [
-    ...dirRatesIntoArray(uniqueRates),
-    ...dirRatesIntoArray(bestRates),
-  ].sort((a, b) => a.course - b.course);
-  return dirTops;
+  // const dirTops: FullRate[] = [
+  //   ...dirRatesIntoArray(uniqueRates),
+  //   ...dirRatesIntoArray(bestRates),
+  // ].sort((a, b) => a.course - b.course);
+  return []; //dirTops;
 };
 
 const getDirTops = (allDirsRates: AllDirsRates): AllDirsTops => {

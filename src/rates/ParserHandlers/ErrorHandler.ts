@@ -1,102 +1,80 @@
 import db from "../../db";
-import { ErrorCode, ExchangerError } from "../../types/exchangerResp";
-import { ErrorTypes } from "../../types";
 import callStrapi from "../../gql/callStrapi";
 import { updateExchangerStatus } from "../../gql/queries";
+import { mylog } from "../../helper";
 
-export default class ErrorCreator {
-  exchangerId: string;
-  type: ErrorTypes;
+// export default class ErrorCreator {
+//   error: IError;
 
-  constructor(exchangerId: string, type?: ErrorTypes) {
-    this.exchangerId = exchangerId;
-    this.type = type || "errors";
-  }
+//   constructor(error: IError) {
+//     this.error = error;
+//   }
 
-  errorCodesExplanation = {
-    ENOTFOUND: "Соединение не установлено",
-    ECONNREFUSED: "По данному IP:PORT ничто не слушает",
-    ECONNRESET: "Соединение сорвалось",
-    ETIMEDOUT: "Истекло время ожидания",
-    ECONNABORTED: "Соединение сорвалось",
-    CERT_HAS_EXPIRED: "Сертификат устарел",
-    ERR_FR_TOO_MANY_REDIRECTS: "Превышено число перенаправлений",
-    EPERM: "Нет разрешения",
-    "307": "Соединение перенаправлено",
-    "403": "Соединение запрещено",
-    "404": "Страница не найдена",
-    "500": "Неизвестная ошибка",
-    "503": "Сервер перегружен",
-    "522": "Истекло время ожидания",
-    "no-rates": "Обменник ответил, но курсы не отдает",
-    "json-parsing-error": "Не удалось распарсить XML",
-    "data-error": "Найден некорректный курс",
-    "exchanger-custom-error": "Обменник сообщил об ошибке",
-    "unknown-error": "Неизвестная ошибка",
-  } as { [key in ErrorCode]: string };
+//   errorCodesExplanation = {
+//     ENOTFOUND: "Соединение не установлено",
+//     ECONNREFUSED: "По данному IP:PORT ничто не слушает",
+//     ECONNRESET: "Соединение сорвалось",
+//     ETIMEDOUT: "Истекло время ожидания",
+//     ECONNABORTED: "Соединение сорвалось",
+//     CERT_HAS_EXPIRED: "Сертификат устарел",
+//     ERR_FR_TOO_MANY_REDIRECTS: "Превышено число перенаправлений",
+//     EPERM: "Нет разрешения",
+//     "307": "Соединение перенаправлено",
+//     "403": "Соединение запрещено",
+//     "404": "Страница не найдена",
+//     "500": "Неизвестная ошибка",
+//     "503": "Сервер перегружен",
+//     "522": "Истекло время ожидания",
+//     unknown: "Неизвестная ошибка",
+//   } as { [key in ErrorCode]: string };
 
-  errorDefaultMessage = "Неизвестная ошибка";
+//   errorDefaultMessage = "Неизвестная ошибка";
 
-  saveError = (
-    code: ErrorCode | undefined = "unknown-error",
-    serverRespMessage?: string | undefined
-  ): void => {
-    //if (await db.exists(`.${this.type}.${this.exchangerId}`)) return;
+//   sendError = async (
+//     code: ErrorCode = "unknown",
+//     message?: string | undefined
+//   ): Promise<void> => {
+//     //if (await db.exists(`.${this.type}.${this.exchangerId}`)) return;
+//     this.error.autoMessage = this.errorCodesExplanation?.[code] || "Код ошибки: " + code
+//     mylog(
+//       `˟ ${this.error.exchangerId} ${this.error.exchangerName} : ${
 
-    console.error(
-      `\u001b[1;31m ˟ ${this.exchangerId} : ${
-        this.errorCodesExplanation[code] || "Код ошибки: " + code
-      }`
-    );
-    await db.push(`.${this.type}.${this.exchangerId}`, {
-      code,
-      devMessage: this.errorCodesExplanation[code],
-      serverRespMessage,
-      isStatusChanged: false,
-    } as ExchangerError);
+//       }`,
+//       "error"
+//     );
+//     // await db.push(`.${this.type}.${this.exchangerId}`, {
+//     //   code,
+//     //   devMessage: this.errorCodesExplanation[code],
+//     //   message,
+//     //   isStatusChanged: false,
+//     // } as ExchangerError);
 
-    if (this.type === "errors") this.lockExchanger(code);
-  };
+//     if (this.type === "errors") this.lockExchanger(code);
+//   };
 
-  setErrorStatusChanged = (isChanged: boolean) => {
-    await db.push(
-      `.${this.type}.${this.exchangerId}.isStatusChanged`,
-      isChanged
-    );
-  };
+//   // setErrorStatusChanged = async (isChanged: boolean) => {
+//   //   await db.push(
+//   //     `.${this.type}.${this.exchangerId}.isStatusChanged`,
+//   //     isChanged
+//   //   );
+//   // };
 
-  deleteError = () => {
-    await db.delete(`.${this.type}.${this.exchangerId}`);
-  };
+//   // deleteError = async () => {
+//   //   await db.delete(`.${this.type}.${this.exchangerId}`);
+//   // };
 
-  lockExchanger = (code: ErrorCode) => {
-    const codesToDisable: ErrorCode[] = [
-      "ECONNREFUSED",
-      "EPERM",
-      "404",
-      "403",
-      "unknown-error",
-      "json-parsing-error",
-    ];
+//   lockExchanger = async (code: ErrorCode) => {
+//     const codesToDisable: ErrorCode[] = [
+//       "ECONNREFUSED",
+//       "EPERM",
+//       "404",
+//       "403",
+//       "unknown-error",
+//       "json-parsing-error",
+//     ];
 
-    const status = codesToDisable.find((c) => c === code)
-      ? "disabled"
-      : "suspended";
-
-    callStrapi(updateExchangerStatus, {
-      exchangerId: this.exchangerId,
-      status,
-    });
-
-    try {
-      await db.push(`.looped.${this.exchangerId}`, false);
-      await db.push(`.errors.${this.exchangerId}.isStatusChanged`, true);
-      await db.delete(`.exchangers.${this.exchangerId}`);
-
-      return;
-    } catch (err) {
-      console.error("Exchanger locker failed: ", this.exchangerId, err || "");
-      return;
-    }
-  };
-}
+//     const status = codesToDisable.find((c) => c === code)
+//       ? "disabled"
+//       : "suspended";
+//   };
+// }

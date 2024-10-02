@@ -1,12 +1,17 @@
 import { AllDirsRates } from "../../types/rates";
 import { getData, setData } from "../../redis";
+import { mylog } from "../../helper";
 
 const dirsExistHandler = async () => {
-  const allDirsRates = (await getData("allDirsRates")) as AllDirsRates;
+  const allDirsRates = (await getData("all_dirs_rates")) as AllDirsRates;
+
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
   )) as string[];
-
+  if (!allDirsRates || !allPmCodesThatExist) {
+    mylog("No dirs exist yet!", "warning");
+    return;
+  }
   const possibleDirs = allPmCodesThatExist.reduce(
     (res: string[], leftCode) => [
       ...res,
@@ -17,18 +22,19 @@ const dirsExistHandler = async () => {
 
   const possiblePairs = possibleDirs.reduce(
     // for showing on selector if dirs exist
-    (possiblePairs: { [key: string]: string[] }, possibleDir) => {
+    (pps: { [key: string]: string[] }, possibleDir) => {
       const dirRates = allDirsRates[possibleDir];
-      if (!dirRates || !Object.keys(dirRates).length) return possiblePairs;
+      if (!dirRates || !Object.keys(dirRates).length) return pps;
       const [leftPm, rightPm] = possibleDir.split("_");
-      possiblePairs[leftPm] = possiblePairs[leftPm]
-        ? [...possiblePairs[leftPm], rightPm]
-        : [rightPm];
-      return possiblePairs;
+      pps[leftPm] = pps[leftPm] ? [...pps[leftPm], rightPm] : [rightPm];
+      return pps;
     },
     {}
   );
-  console.log("possiblePairs", possiblePairs);
+  Object.entries(possiblePairs).map(([key, data]) => {
+    mylog(`possible pairs for ${key}: ${data.length}`, "info");
+  });
+
   setData("possible_pairs", possiblePairs);
 };
 

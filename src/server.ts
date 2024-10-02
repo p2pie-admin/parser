@@ -15,7 +15,9 @@ import {
 import { handleDirRequest, menu, mylog } from "./helper";
 import auth from "./gql/auth";
 import startMainFlow from "./startMainFlow";
-import { getData } from "./redis";
+import { getData, setData } from "./redis";
+import startWorkers from "./loops/fast";
+import reload from "./loops/reload";
 
 dotenv.config();
 
@@ -36,8 +38,8 @@ server.get("/menu", async function (_, reply) {
   return reply.sendFile("menu.html");
 });
 
-server.get("/topCodes", async function (_, reply) {
-  const topCodes = await getData("topCodes");
+server.get("/top_codes", async function (_, reply) {
+  const topCodes = await getData("top_codes");
   return reply.send(topCodes);
 });
 
@@ -57,7 +59,7 @@ server.get("/exchangers", async function (_, reply) {
 
 server.get("/errors", async function (_, reply) {
   reply.header("Access-Control-Allow-Origin", "*");
-  reply.send(JSON.stringify(await db.getData(".errors")));
+  reply.send(JSON.stringify(await getData("errors")));
 });
 
 server.get("/top", async function (_, reply) {
@@ -167,12 +169,12 @@ server.get("/dir=:dirId/type=:type", async function (request: dirReq, reply) {
 const startServer = async () => {
   try {
     // HOST IS IMPORTANT, OTHERWISE DOCKER PORT EXPOSE NOT WORKING
-    await server.listen({
-      port: +(process.env.PARSER_PORT || 5000),
-      host: "0.0.0.0",
-    });
-    //await auth();
-    startMainFlow();
+    // await server.listen({
+    //   port: +(process.env.PARSER_PORT || 4800),
+    //   host: "0.0.0.0",
+    // });
+
+    startWorkers();
   } catch (error) {
     mylog(String(error), "error");
     process.exit(1);
@@ -180,8 +182,5 @@ const startServer = async () => {
 };
 
 startServer();
-mylog(
-  " -------------------------- STARTED -------------------------- ",
-  "success"
-);
+
 export { server };

@@ -11,19 +11,19 @@ import {
 import { mylog } from "../helper";
 import dirsExistHandler from "../rates/ParserHandlers/DirsExistHandler";
 import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
-import { setData } from "../redis";
+import { setData, setObject } from "../redis";
+import statusChange from "../statusChange";
 
 import { IPmPointer } from "../types/pms";
 import { ISection, IPmGroup } from "../types/selector";
-import { updateExchangersList } from "./helper";
+import { reloadExchangers } from "./helper";
 
 async function reload() {
   mylog("Reloading data...", "info");
-  mylog("Transfering: Suspended, Disabled -> Active", "info");
-
+  // mylog("Transfering: Suspended, Disabled -> Active", "info");
   // await statusChange("suspended", "active");
   // await statusChange("disabled", "active");
-  await updateExchangersList();
+  await reloadExchangers();
 
   const [parserSettingsData, pmGroupsData, topsData, popularPms] =
     await Promise.all(
@@ -38,23 +38,18 @@ async function reload() {
     mylog("Strapi initial data error!", "error");
     return;
   }
+
   setData(
-    "topCodes",
+    "top_codes",
     topsData.topParameters.map((p: any) => p.code)
   );
-  // await db.push(
-  //   ".topCodes",
-  //   topsData.topParameters.map((p: any) => p.code),
-  //   true
-  // );
-  setData("parser_setting", parserSettingsData.parserSetting);
-  // await db.push(".parser_setting", parserSettingsData.parserSetting, true);
+  //console.log(parserSettingsData.parserSetting)
+  setObject("parser_setting", parserSettingsData.parserSetting);
 
   const pointers = popularPms.pms as IPmPointer[];
   const pms = pointers.map((pointer) => pmPointerToPm(pointer));
   const popularDirs = pmsToDirs(pms);
   setData("popular_dirs", popularDirs);
-  // await db.push(".popular_dirs", popularDirs, true);
 
   const sections = pmGroupsData?.selector?.sections as ISection[];
   setData(
@@ -62,19 +57,9 @@ async function reload() {
     _getAllPmCodesThatExistFromSections(sections)
   );
   setData("alternative_pm_codes", _getAlternativePmCodes(sections));
-  // await db.push(
-  //   ".all_pm_codes_that_exist",
-  //   _getAllPmCodesThatExistFromSections(sections),
-  //   true
-  // );
-  // await db.push(
-  //   ".alternative_pm_codes",
-  //   _getAlternativePmCodes(sections),
-  //   true
-  // );
 
   dirsExistHandler();
-  // await db.save();
+
   mylog("Reload finished!", "info");
   return;
 }

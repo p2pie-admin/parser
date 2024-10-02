@@ -40,44 +40,5 @@ interface AllExchangerResponses {
 }
 
 //type ErrorCode = "no-internet" | "404" | "json-parsing-error"| "data-error" | "no-rates" | "error-response" | "no-permission" | "unknown-error"
-type ErrorCode =
-  | "no-rates"
-  | "ENOTFOUND"
-  | "ECONNREFUSED"
-  | "ECONNRESET"
-  | "ETIMEDOUT"
-  | "EPERM"
-  | "ECONNABORTED"
-  | "CERT_HAS_EXPIRED"
-  | "ERR_FR_TOO_MANY_REDIRECTS"
-  | "307"
-  | "403"
-  | "404"
-  | "500"
-  | "503"
-  | "522"
-  | "json-parsing-error"
-  | "data-error"
-  | "exchanger-custom-error"
-  | "unknown-error";
 
-type ExchangerError = {
-  code: string;
-  isStatusChanged: boolean;
-  devMessage: string;
-  serverRespMessage: string | undefined;
-};
-
-interface ExchangerErrors {
-  [key: string]: ExchangerError;
-}
-
-export {
-  AllExchangerResponses,
-  ExchangerResponse,
-  RateData,
-  RateField,
-  ErrorCode,
-  ExchangerError,
-  ExchangerErrors,
-};
+export { AllExchangerResponses, ExchangerResponse, RateData, RateField };

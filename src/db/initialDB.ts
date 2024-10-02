@@ -13,7 +13,6 @@ const initialDB: DB = {
     SD_worst_rates: 5,
   },
   exchangers: [],
-  errors: {},
   all_pm_codes_that_exist: [],
   alternative_pm_codes: [],
   possible_pairs: {},

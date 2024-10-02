@@ -10,6 +10,7 @@ export type IExchangerStatus = "active" | "suspended" | "disabled";
 
 export type IExchanger = {
   name: string;
+  id: string;
   status: IExchangerStatus;
   rates_link: string;
   ref_link?: string;
@@ -19,7 +20,3 @@ export type IExchanger = {
   admin_rating?: number;
   loopId?: number | NodeJS.Timeout;
 };
-
-export interface IExchangerWithId extends IExchanger {
-  id: string;
-}

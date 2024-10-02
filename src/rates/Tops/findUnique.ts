@@ -18,7 +18,7 @@ const addTopParameter = (
   };
 };
 
-const findUniqueDirRates = (dirRates: DirRates): DirRates => {
+const findUniqueDirRates = async (dirRates: DirRates): Promise<DirRates> => {
   if (!Object.keys(dirRates).length) return {};
   try {
     const filterOptions = (await db.getObject(".topCodes")) as string[];

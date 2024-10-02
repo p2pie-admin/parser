@@ -1,85 +1,77 @@
-import axios from "axios";
-
 import { mylog } from "../helper";
-import getDirTops from "../rates/Tops";
-import { AllDirsRates, DirRates, FullRate } from "../types/rates";
-import db from "../db";
-import dbRates from "../dbRates";
-import ErrorHandler from "../rates/ParserHandlers/ErrorHandler";
-import RateFormatter from "../rates/ParserHandlers/RateFormatter";
-import { xmlToJson } from "./helper";
+import RatesParser from "../rates/ParserHandlers/RateParser";
+import { getData } from "../redis";
+import { IExchanger } from "../types/exchanger";
+import { cpus } from "os";
+import cluster from "cluster";
+import { splitToNChunks, findAvailablePort } from "./helper";
+import auth from "../gql/auth";
+import reload from "./reload";
+import dotenv from "dotenv";
 
-export default class Loop {
-  id: string;
-  rates_link: string;
-  restartIn: number;
-  intervalId?: number | NodeJS.Timeout;
+dotenv.config();
 
-  constructor(
-    { id, rates_link }: { id: string; rates_link: string },
-    restartIn: number
-  ) {
-    this.id = id;
-    this.rates_link = rates_link;
-    this.restartIn = restartIn;
-  }
-  startLoop = () => {
-    this.intervalId = setInterval(() => {
-      this._getRates();
-    }, 1000); // Runs every second
-  };
+const startMainWorker = async () => {
+  await auth();
+  await reload();
 
-  _getRates = async () => {
-    const { id, rates_link } = this; // хз как this передать в then()
-    const expireIn = await db.getData(".timeouts.expireIn");
-    axios
-      .get(rates_link, { timeout: expireIn })
-      .then(function (response) {
-        const errorHandler = new ErrorHandler(id);
-        //const citiesHandler = new CitiesHandler();
-        const rateFormatter = new RateFormatter(id);
-        //  //  //  //  //  //  //  //
-        let JSONres = xmlToJson(errorHandler, response?.data);
-        //  //  //  //  //  //  //  //
-        const wereRatesReceived = rateFormatter.checkForErrors(JSONres);
+  const port = parseInt(process.env.PARSER_PORT || "5005");
+  const numCPUs = cpus().length;
+  const availablePorts = await Promise.all(
+    Array.from({ length: numCPUs }, (_, i) => findAvailablePort(port + i))
+  );
 
-        if (wereRatesReceived && JSONres.rates?.item) {
-          //status === "suspended" && statusChange("suspended", "active", id)
-          console.log(
-            `\u001b[1;32m ✔ ${id} : Курсов получено : ${JSONres.rates?.item.length}`
-          );
-          // let ratesDataWithGroupedCities = citiesHandler.groupRatesDataCities(
-          //   id,
-          //   JSONres.rates?.item
-          // );
-          rateFormatter.formatAndMatchRatesWithDirs(JSONres.rates?.item); // пишет в JSОN файл
-        }
-      })
-      .catch(function (err) {
-        const { message, code, status } = err;
-        const numberCode = message.match(/\d+/) && message.match(/\d+/)[0];
-        const errorHandler = new ErrorHandler(id);
-        errorHandler.saveError(code || status || numberCode, message);
+  for (let i = 0; i < numCPUs; i++) {
+    setTimeout(() => {
+      mylog(`Forking worker #${i} on port ${availablePorts[i]}`, "info");
+      cluster.fork({
+        WORKER_PORT: availablePorts[i],
+        IDX: i,
       });
-  };
+    }, i * 1000); // Delay between each worker fork
+  }
 
-  _clearAllAssociatedRates = async () => {
-    const allDirsRates = (await dbRates.getData(
-      ".allDirsRates"
-    )) as AllDirsRates;
-    Object.entries(allDirsRates).map(
-      ([_, dirRates]) => delete dirRates[this.id]
-    );
-    dbRates.push(".dirRates", allDirsRates);
-  };
-}
-/////////////// + helper:
-
-const calculateTops = async () => {
-  mylog(`Поиск лучших курсов...`);
-  const allDirsRates = (await dbRates.getData(".allDirsRates")) as {
-    [key: string]: DirRates;
-  };
-  const allDirsTops = getDirTops(allDirsRates) as { [key: string]: FullRate[] };
-  dbRates.push(".allDirsTops", allDirsTops);
+  cluster.on("exit", (worker) => {
+    mylog(`Worker ${worker.process.pid} died`, "warning");
+  });
 };
+
+const startWorkers = async () => {
+  const numCPUs = cpus().length;
+  const exchangers = (await getData("exchangers")) as IExchanger[];
+  const chunkedExchangers = splitToNChunks(exchangers, numCPUs);
+
+  if (cluster.isPrimary) {
+    startMainWorker();
+  } else {
+    const idx = parseInt(process.env.IDX || "");
+    const exchangersChunk = chunkedExchangers[idx];
+
+    mylog(
+      `Worker ${idx} pid ${process.pid} started with ${exchangersChunk?.length} chunk `,
+      "success"
+    );
+
+    // Process the chunk of exchangers
+    processExchangers(exchangersChunk, idx);
+  }
+};
+
+const processExchangers = (exchangersChunk: IExchanger[], idx: number) => {
+  exchangersChunk.map(async (exchanger, index) => {
+    await new Promise((resolve) => setTimeout(resolve, index * 200)); // pause between parsing
+    const leftToParse = exchangersChunk.length - index;
+    !(leftToParse % 10) &&
+      mylog(
+        `--- Ядро ${idx}: oсталось зациклить ${leftToParse}  ---`,
+        "warning"
+      );
+    leftToParse === 0 &&
+      mylog(`--- Ядро ${idx}: парсинг завершен ---`, "success");
+    const { id, rates_link, name } = exchanger;
+    const exchangerParser = new RatesParser(id, name, rates_link);
+    exchangerParser.getExchangerRates();
+  });
+};
+
+export default startWorkers;

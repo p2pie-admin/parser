@@ -1,18 +1,20 @@
 import db from "../db";
+import { mylog } from "../helper";
+import { setData } from "../redis";
 import callStrapi from "./callStrapi";
 import { AuthMutation } from "./queries";
 
 async function auth() {
-  await db.push(".jwt", undefined);
-  console.log("Authorizing ...");
+  mylog("Authorizing ...");
+  setData("parser_jwt", "");
   const data = await callStrapi(AuthMutation);
   const jwt = data?.login?.jwt;
   if (jwt) {
-    console.log("📗 \u001b[1;32m Authorized successfully!");
-    await db.push(".jwt", jwt);
+    mylog("Authorized successfully!", "success");
+    await setData("parser_jwt", jwt);
     return;
   }
-  console.error("📙 \u001b[1;33m couldn't authtorize, restarting in 10s...");
+  mylog("Couldn't authtorize, restarting in 10s...", "warning");
   await new Promise((resolve) => setTimeout(resolve, 10000));
   await auth();
 }
