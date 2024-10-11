@@ -30,31 +30,36 @@ const startMainWorker = async () => {
       });
     }, i * 1000); // Delay between each worker fork
   }
-
+  mylog(`Main worker started`, "success");
   cluster.on("exit", (worker) => {
     mylog(`Worker ${worker.process.pid} died`, "warning");
   });
 };
 
 const startWorkers = async () => {
+  if (cluster.isPrimary) {
+    console.log("cluster.isPrimary", cluster.isPrimary);
+    await startMainWorker();
+  } else {
+    startSecondaryWorkers();
+  }
+};
+
+const startSecondaryWorkers = async () => {
   const numCPUs = cpus().length;
   const exchangers = (await getData("exchangers")) as IExchanger[];
   const chunkedExchangers = splitToNChunks(exchangers, numCPUs);
 
-  if (cluster.isPrimary) {
-    startMainWorker();
-  } else {
-    const idx = parseInt(process.env.IDX || "");
-    const exchangersChunk = chunkedExchangers[idx];
+  const idx = parseInt(process.env.IDX || "");
+  const exchangersChunk = chunkedExchangers[idx];
 
-    mylog(
-      `Worker ${idx} pid ${process.pid} started with ${exchangersChunk?.length} chunk `,
-      "success"
-    );
+  mylog(
+    `Worker #${idx} pid #${process.pid} started with ${exchangersChunk?.length} chunk `,
+    "success"
+  );
 
-    // Process the chunk of exchangers
-    processExchangers(exchangersChunk, idx);
-  }
+  // Process the chunk of exchangers
+  processExchangers(exchangersChunk, idx);
 };
 
 const processExchangers = (exchangersChunk: IExchanger[], idx: number) => {
@@ -63,11 +68,11 @@ const processExchangers = (exchangersChunk: IExchanger[], idx: number) => {
     const leftToParse = exchangersChunk.length - index;
     !(leftToParse % 10) &&
       mylog(
-        `--- Ядро ${idx}: oсталось зациклить ${leftToParse}  ---`,
+        `--- Ядро ${idx + 1}: oсталось зациклить ${leftToParse}  ---`,
         "warning"
       );
     leftToParse === 0 &&
-      mylog(`--- Ядро ${idx}: парсинг завершен ---`, "success");
+      mylog(`--- Ядро ${idx + 1}: парсинг завершен ---`, "success");
     const { id, rates_link, name } = exchanger;
     const exchangerParser = new RatesParser(id, name, rates_link);
     exchangerParser.getExchangerRates();

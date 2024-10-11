@@ -63,7 +63,7 @@ export const pmPointerToPm = (pointer: IPmPointer): IPm | undefined => {
   const { code, pm_group, popular_as } = pointer;
   if (!pm_group?.options) return;
   const pms = getPmsFromPmGroup(pm_group, popular_as);
-  if (!code) return pms[0];
+  if (!code || !pms) return pms[0];
   return pms.find((pm) => pm.code.toLowerCase() == code.toLowerCase());
 };
 

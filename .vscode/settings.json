@@ -1,3 +1,4 @@
 {
-    "editor.hover.delay": 1200
+  "editor.hover.delay": 1200,
+  "editor.fontSize": 20
 }
