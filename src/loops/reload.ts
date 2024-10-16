@@ -1,5 +1,3 @@
-import db from "../db";
-
 import callStrapi from "../gql/callStrapi";
 import {
   ParserSettingQuery,
@@ -19,6 +17,7 @@ import { ISection, IPmGroup } from "../types/selector";
 import { reloadExchangers } from "./helper";
 
 async function reload() {
+  // грузим все первичные данные
   mylog("Reloading data...", "info");
   // mylog("Transfering: Suspended, Disabled -> Active", "info");
   // await statusChange("suspended", "active");
@@ -50,6 +49,8 @@ async function reload() {
   const pms = pointers.map((pointer) => pmPointerToPm(pointer));
   const popularDirs = pmsToDirs(pms);
   setData("popular_dirs", popularDirs);
+  // это все те направления у которых pmGroup популярная
+  // нужны чтобы на главной засветиться/ Могут быть как крипта или как фиат
 
   const sections = pmGroupsData?.selector?.sections as ISection[];
   setData(

@@ -1,6 +1,12 @@
 export type Sides = "give" | "get";
 export type Limit = { [key in Sides]: number };
 
+export interface IGeneralData {
+  dirsDisabled: string;
+  allPmCodesThatExist: string[];
+  alternativePmCodes: string[][];
+}
+
 export interface LinkAndID {
   exchangerId: string;
   ratesLink: string;

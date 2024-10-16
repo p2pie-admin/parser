@@ -1,72 +1,50 @@
-import { RateData, ExchangerResponse } from "../../types/exchangerResp";
-import { Rate, Limit } from "../../types/rates";
-import ErrorHandler from "./ErrorHandler";
+import { mylog } from "../../helper";
+import { getData, setData } from "../../redis";
+import { IExchanger, IRateWarning } from "../../types/exchanger";
+import { RateData } from "../../types/exchangerResp";
+import { Rate, IGeneralData } from "../../types/rates";
 
-import db from "../../db";
-import dbRates from "../../dbRates";
+import { sendExchangerError, sendExchangerWarnings } from "../ErrorHandler";
+import { transformLimit } from "./helper";
 
 export default class RateFormatter {
-  exchangerId: string;
+  exchanger: IExchanger;
+  generalData: IGeneralData;
 
-  constructor(exchangerId: string) {
-    this.exchangerId = exchangerId;
+  constructor(exchanger: IExchanger, generalData: IGeneralData) {
+    this.exchanger = exchanger;
+    this.generalData = generalData;
   }
 
-  transformLimit = (limit: string, course: number, dir: string): Limit => {
-    // валюта минималки и максималки - это или валюта, указанная в поле или валюта отдаю
-    // (если это просто число)
-    const limitCurrencyFromXML = limit.split(" ")[1];
-    const limitValue = parseFloat(limit);
-    const [givePm, getPm] = dir.split("_");
-    let [give, get] = [0, 0];
-
-    [give, get] = !limitCurrencyFromXML
-      ? [limitValue, limitValue / course] // если не указаны валюты в лимитах, то предполагаем, что это в валюте give
-      : givePm.includes(limitCurrencyFromXML)
-      ? [limitValue, limitValue / course]
-      : getPm.includes(limitCurrencyFromXML)
-      ? [limitValue * course, limitValue]
-      : [0, 0];
-
-    return { give, get };
-  };
-
-  formatAndMatchRatesWithDirs = (rates: RateData[]): void => {
+  formatAndMatchRatesWithDirs = async (rates: RateData[]) => {
     // const cityCodes = await db.getData(".parser_setting.cities") as {
     //   [key: string]: string[];
     // };
-    const totalRatesAmount = rates ? rates.length : 0;
-    await db.push(
-      `.exchangers.${this.exchangerId}.total_rates`,
-      totalRatesAmount
-    );
-    const dirs_disabled = (await db.getData(
-      ".parser_setting.dirs_disabled"
-    )) as string;
-    const all_pm_codes_that_exist = (await db.getData(
-      ".all_pm_codes_that_exist"
-    )) as string[];
-    const alternative_pm_codes = (await db.getData(
-      ".alternative_pm_codes"
-    )) as string[][];
+    let rateWarnings = [] as IRateWarning[];
+    const { allPmCodesThatExist, alternativePmCodes, dirsDisabled } =
+      this.generalData;
+    const { id, name, tag, logo, admin_rating, ref_link, rates_link } =
+      this.exchanger;
+
     const codes = [
-      ...all_pm_codes_that_exist,
-      ...alternative_pm_codes.map((c) => c[1]),
+      ...allPmCodesThatExist,
+      ...alternativePmCodes.map((c) => c[1]),
     ];
-    let rateDataError = false;
 
     rates.map((rate) => {
+      let [from, to] = [
+        rate?.from?._text?.toUpperCase(),
+        rate?.to?._text?.toUpperCase(),
+      ];
+      const dir = `${from}_${to}`;
+
       try {
-        let [from, to] = [
-          rate.from._text.toUpperCase(),
-          rate.to._text.toUpperCase(),
-        ];
-        const fromIsAlt = alternative_pm_codes.find((code) => code[1] == from);
-        const toIsAlt = alternative_pm_codes.find((code) => code[1] == to);
+        const fromIsAlt = alternativePmCodes.find((code) => code[1] == from);
+        const toIsAlt = alternativePmCodes.find((code) => code[1] == to);
 
         if (fromIsAlt) from = fromIsAlt[0];
         if (toIsAlt) to = toIsAlt[0];
-        const dir = `${from}_${to}`;
+
         // если хоть одна платежка в dir не из cms, скипаем
         if (
           !codes.find((code) => code === from) ||
@@ -75,24 +53,24 @@ export default class RateFormatter {
           return;
         // если запрещенные направления, тоже скипаем
         if (
-          dirs_disabled &&
-          dirs_disabled
-            .split("\n")
-            .find((dir_disabled) => dir_disabled.toUpperCase() === dir)
+          dirsDisabled &&
+          dirsDisabled
+            .replace(/ /g, "")
+            .split(",")
+            .find((dirDisabled) => dirDisabled.toUpperCase() === dir)
         )
           return;
 
         const course = +rate.in._text / +rate.out._text;
-        const min = this.transformLimit(rate.minamount._text, +course, dir);
-        const max = this.transformLimit(rate.maxamount._text, +course, dir);
-        const reserve = this.transformLimit(
+        const min = transformLimit(rate.minamount._text, +course, dir);
+        const max = transformLimit(rate.maxamount._text, +course, dir);
+        const reserve = transformLimit(
           `${rate.amount._text} ${dir.split("_")[1]}`,
           +course,
           dir
         );
 
-        const { name, tag, logo, admin_rating, ref_link, rates_link } =
-          await db.getData(`.exchangers.${this.exchangerId}`); // сразу забираем данные обменника для отображения в таблице и свайпере
+        // сразу забираем данные обменника для отображения в таблице и свайпере
         const dirRate = {
           name,
           admin_rating,
@@ -123,38 +101,22 @@ export default class RateFormatter {
               .replace("___", "https://"),
           last_time_updated: Date.now(),
         } as Rate;
-        dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
+        setData(`allDirRates:${dir}:${id}`, dirRate, "rates");
+        //dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
       } catch (err) {
-        rateDataError = true;
+        rateWarnings.push({
+          dir,
+          autoMessage: err + "",
+        } as IRateWarning);
       }
+      if (rateWarnings.length >= rates.length - 1) {
+        sendExchangerError(this.exchanger, {
+          comment: "Не найдено валидных курсов",
+        });
+        return;
+      }
+      rateWarnings.length &&
+        sendExchangerWarnings(this.exchanger, rateWarnings as IRateWarning[]);
     });
-    if (rateDataError) {
-      const errorHandler = new ErrorHandler(this.exchangerId);
-      errorHandler.sendError(
-        "data-error",
-        "Данные курсов частично отсутствуют или имеют некорректный формат"
-      );
-    }
-  };
-
-  checkForErrors = (exchangerResponse: ExchangerResponse | null): boolean => {
-    const errorHandler = new ErrorHandler(this.exchangerId);
-
-    if (!exchangerResponse) {
-      errorHandler.sendError("404");
-      return false;
-    }
-    if (exchangerResponse.error) {
-      errorHandler.sendError(
-        "exchanger-custom-error",
-        exchangerResponse?.error?._text
-      );
-      return false;
-    }
-    if (!exchangerResponse.rates?.item?.length) {
-      errorHandler.sendError("no-rates");
-      return false;
-    }
-    return true;
   };
 }

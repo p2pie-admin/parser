@@ -1,4 +1,3 @@
-import db from "../db";
 import { mylog } from "../helper";
 import { setData } from "../redis";
 import callStrapi from "./callStrapi";

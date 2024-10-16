@@ -3,6 +3,18 @@ import dotenv from "dotenv";
 dotenv.config();
 const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 1000);
 
+export const ExchangerStatusesQuery = gql`
+  {
+    exchangers {
+      data {
+        id
+        attributes {
+          status
+        }
+      }
+    }
+  }
+`;
 export const ExchangersQuery = gql`
   {
     exchangers(

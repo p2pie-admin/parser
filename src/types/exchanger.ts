@@ -1,3 +1,23 @@
+export type IErrorCode =
+  | "no-rates"
+  | "ENOTFOUND"
+  | "ECONNREFUSED"
+  | "ECONNRESET"
+  | "ETIMEDOUT"
+  | "EPERM"
+  | "ECONNABORTED"
+  | "CERT_HAS_EXPIRED"
+  | "ERR_FR_TOO_MANY_REDIRECTS"
+  | "307"
+  | "403"
+  | "404"
+  | "500"
+  | "503"
+  | "522"
+  | "json-parsing-error"
+  | "data-error"
+  | "exchanger-custom-error"
+  | "unknown";
 /**
  * Model definition for exchanger
  */
@@ -7,6 +27,23 @@ export type Logo = {
 };
 
 export type IExchangerStatus = "active" | "suspended" | "disabled";
+
+export interface IExchangerParsingError {
+  comment?: string;
+  autoMessage?: string;
+  code?: IErrorCode;
+  codeExplanation?: string;
+}
+
+export interface IExchangerParsingInfo {
+  rates: number;
+  comment?: string;
+}
+
+export interface IRateWarning {
+  dir: string;
+  autoMessage?: string;
+}
 
 export type IExchanger = {
   name: string;
@@ -18,5 +55,8 @@ export type IExchanger = {
   logo?: Logo;
   total_rates?: number;
   admin_rating?: number;
-  loopId?: number | NodeJS.Timeout;
+  pause?: number;
+  error?: IExchangerParsingError;
+  info?: IExchangerParsingInfo;
+  warning?: IRateWarning[];
 };

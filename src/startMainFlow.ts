@@ -3,7 +3,7 @@ import reload from "./loops/reload";
 import { getData } from "./redis";
 
 import slowLoop from "./loops/slow";
-import startWorkers from "./loops/fast";
+import startWorkers from "./workers";
 
 let loopIdx = 1;
 

@@ -1,40 +1,39 @@
-import dbRates from "./dbRates";
 import { FullRate } from "./types/rates";
 
-export const handleDirRequest = async (
-  send: Function,
-  dirId: string,
-  type: string
-) => {
-  const dirTopsExist = await dbRates.exists(`.allDirsTops.${dirId}`);
-  const dirRatesExist = await dbRates.exists(`.allDirsRates.${dirId}`);
-  const dirP2PExist = await dbRates.exists(`.allDirsP2P.${dirId}`);
+// export const handleDirRequest = async (
+//   send: Function,
+//   dirId: string,
+//   type: string
+// ) => {
+//   const dirTopsExist = await dbRates.exists(`.allDirsTops.${dirId}`);
+//   const dirRatesExist = await dbRates.exists(`.allDirsRates.${dirId}`);
+//   const dirP2PExist = await dbRates.exists(`.allDirsP2P.${dirId}`);
 
-  switch (type) {
-    case "all":
-      send(dbRates.getData(`.allDirsRates.${dirId}`));
-      break;
-    case "p2p":
-      dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);
-      break;
-    case "tops":
-      dirTopsExist ? send(dbRates.getData(`.allDirsTops.${dirId}`)) : send([]);
-      break;
-    case "tops+p2p":
-      if (!dirP2PExist && !dirTopsExist) send([]);
-      const dirP2P = dirP2PExist
-        ? ((await dbRates.getData(`.allDirsP2P.${dirId}`)) as FullRate[])
-        : [];
-      const dirTops = dirTopsExist
-        ? ((await dbRates.getData(`.allDirsTops.${dirId}`)) as FullRate[])
-        : [];
-      send([...dirTops, ...dirP2P]);
-      break;
-    default:
-      send("Try this slug: /dir=BTC_SBERRUB/type=tops+p2p");
-      break;
-  }
-};
+//   switch (type) {
+//     case "all":
+//       send(dbRates.getData(`.allDirsRates.${dirId}`));
+//       break;
+//     case "p2p":
+//       dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);
+//       break;
+//     case "tops":
+//       dirTopsExist ? send(dbRates.getData(`.allDirsTops.${dirId}`)) : send([]);
+//       break;
+//     case "tops+p2p":
+//       if (!dirP2PExist && !dirTopsExist) send([]);
+//       const dirP2P = dirP2PExist
+//         ? ((await dbRates.getData(`.allDirsP2P.${dirId}`)) as FullRate[])
+//         : [];
+//       const dirTops = dirTopsExist
+//         ? ((await dbRates.getData(`.allDirsTops.${dirId}`)) as FullRate[])
+//         : [];
+//       send([...dirTops, ...dirP2P]);
+//       break;
+//     default:
+//       send("Try this slug: /dir=BTC_SBERRUB/type=tops+p2p");
+//       break;
+//   }
+// };
 
 export const mylog = (
   message: string,

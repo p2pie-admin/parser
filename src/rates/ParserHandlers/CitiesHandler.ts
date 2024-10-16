@@ -1,5 +1,5 @@
 import { RateData } from "../../types/exchangerResp";
-import ErrorHandler from "./ErrorHandler";
+import ErrorHandler from "../ErrorHandler";
 // import db from "../../db"
 
 // changed this

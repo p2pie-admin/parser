@@ -1,11 +1,19 @@
 import callStrapi from "../gql/callStrapi";
-import { ExchangersQuery } from "../gql/queries";
+import { ExchangersQuery, ExchangerStatusesQuery } from "../gql/queries";
 import { mylog } from "../helper";
 import net from "net";
-import { getData, setData } from "../redis";
+import { getData, setData, setObject } from "../redis";
 import { IExchanger } from "../types/exchanger";
 import { ExchangerResponse } from "../types/exchangerResp";
 import XML2JSON from "xml-js";
+
+const convertExchangers = (
+  exchangers: IExchanger[]
+): { [key: string]: IExchanger } => {
+  return exchangers.reduce((res: { [key: string]: IExchanger }, exchanger) => {
+    return { ...res, [exchanger.id]: exchanger };
+  }, {});
+};
 
 export const xmlToJson = (data: any): ExchangerResponse | null => {
   const options = {
@@ -23,16 +31,28 @@ export const xmlToJson = (data: any): ExchangerResponse | null => {
 };
 
 export const reloadExchangers = async () => {
-  const exchangers = (await callStrapi(ExchangersQuery))
-    ?.exchangers as IExchanger[];
-  if (!exchangers) {
-    mylog("Couldn't load exchangers!", "error");
+  const newExchangerStatuses = await callStrapi(ExchangerStatusesQuery);
+  const oldExchangerStatuses = await getData("exchanger_statuses");
+  if (
+    JSON.stringify(newExchangerStatuses) !==
+    JSON.stringify(oldExchangerStatuses)
+  ) {
+    mylog("Reloading exchangers", "warning");
+    const exchangers = (await callStrapi(ExchangersQuery))
+      ?.exchangers as IExchanger[];
+    if (!exchangers) {
+      mylog("Couldn't load exchangers!", "error");
+      return;
+    }
+    await setObject("exchangers", convertExchangers(exchangers));
+    await setData("exchanger_statuses", newExchangerStatuses);
     return;
   }
-  await setData("exchangers", exchangers);
+  mylog("Exchanger statuses are the same!", "warning");
 };
 
 export const wait = (seconds: number) => {
+  mylog(`Waiting ${seconds}s ...`, "warning");
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });

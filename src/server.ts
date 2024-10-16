@@ -1,14 +1,9 @@
-import cluster from "cluster";
-import { cpus } from "os";
-
-import auth from "./gql/auth";
 import { mylog } from "./helper";
-import startWorkers from "./loops/fast";
-import { findAvailablePort } from "./loops/helper";
-import reload from "./loops/reload";
+import startWorkers from "./workers";
 
 const startServer = async () => {
   try {
+    //чтобы почистить базу : redis-cli FLUSHALL
     startWorkers();
   } catch (error) {
     mylog(String(error), "error");
