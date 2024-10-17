@@ -5,7 +5,7 @@ import { RateData } from "../../types/exchangerResp";
 import { Rate, IGeneralData } from "../../types/rates";
 
 import { sendExchangerError, sendExchangerWarnings } from "../ErrorHandler";
-import { transformLimit } from "./helper";
+import { transformLimit } from "../helper";
 
 export default class RateFormatter {
   exchanger: IExchanger;

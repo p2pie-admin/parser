@@ -7,7 +7,7 @@
     "flush-redis": "redis-cli FLUSHALL",
     "start": "yarn build && node build/SERVER.js",
     "start2": "concurrently \"rm dbRates.json\" \"rm await db.json\" \"node build/server.js\"",
-    "dev": "nodemon",
+    "dev2": "nodemon",
     "dev": "concurrently \"redis-cli FLUSHALL\"  \"nodemon\" ",
     "watch": "tsc -w",
     "build": "rimraf ./build && tsc"

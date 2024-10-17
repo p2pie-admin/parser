@@ -23,7 +23,7 @@ export default class RatesParser {
   async getExchangerRates(): Promise<void> {
     try {
       const response = await axios.get(this.exchanger.rates_link, {
-        timeout: 120000,
+        timeout: 20000,
       });
       this.handleResponse(response.data);
     } catch (err: any) {

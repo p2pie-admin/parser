@@ -39,7 +39,9 @@ export const sendExchangerError = (
     } | ${error.codeExplanation} | ${rates_link}`,
     "error"
   );
+  // 10min if nothing special and 2h if 404
   setData(`exchangers:${id}:error`, error);
+  setData(`exchangers:${id}:skip`, +(exchanger.skip || 1) * 2);
 };
 
 export const sendExchangerInfo = (
@@ -47,8 +49,12 @@ export const sendExchangerInfo = (
   info: IExchangerParsingInfo
 ) => {
   const { id, name, rates_link } = exchanger;
-  mylog(` ✓ #${id} ${name || ""} : ${info.rates} | ${rates_link}`, "success");
+  mylog(
+    ` ✓ #${id} ${name || ""} : got ${info.rates} rates | ${rates_link}`,
+    "success"
+  );
   setData(`exchangers:${id}:info`, info);
+  !exchanger.skip && setData(`exchangers:${id}:skip`, 0);
 };
 
 export const sendExchangerWarnings = async (

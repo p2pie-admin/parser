@@ -14,10 +14,14 @@ dotenv.config();
 
 const startWorkers = async () => {
   if (cluster.isPrimary) {
-    console.log("cluster.isPrimary", cluster.isPrimary);
     await startMainWorker();
   } else {
-    startSecondaryWorkers();
+    const idx = parseInt(process.env.IDX || "");
+
+    // processExchangers(chunk, pauseBetweenLoops);
+    setTimeout(async () => {
+      processExchangers();
+    }, idx * 3000); // изначально немного сдвигаем по времени
   }
 };
 
@@ -32,37 +36,16 @@ const startMainWorker = async () => {
   );
 
   for (let i = 0; i < numCPUs; i++) {
-    setTimeout(() => {
-      mylog(`Forking worker #${i} on port ${availablePorts[i]}`, "info");
-      cluster.fork({
-        WORKER_PORT: availablePorts[i],
-        IDX: i,
-      });
-    }, (i + 1) * 1000); // Delay between each worker fork
+    mylog(`Forking worker #${i} on port ${availablePorts[i]}`, "info");
+    cluster.fork({
+      WORKER_PORT: availablePorts[i],
+      IDX: i,
+    });
   }
   mylog(`Main worker started`, "success");
   cluster.on("exit", (worker) => {
     mylog(`Worker ${worker.process.pid} died`, "warning");
   });
-};
-
-const startSecondaryWorkers = async () => {
-  const numCPUs = cpus().length;
-  const exchangers = (await getObject("exchangers")) as {
-    [key: string]: IExchanger;
-  };
-
-  const chunkedExchangers = splitToNChunks(Object.values(exchangers), numCPUs);
-
-  const idx = parseInt(process.env.IDX || "");
-  const exchangersChunk = chunkedExchangers[idx];
-
-  mylog(
-    `Worker #${idx} pid #${process.pid} started with ${exchangersChunk?.length} chunk `,
-    "success"
-  );
-  // Process the chunk of exchangers
-  processExchangers(exchangersChunk);
 };
 
 export default startWorkers;

@@ -55,7 +55,7 @@ export type IExchanger = {
   logo?: Logo;
   total_rates?: number;
   admin_rating?: number;
-  pause?: number;
+  skip?: number;
   error?: IExchangerParsingError;
   info?: IExchangerParsingInfo;
   warning?: IRateWarning[];

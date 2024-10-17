@@ -1,4 +1,4 @@
-import { Limit } from "../../types/rates";
+import { Limit } from "../types/rates";
 
 export const transformLimit = (
   limit: string,

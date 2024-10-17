@@ -1,29 +1,53 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData } from "../redis";
+import { getData, getObject } from "../redis";
 import { IGeneralData } from "../types/rates";
-import { wait } from "../loops/helper";
 
-export const processExchangers = async (exchangersChunk: IExchanger[]) => {
-  // const pauseBetweenLoops = await getData("parser_setting:pause_between_loops"); // sec
-  // const pauseBetweenCalls = +(
-  //   +pauseBetweenLoops / exchangersChunk.length
-  // ).toFixed(3);
-  // const pause = pauseBetweenCalls < 0.2 ? 200 : pauseBetweenCalls * 1000;
+import { mylog } from "../helper";
+import { splitToNChunks, waitSec } from "../loops/helper";
+import startWorkers from "../workers";
+import { cpus } from "os";
 
-  // mylog(
-  //   `--- Cycle time: ${pauseBetweenLoops}s with ${pause}s pause ---`,
-  //   "info"
-  // );
+let loopsDone = 0;
 
+export const processExchangers = async () => {
+  const pauseBetweenLoops = await getData("parser_setting:pause_between_loops");
+  const numCPUs = cpus().length;
+  const idx = parseInt(process.env.IDX || "");
+  mylog(` • #${idx} core processing...`, "info");
+  const exchangers = (await getObject("exchangers")) as {
+    [key: string]: IExchanger;
+  };
+
+  const chunkedExchangers = splitToNChunks(Object.values(exchangers), numCPUs);
+  const exchangersChunk = chunkedExchangers[idx];
+
+  let leftToProcess = exchangersChunk.length;
   const generalData = await prepareGeneralData();
 
   exchangersChunk.map(async (exchanger, idx) => {
-    const pause = exchanger?.pause || 200;
-    await new Promise((resolve) => setTimeout(resolve, idx * pause));
-    const exchangerParser = new RatesParser(exchanger, generalData);
-    exchangerParser.getExchangerRates();
+    await new Promise(
+      (resolve) => setTimeout(resolve, idx * 333)
+      //setTimeout(resolve, idx * pauseBetweenCalls + +(exchanger.pause || 0))
+    );
+    leftToProcess -= 1;
+
+    if (!leftToProcess) {
+      loopsDone += 1;
+      await waitSec(pauseBetweenLoops); // чтобы все успели допарситься
+      processExchangers();
+    }
+    if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
+      const exchangerParser = new RatesParser(exchanger, generalData);
+      exchangerParser.getExchangerRates();
+      return;
+    }
+    mylog(
+      ` - #${exchanger.id} ${exchanger.name} will skip ${exchanger.skip} loops`,
+      "warning"
+    );
   });
+
   //await wait(5); // чтобы все успели допарситься
 };
 

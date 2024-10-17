@@ -51,8 +51,7 @@ export const reloadExchangers = async () => {
   mylog("Exchanger statuses are the same!", "warning");
 };
 
-export const wait = (seconds: number) => {
-  mylog(`Waiting ${seconds}s ...`, "warning");
+export const waitSec = (seconds: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });
