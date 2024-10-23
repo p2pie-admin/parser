@@ -1,5 +1,3 @@
-import { FullRate } from "./types/rates";
-
 // export const handleDirRequest = async (
 //   send: Function,
 //   dirId: string,

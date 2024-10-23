@@ -67,14 +67,17 @@ async function reload() {
 
 const _getCodes = (pm_group: IPmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
-  return pm_group.options.map((option) =>
-    (
-      option?.code ||
-      (pm_group.prefix &&
-        pm_group.prefix !== option?.currency.code &&
-        pm_group.prefix + option?.currency.code) ||
-      option?.currency.code
-    ).toUpperCase()
+  return (
+    pm_group?.options.map((option) =>
+      (
+        option?.code ||
+        (pm_group.prefix &&
+          pm_group.prefix !== option?.currency.code &&
+          pm_group.prefix + option?.currency.code) ||
+        option?.currency.code ||
+        ""
+      ).toUpperCase()
+    ) || []
   );
 };
 

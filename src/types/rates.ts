@@ -1,3 +1,5 @@
+import { ICity } from ".";
+
 export type Sides = "give" | "get";
 export type Limit = { [key in Sides]: number };
 
@@ -12,11 +14,8 @@ export interface LinkAndID {
   ratesLink: string;
 }
 
-export interface DirRates {
-  [key: string]: Rate;
-}
-
-export interface Rate {
+export interface IRate {
+  exchangerId?: string;
   name: string;
   tag: string;
   admin_rating: number | null;
@@ -29,16 +28,12 @@ export interface Rate {
   max: Limit;
   reserve: Limit;
   parameterCodes?: string[];
-  cities?: { [key: string]: string[] };
+  cityRates?: { [key: string]: { rate: IRate; city: ICity } };
   ref_link?: string;
   last_time_updated?: number;
 }
 
-export interface FullRate extends Rate {
-  exchangerId: string;
-}
-
 export type ExchangerId = string;
 
-export type AllDirsRates = { [key: string]: DirRates };
-export type AllDirsTops = { [key: string]: FullRate[] };
+export type AllDirsRates = { [key: string]: { [key: string]: IRate } };
+export type AllDirsTops = { [key: string]: IRate[] };

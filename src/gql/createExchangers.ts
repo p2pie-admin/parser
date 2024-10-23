@@ -1,6 +1,6 @@
 import callStrapi from "./callStrapi";
 import { CreateExchangersMutation } from "./queries";
-import exchangerLinks from "../dbRates/exchangerLinks.json";
+import exchangerLinks from "./exchangerLinks.json";
 
 // чтобы не создавать обменники вручную, данная функция заполняет их сама из exchangerLinks.json
 async function createExchangers() {

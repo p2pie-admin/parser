@@ -7,6 +7,7 @@ import { mylog } from "../helper";
 import { splitToNChunks, waitSec } from "../loops/helper";
 import startWorkers from "../workers";
 import { cpus } from "os";
+import { memoryUsage } from "process";
 
 let loopsDone = 0;
 
@@ -26,15 +27,16 @@ export const processExchangers = async () => {
   const generalData = await prepareGeneralData();
 
   exchangersChunk.map(async (exchanger, idx) => {
-    await new Promise(
-      (resolve) => setTimeout(resolve, idx * 333)
-      //setTimeout(resolve, idx * pauseBetweenCalls + +(exchanger.pause || 0))
-    );
+    await new Promise((resolve) => setTimeout(resolve, idx * 333));
     leftToProcess -= 1;
 
     if (!leftToProcess) {
+      // finished
       loopsDone += 1;
-      await waitSec(pauseBetweenLoops); // чтобы все успели допарситься
+       // чтобы все успели допарситься      
+      memoryUsage();
+      await waitSec(pauseBetweenLoops);
+      await 
       processExchangers();
     }
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
@@ -47,8 +49,6 @@ export const processExchangers = async () => {
       "warning"
     );
   });
-
-  //await wait(5); // чтобы все успели допарситься
 };
 
 const prepareGeneralData = async () => {

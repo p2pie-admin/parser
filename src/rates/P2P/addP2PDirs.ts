@@ -1,6 +1,6 @@
-import dbRates from "../../dbRates";
 import { IOrder, IP2PDir } from "../../types/p2p";
-import { FullRate } from "../../types/rates";
+import { IRate } from "../../types/rates";
+
 import { IPm } from "../../types/selector";
 
 // const createPossibleDirCodes = (dirs: IP2PDir[]) => {
@@ -61,20 +61,20 @@ import { IPm } from "../../types/selector";
 //       "cities": "ekb/kzn/krasn/msk/nsk/rsnd/spb/sochi/stam/dubai/ervn/alm/tbil/antl"
 //   },
 
-const addDirsToDB = (dirCodes: string[], rateData: FullRate) => {
-  dirCodes.map((dirCode) => {
-    // создаем новое направление если не существует
-    const prevDirRatesExist = dbRates.exists(`.allDirsP2P.${dirCode}`);
-    if (!prevDirRatesExist) {
-      dbRates.push(`.allDirsP2P.${dirCode}`, [rateData]);
-      return;
-    }
-    // или добавляем в существующее
-    const prevDirRates = dbRates.getData(`.allDirsP2P.${dirCode}`);
+// const addDirsToDB = (dirCodes: string[], rateData: FullRate) => {
+//   dirCodes.map((dirCode) => {
+//     // создаем новое направление если не существует
+//     const prevDirRatesExist = dbRates.exists(`.allDirsP2P.${dirCode}`);
+//     if (!prevDirRatesExist) {
+//       dbRates.push(`.allDirsP2P.${dirCode}`, [rateData]);
+//       return;
+//     }
+//     // или добавляем в существующее
+//     const prevDirRates = dbRates.getData(`.allDirsP2P.${dirCode}`);
 
-    dbRates.push(`.allDirsP2P.${dirCode}`, [...prevDirRates, rateData]);
-  });
-};
+//     dbRates.push(`.allDirsP2P.${dirCode}`, [...prevDirRates, rateData]);
+//   });
+// };
 
 const getDirCode = (give: IPm, get: IPm) => {
   return `${give.code.toUpperCase()}_${get.code.toUpperCase()}`;
@@ -127,7 +127,7 @@ export default (order: IOrder) => {
         (res: string[], [code, isActive]) => (isActive ? [...res, code] : res),
         []
       ),
-    } as FullRate;
+    } as IRate;
 
     const gives = give.map((give) => give);
     const gets = get.map((get) => get);
@@ -135,7 +135,7 @@ export default (order: IOrder) => {
       (give) => gets.map((get) => getDirCode(give, get))[0]
     );
 
-    addDirsToDB(dirCodes, rateData);
+    // addDirsToDB(dirCodes, rateData);
   });
   return;
 };

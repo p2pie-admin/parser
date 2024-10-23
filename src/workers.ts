@@ -1,10 +1,8 @@
 import { mylog } from "./helper";
-import RatesParser from "./rates/ParserHandlers/RateParser";
-import { getData, getObject } from "./redis";
-import { IExchanger } from "./types/exchanger";
+
 import { cpus } from "os";
 import cluster from "cluster";
-import { splitToNChunks, findAvailablePort } from "./loops/helper";
+import { findAvailablePort } from "./loops/helper";
 import auth from "./gql/auth";
 import reload from "./loops/reload";
 import dotenv from "dotenv";
@@ -17,8 +15,6 @@ const startWorkers = async () => {
     await startMainWorker();
   } else {
     const idx = parseInt(process.env.IDX || "");
-
-    // processExchangers(chunk, pauseBetweenLoops);
     setTimeout(async () => {
       processExchangers();
     }, idx * 3000); // изначально немного сдвигаем по времени

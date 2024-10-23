@@ -12,6 +12,10 @@ services:
     environment:
       - REDIS_HOST=redis # Redis service hostname
       - REDIS_PORT=6379 # Redis default port
+    deploy:
+      resources:
+        limits:
+          cpus: "0.000" # Allow unrestricted CPU usage (Docker will dynamically allocate based on need)
 
   redis:
     container_name: redis

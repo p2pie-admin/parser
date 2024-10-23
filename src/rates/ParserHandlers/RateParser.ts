@@ -51,11 +51,8 @@ export default class RatesParser {
       return;
     }
 
-    const info = {
-      rates: JSONres.rates?.item.length,
-    } as IExchangerParsingInfo;
-
-    sendExchangerInfo(this.exchanger, info);
+    const total_rates = JSONres.rates?.item.length;
+    sendExchangerInfo(this.exchanger, total_rates);
     const rateFormatter = new RateFormatter(this.exchanger, this.generalData);
     rateFormatter.formatAndMatchRatesWithDirs(JSONres.rates?.item);
   }

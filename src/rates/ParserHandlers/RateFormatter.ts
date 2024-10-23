@@ -1,11 +1,13 @@
 import { mylog } from "../../helper";
 import { getData, setData } from "../../redis";
+import { ICity } from "../../types";
 import { IExchanger, IRateWarning } from "../../types/exchanger";
-import { RateData } from "../../types/exchangerResp";
-import { Rate, IGeneralData } from "../../types/rates";
+import { IRateData } from "../../types/exchangerResp";
+import { IRate, IGeneralData } from "../../types/rates";
 
 import { sendExchangerError, sendExchangerWarnings } from "../ErrorHandler";
 import { transformLimit } from "../helper";
+import { groupRatesDataCities } from "./CitiesHandler";
 
 export default class RateFormatter {
   exchanger: IExchanger;
@@ -16,11 +18,10 @@ export default class RateFormatter {
     this.generalData = generalData;
   }
 
-  formatAndMatchRatesWithDirs = async (rates: RateData[]) => {
+  formatAndMatchRatesWithDirs = async (rates: IRateData[]) => {
     // const cityCodes = await db.getData(".parser_setting.cities") as {
     //   [key: string]: string[];
     // };
-    let rateWarnings = [] as IRateWarning[];
     const { allPmCodesThatExist, alternativePmCodes, dirsDisabled } =
       this.generalData;
     const { id, name, tag, logo, admin_rating, ref_link, rates_link } =
@@ -31,7 +32,9 @@ export default class RateFormatter {
       ...alternativePmCodes.map((c) => c[1]),
     ];
 
-    rates.map((rate) => {
+    const groupedRates = groupRatesDataCities(this.exchanger, rates);
+
+    groupedRates.map((rate) => {
       let [from, to] = [
         rate?.from?._text?.toUpperCase(),
         rate?.to?._text?.toUpperCase(),
@@ -51,6 +54,7 @@ export default class RateFormatter {
           !codes.find((code) => code === to)
         )
           return;
+
         // если запрещенные направления, тоже скипаем
         if (
           dirsDisabled &&
@@ -92,31 +96,35 @@ export default class RateFormatter {
           ...(rate.param?._text
             ? { parameterCodes: rate.param._text.split(", ") || [] }
             : {}),
-          cities: rate.city?._text,
           ref_link:
             ref_link ||
             rates_link
               .replace("https://", "___")
               .split("/")[0]
               .replace("___", "https://"),
+          cityRates: this.convertCityRates(rate.cityRatesData),
           last_time_updated: Date.now(),
-        } as Rate;
-        setData(`allDirRates:${dir}:${id}`, dirRate, "rates");
+        } as IRate;
+        setData(`allDirRates:${dir}:${id}`, dirRate);
+        if (this.exchanger.error) setData(`exchangers:${id}:error`, {});
         //dbRates.push(`.allDirsRates.${dir}.${this.exchangerId}`, dirRate); // as ConvertedDirRates)
       } catch (err) {
-        rateWarnings.push({
-          dir,
-          autoMessage: err + "",
-        } as IRateWarning);
+        // не добавляем ворнинги если уже есть
+        !this.exchanger.warnings?.length &&
+          sendExchangerWarnings(this.exchanger, {
+            dir,
+            autoMessage: err + "",
+          });
       }
-      if (rateWarnings.length >= rates.length - 1) {
-        sendExchangerError(this.exchanger, {
-          comment: "Не найдено валидных курсов",
-        });
-        return;
-      }
-      rateWarnings.length &&
-        sendExchangerWarnings(this.exchanger, rateWarnings as IRateWarning[]);
     });
+  };
+
+  convertCityRates = (cityRatesData?: {
+    [key: string]: IRateData;
+  }): { [key: string]: { rate: IRate; city: ICity } } => {
+    if (!cityRatesData) return {};
+    return Object.entries(cityRatesData).reduce((res, [cityCode, rateData]) => {
+      return { ...res, [cityCode]: { rate: rateData, city: cityCode } };
+    }, {});
   };
 }

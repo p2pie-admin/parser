@@ -46,24 +46,24 @@ export const sendExchangerError = (
 
 export const sendExchangerInfo = (
   exchanger: IExchanger,
-  info: IExchangerParsingInfo
+  total_rates: number
 ) => {
   const { id, name, rates_link } = exchanger;
   mylog(
-    ` ✓ #${id} ${name || ""} : got ${info.rates} rates | ${rates_link}`,
+    ` ✓ #${id} ${name || ""} : получено ${total_rates} курсов | ${rates_link}`,
     "success"
   );
-  setData(`exchangers:${id}:info`, info);
+  setData(`exchangers:${id}:total_rates`, total_rates);
   !exchanger.skip && setData(`exchangers:${id}:skip`, 0);
 };
 
 export const sendExchangerWarnings = async (
   exchanger: IExchanger,
-  warnings: IRateWarning[]
+  warning: IRateWarning
 ) => {
-  const oldWarnings = (await getData(
-    `exchangers:${exchanger.id}:warnings`
-  )) as IRateWarning[];
-  const newWarnings = [...oldWarnings, warnings];
+  const oldWarnings =
+    (await getData(`exchangers:${exchanger.id}:warnings`)) ||
+    ([] as IRateWarning[]);
+  const newWarnings = [...oldWarnings, warning];
   setData(`exchangers:${exchanger.id}:warnings`, newWarnings);
 };

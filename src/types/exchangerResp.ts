@@ -2,7 +2,7 @@ type RateField = {
   _text: string;
 };
 
-interface RateData {
+interface IRateData {
   from: RateField;
   to: RateField;
   in: RateField;
@@ -15,7 +15,7 @@ interface RateData {
   tofee?: RateField;
   param?: RateField;
   city?: RateField;
-  cityCourses?: { [key: string]: number };
+  cityRatesData?: { [key: string]: IRateData };
 }
 
 interface ExchangerResponse {
@@ -29,7 +29,7 @@ interface ExchangerResponse {
     _text: string;
   };
   rates?: {
-    item: RateData[];
+    item: IRateData[];
   };
 }
 
@@ -41,4 +41,4 @@ interface AllExchangerResponses {
 
 //type ErrorCode = "no-internet" | "404" | "json-parsing-error"| "data-error" | "no-rates" | "error-response" | "no-permission" | "unknown-error"
 
-export { AllExchangerResponses, ExchangerResponse, RateData, RateField };
+export { AllExchangerResponses, ExchangerResponse, IRateData, RateField };

@@ -1,5 +1,5 @@
 import { IExchanger } from "./exchanger";
-import { DirRates, FullRate } from "./rates";
+import { IRate } from "./rates";
 
 export interface ICity {
   codes: string[];
@@ -46,6 +46,6 @@ export interface DB {
 }
 
 export interface DBRATES {
-  allDirsRates: { [key: string]: DirRates };
-  allDirsTops: { [key: string]: FullRate[] };
+  allDirsRates: { [key: string]: { [key: string]: IRate } };
+  allDirsTops: { [key: string]: IRate[] };
 }

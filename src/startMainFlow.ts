@@ -29,7 +29,6 @@ const runLoops = async () => {
   if (loopIdx % 83 === 0) {
     await reload();
   }
-
   mylog(`Loop #${loopIdx}`, "success");
   loopIdx += 1;
 };

@@ -58,5 +58,5 @@ export type IExchanger = {
   skip?: number;
   error?: IExchangerParsingError;
   info?: IExchangerParsingInfo;
-  warning?: IRateWarning[];
+  warnings?: IRateWarning[];
 };
