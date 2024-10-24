@@ -4,6 +4,7 @@ import { IExchanger, IExchangerParsingError } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { sendExchangerError } from "../ErrorHandler";
 import { ICity } from "../../types";
+import { getData } from "../../redis";
 
 // import db from "../../db"
 
@@ -27,15 +28,6 @@ import { ICity } from "../../types";
 //   "population": 0,
 //   "codes": ["AAQ","ANP"]
 // },
-
-export const convertCityRates = (cityRatesData?: {
-  [key: string]: IRateData;
-}): { [key: string]: { rate: IRate; city: ICity } } => {
-  if (!cityRatesData) return {};
-  return Object.entries(cityRatesData).reduce((res, [cityCode, rateData]) => {
-    return { ...res, [cityCode]: { rate: rateData, city: cityCode } };
-  }, {});
-};
 
 export const groupRatesDataCities = (
   exchanger: IExchanger,
@@ -72,3 +64,9 @@ export const groupRatesDataCities = (
     return [];
   }
 };
+
+export const cityCodeToCity = (
+  cityCode: string,
+  cities: ICity[]
+): ICity | undefined =>
+  cities.find((c) => c.codes[0] == cityCode || c.codes[1] == cityCode);

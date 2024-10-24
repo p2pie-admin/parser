@@ -43,7 +43,7 @@ async function reload() {
     topsData.topParameters.map((p: any) => p.code)
   );
   //console.log(parserSettingsData.parserSetting)
-  setObject("parser_setting", parserSettingsData.parserSetting);
+  setData("parser_setting", parserSettingsData.parserSetting);
 
   const pointers = popularPms.pms as IPmPointer[];
   const pms = pointers.map((pointer) => pmPointerToPm(pointer));

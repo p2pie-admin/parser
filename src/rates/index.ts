@@ -8,11 +8,13 @@ import { splitToNChunks, waitSec } from "../loops/helper";
 import startWorkers from "../workers";
 import { cpus } from "os";
 import { memoryUsage } from "process";
+import { ICity } from "../types";
 
 let loopsDone = 0;
 
 export const processExchangers = async () => {
-  const pauseBetweenLoops = await getData("parser_setting:pause_between_loops");
+  const pauseBetweenLoops =
+    (await getData("parser_setting"))?.pause_between_loops || 10000;
   const numCPUs = cpus().length;
   const idx = parseInt(process.env.IDX || "");
   mylog(` • #${idx} core processing...`, "info");
@@ -33,11 +35,10 @@ export const processExchangers = async () => {
     if (!leftToProcess) {
       // finished
       loopsDone += 1;
-       // чтобы все успели допарситься      
+      // чтобы все успели допарситься
       memoryUsage();
       await waitSec(pauseBetweenLoops);
-      await 
-      processExchangers();
+      await processExchangers();
     }
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
       const exchangerParser = new RatesParser(exchanger, generalData);
@@ -53,9 +54,8 @@ export const processExchangers = async () => {
 
 const prepareGeneralData = async () => {
   // чтобы не обращаться к базе по сто раз
-  const dirsDisabled = (await getData(
-    "parser_setting:dirs_disabled"
-  )) as string;
+  const dirsDisabled = (await getData("parser_setting"))
+    .dirs_disabled as string;
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
@@ -65,9 +65,12 @@ const prepareGeneralData = async () => {
     "alternative_pm_codes"
   )) as string[][];
 
+  const cities = (await getData("parser_setting"))?.cities as ICity[];
+
   return {
     dirsDisabled,
     allPmCodesThatExist,
     alternativePmCodes,
+    cities,
   } as IGeneralData;
 };

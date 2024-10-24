@@ -7,6 +7,7 @@ export interface IGeneralData {
   dirsDisabled: string;
   allPmCodesThatExist: string[];
   alternativePmCodes: string[][];
+  cities: ICity[];
 }
 
 export interface LinkAndID {
