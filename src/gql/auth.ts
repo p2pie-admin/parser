@@ -13,8 +13,8 @@ async function auth() {
     await setData("parser_jwt", jwt);
     return;
   }
-  mylog("Couldn't authtorize, restarting in 10s...", "warning");
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  mylog("Couldn't authtorize, restarting in 30s...", "warning");
+  await new Promise((resolve) => setTimeout(resolve, 30000));
   await auth();
 }
 

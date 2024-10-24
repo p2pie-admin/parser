@@ -1,49 +1,64 @@
-// import { AllDirsRates, AllDirsTops, DirRates, Rate } from "../../types/rates";
-// import { DirRatesVerificator } from "./DirRatesVerificator";
-// import findBestDirRates from "./findBest";
-// import findUniqueDirRates from "./findUnique";
+import { getData } from "../../redis";
+import { AllDirsRates, AllDirsTops, IRate } from "../../types/rates";
+import { DirRatesVerificator } from "./DirRatesVerificator";
+import findBestDirRates from "./findBest";
+import findUniqueDirRates from "./findUnique";
 
-// interface FullRate extends Rate {
-//   exchangerId: string;
-// }
+const dirRatesIntoArray = (dirRates: { [key: string]: IRate }): IRate[] => {
+  return Object.entries(dirRates).map(([exchangerId, rate]) => ({
+    exchangerId,
+    ...rate,
+  }));
+};
 
-// const dirRatesIntoArray = (dirRates: DirRates): FullRate[] => {
-//   return Object.entries(dirRates).map(([exchangerId, rate]) => ({
-//     exchangerId,
-//     ...rate,
-//   }));
-// };
+const deleteProps = (
+  obj: { [key: string]: IRate },
+  prop: string[]
+): { [key: string]: IRate } => {
+  for (const p of prop) {
+    delete obj[p];
+  }
+  return obj;
+};
 
-// const deleteProps = (obj: DirRates, prop: string[]): DirRates => {
-//   for (const p of prop) {
-//     delete obj[p];
-//   }
-//   return obj;
-// };
+const getDirTops = async (allDirsRates: AllDirsRates): Promise<AllDirsTops> => {
+  return Object.keys(allDirsRates).reduce(
+    async (allDirTopsPromise: Promise<AllDirsTops>, dir) => {
+      const allDirTops = await allDirTopsPromise;
+      allDirTops[dir] = await getDirTop(allDirsRates[dir], dir);
+      return allDirTops;
+    },
+    Promise.resolve({} as AllDirsTops)
+  );
+};
 
-// export const getDirTop = (dirRates: DirRates, dir: string): FullRate[] => {
-//   // several steps to transform, sort and filter rates
-//   const dirRatesVerificator = new DirRatesVerificator(dir);
-//   const verifiedRates = dirRatesVerificator.getVerified(dirRates);
-//   const uniqueRates = findUniqueDirRates(verifiedRates);
-//   const ratesWithoutUnique = deleteProps(
-//     verifiedRates,
-//     Object.keys(uniqueRates)
-//   );
-//   const bestRates = findBestDirRates(ratesWithoutUnique);
+export const getDirTop = async (
+  rates: { [key: string]: IRate },
+  dir: string
+): Promise<IRate[]> => {
+  // several steps to transform, sort and filter rates
+  const { SD_applied_from, SD_best, SD_worst } = (await getData(
+    ".parser_setting"
+  )) as any;
+  const ratesVerificator = new DirRatesVerificator(
+    dir,
+    SD_applied_from,
+    SD_best,
+    SD_worst
+  );
+  const verifiedRates = ratesVerificator.getVerified(rates);
+  const uniqueRates = await findUniqueDirRates(verifiedRates);
+  const ratesWithoutUnique = deleteProps(
+    verifiedRates,
+    Object.keys(uniqueRates)
+  );
+  const bestRates = findBestDirRates(ratesWithoutUnique);
 
-//   // const dirTops: FullRate[] = [
-//   //   ...dirRatesIntoArray(uniqueRates),
-//   //   ...dirRatesIntoArray(bestRates),
-//   // ].sort((a, b) => a.course - b.course);
-//   return []; //dirTops;
-// };
+  const dirTops: IRate[] = [
+    ...dirRatesIntoArray(uniqueRates),
+    ...dirRatesIntoArray(bestRates),
+  ].sort((a, b) => a.course - b.course);
+  return dirTops;
+};
 
-// const getDirTops = (allDirsRates: AllDirsRates): AllDirsTops => {
-//   return Object.keys(allDirsRates).reduce((allDirTops: AllDirsTops, dir) => {
-//     allDirTops[dir] = getDirTop(allDirsRates[dir], dir);
-//     return allDirTops;
-//   }, {});
-// };
-
-// export default getDirTops;
+export default getDirTops;

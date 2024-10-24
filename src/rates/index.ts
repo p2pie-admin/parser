@@ -1,11 +1,10 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData, getObject } from "../redis";
+import { getData, getObject, localDB } from "../redis";
 import { IGeneralData } from "../types/rates";
 
 import { mylog } from "../helper";
 import { splitToNChunks, waitSec } from "../loops/helper";
-import startWorkers from "../workers";
 import { cpus } from "os";
 import { memoryUsage } from "process";
 import { ICity } from "../types";
@@ -67,7 +66,7 @@ const prepareGeneralData = async () => {
 
   const cities = (await getData("parser_setting"))?.cities as ICity[];
 
-  return {
+  localDB = {
     dirsDisabled,
     allPmCodesThatExist,
     alternativePmCodes,

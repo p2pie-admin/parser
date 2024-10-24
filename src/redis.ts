@@ -220,3 +220,6 @@ process.on("SIGINT", async () => {
   console.log("Redis connections closed");
   process.exit(0);
 });
+
+let localDB = {};
+export { localDB };
