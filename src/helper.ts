@@ -7,6 +7,8 @@
 //   const dirRatesExist = await dbRates.exists(`.allDirsRates.${dirId}`);
 //   const dirP2PExist = await dbRates.exists(`.allDirsP2P.${dirId}`);
 
+import { memoryUsage } from "process";
+
 //   switch (type) {
 //     case "all":
 //       send(dbRates.getData(`.allDirsRates.${dirId}`));
@@ -35,13 +37,21 @@
 
 export const mylog = (
   message: string,
-  color: "error" | "success" | "warning" | "info" = "info"
+  color:
+    | "error"
+    | "success"
+    | "warning"
+    | "important"
+    | "info"
+    | "hidden" = "info"
 ) => {
   const colors = {
     error: "📕 \u001b[1;31m",
     success: "📗 \u001b[1;32m",
     warning: "📙 \u001b[1;33m",
     info: "📘 \u001b[1;34m",
+    hidden: "📓 \u001b[1;30m",
+    important: "📔 \u001b[38;5;226m",
   };
   console.log(`${colors[color]} ${message}`);
 };
@@ -58,3 +68,28 @@ export const menu = `Примеры запросов:
 \nВсе существующие курсы: /all_rates
 \nПохожие курсы: /similar/dirs=BTC_SBERRUB,BTC_TCSBRUB,BTC_CASHRUB
 `;
+
+export const logMemoryUsage = () => {
+  const memoryData = memoryUsage();
+
+  mylog("Memory Usage:", "important");
+  mylog(`RSS: ${Math.round(memoryData.rss / 1024 / 1024)} MB`, "hidden");
+  mylog(
+    `Heap Total: ${Math.round(memoryData.heapTotal / 1024 / 1024)} MB`,
+    "hidden"
+  );
+  mylog(
+    `Heap Used: ${Math.round(memoryData.heapUsed / 1024 / 1024)} MB`,
+    "hidden"
+  );
+  mylog(
+    `External: ${Math.round(memoryData.external / 1024 / 1024)} MB`,
+    "hidden"
+  );
+  if (memoryData.arrayBuffers) {
+    mylog(
+      `Array Buffers: ${Math.round(memoryData.arrayBuffers / 1024 / 1024)} MB`,
+      "hidden"
+    );
+  }
+};

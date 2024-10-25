@@ -1,8 +1,8 @@
-import { DirRates } from "../../types/rates";
+import { IRate } from "../../types/rates";
 
 interface Best {
   combinedSegment: Segment;
-  dirRates: DirRates;
+  dirRates: { [key: string]: IRate };
 }
 
 class Segment {
@@ -58,7 +58,9 @@ class Segment {
   };
 }
 
-const findBestDirRates = (dirRates: DirRates): DirRates => {
+const findBestDirRates = (dirRates: {
+  [key: string]: IRate;
+}): { [key: string]: IRate } => {
   const bestCoursesAsc = [...Object.entries(dirRates)]
     .sort((r1, r2) => +r2[1].course - +r1[1].course)
     .reverse();

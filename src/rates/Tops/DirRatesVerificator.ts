@@ -1,5 +1,6 @@
 import { getData } from "../../redis";
 import { IRate } from "../../types/rates";
+import { sendExchangerWarning } from "../ErrorHandler";
 
 export class DirRatesVerificator {
   dir: string;
@@ -25,26 +26,22 @@ export class DirRatesVerificator {
     const [average, SD] = this._getAverageAndSD(dirRates);
 
     const okDirRates = Object.entries(dirRates).reduce(
-      (okDirRates: { [key: string]: IRate }, [exchangerId, rate]) => {
-        const { rateErrors, rateWarnings } = this._verifyRate(
+      (res: { [key: string]: IRate }, [exchangerId, rate]) => {
+        const hasWarnings = this._verifyRate(
           rate,
           average,
           SD,
           Object.keys(dirRates).length
         );
-        if (rateWarnings.length)
-          db.push(`.dirs.${this.dir}.warnings.${exchangerId}`, rateWarnings);
-        if (rateErrors.length)
-          db.push(`.dirs.${this.dir}.errors.${exchangerId}`, rateErrors); //
-        //dbRates.delete(`.dirRates.${this.dir}.${exchangerId}`);
-        if (!rateErrors.length) okDirRates[exchangerId] = rate;
-        return okDirRates;
+        // есть жесткие ворнинги которые убирают курс вовсе, есть мягкие которые протсо предупреждают
+
+        if (!hasWarnings) return { ...res, [exchangerId]: rate };
+        return res;
       },
       {}
     );
 
     return okDirRates;
-
     // this._addToProblematic("warnings", w, exchangerId);
     // this._addToProblematic("rate_errors", e, exchangerId);
   };
@@ -54,10 +51,9 @@ export class DirRatesVerificator {
     average: number,
     SD: number,
     ratesAmount: number
-  ): VerificationResult => {
+  ): boolean => {
     const { min, max } = rate; // course = GET/GIVE
-    let rateErrors: string[] = [];
-    let rateWarnings: string[] = [];
+    let hasWarnings = false;
     const [minCourse, maxCourse] = [
       // for errors
       average - SD * this.SD_worst,
@@ -71,7 +67,7 @@ export class DirRatesVerificator {
 
     const deviation = +((rate.course / average - 1) * 100).toFixed(0);
 
-    const rate_errors: Violation[] = [
+    const warnings: [boolean, string][] = [
       [min.give <= 0, ` Минимум должен быть больше нуля`],
       [
         max.give < min.give,
@@ -93,7 +89,7 @@ export class DirRatesVerificator {
       ],
     ];
 
-    const warnings: Violation[] = [
+    const easyWarnings: [boolean, string][] = [
       // [!rate.p2pRatio && !rate.ref_link, `Отсутствует рефералка`],
       [
         rate.course < lowCourse && rate.course > minCourse,
@@ -113,24 +109,22 @@ export class DirRatesVerificator {
       ],
     ];
 
-    for (let rate_error of rate_errors) {
-      const [errorCondition, message] = rate_error;
-      if (errorCondition) {
-        rateErrors = [...rateErrors, message];
-      }
-    }
-
     for (let warning of warnings) {
       const [warningCondition, message] = warning;
-      if (warningCondition) {
-        rateWarnings = [...rateWarnings, message];
+      if (warningCondition && rate.exchangerId) {
+        sendExchangerWarning(rate.exchangerId, { dir: this.dir, message });
+        hasWarnings = true;
       }
     }
 
-    return {
-      rateErrors,
-      rateWarnings,
-    };
+    for (let easyWarning of easyWarnings) {
+      const [easyWarningCondition, message] = easyWarning;
+      if (easyWarningCondition && rate.exchangerId) {
+        sendExchangerWarning(rate.exchangerId, { dir: this.dir, message });
+      }
+    }
+
+    return hasWarnings;
   };
 
   _getAverageAndSD = (dirRates: { [key: string]: IRate }): [number, number] => {

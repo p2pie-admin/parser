@@ -57,13 +57,14 @@ export const sendExchangerInfo = (
   !exchanger.skip && setData(`exchangers:${id}:skip`, 0);
 };
 
-export const sendExchangerWarnings = async (
-  exchanger: IExchanger,
+export const sendExchangerWarning = async (
+  exchangerId: string,
   warning: IRateWarning
 ) => {
-  const oldWarnings =
-    (await getData(`exchangers:${exchanger.id}:warnings`)) ||
-    ([] as IRateWarning[]);
-  const newWarnings = [...oldWarnings, warning];
-  setData(`exchangers:${exchanger.id}:warnings`, newWarnings);
+  setData(
+    `exchangers:${exchangerId}:warnings:${warning.dir}`,
+    warning.message,
+    "main",
+    true
+  );
 };

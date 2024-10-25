@@ -1,3 +1,4 @@
+import { mylog } from "../../helper";
 import { getData } from "../../redis";
 import { IRate } from "../../types/rates";
 
@@ -23,13 +24,9 @@ const findUniqueRates = async (dirIRates: {
 }): Promise<{ [key: string]: IRate }> => {
   if (!Object.keys(dirIRates).length) return {};
   try {
-    const filterOptions = (await getData("top_codes")) as string[];
+    const topCodes = (await getData("top_codes")) as string[];
 
-    // const dirIRatesWithoutFees = Object.fromEntries(Object.entries(dirIRates).filter(
-    //   ([_, rate]) => !rate.from_fee && !rate.to_fee && !rate.min_fee
-    // ));
-
-    const uniqueRates = filterOptions.reduce(
+    const uniqueRates = topCodes.reduce(
       (res: { [key: string]: IRate }, code) => {
         switch (code) {
           case "optimal":
@@ -38,7 +35,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "optimal",
-              findUniqueDirIRate(dirIRates, optimalSelector)
+              findUniqueRate(dirIRates, optimalSelector)
             );
             break;
           case "best_course":
@@ -46,7 +43,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "best_course",
-              findUniqueDirIRate(dirIRates, courseSelector)
+              findUniqueRate(dirIRates, courseSelector)
             );
             break;
           case "low_min":
@@ -54,7 +51,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "low_min",
-              findUniqueDirIRate(dirIRates, minSelector)
+              findUniqueRate(dirIRates, minSelector)
             );
             break;
           case "top_max":
@@ -62,7 +59,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "top_max",
-              findUniqueDirIRate(dirIRates, maxSelector, false)
+              findUniqueRate(dirIRates, maxSelector, false)
             );
             break;
           case "top_rating":
@@ -70,7 +67,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "top_rating",
-              findUniqueDirIRate(dirIRates, topRatingSelector)
+              findUniqueRate(dirIRates, topRatingSelector)
             );
             break;
           default:
@@ -83,18 +80,18 @@ const findUniqueRates = async (dirIRates: {
 
     return uniqueRates;
   } catch (err) {
-    console.log(err);
+    mylog(`Error in uniqueRates: ${err}`);
     return {};
   }
 };
 
-const findUniqueDirIRate = (
-  dirIRates: { [key: string]: IRate },
+const findUniqueRate = (
+  dirRates: { [key: string]: IRate },
   selector: Function,
   needLowest = true
 ): [string, IRate] => {
   //[...Object.entries(dirIRates)].sort((r1, r2) => r1[1].course - r2[1].course);
-  const sorted = [...Object.entries(dirIRates)].sort(
+  const sorted = [...Object.entries(dirRates)].sort(
     (r1, r2) => selector(r1[1]) - selector(r2[1])
   );
   const [exchangerId, rate] = needLowest ? sorted[0] : sorted.reverse()[0];

@@ -1,19 +1,24 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData, getObject, localDB } from "../redis";
-import { IGeneralData } from "../types/rates";
+import { getData, getObject, setData } from "../redis";
+import { IAllDirsRates, IGeneralData } from "../types/rates";
 
-import { mylog } from "../helper";
-import { splitToNChunks, waitSec } from "../loops/helper";
+import { logMemoryUsage, mylog } from "../helper";
+import {
+  splitArrayToNChunks,
+  splitObjectToNChunks,
+  waitSec,
+} from "../loops/helper";
 import { cpus } from "os";
 import { memoryUsage } from "process";
 import { ICity } from "../types";
+import getAllDirTops from "./Tops";
 
 let loopsDone = 0;
 
 export const processExchangers = async () => {
   const pauseBetweenLoops =
-    (await getData("parser_setting"))?.pause_between_loops || 10000;
+    (await getData("parser_setting"))?.pause_between_loops || 10;
   const numCPUs = cpus().length;
   const idx = parseInt(process.env.IDX || "");
   mylog(` • #${idx} core processing...`, "info");
@@ -21,21 +26,24 @@ export const processExchangers = async () => {
     [key: string]: IExchanger;
   };
 
-  const chunkedExchangers = splitToNChunks(Object.values(exchangers), numCPUs);
+  const chunkedExchangers = splitArrayToNChunks(
+    Object.values(exchangers),
+    numCPUs
+  );
   const exchangersChunk = chunkedExchangers[idx];
 
   let leftToProcess = exchangersChunk.length;
   const generalData = await prepareGeneralData();
 
-  exchangersChunk.map(async (exchanger, idx) => {
-    await new Promise((resolve) => setTimeout(resolve, idx * 333));
+  exchangersChunk.map(async (exchanger, i) => {
+    await new Promise((resolve) => setTimeout(resolve, i * 333));
     leftToProcess -= 1;
 
     if (!leftToProcess) {
       // finished
       loopsDone += 1;
       // чтобы все успели допарситься
-      memoryUsage();
+      zeroCoreProcess(idx, numCPUs);
       await waitSec(pauseBetweenLoops);
       await processExchangers();
     }
@@ -66,10 +74,27 @@ const prepareGeneralData = async () => {
 
   const cities = (await getData("parser_setting"))?.cities as ICity[];
 
-  localDB = {
+  return {
     dirsDisabled,
     allPmCodesThatExist,
     alternativePmCodes,
     cities,
   } as IGeneralData;
+};
+
+const zeroCoreProcess = async (idx: number, numCPUs: number) => {
+  !idx && logMemoryUsage();
+  const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
+
+  if (allDirRates) {
+    const chunks = splitObjectToNChunks(allDirRates, numCPUs);
+    mylog(
+      `${idx} Total rates: ${Object.keys(chunks[idx]).length}`,
+      "important"
+    );
+    mylog("Calculating top rates... ", "important");
+    const newDirTops = await getAllDirTops(chunks[idx]);
+    const prevDirTops = !idx ? {} : await getData("allDirTops");
+    setData("allDirTops", { ...prevDirTops, newDirTops });
+  }
 };

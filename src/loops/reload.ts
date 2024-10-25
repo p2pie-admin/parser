@@ -9,10 +9,13 @@ import {
 import { mylog } from "../helper";
 import dirsExistHandler from "../rates/ParserHandlers/DirsExistHandler";
 import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
-import { setData, setObject } from "../redis";
+import getAllDirTops from "../rates/Tops";
+import getDirTops from "../rates/Tops";
+import { getData, setData, setObject } from "../redis";
 import statusChange from "../statusChange";
 
 import { IPmPointer } from "../types/pms";
+import { IAllDirsRates } from "../types/rates";
 import { ISection, IPmGroup } from "../types/selector";
 import { reloadExchangers } from "./helper";
 

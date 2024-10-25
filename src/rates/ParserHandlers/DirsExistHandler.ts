@@ -1,9 +1,9 @@
-import { AllDirsRates } from "../../types/rates";
+import { IAllDirsRates } from "../../types/rates";
 import { getData, setData } from "../../redis";
 import { mylog } from "../../helper";
 
 const dirsExistHandler = async () => {
-  const allDirsRates = (await getData("all_dirs_rates")) as AllDirsRates;
+  const allDirsRates = (await getData("all_dirs_rates")) as IAllDirsRates;
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"

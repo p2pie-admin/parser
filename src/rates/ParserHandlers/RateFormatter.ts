@@ -5,7 +5,7 @@ import { IExchanger, IRateWarning } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { IRate, IGeneralData } from "../../types/rates";
 
-import { sendExchangerError, sendExchangerWarnings } from "../ErrorHandler";
+import { sendExchangerError, sendExchangerWarning } from "../ErrorHandler";
 import { transformLimit } from "../helper";
 import { cityCodeToCity, groupRatesDataCities } from "./CitiesHandler";
 
@@ -121,9 +121,9 @@ export default class RateFormatter {
     } catch (err) {
       // не добавляем ворнинги если уже есть
       !this.exchanger.warnings?.length &&
-        sendExchangerWarnings(this.exchanger, {
+        sendExchangerWarning(this.exchanger.id, {
           dir,
-          autoMessage: err + "",
+          message: err + "",
         });
       return;
     }

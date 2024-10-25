@@ -42,7 +42,7 @@ export interface IExchangerParsingInfo {
 
 export interface IRateWarning {
   dir: string;
-  autoMessage?: string;
+  message: string;
 }
 
 export type IExchanger = {

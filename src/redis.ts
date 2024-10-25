@@ -87,16 +87,36 @@ ratesDB.connect().catch(console.error);
 export const setData = async (
   key: string,
   value: RedisValue,
-  dbName: IDBName = "main"
+  dbName: IDBName = "main",
+  NX: boolean = false
 ) => {
   try {
     const db = dbName === "rates" ? ratesDB : mainDB;
     const strValue = JSON.stringify(value);
-    await db.set(key, strValue);
+
+    await (NX ? db.set(key, strValue, { NX: true }) : db.set(key, strValue));
   } catch (error) {
     console.error(`Error setting data for ${dbName}:`, error);
   }
 };
+
+// export const addData = async (
+//   key: string,
+//   value: RedisValue,
+//   dbName: IDBName = "main"
+// ) => {
+//   try {
+//     const db = dbName === "rates" ? ratesDB : mainDB;
+//     const prevValue = await getData(key, dbName);
+//     const newValue = prevValue?.length
+//       ? [...prevValue, value]
+//       : { ...prevValue, value };
+//     const strValue = JSON.stringify(newValue);
+//     await db.set(key, strValue);
+//   } catch (error) {
+//     console.error(`Error setting data for ${dbName}:`, error);
+//   }
+// };
 
 export async function setObject(
   key: string,
@@ -137,7 +157,6 @@ export async function setObject(
     console.error(`Error setting multiple data for ${dbName}:`, error);
   }
 }
-
 export async function getObject(
   key: string,
   dbName: IDBName = "main"
@@ -164,6 +183,15 @@ export async function getObject(
 
     const result: { [key: string]: any } = {};
 
+    // Helper function to parse JSON strings safely
+    function parseJSON(value: string) {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return value; // If parsing fails, return the original string
+      }
+    }
+
     // Helper function to reconstruct the object structure
     function reconstructObject(keys: string[], values: string[]) {
       for (let i = 0; i < keys.length; i++) {
@@ -177,9 +205,9 @@ export async function getObject(
         for (let j = 0; j < keyParts.length; j++) {
           const part = keyParts[j];
 
-          // If we're at the last part, assign the value
+          // If we're at the last part, assign the parsed value
           if (j === keyParts.length - 1) {
-            currentLevel[part] = value;
+            currentLevel[part] = parseJSON(value); // Parse the JSON here
           } else {
             // If the part doesn't exist yet, create an object
             if (!currentLevel[part]) {

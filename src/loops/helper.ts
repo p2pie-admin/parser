@@ -52,12 +52,13 @@ export const reloadExchangers = async () => {
 };
 
 export const waitSec = (seconds: number) => {
+  mylog(`Waiting ${seconds} sec`);
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });
 };
 
-export const splitToNChunks = (arr: any[], n: number): any[][] => {
+export const splitArrayToNChunks = (arr: any[], n: number): any[][] => {
   const chunkSize = Math.ceil(arr.length / n);
   const chunks = [];
   for (let i = 0; i < arr.length; i += chunkSize) {
@@ -65,6 +66,19 @@ export const splitToNChunks = (arr: any[], n: number): any[][] => {
   }
   return chunks;
 };
+
+export function splitObjectToNChunks<T>(obj: T, n: number): T[] {
+  const entries = Object.entries(obj as any); // Convert object to an array of [key, value] pairs
+  const chunkSize = Math.ceil(entries.length / n); // Determine the size of each chunk
+  const chunks: T[] = [];
+
+  for (let i = 0; i < n; i++) {
+    const chunkEntries = entries.slice(i * chunkSize, (i + 1) * chunkSize); // Get the current chunk
+    chunks.push(Object.fromEntries(chunkEntries) as T); // Convert chunk back to an object and add it to chunks
+  }
+
+  return chunks;
+}
 
 export const findAvailablePort = (startPort: number) => {
   return new Promise((resolve) => {

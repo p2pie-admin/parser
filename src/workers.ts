@@ -40,7 +40,11 @@ const startMainWorker = async () => {
   }
   mylog(`Main worker started`, "success");
   cluster.on("exit", (worker) => {
-    mylog(`Worker ${worker.process.pid} died`, "warning");
+    mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
+    mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
+    mylog(`- - - - W O R K E R   D I E D - - - -`, "error");
+    mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
+    mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
   });
 };
 
