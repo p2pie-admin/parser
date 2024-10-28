@@ -5,7 +5,7 @@ import { AuthMutation } from "./queries";
 
 async function auth() {
   mylog("Authorizing ...");
-  setData("parser_jwt", "");
+  await setData("parser_jwt", "");
   const data = await callStrapi(AuthMutation);
   const jwt = data?.login?.jwt;
   if (jwt) {

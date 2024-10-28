@@ -1,7 +1,7 @@
 import { mylog } from "../../helper";
 import { getData, setData } from "../../redis";
 import { ICity } from "../../types";
-import { IExchanger, IRateWarning } from "../../types/exchanger";
+import { IExchanger } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { IRate, IGeneralData } from "../../types/rates";
 
@@ -46,7 +46,7 @@ export default class RateFormatter {
     try {
       const { allPmCodesThatExist, alternativePmCodes, dirsDisabled } =
         this.generalData;
-      const { name, tag, logo, admin_rating, ref_link, rates_link } =
+      const { id, name, tag, logo, admin_rating, ref_link, rates_link } =
         this.exchanger;
 
       const codes = [
@@ -88,6 +88,7 @@ export default class RateFormatter {
 
       // сразу забираем данные обменника для отображения в таблице и свайпере
       const rate = {
+        exchangerId: id,
         name,
         admin_rating,
         tag,
@@ -121,10 +122,7 @@ export default class RateFormatter {
     } catch (err) {
       // не добавляем ворнинги если уже есть
       !this.exchanger.warnings?.length &&
-        sendExchangerWarning(this.exchanger.id, {
-          dir,
-          message: err + "",
-        });
+        sendExchangerWarning(this.exchanger.id, dir, err + "");
       return;
     }
   };

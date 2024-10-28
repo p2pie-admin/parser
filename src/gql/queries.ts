@@ -125,7 +125,7 @@ export const AuthMutation = gql`
   mutation login {
     login(
       input: {
-        identifier: "course_filter"
+        identifier: "parser"
         password: "x#@TH4L-#UJ#vq2"
         provider: "local"
       }

@@ -6,7 +6,6 @@ import {
   IExchanger,
   IExchangerParsingError,
   IExchangerParsingInfo,
-  IRateWarning,
 } from "../types/exchanger";
 
 const errorCodesExplanation = {
@@ -59,12 +58,8 @@ export const sendExchangerInfo = (
 
 export const sendExchangerWarning = async (
   exchangerId: string,
-  warning: IRateWarning
+  dir: string,
+  message: string
 ) => {
-  setData(
-    `exchangers:${exchangerId}:warnings:${warning.dir}`,
-    warning.message,
-    "main",
-    true
-  );
+  setData(`exchangers:${exchangerId}:warnings:${dir}`, message, "main", true);
 };

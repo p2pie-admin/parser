@@ -29,6 +29,7 @@ const callStrapi = async (query: any, variables?: any) => {
     return res;
   } catch (err) {
     mylog("-- GQL ERROR --", "error");
+    mylog(`${err}`, "error");
     jwt && jwt.length > 5 && mylog("JWT exists", "warning");
     jwt && jwt.length > 5 && mylog(err as string, "error");
   }

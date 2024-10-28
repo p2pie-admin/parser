@@ -40,11 +40,6 @@ export interface IExchangerParsingInfo {
   comment?: string;
 }
 
-export interface IRateWarning {
-  dir: string;
-  message: string;
-}
-
 export type IExchanger = {
   name: string;
   id: string;
@@ -58,5 +53,5 @@ export type IExchanger = {
   skip?: number;
   error?: IExchangerParsingError;
   info?: IExchangerParsingInfo;
-  warnings?: IRateWarning[];
+  warnings?: { [key: string]: string };
 };

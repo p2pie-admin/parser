@@ -1,3 +1,4 @@
+import { mylog } from "../../helper";
 import { getData } from "../../redis";
 import { IRate } from "../../types/rates";
 import { sendExchangerWarning } from "../ErrorHandler";
@@ -65,6 +66,11 @@ export class DirRatesVerificator {
       average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
     ];
 
+    mylog(
+      ` !! ${rate.name}: ${min.give} ${max.give} !!`,
+      min.give > max.give ? "important" : "hidden"
+    );
+
     const deviation = +((rate.course / average - 1) * 100).toFixed(0);
 
     const warnings: [boolean, string][] = [
@@ -112,7 +118,8 @@ export class DirRatesVerificator {
     for (let warning of warnings) {
       const [warningCondition, message] = warning;
       if (warningCondition && rate.exchangerId) {
-        sendExchangerWarning(rate.exchangerId, { dir: this.dir, message });
+        mylog(`${rate.exchangerId}: ${message} !!`, "important");
+        sendExchangerWarning(rate.exchangerId, this.dir, message);
         hasWarnings = true;
       }
     }
@@ -120,7 +127,8 @@ export class DirRatesVerificator {
     for (let easyWarning of easyWarnings) {
       const [easyWarningCondition, message] = easyWarning;
       if (easyWarningCondition && rate.exchangerId) {
-        sendExchangerWarning(rate.exchangerId, { dir: this.dir, message });
+        mylog(`easy warning!! ${message} !!`, "important");
+        sendExchangerWarning(rate.exchangerId, this.dir, message);
       }
     }
 
