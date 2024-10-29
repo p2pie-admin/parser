@@ -125,7 +125,6 @@ export async function setObject(
 ) {
   try {
     const db = dbName === "rates" ? ratesDB : mainDB;
-
     const redisData: { [key: string]: string } = {}; // Object for MSET
 
     // Helper function to recursively flatten the object
@@ -138,8 +137,11 @@ export async function setObject(
           continue;
         }
 
-        if (Array.isArray(v) || typeof v === "object") {
-          // Recursively flatten objects and arrays
+        if (Array.isArray(v)) {
+          // Convert array to string and stop further recursion
+          redisData[newKey] = JSON.stringify(v);
+        } else if (typeof v === "object") {
+          // Recursively flatten objects
           flattenObject(v, newKey);
         } else {
           // Store primitive values directly
@@ -157,6 +159,7 @@ export async function setObject(
     console.error(`Error setting multiple data for ${dbName}:`, error);
   }
 }
+
 export async function getObject(
   key: string,
   dbName: IDBName = "main"

@@ -1,14 +1,14 @@
 import { IAllDirsRates } from "../../types/rates";
-import { getData, setData } from "../../redis";
+import { getData, getObject, setData } from "../../redis";
 import { mylog } from "../../helper";
 
 const dirsExistHandler = async () => {
-  const allDirsRates = (await getData("all_dirs_rates")) as IAllDirsRates;
+  const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
   )) as string[];
-  if (!allDirsRates || !allPmCodesThatExist) {
+  if (!allDirRates || !allPmCodesThatExist) {
     mylog("No dirs exist yet!", "warning");
     return;
   }
@@ -23,7 +23,7 @@ const dirsExistHandler = async () => {
   const possiblePairs = possibleDirs.reduce(
     // for showing on selector if dirs exist
     (pps: { [key: string]: string[] }, possibleDir) => {
-      const dirRates = allDirsRates[possibleDir];
+      const dirRates = allDirRates[possibleDir];
       if (!dirRates || !Object.keys(dirRates).length) return pps;
       const [leftPm, rightPm] = possibleDir.split("_");
       pps[leftPm] = pps[leftPm] ? [...pps[leftPm], rightPm] : [rightPm];

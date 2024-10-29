@@ -1,6 +1,6 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData, getObject, setData } from "../redis";
+import { getData, getObject, setData, setObject } from "../redis";
 import { IAllDirsRates, IGeneralData } from "../types/rates";
 
 import { logMemoryUsage, mylog } from "../helper";
@@ -21,6 +21,7 @@ export const processExchangers = async () => {
     (await getData("parser_setting"))?.pause_between_loops || 10;
   const numCPUs = cpus().length;
   const idx = parseInt(process.env.IDX || "");
+  if (idx) return; // вылючатель остальных ядер для теста
   mylog(` • #${idx} core processing...`, "info");
   const exchangers = (await getObject("exchangers")) as {
     [key: string]: IExchanger;
@@ -43,8 +44,9 @@ export const processExchangers = async () => {
       // finished
       loopsDone += 1;
       // чтобы все успели допарситься
-      zeroCoreProcess(idx, numCPUs);
+
       await waitSec(pauseBetweenLoops);
+      await zeroCoreProcess(idx, numCPUs);
       await processExchangers();
     }
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
@@ -94,7 +96,7 @@ const zeroCoreProcess = async (idx: number, numCPUs: number) => {
     );
     mylog("Calculating top rates... ", "important");
     const newDirTops = await getAllDirTops(chunks[idx]);
-    const prevDirTops = !idx ? {} : await getData("allDirTops");
-    setData("allDirTops", { ...prevDirTops, newDirTops });
+    const prevDirTops = !idx ? {} : ((await getObject("allDirTops")) as any);
+    setObject("allDirTops", { ...prevDirTops, ...newDirTops });
   }
 };
