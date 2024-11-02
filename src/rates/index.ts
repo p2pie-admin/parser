@@ -21,7 +21,7 @@ export const processExchangers = async () => {
     (await getData("parser_setting"))?.pause_between_loops || 10;
   const numCPUs = cpus().length;
   const idx = parseInt(process.env.IDX || "");
-  if (idx) return; // вылючатель остальных ядер для теста
+  //if (idx) return; // вылючатель остальных ядер для теста
   mylog(` • #${idx} core processing...`, "info");
   const exchangers = (await getObject("exchangers")) as {
     [key: string]: IExchanger;
@@ -46,7 +46,7 @@ export const processExchangers = async () => {
       // чтобы все успели допарситься
 
       await waitSec(pauseBetweenLoops);
-      await zeroCoreProcess(idx, numCPUs);
+      await calculateTops(idx, numCPUs);
       await processExchangers();
     }
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
@@ -84,7 +84,7 @@ const prepareGeneralData = async () => {
   } as IGeneralData;
 };
 
-const zeroCoreProcess = async (idx: number, numCPUs: number) => {
+const calculateTops = async (idx: number, numCPUs: number) => {
   !idx && logMemoryUsage();
   const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
 

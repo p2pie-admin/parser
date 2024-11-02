@@ -9,6 +9,7 @@ import {
 } from "../../types/exchanger";
 import { IGeneralData } from "../../types/rates";
 import RateFormatter from "./RateFormatter";
+import { setData } from "../../redis";
 
 export default class RatesParser {
   exchanger: IExchanger;
@@ -22,10 +23,12 @@ export default class RatesParser {
   // Main method to get rates
   async getExchangerRates(): Promise<void> {
     try {
+      setData(`started:${this.exchanger.id}`, Date.now());
       const response = await axios.get(this.exchanger.rates_link, {
-        timeout: 20000,
+        timeout: 10000,
       });
       this.handleResponse(response.data);
+      setData(`finished:${this.exchanger.id}`, Date.now());
     } catch (err: any) {
       const code =
         err?.code || err?.status || err.message.match(/\d+/)?.[0] || "";
