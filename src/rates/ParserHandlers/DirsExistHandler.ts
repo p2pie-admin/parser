@@ -30,10 +30,7 @@ const dirsExistHandler = async () => {
       return pps;
     },
     {}
-  );
-  Object.entries(possiblePairs).map(([key, data]) => {
-    mylog(`possible pairs for ${key}: ${data.length}`, "info");
-  });
+  )
 
   setData("possible_pairs", possiblePairs);
 };

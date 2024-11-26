@@ -18,7 +18,7 @@ export const ExchangerStatusesQuery = gql`
 export const ExchangersQuery = gql`
   {
     exchangers(
-      filters: { status: { in: ["active"] } }
+      filters: { status: { in: ["active", "suspended"] } }
       pagination: { start: 0, limit: ${toLoop} }
     ) {
       data {

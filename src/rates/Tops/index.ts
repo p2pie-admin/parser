@@ -1,5 +1,7 @@
+import { dir } from "console";
 import { mylog } from "../../helper";
 import { getData } from "../../redis";
+import { IParserSetting } from "../../types";
 import { IAllDirsRates, AllDirsTops, IRate } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
@@ -23,12 +25,13 @@ const deleteProps = (
 };
 
 const getAllDirTops = async (
-  allDirsRates: IAllDirsRates
+  allDirsRates: IAllDirsRates,
+  parserSetting: IParserSetting
 ): Promise<AllDirsTops> => {
   return Object.keys(allDirsRates).reduce(
     async (allDirTopsPromise: Promise<AllDirsTops>, dir) => {
       const allDirTops = await allDirTopsPromise;
-      allDirTops[dir] = await getDirTop(allDirsRates[dir], dir);
+      allDirTops[dir] = await getDirTop(allDirsRates[dir], parserSetting, dir);
       return allDirTops;
     },
     Promise.resolve({} as AllDirsTops)
@@ -37,12 +40,13 @@ const getAllDirTops = async (
 
 export const getDirTop = async (
   rates: { [key: string]: IRate },
+  parserSetting: IParserSetting,
   dir: string
 ): Promise<IRate[]> => {
   // several steps to transform, sort and filter rates
-  const { SD_applied_from, SD_best, SD_worst } = (await getData(
-    "parser_setting"
-  )) as any;
+
+  const { SD_applied_from, SD_best, SD_worst } = parserSetting;
+
   const ratesVerificator = new DirRatesVerificator(
     dir,
     SD_applied_from,
@@ -58,8 +62,6 @@ export const getDirTop = async (
     Object.keys(uniqueRates)
   );
   const bestRates = findBestDirRates(ratesWithoutUnique);
-  console.log("found best: ", Object.keys(bestRates).length);
-
   //   mylog(
   //     `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
   //     "info"

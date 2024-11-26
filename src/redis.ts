@@ -1,65 +1,3 @@
-// import dotenv from "dotenv";
-// import { createClient, RedisClientType } from "redis";
-// import { mylog } from "./helper";
-
-// type RedisValue = string | number | object;
-// type IDBName = "main" | "rates";
-
-// dotenv.config();
-
-// const env = process.env.NODE_ENV || "development";
-// const port = "6379";
-// const host = env === "production" ? "redis-server" : "localhost";
-
-// const mainDB = createClient({
-//   url: `redis://${host}:${port}/0`,
-// }) as RedisClientType;
-
-// const ratesDB = createClient({
-//   url: `redis://${host}:${port}/1`,
-// }) as RedisClientType;
-
-// mainDB.connect().catch(() => mylog("Redis not responding!", "error"));
-// ratesDB.connect().catch(console.error);
-
-// export const setData = async (
-//   key: string,
-//   value: RedisValue,
-//   dbName: IDBName = "main",
-//   path: string = "."
-// ) => {
-//   try {
-//     const db = dbName === "rates" ? ratesDB : mainDB;
-//     const jsonValue = JSON.stringify(value); // Ensure value is a JSON string
-//     await db.json.set(key, path, jsonValue); // Pass the JSON string as value
-//   } catch (error) {
-//     console.error(`Error setting data for ${dbName}:`, error);
-//   }
-// };
-
-// export async function getData(
-//   key: string,
-//   dbName: IDBName = "main",
-//   path: string = "."
-// ) {
-//   try {
-//     const db = dbName === "rates" ? ratesDB : mainDB;
-//     const value = (await db.json.get(key, { path })) as any;
-//     return value !== null ? value : null;
-//   } catch (error) {
-//     console.error(`Error getting data for ${dbName}:`, error);
-//     return null;
-//   }
-// }
-
-// // Graceful shutdown for Redis connections
-// process.on("SIGINT", async () => {
-//   await mainDB.quit();
-//   await ratesDB.quit();
-//   console.log("Redis connections closed");
-//   process.exit(0);
-// });
-
 import dotenv from "dotenv";
 import { createClient, RedisClientType } from "redis";
 import { mylog } from "./helper";
@@ -70,19 +8,53 @@ type IDBName = "main" | "rates";
 dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
-const port = "6379";
-const host = env === "production" ? "redis-server" : "localhost";
+const port = process.env.REDIS_PORT;
+const host =
+  env === "production"
+    ? process.env.PROD_REDIS_HOST
+    : process.env.DEV_REDIS_HOST;
 
-const mainDB = createClient({
-  url: `redis://${host}:${port}/0`,
-}) as RedisClientType;
+const createRedisClient = (
+  dbIndex: number,
+  dbName: string
+): RedisClientType => {
+  const client = createClient({
+    url: `redis://${host}:${port}/${dbIndex}`,
+    socket: {
+      reconnectStrategy: (retries) => {
+        mylog(`Redis ${dbName} reconnect attempt ${retries}`, "info");
+        return Math.min(retries * 100, 30000); // Exponential backoff, up to 30 seconds
+      },
+    },
+  }) as RedisClientType;
 
-const ratesDB = createClient({
-  url: `redis://${host}:${port}/1`,
-}) as RedisClientType;
+  client.on("connect", () => {
+    mylog(
+      `Redis ${dbName} connected successfully at redis://${host}:${port}/${dbIndex}`,
+      "info"
+    );
+  });
 
-mainDB.connect().catch(() => mylog("Redis not responding!", "error"));
-ratesDB.connect().catch(console.error);
+  client.on("error", (error) => {
+    mylog(`Redis ${dbName} encountered an error: ${error.message}`, "error");
+  });
+
+  client.on("reconnecting", () => {
+    mylog(`Redis ${dbName} attempting to reconnect...`, "warning");
+  });
+
+  return client;
+};
+
+const mainDB = createRedisClient(0, "Main DB");
+const ratesDB = createRedisClient(1, "Rates DB");
+
+const initializeRedis = async () => {
+  await mainDB.connect();
+  await ratesDB.connect();
+};
+
+initializeRedis();
 
 export const setData = async (
   key: string,
@@ -99,24 +71,6 @@ export const setData = async (
     console.error(`Error setting data for ${dbName}:`, error);
   }
 };
-
-// export const addData = async (
-//   key: string,
-//   value: RedisValue,
-//   dbName: IDBName = "main"
-// ) => {
-//   try {
-//     const db = dbName === "rates" ? ratesDB : mainDB;
-//     const prevValue = await getData(key, dbName);
-//     const newValue = prevValue?.length
-//       ? [...prevValue, value]
-//       : { ...prevValue, value };
-//     const strValue = JSON.stringify(newValue);
-//     await db.set(key, strValue);
-//   } catch (error) {
-//     console.error(`Error setting data for ${dbName}:`, error);
-//   }
-// };
 
 export async function setObject(
   key: string,
@@ -251,6 +205,3 @@ process.on("SIGINT", async () => {
   console.log("Redis connections closed");
   process.exit(0);
 });
-
-let localDB = {};
-export { localDB };

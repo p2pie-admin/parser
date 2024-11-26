@@ -1,6 +1,6 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData, getObject, setData, setObject } from "../redis";
+import { getData, getObject, setObject } from "../redis";
 import { IAllDirsRates, IGeneralData } from "../types/rates";
 
 import { logMemoryUsage, mylog } from "../helper";
@@ -11,8 +11,9 @@ import {
 } from "../loops/helper";
 import { cpus } from "os";
 import { memoryUsage } from "process";
-import { ICity } from "../types";
+import { ICity, IParserSetting } from "../types";
 import getAllDirTops from "./Tops";
+import reload from "../loops/reload";
 
 let loopsDone = 0;
 
@@ -26,6 +27,11 @@ export const processExchangers = async () => {
   const exchangers = (await getObject("exchangers")) as {
     [key: string]: IExchanger;
   };
+  if (!exchangers || !Object.keys(exchangers || {}).length) {
+    mylog(`No exchangers found!`, "error");
+    await waitSec(30);
+    return;
+  }
 
   const chunkedExchangers = splitArrayToNChunks(
     Object.values(exchangers),
@@ -47,6 +53,7 @@ export const processExchangers = async () => {
 
       await waitSec(pauseBetweenLoops);
       await calculateTops(idx, numCPUs);
+      await reload();
       await processExchangers();
     }
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
@@ -63,8 +70,8 @@ export const processExchangers = async () => {
 
 const prepareGeneralData = async () => {
   // чтобы не обращаться к базе по сто раз
-  const dirsDisabled = (await getData("parser_setting"))
-    .dirs_disabled as string;
+  const dirsDisabled =
+    (await getData("parser_setting"))?.dirs_disabled || ("" as string);
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
@@ -74,7 +81,7 @@ const prepareGeneralData = async () => {
     "alternative_pm_codes"
   )) as string[][];
 
-  const cities = (await getData("parser_setting"))?.cities as ICity[];
+  const cities = (await getData("parser_setting"))?.cities || ([] as ICity[]);
 
   return {
     dirsDisabled,
@@ -87,16 +94,22 @@ const prepareGeneralData = async () => {
 const calculateTops = async (idx: number, numCPUs: number) => {
   !idx && logMemoryUsage();
   const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
+  const parserSetting = (await getData("parser_setting")) as IParserSetting;
 
-  if (allDirRates) {
-    const chunks = splitObjectToNChunks(allDirRates, numCPUs);
-    mylog(
-      `${idx} Total rates: ${Object.keys(chunks[idx]).length}`,
-      "important"
-    );
-    mylog("Calculating top rates... ", "important");
-    const newDirTops = await getAllDirTops(chunks[idx]);
-    const prevDirTops = !idx ? {} : ((await getObject("allDirTops")) as any);
-    setObject("allDirTops", { ...prevDirTops, ...newDirTops });
+  if (!parserSetting) {
+    mylog("Error loading parser settings", "error");
+    return;
   }
+
+  if (!allDirRates || !Object.keys(allDirRates || {}).length) {
+    mylog("No rates found", "error");
+    return;
+  }
+
+  const chunks = splitObjectToNChunks(allDirRates, numCPUs);
+  mylog(`${idx} Total rates: ${Object.keys(chunks[idx]).length}`, "important");
+  mylog("Calculating top rates... ", "important");
+  const newDirTops = await getAllDirTops(chunks[idx], parserSetting);
+  const prevDirTops = !idx ? {} : ((await getObject("allDirTops")) as any);
+  setObject("allDirTops", { ...prevDirTops, ...newDirTops });
 };

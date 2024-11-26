@@ -1,30 +1,80 @@
-version: "3.8"
-
 services:
+  stats:
+    restart: always
+    container_name: nextjs-app
+    image: darkshrine/stats:latest # Use the image you pushed earlier
+    ports:
+      - "3000:3000" # Expose the app on port 3000
+    depends_on:
+      - redis # Ensure Redis starts before your app
+    env_file:
+      - .env # Load environment variables from .env file
+    deploy:
+      resources:
+        limits:
+          cpus: "0.000" # Allow unrestricted CPU usage
+
   parser:
+    restart: always
     container_name: parser
     build:
       context: .
       dockerfile: Dockerfile
     image: darkshrine/parser:latest
+    ports:
+      - "5005:5005"
     depends_on:
       - redis # Ensure Redis starts before the parser service
-    environment:
-      - REDIS_HOST=redis # Redis service hostname
-      - REDIS_PORT=6379 # Redis default port
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
           cpus: "0.000" # Allow unrestricted CPU usage (Docker will dynamically allocate based on need)
 
   redis:
+    restart: always
     container_name: redis
     image: redis:latest
     ports:
-      - "6379:6379" # Expose Redis port
+      - "6379:6379"
     volumes:
       - redis_data:/data # Persist Redis data to a Docker volume
 
+  server:
+    restart: always
+    container_name: server
+    image: darkshrine/server:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+
+  npm:
+    container_name: npm
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80" # HTTP
+      - "81:81" # admin@example.com changeme
+      - "443:443" # HTTPS
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - nginx-html:/usr/share/nginx/html
+    depends_on:
+      - npm
+
 volumes:
+  npm-data:
+  npm-letsencrypt:
+  nginx-html:
   redis_data:
-    driver: local

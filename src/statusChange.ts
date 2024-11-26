@@ -1,5 +1,6 @@
 import callStrapi from "./gql/callStrapi";
 import { getAllExchangerIds, updateExchangerStatus } from "./gql/queries";
+import { waitSec } from "./loops/helper";
 
 type Status = "active" | "suspended" | "disabled";
 
@@ -29,13 +30,12 @@ async function statusChange(
       : console.error(`📙 \u001b[1;33m No exchanger statuses to be changed! `);
   }
 
-  exchangerIds.map(
-    async (exchangerId: string) =>
-      await callStrapi(updateExchangerStatus, {
-        exchangerId,
-        status: toStatus,
-      })
-  );
+  exchangerIds.map(async (exchangerId: string) => {
+    await callStrapi(updateExchangerStatus, {
+      exchangerId,
+      status: toStatus,
+    });
+  });
 }
 
 export default statusChange;

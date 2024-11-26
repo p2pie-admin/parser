@@ -23,6 +23,7 @@ const startWorkers = async () => {
 
 const startMainWorker = async () => {
   await auth();
+  //await statusChange("active", "suspended"); // всех в suspended сперва
   await reload();
 
   const port = parseInt(process.env.PARSER_PORT || "5005");
@@ -48,4 +49,13 @@ const startMainWorker = async () => {
   });
 };
 
-export default startWorkers;
+const start = async () => {
+  try {
+    startWorkers();
+  } catch (error) {
+    mylog(String(error), "error");
+    process.exit(1);
+  }
+};
+
+start();

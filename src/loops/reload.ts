@@ -11,8 +11,7 @@ import dirsExistHandler from "../rates/ParserHandlers/DirsExistHandler";
 import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
 import getAllDirTops from "../rates/Tops";
 import getDirTops from "../rates/Tops";
-import { getData, setData, setObject } from "../redis";
-import statusChange from "../statusChange";
+import { getData, setData } from "../redis";
 
 import { IPmPointer } from "../types/pms";
 import { IAllDirsRates } from "../types/rates";
