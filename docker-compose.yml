@@ -1,7 +1,7 @@
 services:
   stats:
     restart: always
-    container_name: nextjs-app
+    container_name: stats
     image: darkshrine/stats:latest # Use the image you pushed earlier
     ports:
       - "3000:3000" # Expose the app on port 3000

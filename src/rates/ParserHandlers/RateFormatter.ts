@@ -13,10 +13,16 @@ import { cityCodeToCity, groupRatesDataCities } from "./CitiesHandler";
 export default class RateFormatter {
   exchanger: IExchanger;
   generalData: IGeneralData;
+  cities: ICity[];
 
-  constructor(exchanger: IExchanger, generalData: IGeneralData) {
+  constructor(
+    exchanger: IExchanger,
+    generalData: IGeneralData,
+    cities: ICity[]
+  ) {
     this.exchanger = exchanger;
     this.generalData = generalData;
+    this.cities = cities;
   }
 
   formatAndMatchRatesWithDirs = async (rates: IRateData[]) => {
@@ -133,9 +139,15 @@ export default class RateFormatter {
   }): { [key: string]: { rate: IRate; city: ICity } } => {
     if (!cityRatesData) return {};
     return Object.entries(cityRatesData).reduce((res, [cityCode, rateData]) => {
+      const cityName = this.cities.find(
+        (c) =>
+          c.codes[0] == cityCode.toUpperCase() ||
+          c.codes?.[1] == cityCode.toUpperCase()
+      )?.en_name;
+      if (!cityName) return res;
       return {
         ...res,
-        [cityCode]: this.extractRateFromRateData(rateData),
+        [cityName.toLowerCase()]: this.extractRateFromRateData(rateData),
       };
     }, {});
   };

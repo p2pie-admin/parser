@@ -9,8 +9,9 @@ import {
 } from "../../types/exchanger";
 import { IGeneralData } from "../../types/rates";
 import RateFormatter from "./RateFormatter";
-import { setData } from "../../redis";
+import { getData, setData } from "../../redis";
 import statusChange from "../../statusChange";
+import { ICity } from "../../types";
 
 export default class RatesParser {
   exchanger: IExchanger;
@@ -28,7 +29,7 @@ export default class RatesParser {
       const response = await axios.get(this.exchanger.rates_link, {
         timeout: 50000,
       });
-      this.handleResponse(response.data);
+      await this.handleResponse(response.data);
       // setData(`finished:${this.exchanger.id}`, Date.now());
     } catch (err: any) {
       const code =
@@ -42,7 +43,7 @@ export default class RatesParser {
   }
 
   // Method to handle the response
-  private handleResponse(data: any): void {
+  private async handleResponse(data: any) {
     //const rateFormatter = new RateFormatter(this.id);
     const JSONres = xmlToJson(data);
     if (!JSONres || JSONres.error || !JSONres.rates?.item?.length) {
@@ -57,7 +58,12 @@ export default class RatesParser {
 
     const total_rates = JSONres.rates?.item.length;
     sendExchangerInfo(this.exchanger, total_rates);
-    const rateFormatter = new RateFormatter(this.exchanger, this.generalData);
+    const cities = (await getData("parser_setting"))?.cities || ([] as ICity[]);
+    const rateFormatter = new RateFormatter(
+      this.exchanger,
+      this.generalData,
+      cities
+    );
     rateFormatter.formatAndMatchRatesWithDirs(JSONres.rates?.item);
     //statusChange("suspended", "active", this.exchanger.id);
   }
