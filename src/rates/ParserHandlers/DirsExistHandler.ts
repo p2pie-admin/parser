@@ -3,16 +3,16 @@ import { getData, getObject, setData } from "../../redis";
 import { mylog } from "../../helper";
 
 const dirsExistHandler = async () => {
-  const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
+  const allDirTops = (await getObject("allDirTops")) as IAllDirsRates;
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
   )) as string[];
-  if (!allDirRates || !allPmCodesThatExist) {
+  if (!allDirTops || !allPmCodesThatExist) {
     mylog("No dirs exist yet!", "warning");
     return;
   }
-  const possibleDirs = allPmCodesThatExist.reduce(
+  const possibleEverDirs = allPmCodesThatExist.reduce(
     (res: string[], leftCode) => [
       ...res,
       ...allPmCodesThatExist.map((rightCode) => `${leftCode}_${rightCode}`),
@@ -20,17 +20,20 @@ const dirsExistHandler = async () => {
     []
   ); // getting all possible pairs [A]_[B]
 
-  const possiblePairs = possibleDirs.reduce(
-    // for showing on selector if dirs exist
-    (pps: { [key: string]: string[] }, possibleDir) => {
-      const dirRates = allDirRates[possibleDir];
-      if (!dirRates || !Object.keys(dirRates).length) return pps;
-      const [leftPm, rightPm] = possibleDir.split("_");
-      pps[leftPm] = pps[leftPm] ? [...pps[leftPm], rightPm] : [rightPm];
-      return pps;
+  const possiblePairs = possibleEverDirs.reduce(
+    (pairs: { [key: string]: string[] }, directionKey) => {
+      const directionRates = allDirTops[directionKey];
+      if (!directionRates || Object.keys(directionRates).length < 2)
+        return pairs;
+
+      const [leftPm, rightPm] = directionKey.split("_");
+      if (!leftPm || !rightPm) return pairs; // Handle malformed strings
+
+      pairs[leftPm] = pairs[leftPm] ? [...pairs[leftPm], rightPm] : [rightPm];
+      return pairs;
     },
     {}
-  )
+  );
 
   setData("possible_pairs", possiblePairs);
 };

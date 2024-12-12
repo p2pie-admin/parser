@@ -24,7 +24,7 @@ export class DirRatesVerificator {
   getVerified = (dirRates: {
     [key: string]: IRate;
   }): { [key: string]: IRate } => {
-    const [average, SD] = this._getAverageAndSD(dirRates);
+    const [average, SD] = this._getAverageAndSD(dirRates); // описана ниже
 
     const okDirRates = Object.entries(dirRates).reduce(
       (res: { [key: string]: IRate }, [exchangerId, rate]) => {
@@ -148,8 +148,6 @@ export class DirRatesVerificator {
     );
     return [average, SD];
   };
-
-  _addToProblematic = () => {};
 }
 
 export const round = (amount: number) => {

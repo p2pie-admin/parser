@@ -56,22 +56,21 @@ export const getDirTop = async (
 
   const verifiedRates = ratesVerificator.getVerified(rates);
 
-  const uniqueRates = await findUniqueDirRates(verifiedRates);
-  const ratesWithoutUnique = deleteProps(
-    verifiedRates,
-    Object.keys(uniqueRates)
-  );
-  const bestRates = findBestDirRates(ratesWithoutUnique);
+  // const uniqueRates = await findUniqueDirRates(verifiedRates);
+  // const ratesWithoutUnique = deleteProps(
+  //   verifiedRates,
+  //   Object.keys(uniqueRates)
+  // );
+  //const bestRates = findBestDirRates(ratesWithoutUnique);
   //   mylog(
   //     `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
   //     "info"
   //   );
   //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
 
-  const dirTops: IRate[] = [
-    ...dirRatesIntoArray(uniqueRates),
-    ...dirRatesIntoArray(bestRates),
-  ].sort((a, b) => a.course - b.course);
+  const dirTops: IRate[] = Object.values(verifiedRates).sort(
+    (a, b) => a.course - b.course
+  );
   return dirTops;
 };
 

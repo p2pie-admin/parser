@@ -107,7 +107,7 @@ const calculateTops = async (idx: number, numCPUs: number) => {
   }
 
   const chunks = splitObjectToNChunks(allDirRates, numCPUs);
-  mylog(`${idx} Total rates: ${Object.keys(chunks[idx]).length}`, "important");
+  mylog(`#${idx} Total dirs: ${Object.keys(chunks[idx]).length}`, "important");
   mylog("Calculating top rates... ", "important");
   const newDirTops = await getAllDirTops(chunks[idx], parserSetting);
   const prevDirTops = !idx ? {} : ((await getObject("allDirTops")) as any);

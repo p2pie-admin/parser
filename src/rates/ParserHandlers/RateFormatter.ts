@@ -142,7 +142,8 @@ export default class RateFormatter {
       const cityName = this.cities.find(
         (c) =>
           c.codes[0] == cityCode.toUpperCase() ||
-          c.codes?.[1] == cityCode.toUpperCase()
+          c.codes?.[1] == cityCode.toUpperCase() ||
+          c.codes?.[2] == cityCode.toUpperCase()
       )?.en_name;
       if (!cityName) return res;
       return {
