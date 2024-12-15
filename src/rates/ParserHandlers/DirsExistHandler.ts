@@ -23,7 +23,7 @@ const dirsExistHandler = async () => {
   const possiblePairs = possibleEverDirs.reduce(
     (pairs: { [key: string]: string[] }, directionKey) => {
       const directionRates = allDirTops[directionKey];
-      if (!directionRates || Object.keys(directionRates).length < 2)
+      if (!directionRates || Object.keys(directionRates).length < 3)
         return pairs;
 
       const [leftPm, rightPm] = directionKey.split("_");
