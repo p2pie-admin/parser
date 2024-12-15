@@ -66,13 +66,18 @@ export const PmGroupsQuery = gql`
       data {
         attributes {
           sections {
+            en_title
+            ru_title
             pm_groups(pagination: { start: 0, limit: 1000 }) {
               data {
                 attributes {
+                  en_name
+                  ru_name
                   prefix
                   options {
                     ... on ComponentSelectorSubgroup {
                       code
+                      name
                       alternative_codes
                     }
                     ... on ComponentSelectorCurrency {

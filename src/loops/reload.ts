@@ -16,6 +16,7 @@ import { getData, setData } from "../redis";
 import { IPmPointer } from "../types/pms";
 import { IAllDirsRates } from "../types/rates";
 import { ISection, IPmGroup } from "../types/selector";
+import { createArticles } from "./createArticles";
 import { reloadExchangers } from "./helper";
 
 async function reload() {
@@ -60,13 +61,14 @@ async function reload() {
   );
   setData("alternative_pm_codes", _getAlternativePmCodes(sections));
 
-  dirsExistHandler();
+  await dirsExistHandler();
+  //await createArticles(sections);
 
   mylog("Reload finished!", "info");
   return;
 }
 
-const _getCodes = (pm_group: IPmGroup): string[] => {
+export const _getCodes = (pm_group: IPmGroup): string[] => {
   // ПОНАДОБИТСЯ НА ФРОНТЕ ТОЖЕ
   return (
     pm_group?.options.map((option) =>
@@ -82,18 +84,6 @@ const _getCodes = (pm_group: IPmGroup): string[] => {
   );
 };
 
-const _getAlternativeCodes = (pm_group: IPmGroup): string[][] => {
-  return pm_group.options.reduce(
-    (codes: string[][], option) => [
-      ...codes,
-      ...(option.code && option.alternative_codes
-        ? [[option.code.toUpperCase(), option.alternative_codes.toUpperCase()]]
-        : []),
-    ],
-    []
-  );
-};
-
 const _getAllPmCodesThatExistFromSections = (
   sections: ISection[]
 ): string[] => {
@@ -103,6 +93,18 @@ const _getAllPmCodesThatExistFromSections = (
   );
   return pmGroups.reduce(
     (allPmCodes: string[], pmGroup) => [...allPmCodes, ..._getCodes(pmGroup)],
+    []
+  );
+};
+
+const _getAlternativeCodes = (pm_group: IPmGroup): string[][] => {
+  return pm_group.options.reduce(
+    (codes: string[][], option) => [
+      ...codes,
+      ...(option.code && option.alternative_codes
+        ? [[option.code.toUpperCase(), option.alternative_codes.toUpperCase()]]
+        : []),
+    ],
     []
   );
 };
