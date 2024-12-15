@@ -23,6 +23,9 @@ const dirsExistHandler = async () => {
   const possiblePairs = possibleEverDirs.reduce(
     (pairs: { [key: string]: string[] }, directionKey) => {
       const directionRates = allDirTops[directionKey];
+      // возможно такое, что при билде фронта курсов нет, а потом он появится
+      // и потом в селекторе его можно будет выбрать, а при билде его не было значит 404
+      // поэтому сделаем хотя бы 2 курса чтобы было для минимизации таких кейсов
       if (!directionRates || Object.keys(directionRates).length < 3)
         return pairs;
 

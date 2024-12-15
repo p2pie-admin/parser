@@ -16,18 +16,18 @@ const getOptionCode = (option: IOption, prefix?: string): string => {
   ); // BTC
 };
 
-export const allPmsHaveUnmetPairs = (pms: IPm[], possiblePairs?: string[]) => {
-  if (!possiblePairs || !possiblePairs.length) return false;
-  if (pms.find((pm) => possiblePairs.find((pair) => pm.code === pair)))
-    return false;
-  return true;
-};
+// export const allPmsHaveUnmetPairs = (pms: IPm[], possiblePairs?: string[]) => {
+//   if (!possiblePairs || !possiblePairs.length) return false;
+//   if (pms.find((pm) => possiblePairs.find((pair) => pm.code === pair)))
+//     return false;
+//   return true;
+// };
 
-export const singlePmHasUnmetPairs = (pm: IPm, possiblePairs?: string[]) => {
-  if (!possiblePairs || !possiblePairs.length) return false;
-  if (possiblePairs.find((pair) => pm.code === pair)) return false;
-  return true;
-};
+// export const singlePmHasUnmetPairs = (pm: IPm, possiblePairs?: string[]) => {
+//   if (!possiblePairs || !possiblePairs.length) return false;
+//   if (possiblePairs.find((pair) => pm.code === pair)) return false;
+//   return true;
+// };
 
 export const getPmsFromPmGroup = (
   pm_group: IPmGroup,
