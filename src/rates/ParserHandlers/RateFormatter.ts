@@ -121,7 +121,8 @@ export default class RateFormatter {
           rates_link
             .replace("https://", "___")
             .split("/")[0]
-            .replace("___", "https://"),
+            .replace("___", "https://")
+            .replace("api.", ""),
         cityRates: this.convertCityRates(rateData.cityRatesData),
         last_time_updated: Date.now(),
       } as IRate;
