@@ -61,7 +61,7 @@ export const getDirTop = async (
   // //   verifiedRates,
   // //   Object.keys(uniqueRates)
   // // );
-  //const bestRates = findBestDirRates(verifiedRates);
+  const bestRates = findBestDirRates(verifiedRates);
   // mylog(
   //   `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
   //   "info"
@@ -69,8 +69,8 @@ export const getDirTop = async (
   //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
 
   const allRates = {
+    ...bestRates,
     ...uniqueRates,
-    //...bestRates,
   };
 
   const dirTops: IRate[] = Object.values(allRates).sort(
