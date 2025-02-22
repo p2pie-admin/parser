@@ -7,6 +7,8 @@ import auth from "./gql/auth";
 import reload from "./loops/reload";
 import dotenv from "dotenv";
 import { processExchangers } from "./rates";
+import { getExchangersRatesLinks } from "./create/getExchangers";
+import test from "./test";
 
 dotenv.config();
 
@@ -23,6 +25,7 @@ const startWorkers = async () => {
 
 const startMainWorker = async () => {
   await auth();
+
   //await statusChange("active", "suspended"); // всех в suspended сперва
   await reload();
 
@@ -39,6 +42,7 @@ const startMainWorker = async () => {
       IDX: i,
     });
   }
+
   mylog(`Main worker started`, "success");
   cluster.on("exit", (worker) => {
     mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
@@ -52,6 +56,8 @@ const startMainWorker = async () => {
 const start = async () => {
   try {
     startWorkers();
+
+    //getExchangersRatesLinks(); // эта хуйня опасная, создает обменники
   } catch (error) {
     mylog(String(error), "error");
     process.exit(1);

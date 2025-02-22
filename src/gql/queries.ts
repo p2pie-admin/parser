@@ -1,20 +1,8 @@
 import { gql } from "graphql-request";
 import dotenv from "dotenv";
 dotenv.config();
-const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 1000);
+const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 10000);
 
-export const ExchangerStatusesQuery = gql`
-  {
-    exchangers {
-      data {
-        id
-        attributes {
-          status
-        }
-      }
-    }
-  }
-`;
 export const ExchangersQuery = gql`
   {
     exchangers(
@@ -27,6 +15,7 @@ export const ExchangersQuery = gql`
           name
           admin_rating
           tag
+          status
           rates_link
           ref_link
           logo {

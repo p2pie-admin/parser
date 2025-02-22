@@ -53,9 +53,9 @@ export const groupRatesDataCities = (
       },
       []
     );
-  } catch (err) {
+  } catch (_) {
     const error = {
-      autoMessage: err,
+      autoMessage: "",
       comment: "Не смог сгруппировать города",
     } as IExchangerParsingError;
     sendExchangerError(exchanger, error);

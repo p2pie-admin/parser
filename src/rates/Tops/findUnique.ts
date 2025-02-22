@@ -19,10 +19,10 @@ const addTopParameter = (
   };
 };
 
-const findUniqueRates = async (dirIRates: {
+const findUniqueRates = async (dirRates: {
   [key: string]: IRate;
 }): Promise<{ [key: string]: IRate }> => {
-  if (!Object.keys(dirIRates).length) return {};
+  if (!Object.keys(dirRates).length) return {};
   try {
     const topCodes = (await getData("top_codes")) as string[];
 
@@ -35,7 +35,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "optimal",
-              findUniqueRate(dirIRates, optimalSelector)
+              findUniqueRate(dirRates, optimalSelector)
             );
             break;
           case "best_course":
@@ -43,7 +43,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "best_course",
-              findUniqueRate(dirIRates, courseSelector)
+              findUniqueRate(dirRates, courseSelector)
             );
             break;
           case "low_min":
@@ -51,7 +51,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "low_min",
-              findUniqueRate(dirIRates, minSelector)
+              findUniqueRate(dirRates, minSelector)
             );
             break;
           case "top_max":
@@ -59,7 +59,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "top_max",
-              findUniqueRate(dirIRates, maxSelector, false)
+              findUniqueRate(dirRates, maxSelector, false)
             );
             break;
           case "top_rating":
@@ -67,7 +67,7 @@ const findUniqueRates = async (dirIRates: {
             res = addTopParameter(
               res,
               "top_rating",
-              findUniqueRate(dirIRates, topRatingSelector)
+              findUniqueRate(dirRates, topRatingSelector)
             );
             break;
           default:
@@ -90,7 +90,7 @@ const findUniqueRate = (
   selector: Function,
   needLowest = true
 ): [string, IRate] => {
-  //[...Object.entries(dirIRates)].sort((r1, r2) => r1[1].course - r2[1].course);
+  //[...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
   const sorted = [...Object.entries(dirRates)].sort(
     (r1, r2) => selector(r1[1]) - selector(r2[1])
   );

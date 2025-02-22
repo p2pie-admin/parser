@@ -1,6 +1,5 @@
 import callStrapi from "./gql/callStrapi";
 import { getAllExchangerIds, updateExchangerStatus } from "./gql/queries";
-import { waitSec } from "./loops/helper";
 
 type Status = "active" | "suspended" | "disabled";
 
@@ -12,7 +11,6 @@ async function statusChange(
   let exchangerIds = [];
   if (exchangerId) {
     exchangerIds = [exchangerId];
-    console.log(`📘 \u001b[1;34m ${exchangerId} wants to be active again`);
   } else {
     // апдейтим всех
     const data = await callStrapi(getAllExchangerIds, {

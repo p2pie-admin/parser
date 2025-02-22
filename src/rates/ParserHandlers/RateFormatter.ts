@@ -1,6 +1,6 @@
 import { mylog } from "../../helper";
 import { getData, setData } from "../../redis";
-import statusChange from "../../statusChange";
+
 import { ICity } from "../../types";
 import { IExchanger } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";

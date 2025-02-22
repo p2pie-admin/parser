@@ -10,7 +10,6 @@ import {
 import { IGeneralData } from "../../types/rates";
 import RateFormatter from "./RateFormatter";
 import { getData, setData } from "../../redis";
-import statusChange from "../../statusChange";
 import { ICity } from "../../types";
 
 export default class RatesParser {
@@ -65,7 +64,6 @@ export default class RatesParser {
       cities
     );
     rateFormatter.formatAndMatchRatesWithDirs(JSONres.rates?.item);
-    //statusChange("suspended", "active", this.exchanger.id);
   }
 
   // Method to handle errors

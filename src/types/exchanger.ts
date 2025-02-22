@@ -55,3 +55,10 @@ export type IExchanger = {
   info?: IExchangerParsingInfo;
   warnings?: { [key: string]: string };
 };
+
+export interface IDataForExchangerCreation {
+  rates_link: string;
+  ref_link: string;
+  name: string;
+  admin_rating: number;
+}

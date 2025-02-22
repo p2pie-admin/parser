@@ -1,5 +1,5 @@
 import callStrapi from "../gql/callStrapi";
-import { ExchangersQuery, ExchangerStatusesQuery } from "../gql/queries";
+import { ExchangersQuery } from "../gql/queries";
 import { mylog } from "../helper";
 import net from "net";
 import { getData, setData, setObject } from "../redis";
@@ -31,24 +31,25 @@ export const xmlToJson = (data: any): ExchangerResponse | null => {
 };
 
 export const reloadExchangers = async () => {
-  const newExchangerStatuses = await callStrapi(ExchangerStatusesQuery);
-  const oldExchangerStatuses = await getData("exchanger_statuses");
-  if (
-    JSON.stringify(newExchangerStatuses) !==
-    JSON.stringify(oldExchangerStatuses)
-  ) {
-    mylog("Reloading exchangers", "warning");
-    const exchangers = (await callStrapi(ExchangersQuery))
-      ?.exchangers as IExchanger[];
-    if (!exchangers) {
-      mylog("Couldn't load exchangers!", "error");
-      return;
+  while (true) {
+    try {
+      mylog("Reloading exchangers", "warning");
+      const exchangers = (await callStrapi(ExchangersQuery))
+        ?.exchangers as IExchanger[];
+
+      if (!exchangers) {
+        throw new Error("Couldn't load exchangers!");
+      }
+
+      await setObject("exchangers", convertExchangers(exchangers));
+      mylog("Exchangers loaded successfully", "success");
+      break;
+    } catch (error: any) {
+      mylog(`Error loading exchangers: ${error?.message}`, "error");
+      mylog("Retrying in 1 minute...", "warning");
+      await new Promise((resolve) => setTimeout(resolve, 60000));
     }
-    await setObject("exchangers", convertExchangers(exchangers));
-    await setData("exchanger_statuses", newExchangerStatuses);
-    return;
   }
-  mylog("Exchanger statuses are the same!", "warning");
 };
 
 export const waitSec = (seconds: number) => {

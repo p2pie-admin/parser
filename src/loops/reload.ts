@@ -12,11 +12,12 @@ import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
 import getAllDirTops from "../rates/Tops";
 import getDirTops from "../rates/Tops";
 import { getData, setData } from "../redis";
+import statusChange from "../statusChange";
 
 import { IPmPointer } from "../types/pms";
 import { IAllDirsRates } from "../types/rates";
 import { ISection, IPmGroup } from "../types/selector";
-import { createArticles } from "./createArticles";
+import { createArticles } from "./_createArticles";
 import { reloadExchangers } from "./helper";
 
 async function reload() {

@@ -3,7 +3,15 @@ import { IOption, IPm, IPmGroup } from "../../types/selector";
 
 export const capitalize = (s: string | undefined) => {
   if (typeof s !== "string") return "";
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  const words = s.split(" ");
+  const res = words
+    .map((w, index) =>
+      index > 0 && w.length < 4
+        ? w.toUpperCase()
+        : w.charAt(0).toUpperCase() + w.slice(1)
+    )
+    .join(" ");
+  return res;
 };
 
 const getOptionCode = (option: IOption, prefix?: string): string => {

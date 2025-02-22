@@ -1,5 +1,6 @@
 import { mylog } from "../helper";
 import { getData, setData } from "../redis";
+import statusChange from "../statusChange";
 
 import {
   IErrorCode,
@@ -38,7 +39,9 @@ export const sendExchangerError = (
     } | ${error.codeExplanation} | ${rates_link}`,
     "error"
   );
-  // 10min if nothing special and 2h if 404
+
+  if (exchanger.status == "active")
+    statusChange("active", "suspended", exchanger.id);
   setData(`exchangers:${id}:error`, error);
   setData(`exchangers:${id}:skip`, +(exchanger.skip || 1) * 2);
 };
@@ -52,6 +55,9 @@ export const sendExchangerInfo = (
     ` ✓ #${id} ${name || ""} : получено ${total_rates} курсов | ${rates_link}`,
     "success"
   );
+
+  if (exchanger.status === "suspended")
+    statusChange("suspended", "active", exchanger.id);
   setData(`exchangers:${id}:total_rates`, total_rates);
   !exchanger.skip && setData(`exchangers:${id}:skip`, 0);
 };

@@ -1,0 +1,3481 @@
+[
+  {
+    "rates_link": "https://n-change.net/courses.xml",
+    "ref_link": "https://n-change.net",
+    "name": "N-Change",
+    "admin_rating": 4.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.bitstore.ws/xrates/export/bestchange",
+    "ref_link": "https://bitstore.ws",
+    "name": "Bitstore",
+    "admin_rating": 4.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.buycoin.cash/xml/rate",
+    "ref_link": "https://buycoin.cash",
+    "name": "Buycoin",
+    "admin_rating": 4.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://internetmoney.exchange/exportxml.xml",
+    "ref_link": "https://internetmoney.exchange",
+    "name": "Internetmoney",
+    "admin_rating": 4.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptobox.pro/export.xml",
+    "ref_link": "https://cryptobox.pro",
+    "name": "Cryptobox",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://exwp.com/estandards/kurs_xml.html",
+    "ref_link": "https://exwp.com",
+    "name": "Exwp",
+    "admin_rating": 4.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://100btc.kiev.ua/request-exportxml.xml",
+    "ref_link": "https://100btc.kiev.ua",
+    "name": "100btc",
+    "admin_rating": 3.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://spasibo.kz/rates/rates.xml",
+    "ref_link": "https://spasibo.kz",
+    "name": "Spasibo",
+    "admin_rating": 4.7,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://privat.cash/request-exportxml.xml",
+    "ref_link": "https://privat.cash",
+    "name": "Privat",
+    "admin_rating": 4.23,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ym-change.com/rates.html",
+    "ref_link": "https://ym-change.com",
+    "name": "Ym-Change",
+    "admin_rating": 4.49,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://rates.magnatus.com/exported_rates.php",
+    "ref_link": "https://rates.magnatus.com",
+    "name": "Rates",
+    "admin_rating": 3.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://market-info-standard-v2.changenow.io/",
+    "ref_link": "https://market-info-standard-v2.changenow.io",
+    "name": "Market-Info-standard-v2",
+    "admin_rating": 4.47,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://money-office.com/request-exportxml.xml",
+    "ref_link": "https://money-office.com",
+    "name": "Money-Office",
+    "admin_rating": 3.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://excoin.in/exportxml.xml",
+    "ref_link": "https://excoin.in",
+    "name": "Excoin",
+    "admin_rating": 3.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paywallet.cc/rates/export.xml",
+    "ref_link": "https://paywallet.cc",
+    "name": "Paywallet",
+    "admin_rating": 3.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmennik.ws/ru/export/xml",
+    "ref_link": "https://obmennik.ws",
+    "name": "Obmennik",
+    "admin_rating": 3.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ieremia76.com/request-exportxml.xml",
+    "ref_link": "https://ieremia76.com",
+    "name": "Ieremia76",
+    "admin_rating": 3.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.cryptorg.com/ru/export/xml",
+    "ref_link": "https://cryptorg.com",
+    "name": "Cryptorg",
+    "admin_rating": 3.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wm-sha.ru/export.xml",
+    "ref_link": "https://wm-sha.ru",
+    "name": "Wm-SHA",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vobmenka.com/exportxml.xml",
+    "ref_link": "https://vobmenka.com",
+    "name": "Vobmenka",
+    "admin_rating": 3.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://eurobitcoins.org/request-exportxml.xml",
+    "ref_link": "https://eurobitcoins.org",
+    "name": "Eurobitcoins",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://treddr.org/request-exportxml.xml",
+    "ref_link": "https://treddr.org",
+    "name": "Treddr",
+    "admin_rating": 4.32,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitok777.net/request-exportxml.xml",
+    "ref_link": "https://bitok777.net",
+    "name": "Bitok777",
+    "admin_rating": 4.53,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vmex.info/export.php",
+    "ref_link": "https://vmex.info",
+    "name": "Vmex",
+    "admin_rating": 3.69,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://good-exchanger.com/request-exportxml.xml",
+    "ref_link": "https://good-exchanger.com",
+    "name": "Good-Exchanger",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.timesale.su/v1/exportrates",
+    "ref_link": "https://timesale.su",
+    "name": "Timesale",
+    "admin_rating": 3.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ww-pay.com/export/xml",
+    "ref_link": "https://ww-pay.com",
+    "name": "Ww-PAY",
+    "admin_rating": 3.82,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://monetka.exchange/rates/export/xml",
+    "ref_link": "https://monetka.exchange",
+    "name": "Monetka",
+    "admin_rating": 4.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://best-obmen.com/request-exportxml.xml",
+    "ref_link": "https://best-obmen.com",
+    "name": "Best-Obmen",
+    "admin_rating": 4.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wm.money/request-exportxml.xml",
+    "ref_link": "https://wm.money",
+    "name": "Wm",
+    "admin_rating": 3.82,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://acryptoexchange.com/request-exportxml.xml",
+    "ref_link": "https://acryptoexchange.com",
+    "name": "Acryptoexchange",
+    "admin_rating": 4.07,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://enter-change.com/Home/Valuta",
+    "ref_link": "https://enter-change.com",
+    "name": "Enter-Change",
+    "admin_rating": 3.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fastex.su/request-exportxml.xml",
+    "ref_link": "https://fastex.su",
+    "name": "Fastex",
+    "admin_rating": 4.46,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenneg.com/monitor.xml",
+    "ref_link": "https://obmenneg.com",
+    "name": "Obmenneg",
+    "admin_rating": 3.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bonkypay.com/request-exportxml.xml",
+    "ref_link": "https://bonkypay.com",
+    "name": "Bonkypay",
+    "admin_rating": 3.94,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://solidchanger.net/request-exportxml.xml",
+    "ref_link": "https://solidchanger.net",
+    "name": "Solidchanger",
+    "admin_rating": 4.13,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://icebtc.org/request-exportxml.xml",
+    "ref_link": "https://icebtc.org",
+    "name": "Icebtc",
+    "admin_rating": 4.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kupibit.com/request-exportxml.xml",
+    "ref_link": "https://kupibit.com",
+    "name": "Kupibit",
+    "admin_rating": 3.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://z-exchange.ru/request-exportxml.xml",
+    "ref_link": "https://z-exchange.ru",
+    "name": "Z-Exchange",
+    "admin_rating": 4.36,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmchange24.net/export.xml",
+    "ref_link": "https://wmchange24.net",
+    "name": "Wmchange24",
+    "admin_rating": 4.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://getcoins.cc/valuta_main.xml",
+    "ref_link": "https://getcoins.cc",
+    "name": "Getcoins",
+    "admin_rating": 4.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://criptify.com/export.xml",
+    "ref_link": "https://criptify.com",
+    "name": "Criptify",
+    "admin_rating": 4.26,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xebit.ru/export-rates-xml",
+    "ref_link": "https://xebit.ru",
+    "name": "Xebit",
+    "admin_rating": 4.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenn.com/request-exportxml.xml",
+    "ref_link": "https://obmenn.com",
+    "name": "Obmenn",
+    "admin_rating": 3.51,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmstar.club/f79a9290c3e77b31/rates.xml",
+    "ref_link": "https://wmstar.club",
+    "name": "Wmstar",
+    "admin_rating": 3.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://westchange.top/request-exportxml.xml",
+    "ref_link": "https://westchange.top",
+    "name": "Westchange",
+    "admin_rating": 4.21,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://qiwex.cc/qiwexinfo.xml",
+    "ref_link": "https://qiwex.cc",
+    "name": "Qiwex",
+    "admin_rating": 4.6,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptor.ai/request-exportxml.xml",
+    "ref_link": "https://cryptor.ai",
+    "name": "Cryptor",
+    "admin_rating": 4.2,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmt.am/request-exportxml.xml",
+    "ref_link": "https://wmt.am",
+    "name": "Wmt",
+    "admin_rating": 4.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://obmenom.com/rates.xml",
+    "ref_link": "https://obmenom.com",
+    "name": "Obmenom",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://yochange.com/courses.xml",
+    "ref_link": "https://yochange.com",
+    "name": "Yochange",
+    "admin_rating": 4.07,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmennik-uz.ru/request-exportxml.xml",
+    "ref_link": "https://obmennik-uz.ru",
+    "name": "Obmennik-UZ",
+    "admin_rating": 3.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fex24.com/rates.html",
+    "ref_link": "https://fex24.com",
+    "name": "Fex24",
+    "admin_rating": 4.16,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://rubitok.com/export.xml",
+    "ref_link": "https://rubitok.com",
+    "name": "Rubitok",
+    "admin_rating": 4.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://geeexchange.com/6989/exportxml.xml",
+    "ref_link": "https://geeexchange.com",
+    "name": "Geeexchange",
+    "admin_rating": 3.99,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://electronbank.ru/request-exportxml.xml",
+    "ref_link": "https://electronbank.ru",
+    "name": "Electronbank",
+    "admin_rating": 4.79,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptobroker.pro/rates-export/xml",
+    "ref_link": "https://cryptobroker.pro",
+    "name": "Cryptobroker",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitobmen.net/request-exportxml.xml",
+    "ref_link": "https://bitobmen.net",
+    "name": "Bitobmen",
+    "admin_rating": 3.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.changer.club/v1/rates/xml",
+    "ref_link": "https://changer.club",
+    "name": "Changer",
+    "admin_rating": 3.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://rapid-obmen.com/request-exportxml.xml",
+    "ref_link": "https://rapid-obmen.com",
+    "name": "Rapid-Obmen",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.superchange.net/v1/rates/xml",
+    "ref_link": "https://superchange.net",
+    "name": "Superchange",
+    "admin_rating": 4.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ex-money.cc/valuta.xml",
+    "ref_link": "https://ex-money.cc",
+    "name": "Ex-Money",
+    "admin_rating": 4.27,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://smartwm.ru/exchange-rates-xml",
+    "ref_link": "https://smartwm.ru",
+    "name": "Smartwm",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchange.moscow/request-exportxml.xml",
+    "ref_link": "https://exchange.moscow",
+    "name": "Exchange",
+    "admin_rating": 4.25,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://valid-line.com/rates/",
+    "ref_link": "https://valid-line.com",
+    "name": "Valid-Line",
+    "admin_rating": 3.52,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinstart.cc/valuta.xml",
+    "ref_link": "https://coinstart.cc",
+    "name": "Coinstart",
+    "admin_rating": 3.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://monex.me/rates.html",
+    "ref_link": "https://monex.me",
+    "name": "Monex",
+    "admin_rating": 4.01,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitshoppro.ru/request-exportxml.xml",
+    "ref_link": "https://bitshoppro.ru",
+    "name": "Bitshoppro",
+    "admin_rating": 4.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btcpro24.com/export-rates-xml",
+    "ref_link": "https://btcpro24.com",
+    "name": "Btcpro24",
+    "admin_rating": 4.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://localbitcoins.by/rates.xml",
+    "ref_link": "https://localbitcoins.by",
+    "name": "Localbitcoins",
+    "admin_rating": 4.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://haschange.com/monitor.xml",
+    "ref_link": "https://haschange.com",
+    "name": "Haschange",
+    "admin_rating": 4.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://grambit.net/request-exportxml.xml",
+    "ref_link": "https://grambit.net",
+    "name": "Grambit",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://hobit.cc/courses.xml",
+    "ref_link": "https://hobit.cc",
+    "name": "Hobit",
+    "admin_rating": 4.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://smart-pays.com/request-exportxml.xml",
+    "ref_link": "https://smart-pays.com",
+    "name": "Smart-Pays",
+    "admin_rating": 4.32,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://byware.net/byware_rates.xml",
+    "ref_link": "https://byware.net",
+    "name": "Byware",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exhub.ru/rates/rates.xml",
+    "ref_link": "https://exhub.ru",
+    "name": "Exhub",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://your-coins.com/request-exportxml.xml",
+    "ref_link": "https://your-coins.com",
+    "name": "Your-Coins",
+    "admin_rating": 4.16,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchanger1.com/exchange-rates-xml",
+    "ref_link": "https://exchanger1.com",
+    "name": "Exchanger1",
+    "admin_rating": 4.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen4you.com/exportxml.xml",
+    "ref_link": "https://obmen4you.com",
+    "name": "Obmen4you",
+    "admin_rating": 3.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bixter.org/valuta.xml",
+    "ref_link": "https://bixter.org",
+    "name": "Bixter",
+    "admin_rating": 4.33,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fair-exchange.ru/exportxml.xml",
+    "ref_link": "https://fair-exchange.ru",
+    "name": "Fair-Exchange",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://emexchanger.com/ru/rates/emexchanger_xml.aspx",
+    "ref_link": "https://emexchanger.com",
+    "name": "Emexchanger",
+    "admin_rating": 4.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://a8rw5fv6rv38q9xj.prostocash.com/valuta.xml",
+    "ref_link": "https://a8rw5fv6rv38q9xj.prostocash.com",
+    "name": "A8rw5fv6rv38q9xj",
+    "admin_rating": 3.61,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://qipri.com/request-exportxml.xml",
+    "ref_link": "https://qipri.com",
+    "name": "Qipri",
+    "admin_rating": 4.13,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://shift-money.com/export/xml",
+    "ref_link": "https://shift-money.com",
+    "name": "Shift-Money",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exmoney.me/exportxml.xml",
+    "ref_link": "https://exmoney.me",
+    "name": "Exmoney",
+    "admin_rating": 4.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://jojo.cash/request-exportxml.xml",
+    "ref_link": "https://jojo.cash",
+    "name": "Jojo",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://sberbit.spb.ru/request-exportxml.xml",
+    "ref_link": "https://sberbit.spb.ru",
+    "name": "Sberbit",
+    "admin_rating": 3.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-market24.ru/request-exportxml.xml",
+    "ref_link": "https://crypto-market24.ru",
+    "name": "Crypto-Market24",
+    "admin_rating": 3.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen.cc/rates.xml",
+    "ref_link": "https://obmen.cc",
+    "name": "Obmen",
+    "admin_rating": 3.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://delets.online/site/rates",
+    "ref_link": "https://delets.online",
+    "name": "Delets",
+    "admin_rating": 3.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://trust-changer.com/export.xml",
+    "ref_link": "https://trust-changer.com",
+    "name": "Trust-Changer",
+    "admin_rating": 4.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://1exchanger.com/request-exportxml.xml",
+    "ref_link": "https://1exchanger.com",
+    "name": "1exchanger",
+    "admin_rating": 4.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://livex.pro/request-exportxml.xml",
+    "ref_link": "https://livex.pro",
+    "name": "Livex",
+    "admin_rating": 4.17,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://summa.cash/courses.xml",
+    "ref_link": "https://summa.cash",
+    "name": "Summa",
+    "admin_rating": 4.33,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://obmenat24.com/public/rates.xml",
+    "ref_link": "https://obmenat24.com",
+    "name": "Obmenat24",
+    "admin_rating": 4.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://allwm.cash/export_courses.php",
+    "ref_link": "https://allwm.cash",
+    "name": "Allwm",
+    "admin_rating": 4.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xcryptokit.com/public/rates.xml",
+    "ref_link": "https://xcryptokit.com",
+    "name": "Xcryptokit",
+    "admin_rating": 4.85,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmennik24.net/rates/export/xml",
+    "ref_link": "https://obmennik24.net",
+    "name": "Obmennik24",
+    "admin_rating": 3.4,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ex-code.ru/request-exportxml.xml",
+    "ref_link": "https://ex-code.ru",
+    "name": "Ex-Code",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wm.cash/export_courses.php",
+    "ref_link": "https://wm.cash",
+    "name": "Wm",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bro.exchange/request-exportxml.xml",
+    "ref_link": "https://bro.exchange",
+    "name": "Bro",
+    "admin_rating": 3.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://big-changer.ru/request-exportxml.xml",
+    "ref_link": "https://big-changer.ru",
+    "name": "Big-Changer",
+    "admin_rating": 4.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenka24.ru/exchange-rates-xml",
+    "ref_link": "https://obmenka24.ru",
+    "name": "Obmenka24",
+    "admin_rating": 4.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paybis.com/rates/xml/",
+    "ref_link": "https://paybis.com",
+    "name": "Paybis",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pocket-exchange.com/valuta.xml",
+    "ref_link": "https://pocket-exchange.com",
+    "name": "Pocket-Exchange",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://eliteobmen.com/exportxml.xml",
+    "ref_link": "https://eliteobmen.com",
+    "name": "Eliteobmen",
+    "admin_rating": 3.52,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vip-money.net/request-exportxml.xml",
+    "ref_link": "https://vip-money.net",
+    "name": "Vip-Money",
+    "admin_rating": 4.94,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://easyglobal.com.ua/request-exportxml.xml",
+    "ref_link": "https://easyglobal.com.ua",
+    "name": "Easyglobal",
+    "admin_rating": 3.5,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vip-obmen.money/request-exportxml.xml",
+    "ref_link": "https://vip-obmen.money",
+    "name": "Vip-Obmen",
+    "admin_rating": 3.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://trust7.cc/site/exportxml",
+    "ref_link": "https://trust7.cc",
+    "name": "Trust7",
+    "admin_rating": 3.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-obmen.net/export.php",
+    "ref_link": "https://e-obmen.net",
+    "name": "E-Obmen",
+    "admin_rating": 3.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinpaymaster.com/API/GetCoursesWP",
+    "ref_link": "https://coinpaymaster.com",
+    "name": "Coinpaymaster",
+    "admin_rating": 4.19,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kapysta.online/request-exportxml.xml",
+    "ref_link": "https://kapysta.online",
+    "name": "Kapysta",
+    "admin_rating": 3.51,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://echange.su/request-exportxml.xml",
+    "ref_link": "https://echange.su",
+    "name": "Echange",
+    "admin_rating": 4.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://tec-bit.com/request-exportxml.xml",
+    "ref_link": "https://tec-bit.com",
+    "name": "Tec-BIT",
+    "admin_rating": 4.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenka.online/request-exportxml.xml",
+    "ref_link": "https://obmenka.online",
+    "name": "Obmenka",
+    "admin_rating": 4.47,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://laslobit.cc/request-exportxml.xml",
+    "ref_link": "https://laslobit.cc",
+    "name": "Laslobit",
+    "admin_rating": 4.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmennik.ua/export/xml",
+    "ref_link": "https://obmennik.ua",
+    "name": "Obmennik",
+    "admin_rating": 3.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitok.cc/site/exportxml",
+    "ref_link": "https://bitok.cc",
+    "name": "Bitok",
+    "admin_rating": 4.29,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fixedfloat.com/rates.xml",
+    "ref_link": "https://fixedfloat.com",
+    "name": "Fixedfloat",
+    "admin_rating": 4.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fenix-pay.com/curses",
+    "ref_link": "https://fenix-pay.com",
+    "name": "Fenix-PAY",
+    "admin_rating": 3.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.flychange.net/xrates/export/bestchange",
+    "ref_link": "https://flychange.net",
+    "name": "Flychange",
+    "admin_rating": 3.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fcpay.ru/course.xml",
+    "ref_link": "https://fcpay.ru",
+    "name": "Fcpay",
+    "admin_rating": 3.79,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://saxobit.com/export.xml",
+    "ref_link": "https://saxobit.com",
+    "name": "Saxobit",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://leoexchanger.top/request-exportxml.xml",
+    "ref_link": "https://leoexchanger.top",
+    "name": "Leoexchanger",
+    "admin_rating": 3.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://imexchanger.pro/export.xml",
+    "ref_link": "https://imexchanger.pro",
+    "name": "Imexchanger",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.ru-bas.ru/service/export/xml",
+    "ref_link": "https://ru-bas.ru",
+    "name": "Ru-BAS",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://ichanger.net/rates.xml",
+    "ref_link": "https://ichanger.net",
+    "name": "Ichanger",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinchange24.online/request-exportxml.xml",
+    "ref_link": "https://coinchange24.online",
+    "name": "Coinchange24",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptocash.finance/request-exportxml.xml",
+    "ref_link": "https://cryptocash.finance",
+    "name": "Cryptocash",
+    "admin_rating": 3.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://v-obmen24.ru/request-exportxml.xml",
+    "ref_link": "https://v-obmen24.ru",
+    "name": "V-Obmen24",
+    "admin_rating": 3.48,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://unicash.pro/request-exportxml.xml",
+    "ref_link": "https://unicash.pro",
+    "name": "Unicash",
+    "admin_rating": 4.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bonanza-obmen.com/request-exportxml.xml",
+    "ref_link": "https://bonanza-obmen.com",
+    "name": "Bonanza-Obmen",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://p2pchange.is/rates.txt",
+    "ref_link": "https://p2pchange.is",
+    "name": "P2pchange",
+    "admin_rating": 3.7,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://lionex.net/rates.xml",
+    "ref_link": "https://lionex.net",
+    "name": "Lionex",
+    "admin_rating": 4.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://makoli.com/request-exportxml.xml",
+    "ref_link": "https://makoli.com",
+    "name": "Makoli",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.changelly.com/public/currencies-rates",
+    "ref_link": "https://changelly.com",
+    "name": "Changelly",
+    "admin_rating": 4.53,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://f-change.biz/request-exportxml.xml",
+    "ref_link": "https://f-change.biz",
+    "name": "F-Change",
+    "admin_rating": 4.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenoff.cc/request-exportxml.xml",
+    "ref_link": "https://obmenoff.cc",
+    "name": "Obmenoff",
+    "admin_rating": 4.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://flash-cache.com/request-exportxml.xml",
+    "ref_link": "https://flash-cache.com",
+    "name": "Flash-Cache",
+    "admin_rating": 4.06,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-money.cc/_export/exchange_xml/",
+    "ref_link": "https://e-money.cc",
+    "name": "E-Money",
+    "admin_rating": 3.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://minedtrade.com/request-exportxml.xml",
+    "ref_link": "https://minedtrade.com",
+    "name": "Minedtrade",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://transcoin.me/bestchange.xml",
+    "ref_link": "https://transcoin.me",
+    "name": "Transcoin",
+    "admin_rating": 4.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://perfect-change.com/exportxml.xml",
+    "ref_link": "https://perfect-change.com",
+    "name": "Perfect-Change",
+    "admin_rating": 3.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://newcoin-x.com/request-exportxml.xml",
+    "ref_link": "https://newcoin-x.com",
+    "name": "Newcoin-X",
+    "admin_rating": 4.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmendeneg.org/export/xml",
+    "ref_link": "https://obmendeneg.org",
+    "name": "Obmendeneg",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://altin.su/request-exportxml.xml",
+    "ref_link": "https://altin.su",
+    "name": "Altin",
+    "admin_rating": 4.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.ecashme.com/ru/export/xml",
+    "ref_link": "https://ecashme.com",
+    "name": "Ecashme",
+    "admin_rating": 4.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://swapcoin.cc/valuta.xml",
+    "ref_link": "https://swapcoin.cc",
+    "name": "Swapcoin",
+    "admin_rating": 3.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://payget.pro/valuta.xml",
+    "ref_link": "https://payget.pro",
+    "name": "Payget",
+    "admin_rating": 4.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://owm24.com/res/xml/expcurses.xml",
+    "ref_link": "https://owm24.com",
+    "name": "Owm24",
+    "admin_rating": 4.88,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://darkvip.net/request-exportxml.xml",
+    "ref_link": "https://darkvip.net",
+    "name": "Darkvip",
+    "admin_rating": 4.17,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://cdn.xmlgold.eu/en/request/rates.xml",
+    "ref_link": "https://cdn.xmlgold.eu",
+    "name": "Cdn",
+    "admin_rating": 3.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pay2day.top/request-exportxml.xml",
+    "ref_link": "https://pay2day.top",
+    "name": "Pay2day",
+    "admin_rating": 3.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-dengi.org/rates.html",
+    "ref_link": "https://e-dengi.org",
+    "name": "E-Dengi",
+    "admin_rating": 4.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mybtc.link/request-exportxml.xml",
+    "ref_link": "https://mybtc.link",
+    "name": "Mybtc",
+    "admin_rating": 3.47,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitochek.net/request-exportxml.xml",
+    "ref_link": "https://bitochek.net",
+    "name": "Bitochek",
+    "admin_rating": 3.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xn--e1aidfgi0j.com.ua/rate.xml",
+    "ref_link": "https://xn--e1aidfgi0j.com.ua",
+    "name": "Xn--e1aidfgi0j",
+    "admin_rating": 4.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fastexchange.center/exportxml.xml",
+    "ref_link": "https://fastexchange.center",
+    "name": "Fastexchange",
+    "admin_rating": 4.23,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ethtenge.com/request-exportxml.xml",
+    "ref_link": "https://ethtenge.com",
+    "name": "Ethtenge",
+    "admin_rating": 3.99,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://satoshi.com.ua/request-exportxml.xml",
+    "ref_link": "https://satoshi.com.ua",
+    "name": "Satoshi",
+    "admin_rating": 4.86,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://2rbina.net/request-exportxml.xml",
+    "ref_link": "https://2rbina.net",
+    "name": "2rbina",
+    "admin_rating": 4.69,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmcurrency.com/export/monitor/1",
+    "ref_link": "https://wmcurrency.com",
+    "name": "Wmcurrency",
+    "admin_rating": 4.48,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmbox.com.ua/request-exportxml.xml",
+    "ref_link": "https://wmbox.com.ua",
+    "name": "Wmbox",
+    "admin_rating": 3.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://i-obmen.bz/request-exportxml.xml",
+    "ref_link": "https://i-obmen.bz",
+    "name": "I-Obmen",
+    "admin_rating": 3.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.rocketchange.ru/xrates/export/bestchange",
+    "ref_link": "https://rocketchange.ru",
+    "name": "Rocketchange",
+    "admin_rating": 4.48,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://eggchange.net/request-exportxml.xml",
+    "ref_link": "https://eggchange.net",
+    "name": "Eggchange",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paymarket.cc/valuta.xml",
+    "ref_link": "https://paymarket.cc",
+    "name": "Paymarket",
+    "admin_rating": 4.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashbank.pro/exportxml.xml",
+    "ref_link": "https://cashbank.pro",
+    "name": "Cashbank",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://tetchange.com/request-exportxml.xml",
+    "ref_link": "https://tetchange.com",
+    "name": "Tetchange",
+    "admin_rating": 4.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xchange-24.com/export2.php",
+    "ref_link": "https://xchange-24.com",
+    "name": "Xchange-24",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://jpmarket.cc/valuta.xml",
+    "ref_link": "https://jpmarket.cc",
+    "name": "Jpmarket",
+    "admin_rating": 4.53,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashex.cc/request-exportxml.xml",
+    "ref_link": "https://cashex.cc",
+    "name": "Cashex",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btcstaff.ru/rates.xml",
+    "ref_link": "https://btcstaff.ru",
+    "name": "Btcstaff",
+    "admin_rating": 3.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coindrop.trade/public/rates.xml",
+    "ref_link": "https://coindrop.trade",
+    "name": "Coindrop",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fastchange.me/valuta.xml",
+    "ref_link": "https://fastchange.me",
+    "name": "Fastchange",
+    "admin_rating": 4.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ultrachange.biz/export.php",
+    "ref_link": "https://ultrachange.biz",
+    "name": "Ultrachange",
+    "admin_rating": 4.03,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://eexchanger.co/rates.xml",
+    "ref_link": "https://eexchanger.co",
+    "name": "Eexchanger",
+    "admin_rating": 4.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://electronexchange.ru/request-exportxml.xml",
+    "ref_link": "https://electronexchange.ru",
+    "name": "Electronexchange",
+    "admin_rating": 4.04,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://core.buybank.io/rates/xml",
+    "ref_link": "https://core.buybank.io",
+    "name": "Core",
+    "admin_rating": 3.82,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://el-change.com/request-exportxml.xml",
+    "ref_link": "https://el-change.com",
+    "name": "El-Change",
+    "admin_rating": 4.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btctenge.com/request-exportxml.xml",
+    "ref_link": "https://btctenge.com",
+    "name": "Btctenge",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://sunduk.su/request-exportxml.xml",
+    "ref_link": "https://sunduk.su",
+    "name": "Sunduk",
+    "admin_rating": 4.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmstream.ru/export.xml",
+    "ref_link": "https://wmstream.ru",
+    "name": "Wmstream",
+    "admin_rating": 4.21,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://z-obmen.ru/request-exportxml.xml",
+    "ref_link": "https://z-obmen.ru",
+    "name": "Z-Obmen",
+    "admin_rating": 4.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenew.com/monitor.xml",
+    "ref_link": "https://obmenew.com",
+    "name": "Obmenew",
+    "admin_rating": 4.23,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://change-x.cc/request-exportxml.xml",
+    "ref_link": "https://change-x.cc",
+    "name": "Change-X",
+    "admin_rating": 4.21,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vv-obmen.ru/request-exportxml.xml",
+    "ref_link": "https://vv-obmen.ru",
+    "name": "Vv-Obmen",
+    "admin_rating": 4.88,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wubill.com/request-exportxml.xml",
+    "ref_link": "https://wubill.com",
+    "name": "Wubill",
+    "admin_rating": 3.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptos.com.ua/f79a9290c3e77b31/rates.xml",
+    "ref_link": "https://cryptos.com.ua",
+    "name": "Cryptos",
+    "admin_rating": 3.61,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://hotrate.io/export/rates.xml",
+    "ref_link": "https://hotrate.io",
+    "name": "Hotrate",
+    "admin_rating": 3.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitcoin24.com.ua/ajax/cours.xml",
+    "ref_link": "https://bitcoin24.com.ua",
+    "name": "Bitcoin24",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://micro-exchange.ru/request-exportxml.xml",
+    "ref_link": "https://micro-exchange.ru",
+    "name": "Micro-Exchange",
+    "admin_rating": 3.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://multichange.net/valuta.xml",
+    "ref_link": "https://multichange.net",
+    "name": "Multichange",
+    "admin_rating": 3.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vipchanger.com/res/xml/exprates.xml",
+    "ref_link": "https://vipchanger.com",
+    "name": "Vipchanger",
+    "admin_rating": 3.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://gofast.cash/request-exportxml.xml",
+    "ref_link": "https://gofast.cash",
+    "name": "Gofast",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmcentre.kz/export/xml",
+    "ref_link": "https://wmcentre.kz",
+    "name": "Wmcentre",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmpaycash.com/export/xml",
+    "ref_link": "https://wmpaycash.com",
+    "name": "Wmpaycash",
+    "admin_rating": 4.39,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://payforia.net/request-exportxml.xml",
+    "ref_link": "https://payforia.net",
+    "name": "Payforia",
+    "admin_rating": 4.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenlite24.ru/request-exportxml.xml",
+    "ref_link": "https://obmenlite24.ru",
+    "name": "Obmenlite24",
+    "admin_rating": 3.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://o-paxum.net/course2.xml",
+    "ref_link": "https://o-paxum.net",
+    "name": "O-Paxum",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://tochkaobmena.com/request-exportxml.xml",
+    "ref_link": "https://tochkaobmena.com",
+    "name": "Tochkaobmena",
+    "admin_rating": 3.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://your-monetka.com/request-exportxml.xml",
+    "ref_link": "https://your-monetka.com",
+    "name": "Your-Monetka",
+    "admin_rating": 4.29,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://oneexchanger.com/exportxml.xml",
+    "ref_link": "https://oneexchanger.com",
+    "name": "Oneexchanger",
+    "admin_rating": 4.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://receive-money.biz/exportxml.xml",
+    "ref_link": "https://receive-money.biz",
+    "name": "Receive-Money",
+    "admin_rating": 4.34,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-store.cc/public/rates.xml",
+    "ref_link": "https://crypto-store.cc",
+    "name": "Crypto-Store",
+    "admin_rating": 4.22,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.nixexchange.com/best.xml",
+    "ref_link": "https://nixexchange.com",
+    "name": "Nixexchange",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen.io/request-exportxml.xml",
+    "ref_link": "https://obmen.io",
+    "name": "Obmen",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitok.me/public/rates.xml",
+    "ref_link": "https://bitok.me",
+    "name": "Bitok",
+    "admin_rating": 4.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptomoney.pro/request-exportxml.xml",
+    "ref_link": "https://cryptomoney.pro",
+    "name": "Cryptomoney",
+    "admin_rating": 3.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptonet.pro/request-exportxml.xml",
+    "ref_link": "https://cryptonet.pro",
+    "name": "Cryptonet",
+    "admin_rating": 3.82,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://transfer24.pro/exportxml.xml",
+    "ref_link": "https://transfer24.pro",
+    "name": "Transfer24",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bissonexchange.net/request-exportxml.xml",
+    "ref_link": "https://bissonexchange.net",
+    "name": "Bissonexchange",
+    "admin_rating": 3.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pay-today.cc/request-exportxml.xml",
+    "ref_link": "https://pay-today.cc",
+    "name": "Pay-Today",
+    "admin_rating": 4.01,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://licash.top/request-exportxml.xml",
+    "ref_link": "https://licash.top",
+    "name": "Licash",
+    "admin_rating": 4.33,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://trust-exchange.org/exportxml.xml",
+    "ref_link": "https://trust-exchange.org",
+    "name": "Trust-Exchange",
+    "admin_rating": 4.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://catbit.io/api/public/bestchange",
+    "ref_link": "https://catbit.io",
+    "name": "Catbit",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenka.ua/exchange-rates-xml",
+    "ref_link": "https://obmenka.ua",
+    "name": "Obmenka",
+    "admin_rating": 3.47,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptoobmennik.com/request-exportxml.xml",
+    "ref_link": "https://cryptoobmennik.com",
+    "name": "Cryptoobmennik",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://goldobmen.com/request-exportxml.xml",
+    "ref_link": "https://goldobmen.com",
+    "name": "Goldobmen",
+    "admin_rating": 3.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.utbs.ws/service/export/xml",
+    "ref_link": "https://utbs.ws",
+    "name": "Utbs",
+    "admin_rating": 3.46,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenat.com/public/rates.xml",
+    "ref_link": "https://obmenat.com",
+    "name": "Obmenat",
+    "admin_rating": 3.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-bank.ws/request-exportxml.xml",
+    "ref_link": "https://crypto-bank.ws",
+    "name": "Crypto-Bank",
+    "admin_rating": 4.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://1-online.ru/exportxml.xml",
+    "ref_link": "https://1-online.ru",
+    "name": "1-Online",
+    "admin_rating": 4.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://rates.exchangex.ru/exported_rates.php",
+    "ref_link": "https://rates.exchangex.ru",
+    "name": "Rates",
+    "admin_rating": 3.61,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptex24.com/export/rates-1.php",
+    "ref_link": "https://cryptex24.com",
+    "name": "Cryptex24",
+    "admin_rating": 3.64,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchange-transfer.com/exportxml.xml",
+    "ref_link": "https://exchange-transfer.com",
+    "name": "Exchange-Transfer",
+    "admin_rating": 4.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://m-obmen.ru/export/xml",
+    "ref_link": "https://m-obmen.ru",
+    "name": "M-Obmen",
+    "admin_rating": 4.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cash2pm.com/rates.xml",
+    "ref_link": "https://cash2pm.com",
+    "name": "Cash2pm",
+    "admin_rating": 4.06,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://traiderideal.ru/request-exportxml.xml",
+    "ref_link": "https://traiderideal.ru",
+    "name": "Traiderideal",
+    "admin_rating": 4.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btcsale.biz/filename.xml",
+    "ref_link": "https://btcsale.biz",
+    "name": "Btcsale",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://platov.cc/site/rates",
+    "ref_link": "https://platov.cc",
+    "name": "Platov",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mine.exchange/request-exportxml.xml",
+    "ref_link": "https://mine.exchange",
+    "name": "Mine",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.wmsim.ru/rates.xml",
+    "ref_link": "https://wmsim.ru",
+    "name": "Wmsim",
+    "admin_rating": 4.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://flyobmen.ru/request-exportxml.xml",
+    "ref_link": "https://flyobmen.ru",
+    "name": "Flyobmen",
+    "admin_rating": 3.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kassa.cc/valuta.xml",
+    "ref_link": "https://kassa.cc",
+    "name": "Kassa",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ramon.cash/site/rates",
+    "ref_link": "https://ramon.cash",
+    "name": "Ramon",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pmcash.kz/export/xml",
+    "ref_link": "https://pmcash.kz",
+    "name": "Pmcash",
+    "admin_rating": 3.5,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ripae.net/exportxml.xml",
+    "ref_link": "https://ripae.net",
+    "name": "Ripae",
+    "admin_rating": 3.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wikipays.com/request-exportxml.xml",
+    "ref_link": "https://wikipays.com",
+    "name": "Wikipays",
+    "admin_rating": 4.25,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fastwm.biz/export/xml",
+    "ref_link": "https://fastwm.biz",
+    "name": "Fastwm",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://n-obmen.net/request-exportxml.xml",
+    "ref_link": "https://n-obmen.net",
+    "name": "N-Obmen",
+    "admin_rating": 4.25,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ultra-flash.com/request-exportxml.xml",
+    "ref_link": "https://ultra-flash.com",
+    "name": "Ultra-Flash",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.megachange.ru/exportxml.xml",
+    "ref_link": "https://megachange.ru",
+    "name": "Megachange",
+    "admin_rating": 4.35,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptochange24.com/request-exportxml.xml",
+    "ref_link": "https://cryptochange24.com",
+    "name": "Cryptochange24",
+    "admin_rating": 3.86,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exspss.com/request-exportxml.xml",
+    "ref_link": "https://exspss.com",
+    "name": "Exspss",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://liteexchanger.net/request-exportxml.xml",
+    "ref_link": "https://liteexchanger.net",
+    "name": "Liteexchanger",
+    "admin_rating": 4.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://konvert.im/rates/allchange.xml",
+    "ref_link": "https://konvert.im",
+    "name": "Konvert",
+    "admin_rating": 3.94,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://zombie.cash/service/export/xml",
+    "ref_link": "https://zombie.cash",
+    "name": "Zombie",
+    "admin_rating": 3.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crybex.com/request-exportxml.xml",
+    "ref_link": "https://crybex.com",
+    "name": "Crybex",
+    "admin_rating": 3.6,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-scrooge.is/export/kurses.xml",
+    "ref_link": "https://e-scrooge.is",
+    "name": "E-Scrooge",
+    "admin_rating": 4.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kzobmen.com/request-exportxml.xml",
+    "ref_link": "https://kzobmen.com",
+    "name": "Kzobmen",
+    "admin_rating": 3.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://worldchange.cc/export/xml",
+    "ref_link": "https://worldchange.cc",
+    "name": "Worldchange",
+    "admin_rating": 4.03,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://top-exchange.com/request-exportxml.xml",
+    "ref_link": "https://top-exchange.com",
+    "name": "Top-Exchange",
+    "admin_rating": 4.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://changer4u.com/xml/bestchange",
+    "ref_link": "https://changer4u.com",
+    "name": "Changer4u",
+    "admin_rating": 4.36,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinshop24.net/currency_rates.xml",
+    "ref_link": "https://coinshop24.net",
+    "name": "Coinshop24",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://goodobmen.com/rates.html",
+    "ref_link": "https://goodobmen.com",
+    "name": "Goodobmen",
+    "admin_rating": 3.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://safepay.com.ua/rates/export/xml",
+    "ref_link": "https://safepay.com.ua",
+    "name": "Safepay",
+    "admin_rating": 3.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://staff-obmen.com/request-exportxml.xml",
+    "ref_link": "https://staff-obmen.com",
+    "name": "Staff-Obmen",
+    "admin_rating": 4.35,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://c1k.world/exportxmlfile",
+    "ref_link": "https://c1k.world",
+    "name": "C1k",
+    "admin_rating": 4.31,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ukr-obmen.com/monitor.xml",
+    "ref_link": "https://ukr-obmen.com",
+    "name": "Ukr-Obmen",
+    "admin_rating": 3.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmz.one/request-exportxml.xml",
+    "ref_link": "https://wmz.one",
+    "name": "Wmz",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://expochange.com/request-exportxml.xml",
+    "ref_link": "https://expochange.com",
+    "name": "Expochange",
+    "admin_rating": 4.15,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-polis.com/exchange_courses.xml",
+    "ref_link": "https://crypto-polis.com",
+    "name": "Crypto-Polis",
+    "admin_rating": 4.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xbit.money/request-exportxml.xml",
+    "ref_link": "https://xbit.money",
+    "name": "Xbit",
+    "admin_rating": 3.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://sbitcoin.ru/exportxml.xml",
+    "ref_link": "https://sbitcoin.ru",
+    "name": "Sbitcoin",
+    "admin_rating": 3.45,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coins.black/exportxml.xml",
+    "ref_link": "https://coins.black",
+    "name": "Coins",
+    "admin_rating": 4.14,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cosmochanger.cc/Api/GetCoursesWP",
+    "ref_link": "https://cosmochanger.cc",
+    "name": "Cosmochanger",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ferma.cc/valuta.xml",
+    "ref_link": "https://ferma.cc",
+    "name": "Ferma",
+    "admin_rating": 3.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptohome.me/request-exportxml.xml",
+    "ref_link": "https://cryptohome.me",
+    "name": "Cryptohome",
+    "admin_rating": 4.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://master-change.com.ua/export.xml",
+    "ref_link": "https://master-change.com.ua",
+    "name": "Master-Change",
+    "admin_rating": 4.18,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24bestex.com/request-exportxml.xml",
+    "ref_link": "https://24bestex.com",
+    "name": "24bestex",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cash2pay.pro/course.xml",
+    "ref_link": "https://cash2pay.pro",
+    "name": "Cash2pay",
+    "admin_rating": 4.35,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pridechange.com/exportxml.xml",
+    "ref_link": "https://pridechange.com",
+    "name": "Pridechange",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchangeyourmoney.com/request-exportxml.xml",
+    "ref_link": "https://exchangeyourmoney.com",
+    "name": "Exchangeyourmoney",
+    "admin_rating": 3.79,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://onemoment.cc/valuta.xml",
+    "ref_link": "https://onemoment.cc",
+    "name": "Onemoment",
+    "admin_rating": 3.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen.money/request-exportxml.xml",
+    "ref_link": "https://obmen.money",
+    "name": "Obmen",
+    "admin_rating": 4.26,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitbits.org/exportxml.xml",
+    "ref_link": "https://bitbits.org",
+    "name": "Bitbits",
+    "admin_rating": 3.74,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://superobmenka.com/export/xml",
+    "ref_link": "https://superobmenka.com",
+    "name": "Superobmenka",
+    "admin_rating": 3.69,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.changehero.io/v3/allchange",
+    "ref_link": "https://changehero.io",
+    "name": "Changehero",
+    "admin_rating": 4.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://stylebtc.com/request-exportxml.xml",
+    "ref_link": "https://stylebtc.com",
+    "name": "Stylebtc",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ex-bank.cc/assets/rates.xml",
+    "ref_link": "https://ex-bank.cc",
+    "name": "Ex-Bank",
+    "admin_rating": 3.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paytiz.com/request-exportxml.xml",
+    "ref_link": "https://paytiz.com",
+    "name": "Paytiz",
+    "admin_rating": 3.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://matbea.com/xml/bestchange.xml",
+    "ref_link": "https://matbea.com",
+    "name": "Matbea",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://smart-exchanger.com/request-exportxml.xml",
+    "ref_link": "https://smart-exchanger.com",
+    "name": "Smart-Exchanger",
+    "admin_rating": 4.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coin-bank.co/request-exportxml.xml",
+    "ref_link": "https://coin-bank.co",
+    "name": "Coin-Bank",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.crypster.net/valuta.xml",
+    "ref_link": "https://crypster.net",
+    "name": "Crypster",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://global-ex.cc/public/rates.xml",
+    "ref_link": "https://global-ex.cc",
+    "name": "Global-EX",
+    "admin_rating": 4.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://topcash.me/ru/rates.xml",
+    "ref_link": "https://topcash.me",
+    "name": "Topcash",
+    "admin_rating": 4.16,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenmarket.pro/request-exportxml.xml",
+    "ref_link": "https://obmenmarket.pro",
+    "name": "Obmenmarket",
+    "admin_rating": 3.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wm007.kz/request-exportxml.xml",
+    "ref_link": "https://wm007.kz",
+    "name": "Wm007",
+    "admin_rating": 4.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mycrypto.market/request-exportxml.xml",
+    "ref_link": "https://mycrypto.market",
+    "name": "Mycrypto",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmsell.biz/request-exportxml.xml",
+    "ref_link": "https://wmsell.biz",
+    "name": "Wmsell",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://a-exchange.com/export.xml",
+    "ref_link": "https://a-exchange.com",
+    "name": "A-Exchange",
+    "admin_rating": 3.61,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://money-change.biz/request-exportxml.xml",
+    "ref_link": "https://money-change.biz",
+    "name": "Money-Change",
+    "admin_rating": 3.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://nicechange.org/valuta.xml",
+    "ref_link": "https://nicechange.org",
+    "name": "Nicechange",
+    "admin_rating": 4.22,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://xml.eurobit.cc/valuta.xml",
+    "ref_link": "https://xml.eurobit.cc",
+    "name": "Xml",
+    "admin_rating": 4.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mychanger.biz/feed.xml",
+    "ref_link": "https://mychanger.biz",
+    "name": "Mychanger",
+    "admin_rating": 4.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.quickchange.cc/xrates/export/bestchange",
+    "ref_link": "https://quickchange.cc",
+    "name": "Quickchange",
+    "admin_rating": 4.36,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://hotexchange.ru/request-exportxml.xml",
+    "ref_link": "https://hotexchange.ru",
+    "name": "Hotexchange",
+    "admin_rating": 3.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wm.express/rates.html",
+    "ref_link": "https://wm.express",
+    "name": "Wm",
+    "admin_rating": 4.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://simplechange.ru/export/simplechange.ru.xml",
+    "ref_link": "https://simplechange.ru",
+    "name": "Simplechange",
+    "admin_rating": 4.01,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://papa-change.com/request-exportxml.xml",
+    "ref_link": "https://papa-change.com",
+    "name": "Papa-Change",
+    "admin_rating": 3.51,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://royal.cash/valuta.xml",
+    "ref_link": "https://royal.cash",
+    "name": "Royal",
+    "admin_rating": 3.49,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.teslaobmen.com/service/export/xml",
+    "ref_link": "https://teslaobmen.com",
+    "name": "Teslaobmen",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://msk-exchange.ru/public/rates.xml",
+    "ref_link": "https://msk-exchange.ru",
+    "name": "Msk-Exchange",
+    "admin_rating": 4.14,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptomax.ru/request-exportxml.xml",
+    "ref_link": "https://cryptomax.ru",
+    "name": "Cryptomax",
+    "admin_rating": 4.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://flashobmen.com/exportxml.xml",
+    "ref_link": "https://flashobmen.com",
+    "name": "Flashobmen",
+    "admin_rating": 4.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ob-men.com/request-exportxml.xml",
+    "ref_link": "https://ob-men.com",
+    "name": "Ob-MEN",
+    "admin_rating": 4.76,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cronex.top/monitor.xml",
+    "ref_link": "https://cronex.top",
+    "name": "Cronex",
+    "admin_rating": 4.09,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://hellmel.com/rates.xml",
+    "ref_link": "https://hellmel.com",
+    "name": "Hellmel",
+    "admin_rating": 4.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://olbionex.com/request-exportxml.xml",
+    "ref_link": "https://olbionex.com",
+    "name": "Olbionex",
+    "admin_rating": 3.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://wmchange.in.ua/export.xml",
+    "ref_link": "https://wmchange.in.ua",
+    "name": "Wmchange",
+    "admin_rating": 4.02,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.xmoney.cc/exportxml.xml",
+    "ref_link": "https://xmoney.cc",
+    "name": "Xmoney",
+    "admin_rating": 4.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paspar.net/kurses2.xml",
+    "ref_link": "https://paspar.net",
+    "name": "Paspar",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.my-xchange.com/ru/export/xml",
+    "ref_link": "https://my-xchange.com",
+    "name": "My-Xchange",
+    "admin_rating": 4.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://buybit.su/courses.xml",
+    "ref_link": "https://buybit.su",
+    "name": "Buybit",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exipon.net/request-exportxml.xml",
+    "ref_link": "https://exipon.net",
+    "name": "Exipon",
+    "admin_rating": 4.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btcbit.net/get_xml_kurs_btcbit",
+    "ref_link": "https://btcbit.net",
+    "name": "Btcbit",
+    "admin_rating": 5,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24.zone/request-exportxml.xml",
+    "ref_link": "https://24.zone",
+    "name": "24",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coin24.com.ua/api/xml/rate",
+    "ref_link": "https://coin24.com.ua",
+    "name": "Coin24",
+    "admin_rating": 3.8,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://easy-changer.ru/request-exportxml.xml",
+    "ref_link": "https://easy-changer.ru",
+    "name": "Easy-Changer",
+    "admin_rating": 4.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://keine-exchange.com/exportxml.xml",
+    "ref_link": "https://keine-exchange.com",
+    "name": "Keine-Exchange",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cripthub.ru/request-exportxml.xml",
+    "ref_link": "https://cripthub.ru",
+    "name": "Cripthub",
+    "admin_rating": 3.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.itez.com/api/public/exchange/bestchange.xml",
+    "ref_link": "https://itez.com",
+    "name": "Itez",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashtrade.pro/request-exportxml.xml",
+    "ref_link": "https://cashtrade.pro",
+    "name": "Cashtrade",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coincat.in/monitoring-export/estandarts.xml",
+    "ref_link": "https://coincat.in",
+    "name": "Coincat",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://newline.online/request-exportxml.xml",
+    "ref_link": "https://newline.online",
+    "name": "Newline",
+    "admin_rating": 3.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paybtc.pro/export.xml",
+    "ref_link": "https://paybtc.pro",
+    "name": "Paybtc",
+    "admin_rating": 4.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coco-pay.com/request-exportxml.xml",
+    "ref_link": "https://coco-pay.com",
+    "name": "Coco-PAY",
+    "admin_rating": 4.52,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://real-exchange.ru/request-exportxml.xml",
+    "ref_link": "https://real-exchange.ru",
+    "name": "Real-Exchange",
+    "admin_rating": 4.27,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exline.pro/request-exportxml.xml",
+    "ref_link": "https://exline.pro",
+    "name": "Exline",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ru-change.cc/request-exportxml.xml",
+    "ref_link": "https://ru-change.cc",
+    "name": "Ru-Change",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashadmin.ru/request-exportxml.xml",
+    "ref_link": "https://cashadmin.ru",
+    "name": "Cashadmin",
+    "admin_rating": 4.76,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://tytcoin.com/request-exportxml.xml",
+    "ref_link": "https://tytcoin.com",
+    "name": "Tytcoin",
+    "admin_rating": 3.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://real-bit.ru/request-exportxml.xml",
+    "ref_link": "https://real-bit.ru",
+    "name": "Real-BIT",
+    "admin_rating": 3.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cointocard.org/request-exportxml.xml",
+    "ref_link": "https://cointocard.org",
+    "name": "Cointocard",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.changecoins.io/v1/rates/xml",
+    "ref_link": "https://changecoins.io",
+    "name": "Changecoins",
+    "admin_rating": 4.1,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinguru.pw/request-exportxml.xml",
+    "ref_link": "https://coinguru.pw",
+    "name": "Coinguru",
+    "admin_rating": 4.32,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cash-transfers.ru/request-exportxml.xml",
+    "ref_link": "https://cash-transfers.ru",
+    "name": "Cash-Transfers",
+    "admin_rating": 4.22,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pushpayer.net/request-exportxml.xml",
+    "ref_link": "https://pushpayer.net",
+    "name": "Pushpayer",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://buy-bitcoin.pro/request-exportxml.xml",
+    "ref_link": "https://buy-bitcoin.pro",
+    "name": "Buy-Bitcoin",
+    "admin_rating": 4.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashout.biz/request-exportxml.xml",
+    "ref_link": "https://cashout.biz",
+    "name": "Cashout",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://brokenbit.xyz/api/v1/coin-pairs/xml",
+    "ref_link": "https://brokenbit.xyz",
+    "name": "Brokenbit",
+    "admin_rating": 4.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://hd-change.com/request-exportxml.xml",
+    "ref_link": "https://hd-change.com",
+    "name": "Hd-Change",
+    "admin_rating": 4.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptobar.cc/request-exportxml.xml",
+    "ref_link": "https://cryptobar.cc",
+    "name": "Cryptobar",
+    "admin_rating": 4.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.change.am/request-exportxml.xml",
+    "ref_link": "https://change.am",
+    "name": "Change",
+    "admin_rating": 3.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://tyt.cash/request-exportxml.xml",
+    "ref_link": "https://tyt.cash",
+    "name": "Tyt",
+    "admin_rating": 3.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://superchange.is/export.php",
+    "ref_link": "https://superchange.is",
+    "name": "Superchange",
+    "admin_rating": 3.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24wm.kz/request-exportxml.xml",
+    "ref_link": "https://24wm.kz",
+    "name": "24wm",
+    "admin_rating": 4.31,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://barry24.com/request-exportxml.xml",
+    "ref_link": "https://barry24.com",
+    "name": "Barry24",
+    "admin_rating": 4.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://pocketbank.net/service/export/xml/1W1gs4mfcnq/",
+    "ref_link": "https://pocketbank.net",
+    "name": "Pocketbank",
+    "admin_rating": 4.18,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://allmoney.market/request-exportxml.xml",
+    "ref_link": "https://allmoney.market",
+    "name": "Allmoney",
+    "admin_rating": 4.7,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://anyexchange.best/request-exportxml.xml",
+    "ref_link": "https://anyexchange.best",
+    "name": "Anyexchange",
+    "admin_rating": 3.49,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://atpayz.com/request-exportxml.xml",
+    "ref_link": "https://atpayz.com",
+    "name": "Atpayz",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitcash.cc/request-exportxml.xml",
+    "ref_link": "https://bitcash.cc",
+    "name": "Bitcash",
+    "admin_rating": 3.94,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bit-obmenka.vip/request-exportxml.xml",
+    "ref_link": "https://bit-obmenka.vip",
+    "name": "Bit-Obmenka",
+    "admin_rating": 3.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitok.ai/public/rates.xml",
+    "ref_link": "https://bitok.ai",
+    "name": "Bitok",
+    "admin_rating": 4.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btce-obmen.com/request-exportxml.xml",
+    "ref_link": "https://btce-obmen.com",
+    "name": "Btce-Obmen",
+    "admin_rating": 3.93,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cash-bit.com/request-exportxml.xml",
+    "ref_link": "https://cash-bit.com",
+    "name": "Cash-BIT",
+    "admin_rating": 4.29,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cash2pay.pro/service/export/xml",
+    "ref_link": "https://cash2pay.pro",
+    "name": "Cash2pay",
+    "admin_rating": 4.85,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cripta.cc/valuta.xml",
+    "ref_link": "https://cripta.cc",
+    "name": "Cripta",
+    "admin_rating": 3.84,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypik.com/assets/rates.xml",
+    "ref_link": "https://crypik.com",
+    "name": "Crypik",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptokacca.pro/request-exportxml.xml",
+    "ref_link": "https://cryptokacca.pro",
+    "name": "Cryptokacca",
+    "admin_rating": 4,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptokarma.pro/request-exportxml.xml",
+    "ref_link": "https://cryptokarma.pro",
+    "name": "Cryptokarma",
+    "admin_rating": 4.7,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://moment.express/api/exchange/export",
+    "ref_link": "https://moment.express",
+    "name": "Moment",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-change.io/courses.xml",
+    "ref_link": "https://e-change.io",
+    "name": "E-Change",
+    "admin_rating": 3.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exbaza.com/request-exportxml.xml",
+    "ref_link": "https://exbaza.com",
+    "name": "Exbaza",
+    "admin_rating": 4.98,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exch-em.com/request-exportxml.xml",
+    "ref_link": "https://exch-em.com",
+    "name": "Exch-EM",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "http://export.exchange-rs.net/exportxml.xml",
+    "ref_link": "https://export.exchange-rs.net",
+    "name": "Export",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://expochange.org/request-exportxml.xml",
+    "ref_link": "https://expochange.org",
+    "name": "Expochange",
+    "admin_rating": 4.76,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exwm.cc/request-exportxml.xml",
+    "ref_link": "https://exwm.cc",
+    "name": "Exwm",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://niceobmen.com/request-exportxml.xml",
+    "ref_link": "https://niceobmen.com",
+    "name": "Niceobmen",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://favorite-exchanger.ru/request-exportxml.xml",
+    "ref_link": "https://favorite-exchanger.ru",
+    "name": "Favorite-Exchanger",
+    "admin_rating": 3.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://grumbot.com/request-exportxml.xml",
+    "ref_link": "https://grumbot.com",
+    "name": "Grumbot",
+    "admin_rating": 3.64,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://icebtc.me/request-exportxml.xml",
+    "ref_link": "https://icebtc.me",
+    "name": "Icebtc",
+    "admin_rating": 3.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ichange.one/request-exportxml.xml",
+    "ref_link": "https://ichange.one",
+    "name": "Ichange",
+    "admin_rating": 4.59,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://idram.armchange.ru/request-exportxml.xml",
+    "ref_link": "https://idram.armchange.ru",
+    "name": "Idram",
+    "admin_rating": 4.15,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://instabit.pro/exportxml.html",
+    "ref_link": "https://instabit.pro",
+    "name": "Instabit",
+    "admin_rating": 4.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://just-exchanger.com/request-exportxml.xml",
+    "ref_link": "https://just-exchanger.com",
+    "name": "Just-Exchanger",
+    "admin_rating": 4.64,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kingex.io/rates.xml",
+    "ref_link": "https://kingex.io",
+    "name": "Kingex",
+    "admin_rating": 3.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://moneymix.org/request-exportxml.xml",
+    "ref_link": "https://moneymix.org",
+    "name": "Moneymix",
+    "admin_rating": 4.16,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://x-obmen.biz/request-exportxml.xml",
+    "ref_link": "https://x-obmen.biz",
+    "name": "X-Obmen",
+    "admin_rating": 4.38,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obama.ru/request-exportxml.xml",
+    "ref_link": "https://obama.ru",
+    "name": "Obama",
+    "admin_rating": 3.68,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen-box.net/export.xml",
+    "ref_link": "https://obmen-box.net",
+    "name": "Obmen-BOX",
+    "admin_rating": 3.66,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenko.org/request-exportxml.xml",
+    "ref_link": "https://obmenko.org",
+    "name": "Obmenko",
+    "admin_rating": 4.82,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://sova.gg/valuta.xml",
+    "ref_link": "https://sova.gg",
+    "name": "Sova",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://spbwmcasher.ru/request-exportxml.xml",
+    "ref_link": "https://spbwmcasher.ru",
+    "name": "Spbwmcasher",
+    "admin_rating": 4.35,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ural-obmen.ru/request-exportxml.xml",
+    "ref_link": "https://ural-obmen.ru",
+    "name": "Ural-Obmen",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://worldchange.me/exchange-rates-xml",
+    "ref_link": "https://worldchange.me",
+    "name": "Worldchange",
+    "admin_rating": 4.12,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cointransfer.online/request-exportxml.xml",
+    "ref_link": "https://cointransfer.online",
+    "name": "Cointransfer",
+    "admin_rating": 4.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btchange.ru/request-exportxml.xml",
+    "ref_link": "https://btchange.ru",
+    "name": "Btchange",
+    "admin_rating": 4.45,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cointok.net/request-exportxml.xml",
+    "ref_link": "https://cointok.net",
+    "name": "Cointok",
+    "admin_rating": 4.39,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coolcoin.best/request-exportxml.xml",
+    "ref_link": "https://coolcoin.best",
+    "name": "Coolcoin",
+    "admin_rating": 4.49,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-dom.com/request-exportxml.xml",
+    "ref_link": "https://crypto-dom.com",
+    "name": "Crypto-DOM",
+    "admin_rating": 3.88,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptosell.ru/request-exportxml.xml",
+    "ref_link": "https://cryptosell.ru",
+    "name": "Cryptosell",
+    "admin_rating": 4.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://globalbits.org/request-exportxml.xml",
+    "ref_link": "https://globalbits.org",
+    "name": "Globalbits",
+    "admin_rating": 4.06,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://nordex.cc/request-exportxml.xml",
+    "ref_link": "https://nordex.cc",
+    "name": "Nordex",
+    "admin_rating": 4.74,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://paynote.eu/request-exportxml.xml",
+    "ref_link": "https://paynote.eu",
+    "name": "Paynote",
+    "admin_rating": 4.12,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://yaobmen.cash/request-exportxml.xml",
+    "ref_link": "https://yaobmen.cash",
+    "name": "Yaobmen",
+    "admin_rating": 4.12,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://yesobmen.com/export.xml",
+    "ref_link": "https://yesobmen.com",
+    "name": "Yesobmen",
+    "admin_rating": 3.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://vsemobmen.online/exchange_values.xml",
+    "ref_link": "https://vsemobmen.online",
+    "name": "Vsemobmen",
+    "admin_rating": 3.57,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://buhtaobmena.me/request-exportxml.xml",
+    "ref_link": "https://buhtaobmena.me",
+    "name": "Buhtaobmena",
+    "admin_rating": 3.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://getexch.com/request-exportxml.xml",
+    "ref_link": "https://getexch.com",
+    "name": "Getexch",
+    "admin_rating": 4.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://api.ecashme.com/ru/export/xmlextend",
+    "ref_link": "https://ecashme.com",
+    "name": "Ecashme",
+    "admin_rating": 4.07,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24bitbank.io/request-exportxml.xml",
+    "ref_link": "https://24bitbank.io",
+    "name": "24bitbank",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchnage.net/request-exportxml.xml",
+    "ref_link": "https://exchnage.net",
+    "name": "Exchnage",
+    "admin_rating": 3.74,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24obmin.com/request-exportxml.xml",
+    "ref_link": "https://24obmin.com",
+    "name": "24obmin",
+    "admin_rating": 4.94,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://moneymate.best/update.xml",
+    "ref_link": "https://moneymate.best",
+    "name": "Moneymate",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ftcash.cc/valuta.xml",
+    "ref_link": "https://ftcash.cc",
+    "name": "Ftcash",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://lightobmen.cash/Sd5FdF3548EdsAswLokMnyy4f3inJg75s.xml",
+    "ref_link": "https://lightobmen.cash",
+    "name": "Lightobmen",
+    "admin_rating": 4.61,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://green-obmenka.ru/request-exportxml.xml",
+    "ref_link": "https://green-obmenka.ru",
+    "name": "Green-Obmenka",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://uachanger.com/request-exportxml.xml",
+    "ref_link": "https://uachanger.com",
+    "name": "Uachanger",
+    "admin_rating": 3.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://instacrypt.org/request-exportxml.xml",
+    "ref_link": "https://instacrypt.org",
+    "name": "Instacrypt",
+    "admin_rating": 4.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptoswap365.com/request-exportxml.xml",
+    "ref_link": "https://cryptoswap365.com",
+    "name": "Cryptoswap365",
+    "admin_rating": 3.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ecash.expert/rates-export/xml",
+    "ref_link": "https://ecash.expert",
+    "name": "Ecash",
+    "admin_rating": 4.03,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://e-bank.pro/request-exportxml.xml",
+    "ref_link": "https://e-bank.pro",
+    "name": "E-Bank",
+    "admin_rating": 4.29,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ecurex.net/request.xml",
+    "ref_link": "https://ecurex.net",
+    "name": "Ecurex",
+    "admin_rating": 4.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen-bro.com/request-exportxml.xml",
+    "ref_link": "https://obmen-bro.com",
+    "name": "Obmen-BRO",
+    "admin_rating": 3.81,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://moneyport.world/request-exportxml.xml",
+    "ref_link": "https://moneyport.world",
+    "name": "Moneyport",
+    "admin_rating": 4.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.tradeto.cash/service/export/xml",
+    "ref_link": "https://tradeto.cash",
+    "name": "Tradeto",
+    "admin_rating": 4.14,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://banka.exchange/request-exportxml.xml",
+    "ref_link": "https://banka.exchange",
+    "name": "Banka",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mitninskii.online/request-exportxml.xml",
+    "ref_link": "https://mitninskii.online",
+    "name": "Mitninskii",
+    "admin_rating": 3.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cashflow.best/service/export/xml/Lo1h8kkraja/",
+    "ref_link": "https://cashflow.best",
+    "name": "Cashflow",
+    "admin_rating": 4.04,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.digichanger.pro/service/export/xml/fE1gsfbelgb/",
+    "ref_link": "https://digichanger.pro",
+    "name": "Digichanger",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://atchange.net/request-exportxml.xml",
+    "ref_link": "https://atchange.net",
+    "name": "Atchange",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://floatchange.com/request-exportxml.xml",
+    "ref_link": "https://floatchange.com",
+    "name": "Floatchange",
+    "admin_rating": 4.47,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://letschange.biz/update.xml",
+    "ref_link": "https://letschange.biz",
+    "name": "Letschange",
+    "admin_rating": 4.55,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://lemonchik.cash/request-exportxml.xml",
+    "ref_link": "https://lemonchik.cash",
+    "name": "Lemonchik",
+    "admin_rating": 3.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://x-capital.expert/request-exportxml.xml",
+    "ref_link": "https://x-capital.expert",
+    "name": "X-Capital",
+    "admin_rating": 4.62,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://altinbit.com/request-exportxml.xml",
+    "ref_link": "https://altinbit.com",
+    "name": "Altinbit",
+    "admin_rating": 4.36,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.cryptoboss.online/service/export/xml/NS1gsp5r91h/",
+    "ref_link": "https://cryptoboss.online",
+    "name": "Cryptoboss",
+    "admin_rating": 4.09,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://dashka.exchange/request-exportxml.xml",
+    "ref_link": "https://dashka.exchange",
+    "name": "Dashka",
+    "admin_rating": 4.6,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://dolphex.io/request-exportxml.xml",
+    "ref_link": "https://dolphex.io",
+    "name": "Dolphex",
+    "admin_rating": 3.54,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.poteme.com/service/export/xml",
+    "ref_link": "https://poteme.com",
+    "name": "Poteme",
+    "admin_rating": 3.46,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptofiat.finance/request-exportxml.xml",
+    "ref_link": "https://cryptofiat.finance",
+    "name": "Cryptofiat",
+    "admin_rating": 3.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://veanexchange.com/request-exportxml.xml",
+    "ref_link": "https://veanexchange.com",
+    "name": "Veanexchange",
+    "admin_rating": 4.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchange-club.io/request-exportxml.xml",
+    "ref_link": "https://exchange-club.io",
+    "name": "Exchange-Club",
+    "admin_rating": 3.75,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://24expay.com/request-exportxml.xml",
+    "ref_link": "https://24expay.com",
+    "name": "24expay",
+    "admin_rating": 3.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://16tonn.com/request-exportxml.xml",
+    "ref_link": "https://16tonn.com",
+    "name": "16tonn",
+    "admin_rating": 3.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://in-to.cc/valuta.xml",
+    "ref_link": "https://in-to.cc",
+    "name": "In-TO",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://frctrade.com/request-exportxml.xml",
+    "ref_link": "https://frctrade.com",
+    "name": "Frctrade",
+    "admin_rating": 4.09,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://fury-exchange.com/rates-export/xml",
+    "ref_link": "https://fury-exchange.com",
+    "name": "Fury-Exchange",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptomagnat.online/request-exportxml.xml",
+    "ref_link": "https://cryptomagnat.online",
+    "name": "Cryptomagnat",
+    "admin_rating": 4.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptolavka.com/request-exportxml.xml",
+    "ref_link": "https://cryptolavka.com",
+    "name": "Cryptolavka",
+    "admin_rating": 4.21,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://epichange.online/request-exportxml.xml",
+    "ref_link": "https://epichange.online",
+    "name": "Epichange",
+    "admin_rating": 3.56,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://mentalswap.pro/request-exportxml.xml",
+    "ref_link": "https://mentalswap.pro",
+    "name": "Mentalswap",
+    "admin_rating": 4.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://platinum-ex.exchange/request-exportxml.xml",
+    "ref_link": "https://platinum-ex.exchange",
+    "name": "Platinum-EX",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://rosbitdon.top/request-exportxml.xml",
+    "ref_link": "https://rosbitdon.top",
+    "name": "Rosbitdon",
+    "admin_rating": 3.5,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://strl-x-chng.com/request-exportxml.xml",
+    "ref_link": "https://strl-x-chng.com",
+    "name": "Strl-X-chng",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://trustme.cash/request-exportxml.xml",
+    "ref_link": "https://trustme.cash",
+    "name": "Trustme",
+    "admin_rating": 4.42,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bro.guru/export.xml",
+    "ref_link": "https://bro.guru",
+    "name": "Bro",
+    "admin_rating": 4.9,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitwisex.io/export_kursov.xml",
+    "ref_link": "https://bitwisex.io",
+    "name": "Bitwisex",
+    "admin_rating": 4.58,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://smartmoney.exchange/request-exportxml.xml",
+    "ref_link": "https://smartmoney.exchange",
+    "name": "Smartmoney",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://369change.com/request-exportxml.xml",
+    "ref_link": "https://369change.com",
+    "name": "369change",
+    "admin_rating": 4.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://appbit.net/request-exportxml.xml",
+    "ref_link": "https://appbit.net",
+    "name": "Appbit",
+    "admin_rating": 4.05,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cryptologic.online/request-exportxml.xml",
+    "ref_link": "https://cryptologic.online",
+    "name": "Cryptologic",
+    "admin_rating": 4.41,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://dubaitether.pro/request-exportxml.xml",
+    "ref_link": "https://dubaitether.pro",
+    "name": "Dubaitether",
+    "admin_rating": 4.08,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://empireofexchange.com/request-exportxml.xml",
+    "ref_link": "https://empireofexchange.com",
+    "name": "Empireofexchange",
+    "admin_rating": 4.18,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kupitman.pro/request-exportxml.xml",
+    "ref_link": "https://kupitman.pro",
+    "name": "Kupitman",
+    "admin_rating": 4.67,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://moneybit.pro/request-exportxml.xml",
+    "ref_link": "https://moneybit.pro",
+    "name": "Moneybit",
+    "admin_rating": 4.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.nextcoin.pro/service/export/xml/ak1hb666ci3/",
+    "ref_link": "https://nextcoin.pro",
+    "name": "Nextcoin",
+    "admin_rating": 4.65,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://okpays.com/request-exportxml.xml",
+    "ref_link": "https://okpays.com",
+    "name": "Okpays",
+    "admin_rating": 3.96,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.wedo.exchange/service/export/xml/tA1hb6cphk0/",
+    "ref_link": "https://wedo.exchange",
+    "name": "Wedo",
+    "admin_rating": 3.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.818.finance/service/export/xml/2J1hb6d507b/",
+    "ref_link": "https://818.finance",
+    "name": "818",
+    "admin_rating": 4.38,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://crypto-chicken.co/request-exportxml.xml",
+    "ref_link": "https://crypto-chicken.co",
+    "name": "Crypto-Chicken",
+    "admin_rating": 4.73,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.moneyroll.pro/service/export/xml/7O1hgmcn3ct/",
+    "ref_link": "https://moneyroll.pro",
+    "name": "Moneyroll",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://cleancoins.cc/request-exportxml.xml",
+    "ref_link": "https://cleancoins.cc",
+    "name": "Cleancoins",
+    "admin_rating": 4.36,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://kingsexchange.global/rates-export/xml",
+    "ref_link": "https://kingsexchange.global",
+    "name": "Kingsexchange",
+    "admin_rating": 4.5,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://changeexpert.io/request-exportxml.xml",
+    "ref_link": "https://changeexpert.io",
+    "name": "Changeexpert",
+    "admin_rating": 4.04,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://star-change.io/request-exportxml.xml",
+    "ref_link": "https://star-change.io",
+    "name": "Star-Change",
+    "admin_rating": 3.89,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.dfcex.com/service/export/xml/Hg1i08n07b3/",
+    "ref_link": "https://dfcex.com",
+    "name": "Dfcex",
+    "admin_rating": 4.72,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://coinfy.cc/valuta.xml",
+    "ref_link": "https://coinfy.cc",
+    "name": "Coinfy",
+    "admin_rating": 4.18,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://securedchange.com/request-exportxml.xml",
+    "ref_link": "https://securedchange.com",
+    "name": "Securedchange",
+    "admin_rating": 3.87,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://inside-exchange.com/request-exportxml.xml",
+    "ref_link": "https://inside-exchange.com",
+    "name": "Inside-Exchange",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://1-online.ru/request-exportxml.xml",
+    "ref_link": "https://1-online.ru",
+    "name": "1-Online",
+    "admin_rating": 4.37,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://4money.me/exportxml.xml",
+    "ref_link": "https://4money.me",
+    "name": "4money",
+    "admin_rating": 4.71,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://5min.pro/request-exportxml.xml",
+    "ref_link": "https://5min.pro",
+    "name": "5min",
+    "admin_rating": 3.64,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://excoin.in/request-exportxml.xml",
+    "ref_link": "https://excoin.in",
+    "name": "Excoin",
+    "admin_rating": 3.92,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://grambit.biz/request-exportxml.xml",
+    "ref_link": "https://grambit.biz",
+    "name": "Grambit",
+    "admin_rating": 4.24,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://lionex.net/request-exportxml.xml",
+    "ref_link": "https://lionex.net",
+    "name": "Lionex",
+    "admin_rating": 4.63,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://monex.me/_export/exchange_xml/",
+    "ref_link": "https://monex.me",
+    "name": "Monex",
+    "admin_rating": 3.51,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://money-office.com/exportxml.xml",
+    "ref_link": "https://money-office.com",
+    "name": "Money-Office",
+    "admin_rating": 3.77,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bestobmen.su/request-exportxml.xml",
+    "ref_link": "https://bestobmen.su",
+    "name": "Bestobmen",
+    "admin_rating": 4.07,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen.cash/exportxml.xml",
+    "ref_link": "https://obmen.cash",
+    "name": "Obmen",
+    "admin_rating": 3.44,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmenmonet.com/exportxml.xml",
+    "ref_link": "https://obmenmonet.com",
+    "name": "Obmenmonet",
+    "admin_rating": 4.3,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://real-bit.net/request-exportxml.xml",
+    "ref_link": "https://real-bit.net",
+    "name": "Real-BIT",
+    "admin_rating": 4.78,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ripae.net/request-exportxml.xml",
+    "ref_link": "https://ripae.net",
+    "name": "Ripae",
+    "admin_rating": 3.83,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://ukr-obmen.com/request-exportxml.xml",
+    "ref_link": "https://ukr-obmen.com",
+    "name": "Ukr-Obmen",
+    "admin_rating": 4.91,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.alfa.cash/api/rates",
+    "ref_link": "https://alfa.cash",
+    "name": "Alfa",
+    "admin_rating": 4.43,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.megachange.ru/request-exportxml.xml",
+    "ref_link": "https://megachange.ru",
+    "name": "Megachange",
+    "admin_rating": 3.95,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://btchange.store/request-exportxml.xml",
+    "ref_link": "https://btchange.store",
+    "name": "Btchange",
+    "admin_rating": 4.97,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://exchange.express/request-exportxml.xml",
+    "ref_link": "https://exchange.express",
+    "name": "Exchange",
+    "admin_rating": 3.46,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://obmen.guru/request-exportxml.xml",
+    "ref_link": "https://obmen.guru",
+    "name": "Obmen",
+    "admin_rating": 4.69,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://bitcash365.com/request-exportxml.xml",
+    "ref_link": "https://bitcash365.com",
+    "name": "Bitcash365",
+    "admin_rating": 4.64,
+    "admin_comment": "v1"
+  },
+  {
+    "rates_link": "https://www.coin-market.pro/service/export/xml",
+    "ref_link": "https://coin-market.pro",
+    "name": "Coin-Market",
+    "admin_rating": 3.82,
+    "admin_comment": "v1"
+  }
+]
