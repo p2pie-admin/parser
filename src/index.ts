@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import { processExchangers } from "./rates";
 import { getExchangersRatesLinks } from "./create/getExchangers";
 import test from "./test";
+import statusChange from "./statusChange";
 
 dotenv.config();
 
@@ -25,8 +26,9 @@ const startWorkers = async () => {
 
 const startMainWorker = async () => {
   await auth();
-
-  //await statusChange("active", "suspended"); // всех в suspended сперва
+  mylog("Transfering: Suspended -> Active", "info");
+  await statusChange("suspended", "active");
+  // всех в active сперва
   await reload();
 
   const port = parseInt(process.env.PARSER_PORT || "5005");

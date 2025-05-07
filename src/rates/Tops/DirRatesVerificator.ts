@@ -1,5 +1,3 @@
-import { mylog } from "../../helper";
-import { getData } from "../../redis";
 import { IRate } from "../../types/rates";
 import { sendExchangerWarning } from "../ErrorHandler";
 
@@ -24,7 +22,7 @@ export class DirRatesVerificator {
   getVerified = (dirRates: {
     [key: string]: IRate;
   }): { [key: string]: IRate } => {
-    const [average, SD] = this._getAverageAndSD(dirRates); // описана ниже
+    const [average, SD] = this._getAverageAndSD(dirRates);
 
     const okDirRates = Object.entries(dirRates).reduce(
       (res: { [key: string]: IRate }, [exchangerId, rate]) => {
@@ -34,7 +32,6 @@ export class DirRatesVerificator {
           SD,
           Object.keys(dirRates).length
         );
-        // есть жесткие ворнинги которые убирают курс вовсе, есть мягкие которые протсо предупреждают
 
         if (!hasWarnings) return { ...res, [exchangerId]: rate };
         return res;
@@ -43,8 +40,6 @@ export class DirRatesVerificator {
     );
 
     return okDirRates;
-    // this._addToProblematic("warnings", w, exchangerId);
-    // this._addToProblematic("rate_errors", e, exchangerId);
   };
 
   _verifyRate = (
@@ -53,28 +48,32 @@ export class DirRatesVerificator {
     SD: number,
     ratesAmount: number
   ): boolean => {
-    const { min, max } = rate; // course = GET/GIVE
+    const { min, max } = rate;
     let hasWarnings = false;
+    const [fromCurrency] = this.dir.split("_");
+
     const [minCourse, maxCourse] = [
-      // for errors
       average - SD * this.SD_worst,
       average + SD * this.SD_best,
     ];
     const [lowCourse, highCourse] = [
-      // for warnings
       average - SD * (this.SD_worst > 2 ? this.SD_worst - 1 : 2),
       average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
     ];
 
-    const deviation = +((rate.course / average - 1) * 100).toFixed(0);
+    const deviation =
+      average === 0 ? 0 : +((rate.course / average - 1) * 100).toFixed(0);
 
     const warnings: [boolean, string][] = [
+      [rate.course === 0, ` Курс не может быть нулевым`],
       [min.give <= 0, ` Минимум должен быть больше нуля`],
       [
         max.give < min.give,
-        ` Максималка ${round(rate.max.give)} ${
-          this.dir.split("_")[0]
-        } меньше минималки ${round(rate.min.give)} ${this.dir.split("_")[0]}`,
+        ` Максималка ${round(
+          rate.max.give
+        )} ${fromCurrency} меньше минималки ${round(
+          rate.min.give
+        )} ${fromCurrency}`,
       ],
       [
         rate.course < minCourse,
@@ -91,7 +90,6 @@ export class DirRatesVerificator {
     ];
 
     const easyWarnings: [boolean, string][] = [
-      // [!rate.p2pRatio && !rate.ref_link, `Отсутствует рефералка`],
       [
         rate.course < lowCourse && rate.course > minCourse,
         ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(
@@ -110,17 +108,15 @@ export class DirRatesVerificator {
       ],
     ];
 
-    for (let warning of warnings) {
-      const [warningCondition, message] = warning;
-      if (warningCondition && rate.exchangerId) {
+    for (let [condition, message] of warnings) {
+      if (condition && rate.exchangerId) {
         sendExchangerWarning(rate.exchangerId, this.dir, message);
         hasWarnings = true;
       }
     }
 
-    for (let easyWarning of easyWarnings) {
-      const [easyWarningCondition, message] = easyWarning;
-      if (easyWarningCondition && rate.exchangerId) {
+    for (let [condition, message] of easyWarnings) {
+      if (condition && rate.exchangerId) {
         sendExchangerWarning(rate.exchangerId, this.dir, message);
       }
     }
@@ -129,30 +125,41 @@ export class DirRatesVerificator {
   };
 
   _getAverageAndSD = (dirRates: { [key: string]: IRate }): [number, number] => {
-    // чтобы не мутировать dirRates, копируем курсы
-    const courses = Object.values(dirRates).map((rate) => rate.course);
+    const courses = Object.values(dirRates)
+      .map((rate) => rate.course)
+      .filter((c) => c > 0);
+
     const length = courses.length;
-    // если мало курсов, отображаем все
-    if (length <= this.SD_applied_from) return [0, Infinity];
-    // столько обрежем с обеих сторон, чтобы убрать сильнейшие отклонения от среднего
-    const toCropp = Math.round(Math.pow(length, 0.5) - Math.pow(length, 0.2));
-    // сортируем массив и обрезаем хвосты
-    const sorted = courses.sort((a, b) => a - b);
-    const cropped = sorted.splice(toCropp, length - toCropp * 2);
-    // считаем среднее и стандартное отклонение
-    const average =
-      cropped.reduce((sum, i) => (sum = sum + i), 0) / cropped.length;
-    const SD = Math.sqrt(
-      cropped.reduce((sum, i) => (sum = sum + (i - average) ** 2), 0) /
-        (cropped.length - 1)
-    );
+    if (length <= this.SD_applied_from) {
+      // fallback: return wide threshold
+      const avg =
+        courses.reduce((sum, c) => sum + c, 0) / (courses.length || 1);
+      return [avg, Infinity];
+    }
+
+    const toCrop = Math.round(Math.pow(length, 0.5) - Math.pow(length, 0.2));
+    const sorted = courses.slice().sort((a, b) => a - b);
+    const cropped = sorted.slice(toCrop, length - toCrop);
+
+    const average = cropped.reduce((sum, val) => sum + val, 0) / cropped.length;
+
+    const SD =
+      cropped.length > 1
+        ? Math.sqrt(
+            cropped.reduce((sum, val) => sum + (val - average) ** 2, 0) /
+              (cropped.length - 1)
+          )
+        : 0;
+
     return [average, SD];
   };
 }
 
-export const round = (amount: number) => {
-  const factor = 4;
-  if (!amount) return 0; // тут иногда каким-то образом прилетает null
-  const orderOfMagnitude = -Math.floor(Math.log10(amount / 10 ** factor));
-  return +amount.toFixed(orderOfMagnitude < 0 ? 0 : orderOfMagnitude || 0);
+export const round = (amount: number): number => {
+  if (!amount) return 0;
+
+  if (amount > 1000) return +amount.toFixed(0);
+  if (amount > 10) return +amount.toFixed(2);
+  if (amount > 1) return +amount.toFixed(4);
+  return +amount.toFixed(6);
 };

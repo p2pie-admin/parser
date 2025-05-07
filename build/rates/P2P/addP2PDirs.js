@@ -1,9 +1,5 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const dbRates_1 = __importDefault(require("../../dbRates"));
 // const createPossibleDirCodes = (dirs: IP2PDir[]) => {
 //   dirs.reduce((res, dir) => {
 //     if (dir.give?.length && dir.get?.length) {
@@ -54,19 +50,19 @@ const dbRates_1 = __importDefault(require("../../dbRates"));
 //       ],
 //       "cities": "ekb/kzn/krasn/msk/nsk/rsnd/spb/sochi/stam/dubai/ervn/alm/tbil/antl"
 //   },
-const addDirsToDB = (uid, dirCodes, rateData) => {
-    dirCodes.map((dirCode) => {
-        // создаем новое направление если не существует
-        const prevDirRatesExist = dbRates_1.default.exists(`.allDirsP2P.${dirCode}`);
-        if (!prevDirRatesExist) {
-            dbRates_1.default.push(`.allDirsP2P.${dirCode}`, [rateData]);
-            return;
-        }
-        // или добавляем в существующее
-        const prevDirRates = dbRates_1.default.getData(`.allDirsP2P.${dirCode}`);
-        dbRates_1.default.push(`.allDirsP2P.${dirCode}`, [...prevDirRates, rateData]);
-    });
-};
+// const addDirsToDB = (dirCodes: string[], rateData: FullRate) => {
+//   dirCodes.map((dirCode) => {
+//     // создаем новое направление если не существует
+//     const prevDirRatesExist = dbRates.exists(`.allDirsP2P.${dirCode}`);
+//     if (!prevDirRatesExist) {
+//       dbRates.push(`.allDirsP2P.${dirCode}`, [rateData]);
+//       return;
+//     }
+//     // или добавляем в существующее
+//     const prevDirRates = dbRates.getData(`.allDirsP2P.${dirCode}`);
+//     dbRates.push(`.allDirsP2P.${dirCode}`, [...prevDirRates, rateData]);
+//   });
+// };
 const getDirCode = (give, get) => {
     return `${give.code.toUpperCase()}_${get.code.toUpperCase()}`;
 };
@@ -80,14 +76,14 @@ const convertLimit = (limit, rate, gbtg) => {
 exports.default = (order) => {
     const { status, dirs, uid, name, locations, regulationCodes } = order;
     // фильтруем пустые и заблокированные
-    if (!(dirs === null || dirs === void 0 ? void 0 : dirs.length) || status !== "active")
+    if (!dirs?.length || status !== "active")
         return;
     dirs.map((dir) => {
         const { give, get, usersRate, defRate: defRate, giveBiggerValueThanGet, } = dir;
-        if (!(give === null || give === void 0 ? void 0 : give.length) || !(get === null || get === void 0 ? void 0 : get.length) || !usersRate || !defRate)
+        if (!give?.length || !get?.length || !usersRate || !defRate)
             return;
         const { min, max, rate: customRate } = usersRate;
-        const p2pRatio = (regulationCodes === null || regulationCodes === void 0 ? void 0 : regulationCodes.follow_market)
+        const p2pRatio = regulationCodes?.follow_market
             ? +customRate[0] / +defRate
             : undefined;
         const gbtg = giveBiggerValueThanGet;
@@ -102,14 +98,14 @@ exports.default = (order) => {
             logo: null,
             admin_rating: null,
             tag: "p2p",
-            cities: locations === null || locations === void 0 ? void 0 : locations.map((l) => l.code).join("/"),
+            cities: locations?.map((l) => l.code).join("/"),
             // перечисляем только включенные параметры, потом возьмем их описание из Exchanger Parameters
             parameterCodes: Object.entries(regulationCodes || {}).reduce((res, [code, isActive]) => (isActive ? [...res, code] : res), []),
         };
         const gives = give.map((give) => give);
         const gets = get.map((get) => get);
         const dirCodes = gives.map((give) => gets.map((get) => getDirCode(give, get))[0]);
-        addDirsToDB(uid, dirCodes, rateData);
+        // addDirsToDB(dirCodes, rateData);
     });
     return;
 };

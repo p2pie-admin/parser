@@ -1,6 +1,3 @@
-import { dir } from "console";
-import { mylog } from "../../helper";
-import { getData } from "../../redis";
 import { IParserSetting } from "../../types";
 import { IAllDirsRates, AllDirsTops, IRate } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";

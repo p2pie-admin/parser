@@ -7,7 +7,10 @@ const normalizer = (data) => {
     const flatten = (data) => {
         if (!data.attributes)
             return data;
-        return Object.assign({ id: data.id }, data.attributes);
+        return {
+            id: data.id,
+            ...data.attributes,
+        };
     };
     if (isArray(data)) {
         return data.map((item) => normalizer(item));
@@ -17,7 +20,7 @@ const normalizer = (data) => {
             data = [...data.data];
         }
         else if (isObject(data.data)) {
-            data = flatten(Object.assign({}, data.data));
+            data = flatten({ ...data.data });
         }
         else if (data.data === null) {
             data = null;

@@ -23,8 +23,7 @@ import { reloadExchangers } from "./helper";
 async function reload() {
   // грузим все первичные данные
   mylog("Reloading data...", "info");
-  // mylog("Transfering: Suspended, Disabled -> Active", "info");
-  // await statusChange("suspended", "active");
+
   // await statusChange("disabled", "active");
   await reloadExchangers();
 

@@ -1,6 +1,6 @@
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
-import { getData, getObject, setObject } from "../redis";
+import { getData, getObject, setData, setObject } from "../redis";
 import { IAllDirsRates, IGeneralData } from "../types/rates";
 
 import { logMemoryUsage, mylog } from "../helper";
@@ -56,6 +56,7 @@ export const processExchangers = async () => {
       await reload();
       await processExchangers();
     }
+    if (exchanger.skip > 1024) setData(`exchangers:${exchanger.id}:skip`, 0);
     if (!exchanger.skip || !(loopsDone % exchanger.skip)) {
       const exchangerParser = new RatesParser(exchanger, generalData);
       exchangerParser.getExchangerRates();

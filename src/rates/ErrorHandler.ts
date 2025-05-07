@@ -59,7 +59,7 @@ export const sendExchangerInfo = (
   if (exchanger.status === "suspended")
     statusChange("suspended", "active", exchanger.id);
   setData(`exchangers:${id}:total_rates`, total_rates);
-  !exchanger.skip && setData(`exchangers:${id}:skip`, 0);
+  setData(`exchangers:${id}:skip`, 0);
 };
 
 export const sendExchangerWarning = async (

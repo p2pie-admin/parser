@@ -71,7 +71,7 @@ const findBestDirRates = (dirRates) => {
         // console.log(`added: ${rateSegment.min?.toFixed(4)}_${rateSegment.max?.toFixed(4)}`);
         return {
             combinedSegment: best.combinedSegment.combine(rateSegment),
-            dirRates: Object.assign(Object.assign({}, best.dirRates), { [id]: rate }),
+            dirRates: { ...best.dirRates, [id]: rate },
         };
     }, { combinedSegment: new Segment(null, null), dirRates: {} });
     return best.dirRates;

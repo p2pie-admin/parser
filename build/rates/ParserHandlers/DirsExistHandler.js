@@ -1,37 +1,31 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
 Object.defineProperty(exports, "__esModule", { value: true });
-const db_1 = __importDefault(require("../../db"));
-const dbRates_1 = __importDefault(require("../../dbRates"));
-const dirsExistHandler = () => {
-  const allDirsRates = dbRates_1.default.getData(".allDirsRates");
-  const allPmCodesThatExist = db_1.default.getData(".all_pm_codes_that_exist");
-  const possibleDirs = allPmCodesThatExist.reduce(
-    (res, leftCode) => [
-      ...res,
-      ...allPmCodesThatExist.map((rightCode) => `${leftCode}_${rightCode}`),
-    ],
-    []
-  );
-  const possiblePairs = possibleDirs.reduce(
-    // for showing on selector if dirs exist
-    (possiblePairs, possibleDir) => {
-      const dirRates = allDirsRates[possibleDir];
-      if (!dirRates || !Object.keys(dirRates).length) return possiblePairs;
-      const [leftPm, rightPm] = possibleDir.split("_");
-      possiblePairs[leftPm] = possiblePairs[leftPm]
-        ? [...possiblePairs[leftPm], rightPm]
-        : [rightPm];
-      return possiblePairs;
-    },
-    {}
-  );
-  db_1.default.push(".possible_pairs", possiblePairs);
-  db_1.default.save();
-  console.log(possiblePairs);
+const redis_1 = require("../../redis");
+const helper_1 = require("../../helper");
+const dirsExistHandler = async () => {
+    const allDirTops = (await (0, redis_1.getObject)("allDirTops"));
+    const allPmCodesThatExist = (await (0, redis_1.getData)("all_pm_codes_that_exist"));
+    if (!allDirTops || !allPmCodesThatExist) {
+        (0, helper_1.mylog)("No dirs exist yet!", "warning");
+        return;
+    }
+    const possibleEverDirs = allPmCodesThatExist.reduce((res, leftCode) => [
+        ...res,
+        ...allPmCodesThatExist.map((rightCode) => `${leftCode}_${rightCode}`),
+    ], []); // getting all possible pairs [A]_[B]
+    const possiblePairs = possibleEverDirs.reduce((pairs, directionKey) => {
+        const directionRates = allDirTops[directionKey];
+        // возможно такое, что при билде фронта курсов нет, а потом он появится
+        // и потом в селекторе его можно будет выбрать, а при билде его не было значит 404
+        // поэтому сделаем хотя бы 2 курса чтобы было для минимизации таких кейсов
+        if (!directionRates || Object.keys(directionRates).length < 3)
+            return pairs;
+        const [leftPm, rightPm] = directionKey.split("_");
+        if (!leftPm || !rightPm)
+            return pairs; // Handle malformed strings
+        pairs[leftPm] = pairs[leftPm] ? [...pairs[leftPm], rightPm] : [rightPm];
+        return pairs;
+    }, {});
+    (0, redis_1.setData)("possible_pairs", possiblePairs);
 };
 exports.default = dirsExistHandler;

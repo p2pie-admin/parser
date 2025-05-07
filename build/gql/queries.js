@@ -1,12 +1,18 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PopularPmsQuery = exports.getAllExchangerIds = exports.updateExchangerStatus = exports.CreateExchangersMutation = exports.AuthMutation = exports.TopsQuery = exports.PmGroupsQuery = exports.ParserSettingQuery = exports.ExchangersQuery = void 0;
 const graphql_request_1 = require("graphql-request");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 10000);
 exports.ExchangersQuery = (0, graphql_request_1.gql) `
   {
     exchangers(
-      filters: { status: { in: ["active"] } }
-      pagination: { start: 0, limit: 400000 }
+      filters: {  ref_link: {notNull: true}  rates_link: {notNull: true} status: { in: ["active", "suspended"] } }
+      pagination: { start: 0, limit: ${toLoop} }
     ) {
       data {
         id
@@ -14,7 +20,9 @@ exports.ExchangersQuery = (0, graphql_request_1.gql) `
           name
           admin_rating
           tag
+          status
           rates_link
+          ref_link
           logo {
             data {
               attributes {
@@ -50,13 +58,19 @@ exports.PmGroupsQuery = (0, graphql_request_1.gql) `
       data {
         attributes {
           sections {
+            en_title
+            ru_title
             pm_groups(pagination: { start: 0, limit: 1000 }) {
               data {
                 attributes {
+                  en_name
+                  ru_name
                   prefix
                   options {
                     ... on ComponentSelectorSubgroup {
                       code
+                      name
+                      alternative_codes
                     }
                     ... on ComponentSelectorCurrency {
                       currency {
@@ -106,7 +120,7 @@ exports.AuthMutation = (0, graphql_request_1.gql) `
   mutation login {
     login(
       input: {
-        identifier: "course_filter"
+        identifier: "parser"
         password: "x#@TH4L-#UJ#vq2"
         provider: "local"
       }
