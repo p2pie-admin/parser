@@ -4,6 +4,15 @@ import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique";
 
+function filterRepeated(items: IRate[]): IRate[] {
+  const seen = new Set<string | undefined>();
+  return items.filter((ex) => {
+    if (seen.has(ex.exchangerId)) return false;
+    seen.add(ex.exchangerId);
+    return true;
+  });
+}
+
 const dirRatesIntoArray = (dirRates: { [key: string]: IRate }): IRate[] => {
   return Object.entries(dirRates).map(([exchangerId, rate]) => ({
     exchangerId,
@@ -59,6 +68,7 @@ export const getDirTop = async (
   // //   Object.keys(uniqueRates)
   // // );
   const bestRates = findBestDirRates(verifiedRates);
+
   // mylog(
   //   `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
   //   "info"
@@ -66,14 +76,19 @@ export const getDirTop = async (
   //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
 
   const allRates = {
-    ...bestRates,
-    ...uniqueRates,
+    ...bestRates, // покрывающие все возможные суммы
+    ...uniqueRates, // уникальные по определенным качествам
   };
 
-  const dirTops: IRate[] = Object.values(allRates).sort(
-    (a, b) => a.course - b.course
-  );
-  return dirTops;
+  const additionalRates = Object.values(allRates)
+    .sort((a, b) => a.course - b.course)
+    .slice(0, 10);
+
+  const dirTops: IRate[] = [
+    ...additionalRates,
+    ...Object.values(allRates),
+  ].sort((a, b) => a.course - b.course);
+  return filterRepeated(dirTops);
 };
 
 export default getAllDirTops;
