@@ -75,20 +75,21 @@ export const getDirTop = async (
   // );
   //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
 
-  const allRates = {
+  const fancyRates = {
     ...bestRates, // покрывающие все возможные суммы
     ...uniqueRates, // уникальные по определенным качествам
   };
 
-  const additionalRates = Object.values(allRates)
+  const additionalRates = Object.values(fancyRates)
     .sort((a, b) => a.course - b.course)
     .slice(0, 10);
 
-  const dirTops: IRate[] = [
+  const dirTopsRepeated: IRate[] = [
     ...additionalRates,
-    ...Object.values(allRates),
+    ...Object.values(fancyRates),
   ].sort((a, b) => a.course - b.course);
-  return filterRepeated(dirTops);
+
+  return filterRepeated(dirTopsRepeated);
 };
 
 export default getAllDirTops;
