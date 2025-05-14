@@ -62,12 +62,9 @@ export const getDirTop = async (
 
   const verifiedRates = ratesVerificator.getVerified(rates);
 
-  const uniqueRates = await findUniqueDirRates(verifiedRates);
-  // // const ratesWithoutUnique = deleteProps(
-  // //   verifiedRates,
-  // //   Object.keys(uniqueRates)
-  // // );
-  const bestRates = findBestDirRates(verifiedRates);
+  const uniqueRates = await findUniqueDirRates(verifiedRates); // added parameters
+
+  //const bestRates = findBestDirRates(verifiedRates);
 
   // mylog(
   //   `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
@@ -75,21 +72,16 @@ export const getDirTop = async (
   // );
   //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
 
-  const fancyRates = {
-    ...bestRates, // покрывающие все возможные суммы
-    ...uniqueRates, // уникальные по определенным качествам
+  const resRates = {
+    ...verifiedRates, // покрывающие все возможные суммы
+    ...uniqueRates, // уникальные по определенным качествам перепишут те, что без параметров
   };
 
-  const additionalRates = Object.values(fancyRates)
-    .sort((a, b) => a.course - b.course)
-    .slice(0, 10);
+  // const additionalRates = Object.values(fancyRates)
+  //   .sort((a, b) => a.course - b.course)
+  //   .slice(0, 10);
 
-  const dirTopsRepeated: IRate[] = [
-    ...additionalRates,
-    ...Object.values(fancyRates),
-  ].sort((a, b) => a.course - b.course);
-
-  return filterRepeated(dirTopsRepeated);
+  return Object.values(resRates).sort((a, b) => a.course - b.course);
 };
 
 export default getAllDirTops;
