@@ -6,7 +6,7 @@
 // import db from "./db";
 // import dbRates from "./dbRates";
 // import { DirData } from "./types";
-// import { IAllDirsRates, AllDirsTops } from "./types/rates";
+// import { IDirtyRates, IAllDirsTops } from "./types/rates";
 // import dotenv from "dotenv";
 // import {
 //   getPopularRates,
@@ -79,7 +79,7 @@
 // });
 
 // server.get("/all_rates", async function (_, reply) {
-//   const allRates = dbRates.getData(`.allDirsRates`);
+//   const allRates = dbRates.getData(`.dirtyRates`);
 //   reply.send(JSON.stringify(allRates));
 // });
 
@@ -89,8 +89,8 @@
 
 // server.get("/dirs", async (_, reply) => {
 //   reply.header("Access-Control-Allow-Origin", "*");
-//   const allDirRates = (await dbRates.getData(".allDirsRates")) as IAllDirsRates;
-//   const totalRatesByDir = Object.entries(allDirRates).reduce(
+//   const dirtyRates = (await dbRates.getData(".dirtyRates")) as IDirtyRates;
+//   const totalRatesByDir = Object.entries(dirtyRates).reduce(
 //     (res: { [key: string]: number }, [code, dirRate]) => {
 //       res = { ...res, [code]: Object.keys(dirRate).length };
 //       return res;

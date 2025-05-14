@@ -37,7 +37,7 @@ export default class RateFormatter {
 
       const rate = this.extractRateFromRateData(rateData);
 
-      rate && setData(`allDirRates:${dir}:${this.exchanger.id}`, rate);
+      rate && setData(`dirtyRates:${dir}:${this.exchanger.id}`, rate);
       // чистим ошибки если курсы есть
       if (this.exchanger.error)
         setData(`exchangers:${this.exchanger.id}:error`, {});

@@ -1,5 +1,5 @@
 import { IParserSetting } from "../../types";
-import { IAllDirsRates, AllDirsTops, IRate } from "../../types/rates";
+import { IDirtyRates, IAllDirsTops, IRate } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique";
@@ -30,17 +30,17 @@ const deleteProps = (
   return obj;
 };
 
-const getAllDirTops = async (
-  allDirsRates: IAllDirsRates,
+const getAllRates = async (
+  dirtyRates: IDirtyRates,
   parserSetting: IParserSetting
-): Promise<AllDirsTops> => {
-  return Object.keys(allDirsRates).reduce(
-    async (allDirTopsPromise: Promise<AllDirsTops>, dir) => {
-      const allDirTops = await allDirTopsPromise;
-      allDirTops[dir] = await getDirTop(allDirsRates[dir], parserSetting, dir);
-      return allDirTops;
+): Promise<IAllDirsTops> => {
+  return Object.keys(dirtyRates).reduce(
+    async (allRatesPromise: Promise<IAllDirsTops>, dir) => {
+      const allRates = await allRatesPromise;
+      allRates[dir] = await getDirTop(dirtyRates[dir], parserSetting, dir);
+      return allRates;
     },
-    Promise.resolve({} as AllDirsTops)
+    Promise.resolve({} as IAllDirsTops)
   );
 };
 
@@ -84,4 +84,4 @@ export const getDirTop = async (
   return Object.values(resRates).sort((a, b) => a.course - b.course);
 };
 
-export default getAllDirTops;
+export default getAllRates;

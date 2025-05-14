@@ -1,14 +1,14 @@
-import { IAllDirsRates } from "../../types/rates";
+import { IDirtyRates } from "../../types/rates";
 import { getData, getObject, setData } from "../../redis";
 import { mylog } from "../../helper";
 
 const dirsExistHandler = async () => {
-  const allDirTops = (await getObject("allDirTops")) as IAllDirsRates;
+  const allRates = (await getObject("allRates")) as IDirtyRates;
 
   const allPmCodesThatExist = (await getData(
     "all_pm_codes_that_exist"
   )) as string[];
-  if (!allDirTops || !allPmCodesThatExist) {
+  if (!allRates || !allPmCodesThatExist) {
     mylog("No dirs exist yet!", "warning");
     return;
   }
@@ -22,7 +22,7 @@ const dirsExistHandler = async () => {
 
   const possiblePairs = possibleEverDirs.reduce(
     (pairs: { [key: string]: string[] }, directionKey) => {
-      const directionRates = allDirTops[directionKey];
+      const directionRates = allRates[directionKey];
       // возможно такое, что при билде фронта курсов нет, а потом он появится
       // и потом в селекторе его можно будет выбрать, а при билде его не было значит 404
       // поэтому сделаем хотя бы 2 курса чтобы было для минимизации таких кейсов

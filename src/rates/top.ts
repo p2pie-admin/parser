@@ -1,8 +1,8 @@
 import { getObject, getData, setObject } from "../redis";
 import { mylog, logMemoryUsage } from "../helper";
 import { splitObjectToNChunks } from "../loops/helper";
-import getAllDirTops from "./Tops";
-import { IAllDirsRates } from "../types/rates";
+import getAllRates from "./Tops";
+import { IDirtyRates } from "../types/rates";
 import { IParserSetting } from "../types";
 
 /**
@@ -11,7 +11,7 @@ import { IParserSetting } from "../types";
 export const calculateTops = async (idx: number, numCPUs: number) => {
   if (!idx) logMemoryUsage();
 
-  const allDirRates = (await getObject("allDirRates")) as IAllDirsRates;
+  const dirtyRates = (await getObject("dirtyRates")) as IDirtyRates;
   const setting = (await getData("parser_setting")) as IParserSetting;
 
   if (!setting) {
@@ -19,19 +19,19 @@ export const calculateTops = async (idx: number, numCPUs: number) => {
     return;
   }
 
-  if (!allDirRates || !Object.keys(allDirRates).length) {
+  if (!dirtyRates || !Object.keys(dirtyRates).length) {
     mylog("No rates found to calculate tops", "hidden");
     return;
   }
 
-  const chunks = splitObjectToNChunks(allDirRates, numCPUs);
+  const chunks = splitObjectToNChunks(dirtyRates, numCPUs);
   const currentChunk = chunks[idx];
 
   mylog(`#${idx} Total dirs: ${Object.keys(currentChunk).length}`, "important");
   mylog("Calculating top rates...", "important");
 
-  const tops = await getAllDirTops(currentChunk, setting);
-  //   const prevTops = !idx ? {} : ((await getObject("allDirTops")) as any);
-  await setObject("allDirTops", tops);
+  const tops = await getAllRates(currentChunk, setting);
+  //   const prevTops = !idx ? {} : ((await getObject("allRates")) as any);
+  await setObject("allRates", tops);
   mylog("Top rates calculated and stored successfully", "important");
 };

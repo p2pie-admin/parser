@@ -4,14 +4,14 @@
 //   type: string
 // ) => {
 //   const dirTopsExist = await dbRates.exists(`.allDirsTops.${dirId}`);
-//   const dirRatesExist = await dbRates.exists(`.allDirsRates.${dirId}`);
+//   const dirRatesExist = await dbRates.exists(`.dirtyRates.${dirId}`);
 //   const dirP2PExist = await dbRates.exists(`.allDirsP2P.${dirId}`);
 
 import { memoryUsage } from "process";
 
 //   switch (type) {
 //     case "all":
-//       send(dbRates.getData(`.allDirsRates.${dirId}`));
+//       send(dbRates.getData(`.dirtyRates.${dirId}`));
 //       break;
 //     case "p2p":
 //       dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);

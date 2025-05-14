@@ -2,7 +2,7 @@
 // import { getDirTop } from "../rates/Tops";
 
 // export default () => {
-//   const testDirRates = dbRates.getData(".allDirsRates.BTC_TCSBRUB");
+//   const testDirRates = dbRates.getData(".dirtyRates.BTC_TCSBRUB");
 //   console.log("total length: ", Object.keys(testDirRates).length);
 //   const res = getDirTop(testDirRates, "BTC_TCSBRUB");
 //   console.log("best length: ", res.length);

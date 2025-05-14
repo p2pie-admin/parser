@@ -5,9 +5,9 @@
 // import { ISide } from "../../types/selector";
 
 // const findBestRateByDir = async (dir: string, fiatIndex: number) => {
-//   const dirRatesExist = dbRates.exists(`.allDirsRates.${dir}`);
+//   const dirRatesExist = dbRates.exists(`.dirtyRates.${dir}`);
 //   if (!dirRatesExist) return;
-//   const dirRates = (await dbRates.getData(`.allDirsRates.${dir}`)) as DirRates;
+//   const dirRates = (await dbRates.getData(`.dirtyRates.${dir}`)) as DirRates;
 //   const [exchangerId, rate] = [...Object.entries(dirRates)].sort(
 //     (r1, r2) => r1[1].course - r2[1].course
 //   )[0];
@@ -19,9 +19,9 @@
 // };
 
 // const findBestCourseByDir = async (dir: string) => {
-//   const dirRatesExist = await dbRates.exists(`.allDirsRates.${dir}`);
+//   const dirRatesExist = await dbRates.exists(`.dirtyRates.${dir}`);
 //   if (!dirRatesExist) return;
-//   const dirRates = (await dbRates.getData(`.allDirsRates.${dir}`)) as DirRates;
+//   const dirRates = (await dbRates.getData(`.dirtyRates.${dir}`)) as DirRates;
 //   const [exchangerId, rate] = [...Object.entries(dirRates)].sort(
 //     (r1, r2) => r1[1].course - r2[1].course
 //   )[0];
