@@ -32,8 +32,8 @@ export const xmlToJson = (data: any): ExchangerResponse | null => {
 
 export const reloadExchangers = async () => {
   while (true) {
+    // это чтобы пытаться пока не загрузятся
     try {
-      mylog("Reloading exchangers", "warning");
       const exchangers = (await callStrapi(ExchangersQuery))
         ?.exchangers as IExchanger[];
 
@@ -53,7 +53,7 @@ export const reloadExchangers = async () => {
 };
 
 export const waitSec = (seconds: number) => {
-  mylog(`Waiting ${seconds} sec`);
+  mylog(`...`, "hidden");
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });

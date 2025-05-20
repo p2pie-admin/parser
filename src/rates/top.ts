@@ -1,17 +1,16 @@
 import { getObject, getData, setObject } from "../redis";
-import { mylog, logMemoryUsage } from "../helper";
+import { emoji, mylog } from "../helper";
 import { splitObjectToNChunks } from "../loops/helper";
-import getAllRates from "./Tops";
-import { IDirtyRates } from "../types/rates";
+
+import { IAllDirtyRates } from "../types/rates";
 import { IParserSetting } from "../types";
+import { getAllRatesID } from "./Tops";
 
 /**
  * Calculates top rates per CPU chunk
  */
-export const calculateTops = async (idx: number, numCPUs: number) => {
-  if (!idx) logMemoryUsage();
-
-  const dirtyRates = (await getObject("dirtyRates")) as IDirtyRates;
+export const filterRates = async (idx: number, numCPUs: number) => {
+  const allDirtyRates = (await getObject("allDirtyRates")) as IAllDirtyRates;
   const setting = (await getData("parser_setting")) as IParserSetting;
 
   if (!setting) {
@@ -19,19 +18,20 @@ export const calculateTops = async (idx: number, numCPUs: number) => {
     return;
   }
 
-  if (!dirtyRates || !Object.keys(dirtyRates).length) {
+  if (!allDirtyRates || !Object.keys(allDirtyRates).length) {
     mylog("No rates found to calculate tops", "hidden");
     return;
   }
 
-  const chunks = splitObjectToNChunks(dirtyRates, numCPUs);
+  const chunks = splitObjectToNChunks(allDirtyRates, numCPUs);
   const currentChunk = chunks[idx];
 
-  mylog(`#${idx} Total dirs: ${Object.keys(currentChunk).length}`, "important");
-  mylog("Calculating top rates...", "important");
-
-  const tops = await getAllRates(currentChunk, setting);
-  //   const prevTops = !idx ? {} : ((await getObject("allRates")) as any);
-  await setObject("allRates", tops);
-  mylog("Top rates calculated and stored successfully", "important");
+  const allRatesID = await getAllRatesID(currentChunk, setting);
+  await setObject("allRatesID", allRatesID); // Updated to use topIDs
+  mylog(
+    `${emoji(idx)} Dirs: ${Object.keys(currentChunk).length}, added rates ${
+      allRatesID.length
+    }`,
+    "important"
+  );
 };

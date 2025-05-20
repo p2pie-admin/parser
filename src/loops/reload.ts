@@ -1,3 +1,4 @@
+import { cpus } from "os";
 import callStrapi from "../gql/callStrapi";
 import {
   ParserSettingQuery,
@@ -6,25 +7,18 @@ import {
   PopularPmsQuery,
   ExchangersQuery,
 } from "../gql/queries";
-import { mylog } from "../helper";
-import dirsExistHandler from "../rates/ParserHandlers/DirsExistHandler";
+import { logMemoryUsage, mylog } from "../helper";
 import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
-import getAllRates from "../rates/Tops";
-import getDirTops from "../rates/Tops";
-import { getData, setData } from "../redis";
-import statusChange from "../statusChange";
-
+import { setData } from "../redis";
 import { IPmPointer } from "../types/pms";
-import { IDirtyRates } from "../types/rates";
 import { ISection, IPmGroup } from "../types/selector";
-import { createArticles } from "./_createArticles";
 import { reloadExchangers } from "./helper";
 
 async function reload() {
+  logMemoryUsage();
   // грузим все первичные данные
-  mylog("Reloading data...", "info");
-
   // await statusChange("disabled", "active");
+  mylog("Reloading data...", "info");
   await reloadExchangers();
 
   const [parserSettingsData, pmGroupsData, topsData, popularPms] =
@@ -60,8 +54,6 @@ async function reload() {
     _getAllPmCodesThatExistFromSections(sections)
   );
   setData("alternative_pm_codes", _getAlternativePmCodes(sections));
-
-  await dirsExistHandler();
   //await createArticles(sections);
 
   mylog("Reload finished!", "info");

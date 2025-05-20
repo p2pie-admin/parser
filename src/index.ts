@@ -13,18 +13,30 @@ import statusChange from "./statusChange";
 
 dotenv.config();
 
+const start = async () => {
+  try {
+    startWorkers();
+    //getExchangersRatesLinks(); // эта хуйня опасная, создает обменники
+  } catch (error) {
+    mylog(String(error), "error");
+    process.exit(1);
+  }
+};
+
 const startWorkers = async () => {
+  // стартуем все воркеры
   if (cluster.isPrimary) {
     await startMainWorker();
   } else {
     const idx = parseInt(process.env.IDX || "");
     setTimeout(async () => {
       processExchangers();
-    }, idx * 3000); // изначально немного сдвигаем по времени
+    }, idx * 1500); // изначально немного сдвигаем по времени
   }
 };
 
 const startMainWorker = async () => {
+  // логика главного воркера
   await auth();
   mylog("Transfering: Suspended -> Active", "info");
   await statusChange("suspended", "active");
@@ -43,7 +55,7 @@ const startMainWorker = async () => {
       WORKER_PORT: availablePorts[i],
       IDX: i,
     });
-  }
+  } // далее выполняется startWorkers else
 
   mylog(`Main worker started`, "success");
   cluster.on("exit", (worker) => {
@@ -53,17 +65,6 @@ const startMainWorker = async () => {
     mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
     mylog(`! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !`, "error");
   });
-};
-
-const start = async () => {
-  try {
-    startWorkers();
-
-    //getExchangersRatesLinks(); // эта хуйня опасная, создает обменники
-  } catch (error) {
-    mylog(String(error), "error");
-    process.exit(1);
-  }
 };
 
 start();

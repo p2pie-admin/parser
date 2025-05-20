@@ -1,46 +1,20 @@
 import { IParserSetting } from "../../types";
-import { IDirtyRates, IAllDirsTops, IRate } from "../../types/rates";
+import { IAllDirtyRates, IRate, IRatesID } from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
 import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique";
 
-function filterRepeated(items: IRate[]): IRate[] {
-  const seen = new Set<string | undefined>();
-  return items.filter((ex) => {
-    if (seen.has(ex.exchangerId)) return false;
-    seen.add(ex.exchangerId);
-    return true;
-  });
-}
-
-const dirRatesIntoArray = (dirRates: { [key: string]: IRate }): IRate[] => {
-  return Object.entries(dirRates).map(([exchangerId, rate]) => ({
-    exchangerId,
-    ...rate,
-  }));
-};
-
-const deleteProps = (
-  obj: { [key: string]: IRate },
-  prop: string[]
-): { [key: string]: IRate } => {
-  for (const p of prop) {
-    delete obj[p];
-  }
-  return obj;
-};
-
-const getAllRates = async (
-  dirtyRates: IDirtyRates,
+export const getAllRatesID = async (
+  allDirtyRates: IAllDirtyRates,
   parserSetting: IParserSetting
-): Promise<IAllDirsTops> => {
-  return Object.keys(dirtyRates).reduce(
-    async (allRatesPromise: Promise<IAllDirsTops>, dir) => {
-      const allRates = await allRatesPromise;
-      allRates[dir] = await getDirTop(dirtyRates[dir], parserSetting, dir);
-      return allRates;
+): Promise<{ [key: string]: IRatesID }> => {
+  return Object.keys(allDirtyRates).reduce(
+    async (allRatesIDPromise: Promise<{ [key: string]: IRatesID }>, dir) => {
+      const allRatesID = await allRatesIDPromise;
+      allRatesID[dir] = await getDirTop(allDirtyRates[dir], parserSetting, dir);
+      return allRatesID;
     },
-    Promise.resolve({} as IAllDirsTops)
+    Promise.resolve({} as { [key: string]: IRatesID })
   );
 };
 
@@ -48,7 +22,7 @@ export const getDirTop = async (
   rates: { [key: string]: IRate },
   parserSetting: IParserSetting,
   dir: string
-): Promise<IRate[]> => {
+): Promise<IRatesID> => {
   // several steps to transform, sort and filter rates
 
   const { SD_applied_from, SD_best, SD_worst } = parserSetting;
@@ -64,24 +38,32 @@ export const getDirTop = async (
 
   const uniqueRates = await findUniqueDirRates(verifiedRates); // added parameters
 
-  //const bestRates = findBestDirRates(verifiedRates);
+  const bestRates = findBestDirRates(verifiedRates);
 
-  // mylog(
-  //   `Without unique rates: ${Object.keys(ratesWithoutUnique.length)}`,
-  //   "info"
-  // );
-  //mylog(`Best rates: ${Object.keys(bestRates.length)}`, "info");
+  const sortedRates = Object.entries(verifiedRates).sort(
+    ([, a], [, b]) => a.course - b.course
+  );
 
-  const resRates = {
-    ...verifiedRates, // покрывающие все возможные суммы
+  const topRates: { [key: string]: IRate } = {};
+  for (const [key, value] of sortedRates.slice(0, 5)) {
+    topRates[key] = value;
+  }
+
+  const partRates = {
+    ...topRates, // верхушка 5шт
+    ...bestRates, // покрывающие все возможные суммы
     ...uniqueRates, // уникальные по определенным качествам перепишут те, что без параметров
   };
 
   // const additionalRates = Object.values(fancyRates)
   //   .sort((a, b) => a.course - b.course)
   //   .slice(0, 10);
+  const sortedPartRates = Object.values(partRates).sort(
+    (a, b) => a.course - b.course
+  );
 
-  return Object.values(resRates).sort((a, b) => a.course - b.course);
+  return {
+    part: sortedPartRates.map((rate) => rate.exchangerId!),
+    all: sortedRates.map((rate) => rate[1].exchangerId!),
+  };
 };
-
-export default getAllRates;

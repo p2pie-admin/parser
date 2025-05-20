@@ -1,5 +1,5 @@
 import { setData } from "../redis";
-import { mylog } from "../helper";
+import { emoji, mylog } from "../helper";
 import RatesParser from "./ParserHandlers/RateParser";
 import { IExchanger } from "../types/exchanger";
 import { IGeneralData } from "../types/rates";
@@ -10,7 +10,8 @@ import { prepareGeneralData } from "./generalDataLoader";
  */
 export const processSingleExchanger = async (
   exchanger: IExchanger,
-  loopsDone: number
+  loopsDone: number,
+  idx: number
 ) => {
   const generalData = await prepareGeneralData();
   const shouldSkip = exchanger.skip && loopsDone % exchanger.skip !== 0;
@@ -21,7 +22,9 @@ export const processSingleExchanger = async (
 
   if (shouldSkip) {
     mylog(
-      ` - #${exchanger.id} ${exchanger.name} will skip ${exchanger.skip} loops`,
+      ` ${emoji(idx)} #${exchanger.id} ${exchanger.name} will skip ${
+        exchanger.skip
+      } loops`,
       "warning"
     );
     return;

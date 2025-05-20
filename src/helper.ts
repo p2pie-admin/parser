@@ -4,14 +4,14 @@
 //   type: string
 // ) => {
 //   const dirTopsExist = await dbRates.exists(`.allDirsTops.${dirId}`);
-//   const dirRatesExist = await dbRates.exists(`.dirtyRates.${dirId}`);
+//   const dirRatesExist = await dbRates.exists(`.allDirtyRates.${dirId}`);
 //   const dirP2PExist = await dbRates.exists(`.allDirsP2P.${dirId}`);
 
 import { memoryUsage } from "process";
 
 //   switch (type) {
 //     case "all":
-//       send(dbRates.getData(`.dirtyRates.${dirId}`));
+//       send(dbRates.getData(`.allDirtyRates.${dirId}`));
 //       break;
 //     case "p2p":
 //       dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);
@@ -92,4 +92,18 @@ export const logMemoryUsage = () => {
       "hidden"
     );
   }
+};
+
+export const emoji = (id: string | number) => {
+  const emojis = {
+    "0": "⚪",
+    "1": "🟤",
+    "2": "🟣",
+    "3": "🔵",
+    "4": "🟡",
+    "5": "🟠",
+    "6": "🔴",
+    "7": "🟢",
+  } as Record<string, string>;
+  return emojis[id] || "⚫";
 };

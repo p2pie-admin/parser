@@ -1,4 +1,4 @@
-import { mylog } from "../helper";
+import { emoji, mylog } from "../helper";
 import { getData, setData } from "../redis";
 import statusChange from "../statusChange";
 
@@ -21,20 +21,25 @@ const errorCodesExplanation = {
   "307": "Соединение перенаправлено",
   "403": "Соединение запрещено",
   "404": "Страница не найдена",
-  "500": "Неизвестная ошибка",
+  "500": "Ошибка сервера",
   "503": "Сервер перегружен",
   "522": "Истекло время ожидания",
-  unknown: "Неизвестная ошибка",
+  unknown: "⦿",
 } as { [key in IErrorCode]: string };
 
 export const sendExchangerError = (
   exchanger: IExchanger,
-  error: IExchangerParsingError
+  error?: IExchangerParsingError
 ) => {
+  const idx = parseInt(process.env.IDX || "0");
+  if (!error) {
+    setData(`exchangers:${exchanger.id}:error`, {});
+    return;
+  }
   error.codeExplanation = errorCodesExplanation[error.code || "unknown"];
   const { id, name, rates_link } = exchanger;
   mylog(
-    ` ˟ #${id} ${name || ""} : ${
+    ` ˟ ${emoji(idx)} #${id} ${name || ""} : ${
       error.code || error.autoMessage?.substring(0, 50) || ""
     } | ${error.codeExplanation} | ${rates_link}`,
     "error"
@@ -50,9 +55,12 @@ export const sendExchangerInfo = (
   exchanger: IExchanger,
   total_rates: number
 ) => {
+  const idx = parseInt(process.env.IDX || "0");
   const { id, name, rates_link } = exchanger;
   mylog(
-    ` ✓ #${id} ${name || ""} : получено ${total_rates} курсов | ${rates_link}`,
+    ` ✓ ${emoji(idx)} #${id} ${
+      name || ""
+    } : получено ${total_rates} курсов | ${rates_link}`,
     "success"
   );
 

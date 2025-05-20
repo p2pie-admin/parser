@@ -1,9 +1,9 @@
 //  находит только лучшие из лучших курсов у популярных направлений
 
-// const allDirsTops = dbRates.getData(".allDirsTops") as IAllDirsTops;
+// const allDirsTops = dbRates.getData(".allDirsTops") as IAllRatesID;
 // const best = Object.entries(allDirsTops).reduce(
 //   (
-//     res: IAllDirsTops,
+//     res: IAllRatesID,
 //     [dirCode, dirTops]: [dirCode: string, dirTops: FullRate[]]
 //   ) => {
 //     const bestCourse = Math.max(...dirTops.map((t) => t.course));

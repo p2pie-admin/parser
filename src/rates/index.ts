@@ -1,14 +1,13 @@
 import { cpus } from "os";
 import { waitSec } from "../loops/helper";
 import { getObject } from "../redis";
-import { mylog } from "../helper";
+import { emoji, mylog } from "../helper";
 import { IExchanger } from "../types/exchanger";
 
 import reload from "../loops/reload";
 import { splitArrayToNChunks } from "../loops/helper";
 import { processSingleExchanger } from "./exchangerProcessor";
-import { prepareGeneralData } from "./generalDataLoader";
-import { calculateTops } from "./top";
+import { filterRates } from "./top";
 
 let loopsDone = 0;
 
@@ -20,13 +19,16 @@ export const processExchangers = async () => {
     .getData("parser_setting")
     .then((data) => data?.pause_between_loops || 10);
 
+  //.....
   await waitSec((await pause) / 3);
-  await calculateTops(idx, numCPUs);
+  mylog(`${emoji(idx)} Filtering rates..`, "info");
+  await filterRates(idx, numCPUs);
   await waitSec((await pause) / 3);
-  await reload();
+  !idx && reload(); // один раз
   await waitSec((await pause) / 3);
+  //.....
 
-  mylog(` • Core #${idx} starting processing...`, "info");
+  mylog(` • Core ${emoji(idx)} starting processing...`, "info");
 
   const exchangers = (await getObject("exchangers")) as Record<
     string,
@@ -41,8 +43,8 @@ export const processExchangers = async () => {
   const chunk = splitArrayToNChunks(Object.values(exchangers), numCPUs)[idx];
 
   chunk.map(async (exchanger, i) => {
-    await new Promise((res) => setTimeout(res, i * 333));
-    await processSingleExchanger(exchanger, loopsDone);
+    await new Promise((res) => setTimeout(res, i * (100 + chunk.length * 2.5)));
+    await processSingleExchanger(exchanger, loopsDone, idx);
 
     if (i === chunk.length - 1) {
       loopsDone += 1;

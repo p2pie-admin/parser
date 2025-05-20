@@ -24,12 +24,12 @@ export default class RatesParser {
   // Main method to get rates
   async getExchangerRates(): Promise<void> {
     try {
-      setData(`started:${this.exchanger.id}`, Date.now());
+      //setData(`started:${this.exchanger.id}`, Date.now());
       const response = await axios.get(this.exchanger.rates_link, {
         timeout: 50000,
       });
       await this.handleResponse(response.data);
-      setData(`finished:${this.exchanger.id}`, Date.now());
+      //setData(`finished:${this.exchanger.id}`, Date.now());
     } catch (err: any) {
       const code =
         err?.code || err?.status || err.message.match(/\d+/)?.[0] || "";
@@ -57,7 +57,7 @@ export default class RatesParser {
 
     const total_rates = JSONres.rates?.item.length;
     sendExchangerInfo(this.exchanger, total_rates);
-    sendExchangerError(this.exchanger, {});
+    sendExchangerError(this.exchanger, undefined);
     const cities = (await getData("parser_setting"))?.cities || ([] as ICity[]);
     const rateFormatter = new RateFormatter(
       this.exchanger,
