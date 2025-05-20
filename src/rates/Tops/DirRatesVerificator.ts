@@ -57,8 +57,8 @@ export class DirRatesVerificator {
       average + SD * this.SD_best,
     ];
     const [lowCourse, highCourse] = [
-      average - SD * (this.SD_worst > 2 ? this.SD_worst - 1 : 2),
-      average + SD * (this.SD_best > 2 ? this.SD_best - 1 : 2),
+      average - SD * (this.SD_worst * 0.85),
+      average + SD * (this.SD_best * 0.85),
     ];
 
     const deviation =
@@ -69,7 +69,7 @@ export class DirRatesVerificator {
       [min.give <= 0, ` Минимум должен быть больше нуля`],
       [
         max.give < min.give,
-        ` Максималка ${round(
+        `🔴 Максималка ${round(
           rate.max.give
         )} ${fromCurrency} меньше минималки ${round(
           rate.min.give
@@ -77,13 +77,17 @@ export class DirRatesVerificator {
       ],
       [
         rate.course < minCourse,
-        ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(
+        `🔴 Курс забанен, ${round(
+          rate.course
+        )} на ${deviation}% выгоднее среднего ${round(
           average
         )} от ${ratesAmount} предложений, MIN: ${round(minCourse)} `,
       ],
       [
         rate.course > maxCourse,
-        ` Курс ${round(rate.course)} на ${deviation}% больше среднего ${round(
+        `🔴 Курс забанен, ${round(
+          rate.course
+        )} на ${deviation}% невыгоднее среднего ${round(
           average
         )} от ${ratesAmount} предложений, MAX: ${round(maxCourse)} `,
       ],
@@ -92,19 +96,19 @@ export class DirRatesVerificator {
     const easyWarnings: [boolean, string][] = [
       [
         rate.course < lowCourse && rate.course > minCourse,
-        ` Курс ${round(rate.course)} на ${deviation}% меньше среднего ${round(
-          average
-        )} от ${round(ratesAmount)} предложений, близко к MIN границе: ${round(
-          minCourse
-        )} `,
+        `🟡 Курс ${round(
+          rate.course
+        )} на ${deviation}% выгоднее среднего ${round(average)} от ${round(
+          ratesAmount
+        )} предложений, близко к MIN границе: ${round(minCourse)} `,
       ],
       [
         rate.course > highCourse && rate.course < maxCourse,
-        ` Курс ${round(rate.course)} на ${deviation}% больше среднего ${round(
-          average
-        )} от ${round(ratesAmount)} предложений, близко к MAX границе: ${round(
-          maxCourse
-        )} `,
+        `🟡 Курс ${round(
+          rate.course
+        )} на ${deviation}% невыгоднее среднего ${round(average)} от ${round(
+          ratesAmount
+        )} предложений, близко к MAX границе: ${round(maxCourse)} `,
       ],
     ];
 
