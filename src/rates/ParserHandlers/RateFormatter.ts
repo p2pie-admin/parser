@@ -114,7 +114,13 @@ export default class RateFormatter {
         max: max.give > reserve.give ? reserve : max,
         reserve,
         ...(rateData.param?._text
-          ? { parameterCodes: rateData.param._text.split(", ") || [] }
+          ? {
+              parameterCodes:
+                rateData.param._text
+                  .toLowerCase()
+                  .replace(/\s/g, "")
+                  .split(",") || [],
+            }
           : {}),
         ref_link:
           ref_link ||

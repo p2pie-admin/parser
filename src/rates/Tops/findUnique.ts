@@ -2,11 +2,13 @@ import { mylog } from "../../helper";
 import { getData } from "../../redis";
 import { IRate } from "../../types/rates";
 
+type RatesMap = { [key: string]: IRate };
+
 const addTopParameter = (
-  prevUniqueRates: { [key: string]: IRate },
+  prevUniqueRates: RatesMap,
   topParameter: string,
-  [exchId, rate]: [exchId: string, rate: IRate]
-) => {
+  [exchId, rate]: [string, IRate]
+): RatesMap => {
   return {
     ...prevUniqueRates,
     [exchId]: {
@@ -19,66 +21,39 @@ const addTopParameter = (
   };
 };
 
-const findUniqueRates = async (dirRates: {
-  [key: string]: IRate;
-}): Promise<{ [key: string]: IRate }> => {
+const findUniqueRates = async (dirRates: RatesMap): Promise<RatesMap> => {
   if (!Object.keys(dirRates).length) return {};
+
   try {
     const topCodes = (await getData("top_codes")) as string[];
+    return topCodes.reduce<RatesMap>((acc, code) => {
+      let selector: ((rate: IRate) => number) | null = null;
+      let needLowest = true;
 
-    const uniqueRates = topCodes.reduce(
-      (res: { [key: string]: IRate }, code) => {
-        switch (code) {
-          case "optimal":
-            const optimalSelector = (rate: IRate) =>
-              rate.course ** 20 * rate.min.give;
-            res = addTopParameter(
-              res,
-              "optimal",
-              findUniqueRate(dirRates, optimalSelector)
-            );
-            break;
-          case "best_course":
-            const courseSelector = (rate: IRate) => rate.course;
-            res = addTopParameter(
-              res,
-              "best_course",
-              findUniqueRate(dirRates, courseSelector)
-            );
-            break;
-          case "low_min":
-            const minSelector = (rate: IRate) => rate.min.give;
-            res = addTopParameter(
-              res,
-              "low_min",
-              findUniqueRate(dirRates, minSelector)
-            );
-            break;
-          case "top_max":
-            const maxSelector = (rate: IRate) => rate.max.give;
-            res = addTopParameter(
-              res,
-              "top_max",
-              findUniqueRate(dirRates, maxSelector, false)
-            );
-            break;
-          case "top_rating":
-            const topRatingSelector = (rate: IRate) => rate.admin_rating;
-            res = addTopParameter(
-              res,
-              "top_rating",
-              findUniqueRate(dirRates, topRatingSelector)
-            );
-            break;
-          default:
-            return res;
-        }
-        return res;
-      },
-      {}
-    );
+      switch (code) {
+        case "optimal":
+          selector = (rate: IRate) => rate.course ** 20 * rate.min.give;
+          break;
+        case "best_course":
+          selector = (rate: IRate) => rate.course;
+          break;
+        case "low_min":
+          selector = (rate: IRate) => rate.min.give;
+          break;
+        case "top_max":
+          selector = (rate: IRate) => rate.max.give;
+          needLowest = false;
+          break;
+        case "top_rating":
+          selector = (rate: IRate) => rate.admin_rating || 3;
+          break;
+        default:
+          return acc; // skip unknown code
+      }
 
-    return uniqueRates;
+      const unique = findUniqueRate(dirRates, selector, needLowest);
+      return addTopParameter(acc, code, unique);
+    }, {});
   } catch (err) {
     mylog(`Error in uniqueRates: ${err}`);
     return {};
@@ -86,15 +61,14 @@ const findUniqueRates = async (dirRates: {
 };
 
 const findUniqueRate = (
-  dirRates: { [key: string]: IRate },
-  selector: Function,
+  dirRates: RatesMap,
+  selector: (rate: IRate) => number,
   needLowest = true
 ): [string, IRate] => {
-  //[...Object.entries(dirRates)].sort((r1, r2) => r1[1].course - r2[1].course);
-  const sorted = [...Object.entries(dirRates)].sort(
-    (r1, r2) => selector(r1[1]) - selector(r2[1])
+  const sorted = Object.entries(dirRates).sort(
+    (a, b) => selector(a[1]) - selector(b[1])
   );
-  const [exchangerId, rate] = needLowest ? sorted[0] : sorted.reverse()[0];
+  const [exchangerId, rate] = needLowest ? sorted[0] : sorted.at(-1)!;
   return [exchangerId, rate];
 };
 
