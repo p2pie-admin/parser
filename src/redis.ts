@@ -60,13 +60,18 @@ export const setData = async (
   key: string,
   value: RedisValue,
   dbName: IDBName = "main",
-  NX: boolean = false
+  NX: boolean = false,
+  ttlSeconds?: number
 ) => {
   try {
     const db = dbName === "rates" ? ratesDB : mainDB;
     const strValue = JSON.stringify(value);
 
-    await (NX ? db.set(key, strValue, { NX: true }) : db.set(key, strValue));
+    const options: any = {};
+    if (NX) options.NX = true;
+    if (ttlSeconds) options.EX = ttlSeconds;
+
+    await db.set(key, strValue, options);
   } catch (error) {
     console.error(`Error setting data for ${dbName}:`, error);
   }
@@ -74,41 +79,39 @@ export const setData = async (
 
 export async function setObject(
   key: string,
-  object: Object, // Object containing keys and values
-  dbName: IDBName = "main"
+  object: Object,
+  dbName: IDBName = "main",
+  ttlSeconds?: number
 ) {
   try {
     const db = dbName === "rates" ? ratesDB : mainDB;
-    const redisData: { [key: string]: string } = {}; // Object for MSET
+    const redisData: { [key: string]: string } = {};
 
-    // Helper function to recursively flatten the object
     function flattenObject(obj: any, parentKey: string) {
       for (const [k, v] of Object.entries(obj)) {
         const newKey = parentKey ? `${parentKey}:${k}` : k;
 
-        if (v === null || v === undefined) {
-          // Skip undefined or null values
-          continue;
-        }
-
+        if (v === null || v === undefined) continue;
         if (Array.isArray(v)) {
-          // Convert array to string and stop further recursion
           redisData[newKey] = JSON.stringify(v);
         } else if (typeof v === "object") {
-          // Recursively flatten objects
           flattenObject(v, newKey);
         } else {
-          // Store primitive values directly
           redisData[newKey] = String(v);
         }
       }
     }
 
-    // Start flattening from the top-level object
     flattenObject(object, key);
-
-    // Use MSET to store all key-value pairs at once
     await db.mSet(redisData);
+
+    // Apply TTL to each key if needed
+    if (ttlSeconds) {
+      const promises = Object.keys(redisData).map((k) =>
+        db.expire(k, ttlSeconds)
+      );
+      await Promise.all(promises);
+    }
   } catch (error) {
     console.error(`Error setting multiple data for ${dbName}:`, error);
   }

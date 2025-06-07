@@ -30,7 +30,7 @@ export const filterRates = async (idx: number, numCPUs: number) => {
   await setObject("allRatesID", allRatesID); // Updated to use topIDs
   mylog(
     `${emoji(idx)} Dirs: ${Object.keys(currentChunk).length}, added rates ${
-      allRatesID.length
+      Object.keys(allRatesID).length
     }`,
     "important"
   );

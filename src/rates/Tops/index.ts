@@ -11,14 +11,14 @@ export const getAllRatesID = async (
   return Object.keys(allDirtyRates).reduce(
     async (allRatesIDPromise: Promise<{ [key: string]: IRatesID }>, dir) => {
       const allRatesID = await allRatesIDPromise;
-      allRatesID[dir] = await getDirTop(allDirtyRates[dir], parserSetting, dir);
+      allRatesID[dir] = await getDirRatesID(allDirtyRates[dir], parserSetting, dir);
       return allRatesID;
     },
     Promise.resolve({} as { [key: string]: IRatesID })
   );
 };
 
-export const getDirTop = async (
+export const getDirRatesID  = async (
   rates: { [key: string]: IRate },
   parserSetting: IParserSetting,
   dir: string
