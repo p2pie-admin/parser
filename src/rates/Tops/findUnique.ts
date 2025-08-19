@@ -9,14 +9,17 @@ const addTopParameter = (
   topParameter: string,
   [exchId, rate]: [string, IRate]
 ): RatesMap => {
+  const parameterCodes = [
+    ...new Set([
+      ...(prevUniqueRates[exchId]?.parameterCodes || []),
+      topParameter,
+    ]),
+  ];
   return {
     ...prevUniqueRates,
     [exchId]: {
       ...rate,
-      parameterCodes: [
-        ...(prevUniqueRates[exchId]?.parameterCodes || []),
-        topParameter,
-      ],
+      parameterCodes,
     },
   };
 };
