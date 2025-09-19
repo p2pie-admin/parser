@@ -26,7 +26,7 @@ export const processExchangers = async () => {
     await waitSec(30);
     processExchangers();
   }
-
+  mylog(`waiting ${pause}`)
   await waitSec((await pause) / 3);
   mylog(`${emoji(idx)} Filtering rates..`, "info");
   await filterRates(idx, numCPUs);

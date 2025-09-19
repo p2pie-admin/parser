@@ -27,7 +27,7 @@ export const filterRates = async (idx: number, numCPUs: number) => {
   const currentChunk = chunks[idx];
 
   const allRatesID = await getAllRatesID(currentChunk, setting);
-  await setObject("allRatesID", allRatesID); // Updated to use topIDs
+  await setObject("allRatesID", allRatesID, "main", 300); // Updated to use topIDs
   mylog(
     `${emoji(idx)} Dirs: ${Object.keys(currentChunk).length}, added rates ${
       Object.keys(allRatesID).length
