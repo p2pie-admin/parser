@@ -61,7 +61,7 @@ export const setData = async (
   value: RedisValue,
   dbName: IDBName = "main",
   NX: boolean = false,
-  ttlSeconds?: number
+  loopsSkipBeforeExpire?: number
 ) => {
   try {
     const db = dbName === "rates" ? ratesDB : mainDB;
@@ -69,7 +69,7 @@ export const setData = async (
 
     const options: any = {};
     if (NX) options.NX = true;
-    if (ttlSeconds) options.EX = ttlSeconds;
+    if (loopsSkipBeforeExpire) options.EX = loopsSkipBeforeExpire;
 
     await db.set(key, strValue, options);
   } catch (error) {
@@ -80,11 +80,15 @@ export const setData = async (
 export async function setObject(
   key: string,
   object: Object,
-  ttlSeconds?: number
+  loopsSkipBeforeExpire?: number
 ) {
   try {
     const db = mainDB;
     const redisData: { [key: string]: string } = {};
+
+    const pause = (await getData("parser_setting").then(
+      (data) => data?.pause_between_loops || 10
+    )) as number;
 
     function flattenObject(obj: any, parentKey: string) {
       for (const [k, v] of Object.entries(obj)) {
@@ -105,9 +109,9 @@ export async function setObject(
     await db.mSet(redisData);
 
     // Apply TTL to each key if needed
-    if (ttlSeconds) {
+    if (loopsSkipBeforeExpire) {
       const promises = Object.keys(redisData).map((k) =>
-        db.expire(k, ttlSeconds)
+        db.expire(k, loopsSkipBeforeExpire * pause + 10)
       );
       await Promise.all(promises);
     }
