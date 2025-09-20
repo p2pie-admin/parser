@@ -108,7 +108,7 @@ export async function setObject(
     flattenObject(object, key);
     await db.mSet(redisData);
 
-    // Apply TTL to each key if needed
+    //Apply TTL to each key if needed
     if (loopsSkipBeforeExpire) {
       const promises = Object.keys(redisData).map((k) =>
         db.expire(k, loopsSkipBeforeExpire * pause + 10)
