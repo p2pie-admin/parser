@@ -80,11 +80,10 @@ export const setData = async (
 export async function setObject(
   key: string,
   object: Object,
-  dbName: IDBName = "main",
   ttlSeconds?: number
 ) {
   try {
-    const db = dbName === "rates" ? ratesDB : mainDB;
+    const db = mainDB;
     const redisData: { [key: string]: string } = {};
 
     function flattenObject(obj: any, parentKey: string) {
@@ -113,16 +112,13 @@ export async function setObject(
       await Promise.all(promises);
     }
   } catch (error) {
-    console.error(`Error setting multiple data for ${dbName}:`, error);
+    console.error(`Error setting multiple data:`, error);
   }
 }
 
-export async function getObject(
-  key: string,
-  dbName: IDBName = "main"
-): Promise<Object | null> {
+export async function getObject(key: string): Promise<Object | null> {
   try {
-    const db = dbName === "rates" ? ratesDB : mainDB;
+    const db = mainDB;
 
     // Use the KEYS command to get all keys matching the given key prefix
     const redisKeys = await db.keys(`${key}:*`);
@@ -184,19 +180,19 @@ export async function getObject(
 
     return result[key]; // Return the reconstructed object
   } catch (error) {
-    console.error(`Error retrieving data for ${dbName}:`, error);
+    console.error(`Error retrieving data:`, error);
     return null;
   }
 }
 
-export async function getData(key: string, dbName: IDBName = "main") {
+export async function getData(key: string) {
   try {
-    const db = dbName === "rates" ? ratesDB : mainDB;
+    const db = mainDB;
     const value = await db.get(key);
     if (value === null) return null;
     return JSON.parse(value);
   } catch (error) {
-    console.error(`Error getting data for ${dbName}:`, error);
+    console.error(`Error getting data:`, error);
     return null;
   }
 }

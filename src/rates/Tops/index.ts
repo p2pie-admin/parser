@@ -11,14 +11,18 @@ export const getAllRatesID = async (
   return Object.keys(allDirtyRates).reduce(
     async (allRatesIDPromise: Promise<{ [key: string]: IRatesID }>, dir) => {
       const allRatesID = await allRatesIDPromise;
-      allRatesID[dir] = await getDirRatesID(allDirtyRates[dir], parserSetting, dir);
+      allRatesID[dir] = await getDirRatesID(
+        allDirtyRates[dir],
+        parserSetting,
+        dir
+      );
       return allRatesID;
     },
     Promise.resolve({} as { [key: string]: IRatesID })
   );
 };
 
-export const getDirRatesID  = async (
+export const getDirRatesID = async (
   rates: { [key: string]: IRate },
   parserSetting: IParserSetting,
   dir: string
@@ -43,6 +47,9 @@ export const getDirRatesID  = async (
   const sortedRates = Object.entries(verifiedRates).sort(
     ([, a], [, b]) => a.course - b.course
   );
+  // грузим это в all
+
+  // далее считаем уникальные курсы и грузим в part
 
   const topRates: { [key: string]: IRate } = {};
   for (const [key, value] of sortedRates.slice(0, 5)) {
@@ -55,9 +62,6 @@ export const getDirRatesID  = async (
     ...uniqueRates, // уникальные по определенным качествам перепишут те, что без параметров
   };
 
-  // const additionalRates = Object.values(fancyRates)
-  //   .sort((a, b) => a.course - b.course)
-  //   .slice(0, 10);
   const sortedPartRates = Object.values(partRates).sort(
     (a, b) => a.course - b.course
   );

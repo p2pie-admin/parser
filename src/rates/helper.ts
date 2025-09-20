@@ -1,5 +1,3 @@
-import { mylog } from "../helper";
-import { getObject } from "../redis";
 import {
   IAllDirtyRates,
   IAllRatesID,

@@ -17,7 +17,7 @@ import { memoryUsage } from "process";
 //       dirP2PExist ? send(dbRates.getData(`.allDirsP2P.${dirId}`)) : send([]);
 //       break;
 //     case "tops":
-//       dirTopsExist ? send(dbRates.getData(`.allDirsTops.${dirId}`)) : send([]);
+//       dirTopsExist ? send(dbRates.(`.allDirsTops.${dirId}`)) : send([]);
 //       break;
 //     case "tops+p2p":
 //       if (!dirP2PExist && !dirTopsExist) send([]);

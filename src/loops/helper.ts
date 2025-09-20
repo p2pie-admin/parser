@@ -41,12 +41,7 @@ export const reloadExchangers = async () => {
         throw new Error("Couldn't load exchangers!");
       }
 
-      await setObject(
-        "exchangers",
-        convertExchangers(exchangers),
-        "main",
-        3000
-      );
+      await setObject("exchangers", convertExchangers(exchangers), 60 * 20);
       mylog("Exchangers loaded successfully", "success");
       break;
     } catch (error: any) {

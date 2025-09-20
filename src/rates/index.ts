@@ -16,7 +16,7 @@ export const processExchangers = async () => {
   const idx = parseInt(process.env.IDX || "0");
   const numCPUs = cpus().length;
 
-  const pause = (await import("../redis"))
+  const pause = await (await import("../redis"))
     .getData("parser_setting")
     .then((data) => data?.pause_between_loops || 10);
 
@@ -26,13 +26,13 @@ export const processExchangers = async () => {
     await waitSec(30);
     processExchangers();
   }
-  mylog(`waiting ${pause}`)
-  await waitSec((await pause) / 3);
+  mylog(`waiting ${pause}`);
+  await waitSec(pause / 3);
   mylog(`${emoji(idx)} Filtering rates..`, "info");
   await filterRates(idx, numCPUs);
-  await waitSec((await pause) / 3);
+  await waitSec(pause / 3);
   !idx && reload();
-  await waitSec((await pause) / 3);
+  await waitSec(pause / 3);
 
   mylog(`• Core ${emoji(idx)} starting processing...`, "info");
 
