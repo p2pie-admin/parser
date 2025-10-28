@@ -1,4 +1,4 @@
-import { processChunk } from "./2_processChunk";
+import { ChunkProcessingStats, processChunk } from "./2_processChunk";
 import reload from "./reload";
 import { splitArrayToNChunksAdaptive, waitSec } from "./reload/helper";
 import { updateStatusesBySkip } from "./reload/updateStatuses";
@@ -71,12 +71,50 @@ export const loop = async (): Promise<void> => {
     mylog(`${emoji(idx)} Got ${chunk.length} exchangers`);
 
     const start = performance.now();
-    await processChunk(chunk, loopsDone, idx);
-    const duration = performance.now() - start;
+    let chunkStats: ChunkProcessingStats;
+    try {
+      chunkStats = await processChunk(chunk, loopsDone, idx);
+    } catch (error: any) {
+      mylog(
+        `${emoji(idx)} Worker ${idx} chunk processing failed: ${String(
+          error?.message ?? error
+        )}`,
+        "error"
+      );
+      chunkStats = {
+        processed: chunk.length,
+        succeeded: 0,
+        failed: chunk.length,
+        durationMs: performance.now() - start,
+      };
+    }
+    const duration = chunkStats.durationMs || performance.now() - start;
 
-    // сохраняем время работы этого цикла
-    await setData(`stats:loop_time:${idx}`, duration);
-    await setData(`stats:chunk:${idx}`, chunk.length);
+    // сохраняем время работы этого цикла + стату по чанку
+    await Promise.all([
+      setData(`stats:loop_time:${idx}`, duration),
+      setData(`stats:chunk:${idx}`, chunkStats.processed),
+      setData(`stats:chunk:succeeded:${idx}`, chunkStats.succeeded),
+      setData(`stats:chunk:failed:${idx}`, chunkStats.failed),
+      setData(`stats:last_run:${idx}`, Date.now()),
+      setData(`stats:loop:${idx}`, {
+        loop: loopsDone,
+        duration,
+        processed: chunkStats.processed,
+        succeeded: chunkStats.succeeded,
+        failed: chunkStats.failed,
+        updatedAt: Date.now(),
+      }),
+    ]);
+
+    mylog(
+      `${emoji(idx)} Worker ${idx} loop #${loopsDone} → processed ${
+        chunkStats.processed
+      } (ok: ${chunkStats.succeeded}, fail: ${chunkStats.failed}) in ${duration.toFixed(
+        0
+      )} ms`,
+      idx === 0 ? "important" : "hidden"
+    );
 
     !idx && (await updateStatusesBySkip(exchangersObj));
 
