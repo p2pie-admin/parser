@@ -1,4 +1,3 @@
-import { cpus } from "os";
 import callStrapi from "../gql/callStrapi";
 import {
   ParserSettingQuery,
@@ -7,18 +6,14 @@ import {
   PopularPmsQuery,
 } from "../gql/queries";
 import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
-import { getData, getObject, setData, setObject } from "../utils/redis";
+import { setData, setObject } from "../utils/redis";
 import { IPmPointer } from "../types/pms";
 import { ISection, IPmGroup } from "../types/selector";
-
 import { mylog } from "../utils/logger.ts";
 import { logMemoryUsage } from "./memoryUsage";
-
-import statusChange from "../utils/statusChange";
 import { reloadExchangers } from "./helper";
 import { measure } from "../utils/helper";
 import { isPrimary } from "../utils/settings";
-import { IExchanger } from "../types/exchanger";
 
 async function reload(loopsDone?: number) {
   if (!isPrimary) return;
