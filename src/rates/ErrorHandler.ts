@@ -91,7 +91,8 @@ export const sendExchangerWarning = async (
   setData(
     `exchanger_stats:${exchangerId}:warnings:${dir}`,
     message,
-    "main",
-    true
+    {
+      KEEPTTL: true,
+    }
   );
 };

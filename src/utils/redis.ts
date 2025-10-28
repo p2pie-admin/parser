@@ -125,6 +125,10 @@ export const setData = async (
   }
 };
 
+export type GetDataOptions = {
+  db?: IDBName;
+};
+
 // ---------- setObject ----------
 export async function setObject(key: string, object: Record<string, any>) {
   try {
@@ -191,9 +195,10 @@ export async function getObject(
 }
 
 // ---------- getData ----------
-export async function getData(key: string) {
+export async function getData(key: string, options: GetDataOptions = {}) {
   try {
-    const db = mainDB;
+    const { db: dbName = "main" } = options;
+    const db = dbName === "rates" ? ratesDB : mainDB;
     const value = await db.get(key);
     if (value == null) return null;
     return safeParse(value);
