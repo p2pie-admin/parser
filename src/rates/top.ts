@@ -1,6 +1,6 @@
-import { getObject, getData, setObject } from "../redis";
-import { emoji, mylog } from "../helper";
-import { splitObjectToNChunks } from "../loops/helper";
+import { getObject, getData, setObject } from "../utils/redis";
+import { emoji, mylog } from "../utils/logger.ts";
+import { splitObjectToNChunks } from "../reload/helper";
 
 import { IAllDirtyRates } from "../types/rates";
 import { IParserSetting } from "../types";
@@ -27,7 +27,9 @@ export const filterRates = async (idx: number, numCPUs: number) => {
   const currentChunk = chunks[idx];
 
   const allRatesID = await getAllRatesID(currentChunk, setting);
+
   await setObject("allRatesID", allRatesID, 2); // Updated to use topIDs
+
   mylog(
     `${emoji(idx)} Dirs: ${Object.keys(currentChunk).length}, added rates ${
       Object.keys(allRatesID).length

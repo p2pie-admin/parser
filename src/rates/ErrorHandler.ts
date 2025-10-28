@@ -1,6 +1,6 @@
-import { emoji, mylog } from "../helper";
-import { getData, setData } from "../redis";
-import statusChange from "../statusChange";
+import { emoji, mylog } from "../utils/logger.ts";
+import { getData, setData } from "../utils/redis";
+import statusChange from "../utils/statusChange";
 
 import {
   IErrorCode,
@@ -27,17 +27,20 @@ const errorCodesExplanation = {
   unknown: "⦿",
 } as { [key in IErrorCode]: string };
 
-export const sendExchangerError = (
+export const sendExchangerError = async (
   exchanger: IExchanger,
   error?: IExchangerParsingError
 ) => {
   const idx = parseInt(process.env.IDX || "0");
+
   if (!error) {
-    setData(`exchangers:${exchanger.id}:error`, {});
+    await setData(`exchanger_stats:${exchanger.id}:error`, {});
     return;
   }
+
   error.codeExplanation = errorCodesExplanation[error.code || "unknown"];
   const { id, name, rates_link } = exchanger;
+
   mylog(
     ` ˟ ${emoji(idx)} #${id} ${name || ""} : ${
       error.code || error.autoMessage?.substring(0, 50) || ""
@@ -45,10 +48,20 @@ export const sendExchangerError = (
     "error"
   );
 
-  if (exchanger.status == "active")
-    statusChange("active", "suspended", exchanger.id);
-  setData(`exchangers:${id}:error`, error);
-  setData(`exchangers:${id}:skip`, +(exchanger.skip || 1) * 2);
+  await setData(`exchanger_stats:${id}:error`, error);
+
+  // --- 👇 Новая логика подсчета скипов ---
+  const prevSkipRaw = await getData(`exchanger_stats:${id}:skip`);
+  const prevSkip = Number(prevSkipRaw) || 0;
+
+  // если обменник уже не первый раз падает — приумножаем экспоненциально
+  // но ограничиваем максимумом, чтобы не уходило в бесконечность
+  const nextSkip = Math.min(
+    prevSkip > 0 ? prevSkip * 2 : (exchanger.skip || 1) * 2,
+    64
+  );
+
+  await setData(`exchanger_stats:${id}:skip`, nextSkip);
 };
 
 export const sendExchangerInfo = (
@@ -64,10 +77,10 @@ export const sendExchangerInfo = (
     "success"
   );
 
-  if (exchanger.status === "suspended")
-    statusChange("suspended", "active", exchanger.id);
-  setData(`exchangers:${id}:total_rates`, total_rates);
-  setData(`exchangers:${id}:skip`, 0);
+  // if (exchanger.status === "suspended")
+  //   statusChange("suspended", "active", exchanger.id);
+  setData(`exchanger_stats:${id}:total_rates`, total_rates);
+  setData(`exchanger_stats:${id}:skip`, 0);
 };
 
 export const sendExchangerWarning = async (
@@ -75,5 +88,10 @@ export const sendExchangerWarning = async (
   dir: string,
   message: string
 ) => {
-  setData(`exchangers:${exchangerId}:warnings:${dir}`, message, "main", true);
+  setData(
+    `exchanger_stats:${exchangerId}:warnings:${dir}`,
+    message,
+    "main",
+    true
+  );
 };

@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import callStrapi from "../gql/callStrapi";
-import { getData } from "../redis";
+import { getData } from "../utils/redis";
 import { ISection } from "../types/selector";
 import { _getCodes } from "./reload";
 import { capitalize } from "../rates/Statistics/helper";

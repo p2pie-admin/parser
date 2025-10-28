@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/@types/**/*"] // Ensure this includes your custom types
+  "include": ["src/**/*", "src/@types/**/*"]
 }

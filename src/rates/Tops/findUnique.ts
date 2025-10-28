@@ -1,5 +1,5 @@
-import { mylog } from "../../helper";
-import { getData } from "../../redis";
+import { mylog } from "../../utils/logger.ts";
+import { getData } from "../../utils/redis";
 import { IRate } from "../../types/rates";
 
 type RatesMap = { [key: string]: IRate };

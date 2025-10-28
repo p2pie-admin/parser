@@ -7,8 +7,8 @@
     "flush-redis": "redis-cli FLUSHALL",
     "start": "yarn build && node build/index.js",
     "start2": "concurrently \"redis-cli FLUSHALL\" \"yarn build\" \"node build/index.js\"",
-    "dev": "concurrently \"redis-server\" \"nodemon\"",
-    "dev2": "concurrently \"redis-cli FLUSHALL\"  \"nodemon\" ",
+    "dev2": "concurrently \"redis-server\" \"nodemon\"",
+    "dev": "concurrently \"redis-server\" \"bash -c 'sleep 1 && redis-cli FLUSHALL'\" \"nodemon\"",
     "watch": "tsc -w",
     "build": "rimraf ./build && tsc"
   },
@@ -20,7 +20,7 @@
     "@types/redis": "^4.0.11",
     "axios": "^0.26.1",
     "cluster": "^0.7.7",
-    "dotenv": "^10.0.0",
+    "dotenv": "^17.2.3",
     "fastify": "^4.26.2",
     "fastify-websocket": "^4.0.0",
     "fs": "^0.0.1-security",
@@ -28,6 +28,7 @@
     "graphql-request": "^3.6.1",
     "ioredis": "^5.4.1",
     "node-fetch": "2",
+    "p-limit": "^7.2.0",
     "redis": "^4.6.15",
     "xml-js": "^1.6.11",
     "xmldom": "^0.6.0"

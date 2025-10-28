@@ -10,7 +10,7 @@ import {
 } from "./queries";
 import path from "path";
 import fs from "fs";
-import { mylog } from "../helper";
+import { mylog } from "../utils/logger.ts";
 
 const makeRefLink = (link: string) => {
   return link

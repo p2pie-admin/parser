@@ -1,5 +1,5 @@
-import { mylog } from "../helper";
-import { setData } from "../redis";
+import { mylog } from "../utils/logger.ts";
+import { setData } from "../utils/redis";
 import callStrapi from "./callStrapi";
 import { AuthMutation } from "./queries";
 

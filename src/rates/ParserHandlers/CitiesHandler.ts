@@ -4,7 +4,7 @@ import { IExchanger, IExchangerParsingError } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { sendExchangerError } from "../ErrorHandler";
 import { ICity } from "../../types";
-import { getData } from "../../redis";
+import { getData } from "../../utils/redis";
 
 // import db from "../../db"
 

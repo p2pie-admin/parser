@@ -1,5 +1,5 @@
-import { mylog } from "../../helper";
-import { getData, setData } from "../../redis";
+import { mylog } from "../../utils/logger.ts";
+import { getData, setData } from "../../utils/redis";
 
 import { ICity } from "../../types";
 import { IExchanger } from "../../types/exchanger";
@@ -40,7 +40,7 @@ export default class RateFormatter {
       rate && setData(`allDirtyRates:${dir}:${this.exchanger.id}`, rate);
       // чистим ошибки если курсы есть
       if (this.exchanger.error)
-        setData(`exchangers:${this.exchanger.id}:error`, {});
+        setData(`exchanger_stats:${this.exchanger.id}:error`, {});
     });
   };
 

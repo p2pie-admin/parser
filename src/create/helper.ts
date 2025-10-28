@@ -50,13 +50,13 @@ export const createExchangers = async (
   for (let exchanger of exchangers) {
     try {
       callStrapi(CreateExchangerMutation, exchanger);
-      await pause(1);
+      await waitSec(1);
     } catch (e) {
       console.log(e);
     }
   }
 };
 
-export function pause(seconds: number): Promise<void> {
+export function waitSec(seconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }

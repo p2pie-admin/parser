@@ -1,4 +1,4 @@
-import { getData } from "../redis";
+import { getData } from "../utils/redis";
 import { IGeneralData } from "../types/rates";
 import { ICity } from "../types";
 

@@ -43,6 +43,8 @@ export const ParserSettingQuery = gql`
           SD_best
           SD_worst
           pause_between_loops
+          # big_loop
+          # rates_expiration
         }
       }
     }

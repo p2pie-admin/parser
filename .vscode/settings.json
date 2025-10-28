@@ -1,4 +1,6 @@
 {
   "editor.hover.delay": 1200,
-  "editor.fontSize": 20
+  "editor.fontSize": 20,
+  "typescript.preferences.importModuleSpecifierEnding": "none",
+  "javascript.preferences.importModuleSpecifierEnding": "none"
 }

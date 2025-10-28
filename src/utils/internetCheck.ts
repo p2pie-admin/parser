@@ -1,6 +1,6 @@
 import dns from "dns";
-import { mylog } from "./helper";
-import { waitSec } from "./loops/helper";
+import { mylog } from "./logger.ts";
+import { waitSec } from "../reload/helper";
 
 export const checkInternetConnection = () =>
   new Promise<boolean>((resolve) =>
