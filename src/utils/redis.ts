@@ -5,6 +5,16 @@ import { mylog } from "./logger.ts";
 type RedisValue = string | number | object;
 type IDBName = "main" | "rates";
 
+export type SetDataOptions = {
+  db?: IDBName;
+  NX?: boolean;
+  EX?: number;
+  PX?: number;
+  EXAT?: number;
+  PXAT?: number;
+  KEEPTTL?: boolean;
+};
+
 dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
@@ -91,18 +101,32 @@ function safeParse<T = any>(value: string): T | string {
 export const setData = async (
   key: string,
   value: RedisValue,
-  dbName: IDBName = "main",
-  NX = false
+  options: SetDataOptions = {}
 ) => {
   try {
+    const { db: dbName = "main", NX, EX, PX, EXAT, PXAT, KEEPTTL } = options;
     const db = dbName === "rates" ? ratesDB : mainDB;
     const strValue = JSON.stringify(value);
-    const options: any = {};
-    if (NX) options.NX = true;
-    await db.set(key, strValue, options);
+    const redisOptions: Record<string, number | boolean> = {};
+
+    if (NX) redisOptions.NX = true;
+    if (typeof EX === "number") redisOptions.EX = EX;
+    if (typeof PX === "number") redisOptions.PX = PX;
+    if (typeof EXAT === "number") redisOptions.EXAT = EXAT;
+    if (typeof PXAT === "number") redisOptions.PXAT = PXAT;
+    if (KEEPTTL) redisOptions.KEEPTTL = true;
+    if (Object.keys(redisOptions).length) {
+      await db.set(key, strValue, redisOptions as any);
+    } else {
+      await db.set(key, strValue);
+    }
   } catch (error: any) {
     mylog(`❌ Redis setData failed for ${key}: ${error.message}`, "error");
   }
+};
+
+export type GetDataOptions = {
+  db?: IDBName;
 };
 
 // ---------- setObject ----------
@@ -171,9 +195,10 @@ export async function getObject(
 }
 
 // ---------- getData ----------
-export async function getData(key: string) {
+export async function getData(key: string, options: GetDataOptions = {}) {
   try {
-    const db = mainDB;
+    const { db: dbName = "main" } = options;
+    const db = dbName === "rates" ? ratesDB : mainDB;
     const value = await db.get(key);
     if (value == null) return null;
     return safeParse(value);
