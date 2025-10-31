@@ -26,10 +26,9 @@ export const processSingleExchanger = async ({
 }): Promise<void> => {
   const { id, name } = exchanger;
 
-  await waitSec(index / 100);
+  //await waitSec(index / 100);
 
   if (skip > 1 && loopsDone % skip !== 0) {
-    mylog(` ~ ${emoji(idx)} #${exchanger.id} ${name} skip`, "warning", true);
     return;
   }
 

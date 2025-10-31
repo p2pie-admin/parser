@@ -1,9 +1,9 @@
 import pLimit from "p-limit";
 import { processSingleExchanger } from "./2_exchangerProcessor";
 import reload from "./reload";
-import { splitArrayToNChunks, waitSec } from "./reload/helper";
+import { splitArrayToNChunksAdaptive, waitSec } from "./reload/helper";
 import { IExchanger, IExchangerStats } from "./types/exchanger";
-import { measure } from "./utils/helper";
+import { getAdaptiveWorkerWeights, measure } from "./utils/helper";
 
 import { emoji, mylog } from "./utils/logger";
 import { getData, getObject } from "./utils/redis";
@@ -70,17 +70,34 @@ export const loop = async (): Promise<void> => {
       generalDataCache = null;
     }
 
-    const chunk = splitArrayToNChunks(exchangers, numCPUs)[idx] || [];
+    const workerWeights = await getAdaptiveWorkerWeights(numCPUs);
+    const chunk =
+      splitArrayToNChunksAdaptive(exchangers, numCPUs, workerWeights)[idx] ||
+      [];
     mylog(`${emoji(idx)} Got ${chunk.length} exchangers`);
 
     const generalData: IGeneralData = await getGeneralData();
+    //const start = Date.now();
     await measure(
-      "chunk",
-      `${emoji(idx)} Worker ${idx} processed ${chunk.length} exchangers in`,
+      {
+        idx,
+        length: chunk.length,
+        loopsDone,
+      },
       async () => {
-        const limit = pLimit(300);
+        const limit = pLimit(100);
         await Promise.allSettled(
           chunk.map((exchanger, index) => {
+            // return limit(async () => {
+            //   await new Promise((r) =>
+            //     setTimeout(r, (rand0to10() + rand0to10() * 0.1) * 1000)
+            //   );
+            //   const durationSec = ((Date.now() - start) / 1000).toFixed(2); // ✅ in seconds
+            //   mylog(
+            //     `${emoji(idx)} ${exchanger.name} finished in ${durationSec}s`,
+            //     "hidden"
+            //   );
+            // });
             return limit(() =>
               processSingleExchanger({
                 exchanger,

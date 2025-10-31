@@ -1,5 +1,3 @@
-import { memoryUsage } from "process";
-
 export const mylog = (
   message: string,
   color:
@@ -23,20 +21,28 @@ export const mylog = (
   // fallback на фиолетовый (info)
   const chosenColor = colors[color] || colors.info;
 
-  isPricy &&
-    process.env.NO_LOG &&
-    console.log(`${chosenColor}${message}\u001b[0m`);
+  const noLogEnv = process.env.NO_LOG;
+  const loggingDisabled =
+    typeof noLogEnv === "string" &&
+    ["1", "true", "yes", "on"].includes(noLogEnv.toLowerCase());
+
+  if (loggingDisabled && !isPricy) {
+    return;
+  }
+
+  console.log(`${chosenColor}${message}\u001b[0m`);
 };
 export const emoji = (id: string | number) => {
   const emojis = {
     "0": "⚪",
-    "1": "🟤",
-    "2": "🟣",
-    "3": "🔵",
-    "4": "🟡",
-    "5": "🟠",
+    "7": "🟤",
+    "4": "🟣",
+    "2": "🔵",
+    "1": "🟡",
+    "3": "🟠",
     "6": "🔴",
-    "7": "🟢",
+    "5": "🟢",
+    "9": "⚫",
   } as Record<string, string>;
-  return emojis[id] || "⚫";
+  return emojis[id] || "-_-";
 };

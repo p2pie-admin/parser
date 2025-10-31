@@ -6,6 +6,7 @@ import { getData, setData, setObject } from "../utils/redis";
 import { IExchanger } from "../types/exchanger";
 import { ExchangerResponse } from "../types/exchangerResp";
 import XML2JSON from "xml-js";
+import { bigTTL } from "../utils/settings";
 
 const convertExchangers = (
   exchangers: IExchanger[]
@@ -41,14 +42,7 @@ export const reloadExchangers = async () => {
 
       mylog(`Loaded exchangers ${exchangers?.length}`, "important");
 
-      const big_loop =
-        ((await getData("parser_setting:big_loop")) as number) || 10;
-
-      await setObject(
-        "exchangers",
-        convertExchangers(exchangers),
-        big_loop + 2
-      ); // устаревает через big_loop + 2
+      await setObject("exchangers", convertExchangers(exchangers), bigTTL); // устаревает через BIG_TTL
 
       break;
     } catch (error: any) {

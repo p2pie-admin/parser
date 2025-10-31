@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 15_000);
-const RETRY_COUNT = Number(process.env.HTTP_RETRY_COUNT ?? 2);
+const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 10) * 1000;
+const RETRY_COUNT = Number(process.env.HTTP_RETRY_COUNT ?? 1);
 const RETRY_DELAY_BASE_MS = Number(process.env.HTTP_RETRY_DELAY_MS ?? 400);
 
 const DEFAULT_HEADERS: Record<string, string> = {

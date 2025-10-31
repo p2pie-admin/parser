@@ -51,9 +51,6 @@ export type IExchanger = {
   total_rates?: number;
   admin_rating?: number;
   skip?: number;
-  error?: IExchangerParsingError;
-  info?: IExchangerParsingInfo;
-  warnings?: { [key: string]: string };
 };
 
 export interface IDataForExchangerCreation {

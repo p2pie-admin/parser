@@ -5,6 +5,7 @@ import { splitObjectToNChunks } from "../reload/helper";
 import { IAllDirtyRates } from "../types/rates";
 import { IParserSetting } from "../types";
 import { getAllRatesID } from "./Tops";
+import { smallTTL } from "../utils/settings";
 
 /**
  * Calculates top rates per CPU chunk
@@ -28,7 +29,7 @@ export const filterRates = async (idx: number, numCPUs: number) => {
 
   const allRatesID = await getAllRatesID(currentChunk, setting);
 
-  await setObject("allRatesID", allRatesID, 2); // Updated to use topIDs
+  await setObject("allRatesID", allRatesID, smallTTL); // Updated to use topIDs
 
   mylog(
     `${emoji(idx)} Dirs: ${Object.keys(currentChunk).length}, added rates ${

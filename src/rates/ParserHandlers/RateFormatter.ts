@@ -7,12 +7,29 @@ import { IRate, IGeneralData } from "../../types/rates";
 
 import { sendExchangerWarning } from "../ErrorHandler";
 import { transformLimit } from "../helper";
-import { cityCodeToCity, groupRatesDataCities } from "./CitiesHandler";
+import { groupRatesDataCities } from "./CitiesHandler";
+import { smallTTL } from "../../utils/settings";
+
+type CityRates = Record<
+  string,
+  {
+    rate: IRate;
+    city: ICity;
+  }
+>;
+
+type ExtractedRate = {
+  dir: string;
+  rate: IRate;
+};
 
 export default class RateFormatter {
   exchanger: IExchanger;
   generalData: IGeneralData;
   cities: ICity[];
+  private allowedCodes: Set<string>;
+  private altCodeToPrimary: Map<string, string>;
+  private disabledDirs: Set<string>;
 
   constructor(
     exchanger: IExchanger,
@@ -22,32 +39,57 @@ export default class RateFormatter {
     this.exchanger = exchanger;
     this.generalData = generalData;
     this.cities = cities;
+
+    const allowedCodes = new Set<string>();
+    const altMap = new Map<string, string>();
+
+    (generalData.allPmCodesThatExist || []).forEach((code) => {
+      const normalized = code?.toUpperCase();
+      if (normalized) {
+        allowedCodes.add(normalized);
+      }
+    });
+
+    (generalData.alternativePmCodes || []).forEach(([primary, alternative]) => {
+      const primaryCode = primary?.toUpperCase();
+      const alternativeCode = alternative?.toUpperCase();
+      if (primaryCode) {
+        allowedCodes.add(primaryCode);
+      }
+      if (primaryCode && alternativeCode) {
+        allowedCodes.add(alternativeCode);
+        altMap.set(alternativeCode, primaryCode);
+      }
+    });
+
+    this.allowedCodes = allowedCodes;
+    this.altCodeToPrimary = altMap;
+
+    const disabledDirs = new Set<string>();
+    (generalData.dirsDisabled || "")
+      .split(",")
+      .map((dir) => dir.trim().toUpperCase())
+      .filter(Boolean)
+      .forEach((dir) => disabledDirs.add(dir));
+
+    this.disabledDirs = disabledDirs;
   }
 
   formatAndMatchRatesWithDirs = async (rates: IRateData[]) => {
     const groupedRateData = await groupRatesDataCities(this.exchanger, rates);
     const updates: Promise<unknown>[] = [];
-    let hasSuccessfulRate = false;
 
     for (const rateData of groupedRateData) {
-      let [from, to] = [
-        rateData?.from?._text?.toUpperCase(),
-        rateData?.to?._text?.toUpperCase(),
-      ];
-      const dir = `${from}_${to}`;
+      const extracted = this.createRate(rateData);
+      if (!extracted) continue;
 
-      const rate = this.extractRateFromRateData(rateData);
-
-      if (rate) {
-        hasSuccessfulRate = true;
-        updates.push(
-          setData(`allDirtyRates:${dir}:${this.exchanger.id}`, rate)
-        );
-      }
-    }
-
-    if (hasSuccessfulRate && this.exchanger.error) {
-      updates.push(setData(`exchanger_stats:${this.exchanger.id}:error`, {}));
+      updates.push(
+        setData(
+          `allDirtyRates:${extracted.dir}:${this.exchanger.id}`,
+          extracted.rate,
+          smallTTL
+        )
+      );
     }
 
     if (updates.length) {
@@ -55,56 +97,59 @@ export default class RateFormatter {
     }
   };
 
-  extractRateFromRateData = (rateData: IRateData): IRate | undefined => {
-    let [from, to] = [
-      rateData?.from?._text?.toUpperCase(),
-      rateData?.to?._text?.toUpperCase(),
-    ];
+  private normalizeCode = (code?: string): string | null => {
+    if (!code) return null;
+    const upper = code.toUpperCase();
+    if (!this.allowedCodes.has(upper)) return null;
+    return this.altCodeToPrimary.get(upper) ?? upper;
+  };
+
+  private getNormalizedDirection = (
+    rateData: IRateData
+  ): { from: string; to: string } | null => {
+    const rawFrom = rateData?.from?._text;
+    const rawTo = rateData?.to?._text;
+    const from = this.normalizeCode(rawFrom);
+    const to = this.normalizeCode(rawTo);
+    if (!from || !to) return null;
+
     const dir = `${from}_${to}`;
+    if (this.disabledDirs.has(dir)) return null;
+
+    return { from, to };
+  };
+
+  private createRate = (
+    rateData: IRateData,
+    includeCityRates = true
+  ): ExtractedRate | null => {
+    const normalizedDirection = this.getNormalizedDirection(rateData);
+    if (!normalizedDirection) return null;
+
+    const { from, to } = normalizedDirection;
+    const dir = `${from}_${to}`;
+
     try {
-      const { allPmCodesThatExist, alternativePmCodes, dirsDisabled } =
-        this.generalData;
       const { id, name, tag, logo, admin_rating, ref_link, rates_link } =
         this.exchanger;
 
-      const codes = [
-        ...allPmCodesThatExist,
-        ...alternativePmCodes.map((c) => c[1]),
-      ];
+      const inAmount = +rateData.in._text;
+      const outAmount = +rateData.out._text;
+      if (!Number.isFinite(inAmount) || !Number.isFinite(outAmount) || outAmount === 0) {
+        return null;
+      }
 
-      const fromIsAlt = alternativePmCodes.find((code) => code[1] == from);
-      const toIsAlt = alternativePmCodes.find((code) => code[1] == to);
+      const course = inAmount / outAmount;
+      if (!Number.isFinite(course) || course <= 0) return null;
 
-      if (fromIsAlt) from = fromIsAlt[0];
-      if (toIsAlt) to = toIsAlt[0];
-
-      // если хоть одна платежка в dir не из cms, скипаем
-      if (
-        !codes.find((code) => code === from) ||
-        !codes.find((code) => code === to)
-      )
-        return;
-
-      // если запрещенные направления, тоже скипаем
-      if (
-        dirsDisabled &&
-        dirsDisabled
-          .replace(/ /g, "")
-          .split(",")
-          .find((dirDisabled) => dirDisabled.toUpperCase() === dir)
-      )
-        return;
-
-      const course = +rateData.in._text / +rateData.out._text;
-      const min = transformLimit(rateData.minamount._text, +course, dir);
-      const max = transformLimit(rateData.maxamount._text, +course, dir);
+      const min = transformLimit(rateData.minamount._text, course, dir);
+      const max = transformLimit(rateData.maxamount._text, course, dir);
       const reserve = transformLimit(
-        `${rateData.amount._text} ${dir.split("_")[1]}`,
-        +course,
+        `${rateData.amount._text} ${to}`,
+        course,
         dir
       );
 
-      // сразу забираем данные обменника для отображения в таблице и свайпере
       const rate = {
         exchangerId: id,
         name,
@@ -140,35 +185,51 @@ export default class RateFormatter {
             .split("/")[0]
             .replace("___", "https://")
             .replace("api.", ""),
-        cityRates: this.convertCityRates(rateData.cityRatesData),
         last_time_updated: Date.now(),
       } as IRate;
-      return rate;
-    } catch (err) {
-      // не добавляем ворнинги если уже есть
-      if (!this.exchanger.warnings?.length) {
-        void sendExchangerWarning(this.exchanger.id, dir, String(err));
+
+      if (includeCityRates) {
+        const cityRates = this.convertCityRates(rateData.cityRatesData);
+        if (Object.keys(cityRates).length) {
+          rate.cityRates = cityRates;
+        }
       }
-      return;
+
+      return { dir, rate };
+    } catch (err) {
+      sendExchangerWarning(this.exchanger.id, dir, String(err));
+      return null;
     }
   };
 
-  convertCityRates = (cityRatesData?: {
+  private convertCityRates = (cityRatesData?: {
     [key: string]: IRateData;
-  }): { [key: string]: { rate: IRate; city: ICity } } => {
+  }): CityRates => {
     if (!cityRatesData) return {};
     return Object.entries(cityRatesData).reduce((res, [cityCode, rateData]) => {
-      const cityName = this.cities.find(
+      const city = this.cities.find(
         (c) =>
           c.codes[0] == cityCode.toUpperCase() ||
           c.codes?.[1] == cityCode.toUpperCase() ||
           c.codes?.[2] == cityCode.toUpperCase()
-      )?.en_name;
-      if (!cityName) return res;
+      );
+      if (!city?.en_name) return res;
+
+      const extracted = this.createRate(rateData, false);
+      if (!extracted) return res;
+
       return {
         ...res,
-        [cityName.toLowerCase()]: this.extractRateFromRateData(rateData),
+        [city.en_name.toLowerCase()]: {
+          rate: extracted.rate,
+          city,
+        },
       };
-    }, {});
+    }, {} as CityRates);
+  };
+
+  // Backward compatibility: preserve previous method signature if used elsewhere.
+  extractRateFromRateData = (rateData: IRateData): IRate | undefined => {
+    return this.createRate(rateData)?.rate;
   };
 }

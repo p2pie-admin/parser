@@ -13,44 +13,44 @@ import { mylog } from "../utils/logger";
 import { logMemoryUsage } from "./memoryUsage";
 import { reloadExchangers } from "./helper";
 import { measure } from "../utils/helper";
-import { isPrimary } from "../utils/settings";
+import { bigTTL, isPrimary } from "../utils/settings";
 
 async function reload() {
   if (!isPrimary) return;
   await logMemoryUsage();
 
-  await measure("reload", `Reloading`, async () => {
-    //// 1️⃣ Reload exchangers list from Strapi
-    await reloadExchangers(); // скипы не трогает, они хранятся сами по себе
+  //// 1️⃣ Reload exchangers list from Strapi
+  await reloadExchangers(); // скипы не трогает, они хранятся сами по себе
 
-    //// 2️⃣ Update parser settings, pm groups, etc.
-    const [parserSettingsData, pmGroupsData, topsData] = await Promise.all(
-      [ParserSettingQuery, PmGroupsQuery, TopsQuery].map(async (query) =>
-        callStrapi(query)
-      ) as any[]
-    );
+  //// 2️⃣ Update parser settings, pm groups, etc.
+  const [parserSettingsData, pmGroupsData, topsData] = await Promise.all(
+    [ParserSettingQuery, PmGroupsQuery, TopsQuery].map(async (query) =>
+      callStrapi(query)
+    ) as any[]
+  );
 
-    if (!parserSettingsData || !pmGroupsData || !topsData) {
-      mylog("⚠️ Strapi data missing during reload!", "error");
-      return;
-    }
+  if (!parserSettingsData || !pmGroupsData || !topsData) {
+    mylog("⚠️ Strapi data missing during reload!", "error");
+    return;
+  }
 
-    await setData(
-      "top_codes",
-      topsData.topParameters.map((p: any) => p.code)
-    );
-    await setObject("parser_setting", parserSettingsData.parserSetting);
+  await setData(
+    "top_codes",
+    topsData.topParameters.map((p: any) => p.code)
+  );
+  await setObject("parser_setting", parserSettingsData.parserSetting, bigTTL);
 
-    const sections = pmGroupsData?.selector?.sections as ISection[];
-    await setData(
-      "all_pm_codes_that_exist",
-      _getAllPmCodesThatExistFromSections(sections)
-    );
-    await setData(
-      "alternative_pm_codes",
-      _getAlternativePmCodes(sections)
-    );
-  });
+  const sections = pmGroupsData?.selector?.sections as ISection[];
+  await setData(
+    "all_pm_codes_that_exist",
+    _getAllPmCodesThatExistFromSections(sections),
+    bigTTL
+  );
+  await setData(
+    "alternative_pm_codes",
+    _getAlternativePmCodes(sections),
+    bigTTL
+  );
 }
 
 // --- helper: mass status sync based on skip ---

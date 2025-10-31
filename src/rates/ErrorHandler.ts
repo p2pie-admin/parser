@@ -45,11 +45,12 @@ export const sendExchangerError = async (
 
   error.codeExplanation = errorCodesExplanation[error.code || "unknown"];
   const { id, name, rates_link } = exchanger;
+  const timeSuffix = typeof time === "string" ? ` | time: ${time}s` : "";
 
   mylog(
     ` ˟ ${emoji(idx)} #${id} ${name || ""} : ${
       error.code || error.autoMessage?.substring(0, 50) || ""
-    } | ${error.codeExplanation} | ${rates_link} | time: ${time}s`,
+    } | ${error.codeExplanation} | ${rates_link}${timeSuffix}`,
     "error",
     true
   );
@@ -71,7 +72,7 @@ export const sendTotalRates = async (
   mylog(
     ` ✓ ${emoji(idx)} #${id} ${
       name || ""
-    } : received ${total_rates} rates | ${rates_link} | time: ${time}s`,
+    } : received ${total_rates} rates | ${rates_link} | time: ${time || "?"}s`,
     "success",
     true
   );
