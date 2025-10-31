@@ -2,18 +2,38 @@ import pLimit from "p-limit";
 import { processSingleExchanger } from "./2_exchangerProcessor";
 import reload from "./reload";
 import { splitArrayToNChunks, waitSec } from "./reload/helper";
-import { updateStatusesBySkip } from "./reload/updateStatuses";
 import { IExchanger, IExchangerStats } from "./types/exchanger";
 import { measure } from "./utils/helper";
 
 import { emoji, mylog } from "./utils/logger";
 import { getData, getObject } from "./utils/redis";
 import { idx, numCPUs } from "./utils/settings";
-import { finishPrimaryLoop } from "./finishPrimaryLoop";
+
 import { prepareGeneralData } from "./rates/generalDataLoader";
 import { IGeneralData } from "./types/rates";
+import { updateStatusesBySkip } from "./reload/updateStatuses";
 
 let loopRunning = false;
+const GENERAL_DATA_TTL_MS = Number(process.env.GENERAL_DATA_TTL_MS ?? 300_000);
+
+let generalDataCache: {
+  data: IGeneralData;
+  expiresAt: number;
+} | null = null;
+
+const getGeneralData = async (): Promise<IGeneralData> => {
+  const now = Date.now();
+  if (generalDataCache && generalDataCache.expiresAt > now) {
+    return generalDataCache.data;
+  }
+
+  const data = await prepareGeneralData();
+  generalDataCache = {
+    data,
+    expiresAt: now + GENERAL_DATA_TTL_MS,
+  };
+  return data;
+};
 
 export const loop = async (): Promise<void> => {
   if (loopRunning) {
@@ -46,37 +66,42 @@ export const loop = async (): Promise<void> => {
 
     if (idx === 0 && loopsDone % big_loop === 0 && loopsDone > 0) {
       // -------------------------------------------------------------
-      reload();
+      await reload();
+      generalDataCache = null;
     }
 
     const chunk = splitArrayToNChunks(exchangers, numCPUs)[idx] || [];
     mylog(`${emoji(idx)} Got ${chunk.length} exchangers`);
 
-    const generalData: IGeneralData = await prepareGeneralData();
+    const generalData: IGeneralData = await getGeneralData();
     await measure(
       "chunk",
       `${emoji(idx)} Worker ${idx} processed ${chunk.length} exchangers in`,
       async () => {
-        const limit = pLimit(30);
+        const limit = pLimit(300);
         await Promise.allSettled(
-          chunk.map((exchanger) => {
-            return limit(async () => {
+          chunk.map((exchanger, index) => {
+            return limit(() =>
               processSingleExchanger({
                 exchanger,
                 loopsDone,
                 skip: exchanger_stats?.[exchanger.id]?.skip || 0,
                 generalData,
-              });
-            });
+                index,
+              })
+            );
           })
         );
       }
     );
 
-    !idx && (await finishPrimaryLoop(exchangersObj));
+    !idx && updateStatusesBySkip(exchangersObj); // не авейтим, пусть фигачит на фоне
     await waitSec(loopPause);
     loopsDone++;
-    mylog(`${emoji(idx)} Loops done : ${loopsDone}`, "hidden");
+    mylog(
+      `${emoji(idx)} Loops done : ${loopsDone}. Waiting ${loopPause}s...`,
+      "hidden"
+    );
   }
 };
 

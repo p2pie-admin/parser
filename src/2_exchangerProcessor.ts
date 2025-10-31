@@ -2,7 +2,7 @@
 import { httpGet } from "./utils/httpClient";
 import { emoji, mylog } from "./utils/logger";
 import { sendExchangerError, sendTotalRates } from "./rates/ErrorHandler";
-import { xmlToJson } from "./reload/helper";
+import { waitSec, xmlToJson } from "./reload/helper";
 import { IExchanger, IExchangerParsingError } from "./types/exchanger";
 import { IGeneralData } from "./types/rates";
 import RateFormatter from "./rates/ParserHandlers/RateFormatter";
@@ -16,16 +16,20 @@ export const processSingleExchanger = async ({
   skip,
   loopsDone,
   generalData,
+  index,
 }: {
   exchanger: IExchanger;
   skip: number;
   loopsDone: number;
   generalData: IGeneralData;
+  index: number;
 }): Promise<void> => {
   const { id, name } = exchanger;
 
+  await waitSec(index / 100);
+
   if (skip > 1 && loopsDone % skip !== 0) {
-    mylog(` ~ ${emoji(idx)}  ${name} skipping`, "warning");
+    mylog(` ~ ${emoji(idx)} #${exchanger.id} ${name} skip`, "warning", true);
     return;
   }
 

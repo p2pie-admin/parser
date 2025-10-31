@@ -110,20 +110,17 @@ export async function setObject(
 
     await trackOperation(async () => {
       const multi = db.multi();
-      const ex = expireIn && expireIn > 0 ? expireIn : undefined;
+      const ttl = expireIn && expireIn > 0 ? expireIn : 1000;
+      const options = ttl ? { EX: ttl } : undefined;
 
       for (const [subKey, val] of Object.entries(object)) {
         const fullKey = `${key}:${subKey}`;
         const strVal = toJSONString(val);
 
-        const setArgs: any[] = [fullKey, strVal];
-
-        if (setArgs.length === 2) {
-          setArgs.push({ EX: ex ?? 1000 });
-        }
-
-        multi.set(setArgs[0], setArgs[1], setArgs[2]);
+        multi.set(fullKey, strVal, options);
       }
+
+      multi.set(key, toJSONString(object), options);
 
       await multi.exec();
     });
@@ -173,6 +170,11 @@ export async function getObject(key: string): Promise<object | null> {
     if (key.includes(":")) {
       const val = await db.get(key);
       return val === null ? null : tryParseJSON(val);
+    }
+
+    const snapshot = await db.get(key);
+    if (snapshot !== null) {
+      return tryParseJSON(snapshot) as object;
     }
 
     // иначе считаем, что это «корневой» ключ коллекции — соберём все key:*

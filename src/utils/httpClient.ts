@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 12_000);
-const RETRY_COUNT = 2;
+const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 15_000);
+const RETRY_COUNT = Number(process.env.HTTP_RETRY_COUNT ?? 2);
 const RETRY_DELAY_BASE_MS = Number(process.env.HTTP_RETRY_DELAY_MS ?? 400);
 
 const DEFAULT_HEADERS: Record<string, string> = {
@@ -13,7 +13,26 @@ const DEFAULT_HEADERS: Record<string, string> = {
   Connection: "keep-alive",
 };
 
-const timeoutErrorCodes = new Set<string>(["ECONNABORTED", "ETIMEDOUT"]);
+const RETRYABLE_ERROR_CODES = new Set<string>([
+  "ECONNABORTED",
+  "ETIMEDOUT",
+  "ECONNRESET",
+  "ECONNREFUSED",
+  "EPIPE",
+  "EAI_AGAIN",
+  "ENOTFOUND",
+]);
+
+const RETRYABLE_STATUS_CODES = new Set<number>([
+  408, // Request Timeout
+  425, // Too Early
+  429, // Too Many Requests
+  500,
+  502,
+  503,
+  504,
+  522,
+]);
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -21,14 +40,27 @@ const client = axios.create({
   timeout: DEFAULT_TIMEOUT_MS,
   headers: DEFAULT_HEADERS,
   decompress: true,
-  validateStatus: () => true,
 });
 
 const shouldRetry = (error: any): boolean => {
   if (!error) return false;
 
   const code = error.code ? String(error.code) : "";
-  return timeoutErrorCodes.has(code);
+  if (RETRYABLE_ERROR_CODES.has(code)) {
+    return true;
+  }
+
+  const status = error?.response?.status;
+  if (typeof status === "number" && RETRYABLE_STATUS_CODES.has(status)) {
+    return true;
+  }
+
+  // Axios sets isAxiosError=true when it cannot reach the server at all (no response)
+  if (error.isAxiosError && !error.response) {
+    return true;
+  }
+
+  return false;
 };
 
 export async function httpGet<T = any>(
@@ -59,7 +91,9 @@ export async function httpGet<T = any>(
         break;
       }
 
-      const delay = RETRY_DELAY_BASE_MS * attempt;
+      const backoff = RETRY_DELAY_BASE_MS * Math.pow(2, attempt - 1);
+      const jitter = Math.random() * RETRY_DELAY_BASE_MS;
+      const delay = backoff + jitter;
       await sleep(delay);
     }
   }

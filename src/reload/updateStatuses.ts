@@ -26,19 +26,28 @@ export async function updateStatusesBySkip(exchangersObj: {
 
   if (toSuspend.length) {
     mylog(
-      `⚠️ Suspending ${toSuspend.length} exchangers (skip>${THRESHOLD})`,
+      `⚠️ Suspending ${toSuspend.length} exchangers (skip>${THRESHOLD}): ${toSuspend.join(
+        ", "
+      )}`,
       "warning"
     );
   }
   if (toActivate.length) {
     mylog(
-      `✅ Activating ${toActivate.length} exchangers (skip<=${THRESHOLD})`,
+      `✅ Activating ${toActivate.length} exchangers (skip<=${THRESHOLD}): ${toActivate.join(
+        ", "
+      )}`,
       "success"
     );
   }
 
-  await Promise.all([
-    ...toSuspend.map((id) => statusChange("active", "suspended", id)),
-    ...toActivate.map((id) => statusChange("suspended", "active", id)),
-  ]);
+  const tasks: Promise<void>[] = [];
+  if (toSuspend.length) {
+    tasks.push(statusChange("active", "suspended", toSuspend));
+  }
+  if (toActivate.length) {
+    tasks.push(statusChange("suspended", "active", toActivate));
+  }
+
+  await Promise.all(tasks);
 }

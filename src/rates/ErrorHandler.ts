@@ -1,6 +1,5 @@
 import { emoji, mylog } from "../utils/logger";
 import { setData } from "../utils/redis";
-import statusChange from "../utils/statusChange";
 
 import {
   IErrorCode,
@@ -51,7 +50,8 @@ export const sendExchangerError = async (
     ` ˟ ${emoji(idx)} #${id} ${name || ""} : ${
       error.code || error.autoMessage?.substring(0, 50) || ""
     } | ${error.codeExplanation} | ${rates_link} | time: ${time}s`,
-    "error"
+    "error",
+    true
   );
 
   await setData(`exchanger_stats:${id}:error`, error);
@@ -72,7 +72,8 @@ export const sendTotalRates = async (
     ` ✓ ${emoji(idx)} #${id} ${
       name || ""
     } : received ${total_rates} rates | ${rates_link} | time: ${time}s`,
-    "success"
+    "success",
+    true
   );
 
   // if (exchanger.status === "suspended")

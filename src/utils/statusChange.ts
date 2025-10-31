@@ -8,12 +8,14 @@ type Status = "active" | "suspended" | "disabled";
 async function statusChange(
   fromStatus: Status,
   toStatus: Status,
-  exchangerId?: string | null
+  exchangerIdOrIds?: string | string[] | null
 ) {
   let exchangerIds: string[] = [];
 
-  if (exchangerId) {
-    exchangerIds = [exchangerId];
+  if (Array.isArray(exchangerIdOrIds)) {
+    exchangerIds = exchangerIdOrIds;
+  } else if (typeof exchangerIdOrIds === "string" && exchangerIdOrIds) {
+    exchangerIds = [exchangerIdOrIds];
   } else {
     // получаем всех
     const data = await callStrapi(getAllExchangerIds, { status: fromStatus });
@@ -32,13 +34,18 @@ async function statusChange(
       mylog(`No exchanger statuses to be changed!`);
       return;
     }
-
-    console.log(
-      `📘 \u001b[1;34m Changing statuses from ${fromStatus} → ${toStatus} for exchangers: ${exchangerIds.join(
-        ", "
-      )}`
-    );
   }
+
+  if (!exchangerIds.length) {
+    mylog(`No exchanger statuses to be changed!`);
+    return;
+  }
+
+  console.log(
+    `📘 \u001b[1;34m Changing statuses from ${fromStatus} → ${toStatus} for exchangers: ${exchangerIds.join(
+      ", "
+    )}`
+  );
 
   for (const id of exchangerIds) {
     try {
@@ -46,7 +53,7 @@ async function statusChange(
         exchangerId: id,
         status: toStatus,
       });
-      const delay = 0.12;
+      const delay = 0.05;
       await waitSec(delay);
     } catch (err) {
       console.error(`📕 \u001b[1;31m Failed to update exchanger ${id}:`, err);

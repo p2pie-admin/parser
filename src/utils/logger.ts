@@ -8,7 +8,8 @@ export const mylog = (
     | "warning"
     | "important"
     | "info"
-    | "hidden" = "info"
+    | "hidden" = "info",
+  isPricy?: boolean
 ) => {
   const colors = {
     error: "📕 \u001b[1;31m", // red
@@ -22,7 +23,9 @@ export const mylog = (
   // fallback на фиолетовый (info)
   const chosenColor = colors[color] || colors.info;
 
-  console.log(`${chosenColor}${message}\u001b[0m`);
+  isPricy &&
+    process.env.NO_LOG &&
+    console.log(`${chosenColor}${message}\u001b[0m`);
 };
 export const emoji = (id: string | number) => {
   const emojis = {
