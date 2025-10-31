@@ -1,5 +1,5 @@
 import { IExchanger } from "../types/exchanger";
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import { getData } from "../utils/redis";
 import statusChange from "../utils/statusChange";
 

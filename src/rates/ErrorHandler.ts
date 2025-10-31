@@ -1,5 +1,5 @@
-import { emoji, mylog } from "../utils/logger.ts";
-import { getData, setData } from "../utils/redis";
+import { emoji, mylog } from "../utils/logger";
+import { setData } from "../utils/redis";
 import statusChange from "../utils/statusChange";
 
 import {
@@ -29,12 +29,18 @@ const errorCodesExplanation = {
 
 export const sendExchangerError = async (
   exchanger: IExchanger,
-  error?: IExchangerParsingError
+  error?: IExchangerParsingError,
+  nextSkipOverride?: number,
+  time?: string
 ) => {
   const idx = parseInt(process.env.IDX || "0");
+  const skipKey = `exchanger_stats:${exchanger.id}:skip`;
 
   if (!error) {
     await setData(`exchanger_stats:${exchanger.id}:error`, {});
+    if (typeof nextSkipOverride === "number") {
+      await setData(skipKey, nextSkipOverride);
+    }
     return;
   }
 
@@ -44,43 +50,34 @@ export const sendExchangerError = async (
   mylog(
     ` ˟ ${emoji(idx)} #${id} ${name || ""} : ${
       error.code || error.autoMessage?.substring(0, 50) || ""
-    } | ${error.codeExplanation} | ${rates_link}`,
+    } | ${error.codeExplanation} | ${rates_link} | time: ${time}s`,
     "error"
   );
 
   await setData(`exchanger_stats:${id}:error`, error);
 
-  // --- 👇 Новая логика подсчета скипов ---
-  const prevSkipRaw = await getData(`exchanger_stats:${id}:skip`);
-  const prevSkip = Number(prevSkipRaw) || 0;
-
-  // если обменник уже не первый раз падает — приумножаем экспоненциально
-  // но ограничиваем максимумом, чтобы не уходило в бесконечность
-  const nextSkip = Math.min(
-    prevSkip > 0 ? prevSkip * 2 : (exchanger.skip || 1) * 2,
-    64
-  );
-
-  await setData(`exchanger_stats:${id}:skip`, nextSkip);
+  if (typeof nextSkipOverride === "number") {
+    await setData(skipKey, nextSkipOverride);
+  }
 };
 
-export const sendExchangerInfo = (
+export const sendTotalRates = async (
   exchanger: IExchanger,
-  total_rates: number
+  total_rates: number,
+  time: string
 ) => {
   const idx = parseInt(process.env.IDX || "0");
   const { id, name, rates_link } = exchanger;
   mylog(
     ` ✓ ${emoji(idx)} #${id} ${
       name || ""
-    } : получено ${total_rates} курсов | ${rates_link}`,
+    } : received ${total_rates} rates | ${rates_link} | time: ${time}s`,
     "success"
   );
 
   // if (exchanger.status === "suspended")
   //   statusChange("suspended", "active", exchanger.id);
-  setData(`exchanger_stats:${id}:total_rates`, total_rates);
-  setData(`exchanger_stats:${id}:skip`, 0);
+  await setData(`exchanger_stats:${id}:total_rates`, total_rates);
 };
 
 export const sendExchangerWarning = async (
@@ -88,11 +85,5 @@ export const sendExchangerWarning = async (
   dir: string,
   message: string
 ) => {
-  setData(
-    `exchanger_stats:${exchangerId}:warnings:${dir}`,
-    message,
-    {
-      KEEPTTL: true,
-    }
-  );
+  await setData(`exchanger_stats:${exchangerId}:warnings:${dir}`, message);
 };

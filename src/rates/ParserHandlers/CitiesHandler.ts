@@ -1,10 +1,8 @@
 import { IRate } from "./../../types/rates";
-import { error } from "console";
 import { IExchanger, IExchangerParsingError } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { sendExchangerError } from "../ErrorHandler";
 import { ICity } from "../../types";
-import { getData } from "../../utils/redis";
 
 // import db from "../../db"
 
@@ -29,10 +27,10 @@ import { getData } from "../../utils/redis";
 //   "codes": ["AAQ","ANP"]
 // },
 
-export const groupRatesDataCities = (
+export const groupRatesDataCities = async (
   exchanger: IExchanger,
   ratesData: IRateData[]
-): IRateData[] => {
+): Promise<IRateData[]> => {
   //  {... cityCourses: {"MSK": IRateData}}
   try {
     return ratesData.reduce(
@@ -58,7 +56,7 @@ export const groupRatesDataCities = (
       autoMessage: "",
       comment: "Не смог сгруппировать города",
     } as IExchangerParsingError;
-    sendExchangerError(exchanger, error);
+    await sendExchangerError(exchanger, error);
     //const exchangerHandler = new ErrorHandler(exchangerId);
     //exchangerHandler.sendError("data-error", "couldn't load cities");
     return [];

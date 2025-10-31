@@ -1,5 +1,5 @@
 import { memoryUsage } from "process";
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import { setData } from "../utils/redis";
 
 export const logMemoryUsage = async () => {
@@ -26,5 +26,5 @@ export const logMemoryUsage = async () => {
   }
   mylog("_________________________", "important");
 
-  setData("stats:memory_usage", JSON.stringify(stats));
+  await setData("stats:memory_usage", JSON.stringify(stats));
 };

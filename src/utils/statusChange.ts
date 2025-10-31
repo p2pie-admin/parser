@@ -1,7 +1,7 @@
 import callStrapi from "../gql/callStrapi";
 import { getAllExchangerIds, updateExchangerStatus } from "../gql/queries";
 import { waitSec } from "../reload/helper";
-import { mylog } from "./logger.ts";
+import { mylog } from "./logger";
 
 type Status = "active" | "suspended" | "disabled";
 
@@ -46,7 +46,7 @@ async function statusChange(
         exchangerId: id,
         status: toStatus,
       });
-      const delay = 0.2;
+      const delay = 0.12;
       await waitSec(delay);
     } catch (err) {
       console.error(`📕 \u001b[1;31m Failed to update exchanger ${id}:`, err);

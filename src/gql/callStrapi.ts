@@ -2,7 +2,7 @@ import { GraphQLClient } from "graphql-request";
 
 import normalizer from "./normalizer";
 import dotenv from "dotenv";
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import { getData } from "../utils/redis";
 
 dotenv.config();

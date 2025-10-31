@@ -1,12 +1,11 @@
-import { mylog } from "../../utils/logger.ts";
-import { getData, setData } from "../../utils/redis";
+import { setData } from "../../utils/redis";
 
 import { ICity } from "../../types";
 import { IExchanger } from "../../types/exchanger";
 import { IRateData } from "../../types/exchangerResp";
 import { IRate, IGeneralData } from "../../types/rates";
 
-import { sendExchangerError, sendExchangerWarning } from "../ErrorHandler";
+import { sendExchangerWarning } from "../ErrorHandler";
 import { transformLimit } from "../helper";
 import { cityCodeToCity, groupRatesDataCities } from "./CitiesHandler";
 
@@ -26,9 +25,11 @@ export default class RateFormatter {
   }
 
   formatAndMatchRatesWithDirs = async (rates: IRateData[]) => {
-    const groupedRateData = groupRatesDataCities(this.exchanger, rates);
+    const groupedRateData = await groupRatesDataCities(this.exchanger, rates);
+    const updates: Promise<unknown>[] = [];
+    let hasSuccessfulRate = false;
 
-    groupedRateData.map((rateData) => {
+    for (const rateData of groupedRateData) {
       let [from, to] = [
         rateData?.from?._text?.toUpperCase(),
         rateData?.to?._text?.toUpperCase(),
@@ -37,11 +38,21 @@ export default class RateFormatter {
 
       const rate = this.extractRateFromRateData(rateData);
 
-      rate && setData(`allDirtyRates:${dir}:${this.exchanger.id}`, rate);
-      // чистим ошибки если курсы есть
-      if (this.exchanger.error)
-        setData(`exchanger_stats:${this.exchanger.id}:error`, {});
-    });
+      if (rate) {
+        hasSuccessfulRate = true;
+        updates.push(
+          setData(`allDirtyRates:${dir}:${this.exchanger.id}`, rate)
+        );
+      }
+    }
+
+    if (hasSuccessfulRate && this.exchanger.error) {
+      updates.push(setData(`exchanger_stats:${this.exchanger.id}:error`, {}));
+    }
+
+    if (updates.length) {
+      await Promise.allSettled(updates);
+    }
   };
 
   extractRateFromRateData = (rateData: IRateData): IRate | undefined => {
@@ -135,8 +146,9 @@ export default class RateFormatter {
       return rate;
     } catch (err) {
       // не добавляем ворнинги если уже есть
-      !this.exchanger.warnings?.length &&
-        sendExchangerWarning(this.exchanger.id, dir, err + "");
+      if (!this.exchanger.warnings?.length) {
+        void sendExchangerWarning(this.exchanger.id, dir, String(err));
+      }
       return;
     }
   };

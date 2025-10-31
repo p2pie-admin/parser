@@ -1,4 +1,4 @@
-import { mylog } from "../../utils/logger.ts";
+import { mylog } from "../../utils/logger";
 import { getData } from "../../utils/redis";
 import { IRate } from "../../types/rates";
 

@@ -1,6 +1,6 @@
 import callStrapi from "../gql/callStrapi";
 import { ExchangersQuery } from "../gql/queries";
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import net from "net";
 import { getData, setData, setObject } from "../utils/redis";
 import { IExchanger } from "../types/exchanger";
@@ -44,7 +44,11 @@ export const reloadExchangers = async () => {
       const big_loop =
         ((await getData("parser_setting:big_loop")) as number) || 10;
 
-      setObject("exchangers", convertExchangers(exchangers)); // устаревает через big_loop + 2
+      await setObject(
+        "exchangers",
+        convertExchangers(exchangers),
+        big_loop + 2
+      ); // устаревает через big_loop + 2
 
       break;
     } catch (error: any) {

@@ -1,4 +1,4 @@
-import { mylog } from "./logger.ts";
+import { mylog } from "./logger";
 import { setData } from "./redis";
 import { idx } from "./settings";
 
@@ -23,12 +23,15 @@ export async function measure<T>(
     mylog(`${label} ${formatted}`, "important");
     mylog(`---------------------`, "important");
 
-    // не ждём Redis, просто отправляем
-    void setData(`stats:${key}`, `${label} ${formatted}`);
+    await setData(`stats:${key}`, `${label} ${formatted}`);
     return result;
   } catch (err: any) {
     const duration = performance.now() - start;
     mylog(`${label} failed after ${duration.toFixed(1)} ms`, "error");
     throw err;
   }
+}
+
+export function rand0to10(): number {
+  return Math.floor(Math.random() * 11);
 }

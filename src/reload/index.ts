@@ -9,55 +9,48 @@ import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
 import { setData, setObject } from "../utils/redis";
 import { IPmPointer } from "../types/pms";
 import { ISection, IPmGroup } from "../types/selector";
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import { logMemoryUsage } from "./memoryUsage";
 import { reloadExchangers } from "./helper";
 import { measure } from "../utils/helper";
 import { isPrimary } from "../utils/settings";
 
-async function reload(loopsDone?: number) {
+async function reload() {
   if (!isPrimary) return;
-  logMemoryUsage();
+  await logMemoryUsage();
 
-  await measure(
-    "reload",
-    `Reloading on loop ${loopsDone || "initial"}`,
-    async () => {
-      //// 1️⃣ Reload exchangers list from Strapi
-      await reloadExchangers(); // скипы не трогает, они хранятся сами по себе
+  await measure("reload", `Reloading`, async () => {
+    //// 1️⃣ Reload exchangers list from Strapi
+    await reloadExchangers(); // скипы не трогает, они хранятся сами по себе
 
-      //// 2️⃣ Update parser settings, pm groups, etc.
-      const [parserSettingsData, pmGroupsData, topsData, popularPms] =
-        await Promise.all(
-          [ParserSettingQuery, PmGroupsQuery, TopsQuery, PopularPmsQuery].map(
-            async (query) => callStrapi(query)
-          ) as any[]
-        );
+    //// 2️⃣ Update parser settings, pm groups, etc.
+    const [parserSettingsData, pmGroupsData, topsData] = await Promise.all(
+      [ParserSettingQuery, PmGroupsQuery, TopsQuery].map(async (query) =>
+        callStrapi(query)
+      ) as any[]
+    );
 
-      if (!parserSettingsData || !pmGroupsData || !topsData) {
-        mylog("⚠️ Strapi data missing during reload!", "error");
-        return;
-      }
-
-      setData(
-        "top_codes",
-        topsData.topParameters.map((p: any) => p.code)
-      );
-      setObject("parser_setting", parserSettingsData.parserSetting);
-
-      const pointers = popularPms.pms as IPmPointer[];
-      const pms = pointers.map((pointer) => pmPointerToPm(pointer));
-      const popularDirs = pmsToDirs(pms);
-      setData("popular_dirs", popularDirs);
-
-      const sections = pmGroupsData?.selector?.sections as ISection[];
-      setData(
-        "all_pm_codes_that_exist",
-        _getAllPmCodesThatExistFromSections(sections)
-      );
-      setData("alternative_pm_codes", _getAlternativePmCodes(sections));
+    if (!parserSettingsData || !pmGroupsData || !topsData) {
+      mylog("⚠️ Strapi data missing during reload!", "error");
+      return;
     }
-  );
+
+    await setData(
+      "top_codes",
+      topsData.topParameters.map((p: any) => p.code)
+    );
+    await setObject("parser_setting", parserSettingsData.parserSetting);
+
+    const sections = pmGroupsData?.selector?.sections as ISection[];
+    await setData(
+      "all_pm_codes_that_exist",
+      _getAllPmCodesThatExistFromSections(sections)
+    );
+    await setData(
+      "alternative_pm_codes",
+      _getAlternativePmCodes(sections)
+    );
+  });
 }
 
 // --- helper: mass status sync based on skip ---

@@ -1,7 +1,7 @@
 import auth from "../gql/auth";
 import reload from "../reload";
 
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import statusChange from "../utils/statusChange";
 
 export const runInitialization = async () => {

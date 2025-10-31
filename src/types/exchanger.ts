@@ -62,3 +62,10 @@ export interface IDataForExchangerCreation {
   name: string;
   admin_rating: number;
 }
+
+export interface IExchangerStats {
+  skip?: number;
+  error?: string;
+  total_rates?: number;
+  warning?: string[];
+}

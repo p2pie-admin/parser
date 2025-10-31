@@ -1,5 +1,5 @@
 import { getObject, getData, setObject } from "../utils/redis";
-import { emoji, mylog } from "../utils/logger.ts";
+import { emoji, mylog } from "../utils/logger";
 import { splitObjectToNChunks } from "../reload/helper";
 
 import { IAllDirtyRates } from "../types/rates";

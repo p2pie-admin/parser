@@ -1,4 +1,4 @@
-import { mylog } from "./utils/logger.ts";
+import { mylog } from "./utils/logger";
 import { cpus } from "os";
 import cluster from "cluster";
 import { findAvailablePort, waitSec } from "./reload/helper";

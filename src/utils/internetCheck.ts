@@ -1,5 +1,5 @@
 import dns from "dns";
-import { mylog } from "./logger.ts";
+import { mylog } from "./logger";
 import { waitSec } from "../reload/helper";
 
 export const checkInternetConnection = () =>

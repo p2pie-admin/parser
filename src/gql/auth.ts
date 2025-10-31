@@ -1,4 +1,4 @@
-import { mylog } from "../utils/logger.ts";
+import { mylog } from "../utils/logger";
 import { setData } from "../utils/redis";
 import callStrapi from "./callStrapi";
 import { AuthMutation } from "./queries";
