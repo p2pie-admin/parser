@@ -133,7 +133,7 @@ export async function setObject(
 /* ================= 2) setData =================
  * Универсальная запись ключ:значение как строку.
  * Использование: setData("some_key", data, expireIn?).
- * По умолчанию expireIn=1000.
+ * По умолчанию expireIn=1000. Передайте 0, чтобы записать без истечения.
  */
 export const setData = async (
   key: string,
@@ -144,11 +144,15 @@ export const setData = async (
     if (shuttingDown) return;
     await trackOperation(async () => {
       const strValue = toJSONString(value);
-      const options: any = {};
+      const DEFAULT_TTL = 1000;
+      const ttl =
+        expireIn === undefined || expireIn === null ? DEFAULT_TTL : expireIn;
 
-      options.EX = expireIn && expireIn > 0 ? expireIn : 1000;
-
-      await db.set(key, strValue, options);
+      if (ttl > 0) {
+        await db.set(key, strValue, { EX: ttl });
+      } else {
+        await db.set(key, strValue);
+      }
     });
   } catch (error: any) {
     if (shuttingDown && error?.code === "ECONNRESET") return;

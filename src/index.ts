@@ -5,6 +5,7 @@ import { findAvailablePort, waitSec } from "./reload/helper";
 import dotenv from "dotenv";
 import { loop } from "./1_loop";
 import { runInitialization } from "./initial";
+import { scheduleAllRatesIDRefresh } from "./rates/top";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ const start = async () => {
 };
 const startMainWorker = async () => {
   await runInitialization();
+  scheduleAllRatesIDRefresh();
 
   const port = parseInt(process.env.PARSER_PORT || "5005");
   const numCPUs = cpus().length;

@@ -26,6 +26,19 @@ const errorCodesExplanation = {
   unknown: "⦿",
 } as { [key in IErrorCode]: string };
 
+const parseDurationSeconds = (time?: string | number): number | null => {
+  if (typeof time === "number" && Number.isFinite(time)) {
+    return time;
+  }
+  if (typeof time === "string") {
+    const numeric = Number(time);
+    if (Number.isFinite(numeric)) {
+      return numeric;
+    }
+  }
+  return null;
+};
+
 export const sendExchangerError = async (
   exchanger: IExchanger,
   error?: IExchangerParsingError,
@@ -34,11 +47,15 @@ export const sendExchangerError = async (
 ) => {
   const idx = parseInt(process.env.IDX || "0");
   const skipKey = `exchanger_stats:${exchanger.id}:skip`;
+  const durationSeconds = parseDurationSeconds(time);
 
   if (!error) {
     await setData(`exchanger_stats:${exchanger.id}:error`, {});
     if (typeof nextSkipOverride === "number") {
       await setData(skipKey, nextSkipOverride);
+    }
+    if (durationSeconds !== null) {
+      await setData(`exchanger_stats:${exchanger.id}:time`, durationSeconds);
     }
     return;
   }
@@ -56,6 +73,9 @@ export const sendExchangerError = async (
   );
 
   await setData(`exchanger_stats:${id}:error`, error);
+  if (durationSeconds !== null) {
+    await setData(`exchanger_stats:${id}:time`, durationSeconds);
+  }
 
   if (typeof nextSkipOverride === "number") {
     await setData(skipKey, nextSkipOverride);
@@ -80,6 +100,10 @@ export const sendTotalRates = async (
   // if (exchanger.status === "suspended")
   //   statusChange("suspended", "active", exchanger.id);
   await setData(`exchanger_stats:${id}:total_rates`, total_rates);
+  const durationSeconds = parseDurationSeconds(time);
+  if (durationSeconds !== null) {
+    await setData(`exchanger_stats:${id}:time`, durationSeconds);
+  }
 };
 
 export const sendExchangerWarning = async (

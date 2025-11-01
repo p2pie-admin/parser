@@ -5,12 +5,13 @@ import { AuthMutation } from "./queries";
 
 async function auth() {
   mylog("Authorizing ...");
-  await setData("parser_jwt", "");
+  await setData("parser_jwt", "", 0);
   const data = await callStrapi(AuthMutation);
   const jwt = data?.login?.jwt;
   if (jwt) {
     mylog("Authorized successfully!", "success");
-    await setData("parser_jwt", jwt);
+    // persist token without TTL; Strapi will revoke it when necessary
+    await setData("parser_jwt", jwt, 0);
     return;
   }
   mylog("Couldn't authtorize, restarting in 30s...", "warning");

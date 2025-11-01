@@ -1,9 +1,9 @@
-import { GraphQLClient } from "graphql-request";
+import { ClientError, GraphQLClient } from "graphql-request";
 
 import normalizer from "./normalizer";
 import dotenv from "dotenv";
 import { mylog } from "../utils/logger";
-import { getData } from "../utils/redis";
+import { getData, setData } from "../utils/redis";
 
 dotenv.config();
 
@@ -12,7 +12,32 @@ const strapiLink =
   env === "production" ? process.env.STRAPI! : process.env.DEV_STRAPI!;
 if (!strapiLink) mylog(`strapiLink is:  ${strapiLink}`, "info");
 
-const callStrapi = async (query: any, variables?: any) => {
+const isForbiddenError = (err: unknown, hasJwt: boolean) => {
+  if (!hasJwt) return false;
+  if (err instanceof ClientError) {
+    return err.response?.errors?.some(
+      ({ message }) => message === "Forbidden access"
+    );
+  }
+  if (typeof err === "object" && err && "response" in err) {
+    const response = (err as any).response;
+    if (response?.errors?.length) {
+      return response.errors.some(
+        ({ message }: { message?: string }) => message === "Forbidden access"
+      );
+    }
+  }
+  if (typeof err === "string") {
+    return err.includes("Forbidden access");
+  }
+  return false;
+};
+
+const callStrapi = async (
+  query: any,
+  variables?: any,
+  allowRetry = true
+): Promise<any> => {
   const jwt = await getData("parser_jwt");
   const headers = jwt
     ? {
@@ -30,8 +55,16 @@ const callStrapi = async (query: any, variables?: any) => {
   } catch (err) {
     mylog("-- GQL ERROR --", "error");
     mylog(`${err}`, "error");
-    jwt && jwt.length > 5 && mylog("JWT exists", "warning");
-    jwt && jwt.length > 5 && mylog(err as string, "error");
+    const hasJwt = Boolean(jwt && jwt.length > 5);
+    if (isForbiddenError(err, hasJwt) && allowRetry) {
+      mylog("JWT rejected, re-authorizing...", "warning");
+      await setData("parser_jwt", "", 5);
+      const { default: auth } = await import("./auth");
+      await auth();
+      return callStrapi(query, variables, false);
+    }
+
+    hasJwt && mylog("JWT exists", "warning");
   }
 };
 

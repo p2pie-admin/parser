@@ -65,4 +65,5 @@ export interface IExchangerStats {
   error?: string;
   total_rates?: number;
   warning?: string[];
+  time?: number;
 }
