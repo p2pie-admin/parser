@@ -2,17 +2,13 @@ import callStrapi from "../gql/callStrapi";
 import {
   ParserSettingQuery,
   PmGroupsQuery,
-  TopsQuery,
-  PopularPmsQuery,
+  TopParametersQuery,
 } from "../gql/queries";
-import { pmPointerToPm, pmsToDirs } from "../rates/Statistics/helper";
 import { setData, setObject } from "../utils/redis";
-import { IPmPointer } from "../types/pms";
 import { ISection, IPmGroup } from "../types/selector";
 import { mylog } from "../utils/logger";
 import { logMemoryUsage } from "./memoryUsage";
 import { reloadExchangers } from "./helper";
-import { measure } from "../utils/helper";
 import { bigTTL, isPrimary } from "../utils/settings";
 
 async function reload() {
@@ -24,7 +20,7 @@ async function reload() {
 
   //// 2️⃣ Update parser settings, pm groups, etc.
   const [parserSettingsData, pmGroupsData, topsData] = await Promise.all(
-    [ParserSettingQuery, PmGroupsQuery, TopsQuery].map(async (query) =>
+    [ParserSettingQuery, PmGroupsQuery, TopParametersQuery].map(async (query) =>
       callStrapi(query)
     ) as any[]
   );

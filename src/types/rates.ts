@@ -36,13 +36,12 @@ export interface IRate {
 
 export type ExchangerId = string;
 
+export type RateIdWithParameters = { [rateId: string]: string[] };
+
 export type IAllRatesID = { [key: string]: IRatesID };
 // мы достаем для каждого направления айдишники обменников для просто всех отфильтрованных курсов и для части лучших
 
-export type IRatesID = {
-  all: string[];
-  part: string[];
-};
+export type IRatesID = RateIdWithParameters[];
 
 export type IAllDirtyRates = { [key: string]: { [key: string]: IRate } };
 // пример:

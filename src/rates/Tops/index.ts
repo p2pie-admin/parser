@@ -1,8 +1,45 @@
 import { IParserSetting } from "../../types";
-import { IAllDirtyRates, IRate, IRatesID } from "../../types/rates";
+import {
+  IAllDirtyRates,
+  IRate,
+  IRatesID,
+  RateIdWithParameters,
+} from "../../types/rates";
 import { DirRatesVerificator } from "./DirRatesVerificator";
-import findBestDirRates from "./findBest";
 import findUniqueDirRates from "./findUnique";
+import findSpecialRates from "./findSpecial";
+
+const dedupeParameters = (codes?: string[]): string[] => [
+  ...new Set((codes || []).filter(Boolean)),
+];
+
+const mergeRatesWithParameters = (
+  target: { [key: string]: IRate },
+  source: { [key: string]: IRate }
+) => {
+  Object.entries(source).forEach(([id, rate]) => {
+    const existing = target[id];
+    const combinedParameters = dedupeParameters([
+      ...(existing?.parameterCodes || []),
+      ...(rate.parameterCodes || []),
+    ]);
+
+    target[id] = {
+      ...rate,
+      parameterCodes: combinedParameters,
+    };
+  });
+  return target;
+};
+
+const toRateIdWithParameters = ([id, rate]: [
+  string,
+  IRate
+]): RateIdWithParameters => {
+  return {
+    [id]: dedupeParameters(rate.parameterCodes),
+  };
+};
 
 export const getAllRatesID = async (
   allDirtyRates: IAllDirtyRates,
@@ -27,8 +64,6 @@ export const getDirRatesID = async (
   parserSetting: IParserSetting,
   dir: string
 ): Promise<IRatesID> => {
-  // several steps to transform, sort and filter rates
-
   const { SD_applied_from, SD_best, SD_worst } = parserSetting;
 
   const ratesVerificator = new DirRatesVerificator(
@@ -40,34 +75,25 @@ export const getDirRatesID = async (
 
   const verifiedRates = ratesVerificator.getVerified(rates);
 
-  const uniqueRates = await findUniqueDirRates(verifiedRates); // added parameters
+  const enrichedRates: { [key: string]: IRate } = Object.entries(
+    verifiedRates
+  ).reduce((acc, [id, rate]) => {
+    acc[id] = {
+      ...rate,
+      parameterCodes: dedupeParameters(rate.parameterCodes),
+    };
+    return acc;
+  }, {} as { [key: string]: IRate });
 
-  const bestRates = findBestDirRates(verifiedRates);
+  const uniqueRates = await findUniqueDirRates(verifiedRates);
+  const specialRates = findSpecialRates(verifiedRates);
 
-  const sortedRates = Object.entries(verifiedRates).sort(
+  mergeRatesWithParameters(enrichedRates, uniqueRates);
+  mergeRatesWithParameters(enrichedRates, specialRates);
+
+  const sortedEntries = Object.entries(enrichedRates).sort(
     ([, a], [, b]) => a.course - b.course
   );
-  // грузим это в all
 
-  // далее считаем уникальные курсы и грузим в part
-
-  const topRates: { [key: string]: IRate } = {};
-  for (const [key, value] of sortedRates.slice(0, 5)) {
-    topRates[key] = value;
-  }
-
-  const partRates = {
-    ...topRates, // верхушка 5шт
-    ...bestRates, // покрывающие все возможные суммы
-    ...uniqueRates, // уникальные по определенным качествам перепишут те, что без параметров
-  };
-
-  const sortedPartRates = Object.values(partRates).sort(
-    (a, b) => a.course - b.course
-  );
-
-  return {
-    part: sortedPartRates.map((rate) => rate.exchangerId!),
-    all: sortedRates.map((rate) => rate[1].exchangerId!),
-  };
+  return sortedEntries.map(toRateIdWithParameters);
 };

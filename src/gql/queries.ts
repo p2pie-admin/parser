@@ -91,21 +91,24 @@ export const PmGroupsQuery = gql`
   }
 `;
 
-export const TopsQuery = gql`
+export const TopParametersQuery = gql`
   {
-    topParameters {
+    topParameters(pagination: { limit: 2000 }) {
       data {
         id
         attributes {
           code
+          en_name
+          ru_name
           parameter {
             id
             en_description
             ru_description
             icon {
               data {
+                id
                 attributes {
-                  alternativeText
+                  name
                   url
                 }
               }
