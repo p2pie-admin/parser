@@ -10,13 +10,7 @@ import { transformLimit } from "../helper";
 import { groupRatesDataCities } from "./CitiesHandler";
 import { smallTTL } from "../../utils/settings";
 
-type CityRates = Record<
-  string,
-  {
-    rate: IRate;
-    city: ICity;
-  }
->;
+type CityRates = Record<string, IRate>;
 
 type ExtractedRate = {
   dir: string;
@@ -30,6 +24,7 @@ export default class RateFormatter {
   private allowedCodes: Set<string>;
   private altCodeToPrimary: Map<string, string>;
   private disabledDirs: Set<string>;
+  private cityLookup: Map<string, ICity>;
 
   constructor(
     exchanger: IExchanger,
@@ -42,6 +37,7 @@ export default class RateFormatter {
 
     const allowedCodes = new Set<string>();
     const altMap = new Map<string, string>();
+    const cityLookup = new Map<string, ICity>();
 
     (generalData.allPmCodesThatExist || []).forEach((code) => {
       const normalized = code?.toUpperCase();
@@ -64,6 +60,25 @@ export default class RateFormatter {
 
     this.allowedCodes = allowedCodes;
     this.altCodeToPrimary = altMap;
+    this.cityLookup = cityLookup;
+
+    cities.forEach((city) => {
+      const primaryCode = city.codes?.[0]?.toUpperCase();
+      if (primaryCode) {
+        cityLookup.set(primaryCode, city);
+      }
+    });
+
+    cities.forEach((city) => {
+      (city.codes || [])
+        .slice(1)
+        .forEach((code) => {
+          const normalized = code?.toUpperCase();
+          if (normalized && !cityLookup.has(normalized)) {
+            cityLookup.set(normalized, city);
+          }
+        });
+    });
 
     const disabledDirs = new Set<string>();
     (generalData.dirsDisabled || "")
@@ -207,12 +222,7 @@ export default class RateFormatter {
   }): CityRates => {
     if (!cityRatesData) return {};
     return Object.entries(cityRatesData).reduce((res, [cityCode, rateData]) => {
-      const city = this.cities.find(
-        (c) =>
-          c.codes[0] == cityCode.toUpperCase() ||
-          c.codes?.[1] == cityCode.toUpperCase() ||
-          c.codes?.[2] == cityCode.toUpperCase()
-      );
+      const city = this.cityLookup.get(cityCode.toUpperCase());
       if (!city?.en_name) return res;
 
       const extracted = this.createRate(rateData, false);
@@ -220,10 +230,7 @@ export default class RateFormatter {
 
       return {
         ...res,
-        [city.en_name.toLowerCase()]: {
-          rate: extracted.rate,
-          city,
-        },
+        [city.en_name.toLowerCase()]: extracted.rate,
       };
     }, {} as CityRates);
   };

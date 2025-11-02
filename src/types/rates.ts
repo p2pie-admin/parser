@@ -29,7 +29,7 @@ export interface IRate {
   max: Limit;
   reserve: Limit;
   parameterCodes?: string[];
-  cityRates?: { [key: string]: { rate: IRate; city: ICity } };
+  cityRates?: { [key: string]: IRate };
   ref_link?: string;
   last_time_updated?: number;
 }

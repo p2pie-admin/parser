@@ -1,11 +1,7 @@
 import pLimit from "p-limit";
 import { processSingleExchanger } from "./2_exchangerProcessor";
 import reload from "./reload";
-import {
-  splitArrayToNChunks,
-  splitArrayToNChunksAdaptive,
-  waitSec,
-} from "./reload/helper";
+import { splitArrayToNChunksAdaptive, waitSec } from "./reload/helper";
 import { IExchanger, IExchangerStats } from "./types/exchanger";
 import { getAdaptiveWorkerWeights, measure } from "./utils/helper";
 
@@ -75,8 +71,22 @@ export const loop = async (): Promise<void> => {
     }
 
     const workerWeights = await getAdaptiveWorkerWeights(numCPUs);
-    const chunk = splitArrayToNChunks(exchangers, numCPUs)[idx] || [];
-    mylog(`${emoji(idx)} Got ${chunk.length} exchangers`);
+    const exchangersToProcess = exchangers.filter((exchanger) => {
+      const skip = exchanger_stats?.[exchanger.id]?.skip || 0;
+      return !(skip > 1 && loopsDone % skip !== 0);
+    });
+    const chunks = splitArrayToNChunksAdaptive(
+      exchangersToProcess,
+      numCPUs,
+      workerWeights
+    );
+    const chunk = chunks[idx] || [];
+    const skippedCount = exchangers.length - exchangersToProcess.length;
+    const chunkMsg =
+      skippedCount > 0
+        ? `${emoji(idx)} Got ${chunk.length} exchangers (skipped ${skippedCount})`
+        : `${emoji(idx)} Got ${chunk.length} exchangers`;
+    mylog(chunkMsg);
 
     const generalData: IGeneralData = await getGeneralData();
     //const start = Date.now();

@@ -72,17 +72,33 @@ export function splitArrayToNChunksAdaptive<T>(
   n: number,
   weights: number[]
 ): T[][] {
-  const totalWeight = weights.reduce((a, b) => a + b, 0);
-  const total = array.length;
-  const chunks: T[][] = [];
-  let start = 0;
+  if (n <= 0) return [array];
 
-  for (let i = 0; i < n; i++) {
-    const portion = Math.floor((weights[i] / totalWeight) * total);
-    const end = i === n - 1 ? total : start + portion;
-    chunks.push(array.slice(start, end));
-    start = end;
-  }
+  const safeWeights = Array.from({ length: n }, (_, i) => {
+    const weight = weights?.[i];
+    if (!Number.isFinite(weight) || (weight ?? 0) <= 0) {
+      return 1;
+    }
+    return weight as number;
+  });
+
+  const chunks: T[][] = Array.from({ length: n }, () => []);
+  const loads: number[] = Array.from({ length: n }, () => 0);
+
+  array.forEach((item) => {
+    let targetIndex = 0;
+    let minLoad = loads[0];
+
+    for (let i = 1; i < n; i++) {
+      if (loads[i] < minLoad) {
+        minLoad = loads[i];
+        targetIndex = i;
+      }
+    }
+
+    chunks[targetIndex].push(item);
+    loads[targetIndex] += 1 / safeWeights[targetIndex];
+  });
 
   return chunks;
 }
