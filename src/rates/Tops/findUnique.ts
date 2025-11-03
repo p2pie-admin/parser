@@ -37,14 +37,11 @@ const findUniqueRates = async (dirRates: RatesMap): Promise<RatesMap> => {
         case "optimal":
           selector = (rate: IRate) => rate.course ** 20 * rate.min.give;
           break;
-        case "best_course":
-          selector = (rate: IRate) => rate.course;
-          break;
         case "low_min":
           selector = (rate: IRate) => rate.min.give;
           break;
-        case "top_max":
-          selector = (rate: IRate) => rate.max.give;
+        case "top_reserve":
+          selector = (rate: IRate) => rate.reserve.give;
           needLowest = false;
           break;
         case "top_rating":

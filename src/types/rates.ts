@@ -1,4 +1,5 @@
 import { ICity } from ".";
+import { IExchangerOffice, IExchangerParameterRule } from "./exchanger";
 
 export type Sides = "give" | "get";
 export type Limit = { [key in Sides]: number };
@@ -32,6 +33,9 @@ export interface IRate {
   cityRates?: { [key: string]: IRate };
   ref_link?: string;
   last_time_updated?: number;
+  parameters?: IExchangerParameterRule[] | null;
+  offices?: IExchangerOffice[] | null;
+  source_total_rates?: number;
 }
 
 export type ExchangerId = string;

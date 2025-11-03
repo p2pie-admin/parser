@@ -91,7 +91,24 @@ export default class RateFormatter {
   }
 
   formatAndMatchRatesWithDirs = async (rates: IRateData[]) => {
-    const groupedRateData = await groupRatesDataCities(this.exchanger, rates);
+    const totalRates = Array.isArray(rates) ? rates.length : 0;
+    this.exchanger.total_rates = totalRates;
+
+    const filteredRates: IRateData[] = [];
+
+    for (const rateData of rates) {
+      const normalized = this.getNormalizedDirection(rateData);
+      if (!normalized) continue;
+      (rateData as any).__normalizedDirection = normalized;
+      filteredRates.push(rateData);
+    }
+
+    if (!filteredRates.length) return;
+
+    const groupedRateData = await groupRatesDataCities(
+      this.exchanger,
+      filteredRates
+    );
     const updates: Promise<unknown>[] = [];
 
     for (const rateData of groupedRateData) {
@@ -138,14 +155,26 @@ export default class RateFormatter {
     rateData: IRateData,
     includeCityRates = true
   ): ExtractedRate | null => {
-    const normalizedDirection = this.getNormalizedDirection(rateData);
+    const normalizedDirection =
+      (rateData as any).__normalizedDirection ||
+      this.getNormalizedDirection(rateData);
     if (!normalizedDirection) return null;
 
     const { from, to } = normalizedDirection;
     const dir = `${from}_${to}`;
 
     try {
-      const { id, name, tag, logo, admin_rating, ref_link, rates_link } =
+      const {
+        id,
+        name,
+        tag,
+        logo,
+        admin_rating,
+        ref_link,
+        rates_link,
+        parameters,
+        offices,
+      } =
         this.exchanger;
 
       const inAmount = +rateData.in._text;
@@ -201,6 +230,9 @@ export default class RateFormatter {
             .replace("___", "https://")
             .replace("api.", ""),
         last_time_updated: Date.now(),
+        parameters,
+        offices,
+        source_total_rates: this.exchanger.total_rates,
       } as IRate;
 
       if (includeCityRates) {

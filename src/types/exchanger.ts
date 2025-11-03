@@ -22,9 +22,39 @@ export type IErrorCode =
  * Model definition for exchanger
  */
 export type Logo = {
-  alternativeText: string;
-  url: string;
+  name?: string | null;
+  alternativeText?: string | null;
+  url?: string | null;
 };
+
+export type Icon = {
+  name?: string | null;
+  alternativeText?: string | null;
+  url?: string | null;
+};
+
+export interface ITopParameterDetails {
+  en_description?: string | null;
+  ru_description?: string | null;
+  icon?: Icon | null;
+}
+
+export interface ITopParameterDescriptor {
+  code: string;
+  en_name?: string | null;
+  ru_name?: string | null;
+  parameter?: ITopParameterDetails | null;
+}
+
+export interface IExchangerParameterRule {
+  top_parameter?: ITopParameterDescriptor | null;
+  include?: string | null;
+  exclude?: string | null;
+}
+
+export interface IExchangerOffice {
+  visible?: boolean | null;
+}
 
 export type IExchangerStatus = "active" | "suspended" | "disabled";
 
@@ -47,10 +77,12 @@ export type IExchanger = {
   rates_link: string;
   ref_link?: string;
   tag?: string | null;
-  logo?: Logo;
+  logo?: Logo | null;
   total_rates?: number;
   admin_rating?: number;
   skip?: number;
+  parameters?: IExchangerParameterRule[] | null;
+  offices?: IExchangerOffice[] | null;
 };
 
 export interface IDataForExchangerCreation {

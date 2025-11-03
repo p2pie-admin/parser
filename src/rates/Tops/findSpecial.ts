@@ -9,8 +9,21 @@ type SpecialRule = {
 
 const specialRules: SpecialRule[] = [
   {
-    code: "from_fee",
-    predicate: (rate: IRate) => Boolean(rate.from_fee),
+    code: "percent",
+    predicate: (rate: IRate) =>
+      Boolean(rate.from_fee || rate.to_fee || rate.min_fee),
+  },
+  {
+    code: "office",
+    predicate: (rate: IRate) =>
+      Boolean(
+        rate.offices?.length && Object.keys(rate?.cityRates || {}).length
+      ),
+  },
+  {
+    code: "big",
+    predicate: (rate: IRate) =>
+      Boolean(rate?.source_total_rates && rate?.source_total_rates > 10000),
   },
 ];
 
