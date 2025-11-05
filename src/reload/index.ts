@@ -2,6 +2,7 @@ import callStrapi from "../gql/callStrapi";
 import {
   ParserSettingQuery,
   PmGroupsQuery,
+  PopularPmsQuery,
   TopParametersQuery,
 } from "../gql/queries";
 import { setData, setObject } from "../utils/redis";
@@ -10,6 +11,8 @@ import { mylog } from "../utils/logger";
 import { logMemoryUsage } from "./memoryUsage";
 import { pmsToPopularDirs, reloadExchangers } from "./helper";
 import { bigTTL, isPrimary } from "../utils/settings";
+import { IPmPointer } from "../types/pms";
+import { pmPointerToPm } from "../rates/Statistics/helper";
 
 async function reload() {
   if (!isPrimary) return;
@@ -19,11 +22,15 @@ async function reload() {
   await reloadExchangers(); // скипы не трогает, они хранятся сами по себе
 
   //// 2️⃣ Update parser settings, pm groups, etc.
-  const [parserSettingsData, pmGroupsData, topsData] = await Promise.all(
-    [ParserSettingQuery, PmGroupsQuery, TopParametersQuery].map(async (query) =>
-      callStrapi(query)
-    ) as any[]
-  );
+  const [parserSettingsData, pmGroupsData, topsData, popularPms] =
+    await Promise.all(
+      [
+        ParserSettingQuery,
+        PmGroupsQuery,
+        TopParametersQuery,
+        PopularPmsQuery,
+      ].map(async (query) => callStrapi(query)) as any[]
+    );
 
   if (!parserSettingsData || !pmGroupsData || !topsData) {
     mylog("⚠️ Strapi data missing during reload!", "error");
@@ -37,6 +44,9 @@ async function reload() {
   await setObject("parser_setting", parserSettingsData.parserSetting, bigTTL);
 
   const sections = pmGroupsData?.selector?.sections as ISection[];
+  const pointers = popularPms.pms as IPmPointer[];
+  const pms = pointers.map((pointer) => pmPointerToPm(pointer));
+
   await setData(
     "all_pm_codes_that_exist",
     _getAllPmCodesThatExistFromSections(sections),
@@ -47,8 +57,9 @@ async function reload() {
     _getAlternativePmCodes(sections),
     bigTTL
   );
+  setData("parser_setting", parserSettingsData.parserSetting);
 
-  await setData("", pmsToPopularDirs(sections), bigTTL);
+  await setData("popular_dirs", pmsToPopularDirs(pms), bigTTL);
 }
 
 // --- helper: mass status sync based on skip ---

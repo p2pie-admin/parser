@@ -76,18 +76,3 @@ export const pmPointerToPm = (pointer: IPmPointer): IPm | undefined => {
 };
 
 // это для первой страницы таблица
-export const pmsToDirs = (pms: (IPm | undefined)[]): IPopularDirs => {
-  if (!pms || !pms.length || pms.find((pm) => !pm)) return {};
-  const cryptoCodes = pms
-    .filter((pm) => pm?.popular_as === "crypto")
-    .map((pm) => pm?.code);
-  const fiatCodes = pms
-    .filter((pm) => pm?.popular_as === "fiat")
-    .map((pm) => pm?.code);
-  return cryptoCodes.reduce((dirs: IPopularDirs, cryptoCode) => {
-    const c2f = fiatCodes.map((fiatCode) => `${cryptoCode}_${fiatCode}`);
-    const f2c = fiatCodes.map((fiatCode) => `${fiatCode}_${cryptoCode}`);
-    if (!cryptoCode) return dirs;
-    return { ...dirs, [cryptoCode]: { buy: [...f2c], sell: [...c2f] } };
-  }, {});
-};
