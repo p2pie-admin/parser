@@ -8,7 +8,7 @@ import { setData, setObject } from "../utils/redis";
 import { ISection, IPmGroup } from "../types/selector";
 import { mylog } from "../utils/logger";
 import { logMemoryUsage } from "./memoryUsage";
-import { reloadExchangers } from "./helper";
+import { pmsToPopularDirs, reloadExchangers } from "./helper";
 import { bigTTL, isPrimary } from "../utils/settings";
 
 async function reload() {
@@ -47,6 +47,8 @@ async function reload() {
     _getAlternativePmCodes(sections),
     bigTTL
   );
+
+  await setData("", pmsToPopularDirs(sections), bigTTL);
 }
 
 // --- helper: mass status sync based on skip ---

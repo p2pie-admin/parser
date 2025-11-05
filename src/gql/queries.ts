@@ -6,7 +6,7 @@ const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 10000);
 export const ExchangersQuery = gql`
 {
     exchangers(filters: {  status: { in: ["active", "suspended"] } ref_link: {notNull: true} rates_link: {notNull: true}  } pagination: { start: 0, limit:${toLoop} }) {
-      data {
+   data {
         id
         attributes {
           name
@@ -15,33 +15,34 @@ export const ExchangersQuery = gql`
           status
           rates_link
           ref_link
-parameters{
-  ...on ComponentExchangerExchangerParameters{
-    top_parameter{
-      data{
-        attributes{
-          code
-          parameter{
-            en_description
-            ru_description
-            icon{
-              data{
-                attributes{
-                  name
-                  alternativeText
-url
-                }
-              }
-            }
-          }
-          en_name
-          ru_name
-          
-        }
-      }
+exchanger_templates{
+  data{
+    attributes{
+     include
+exclude
+cities
+top_parameter{
+data{
+  attributes{
+    code
+parameter{
+  en_description
+  ru_description
+icon{
+  data{
+    id
+    attributes{
+      alternativeText
+      name
+      url
     }
-    include
-    exclude
+  }
+}
+}
+  }
+}}
+
+    }
   }
 }
 offices{
@@ -61,6 +62,7 @@ offices{
           }
         }
       }
+    
     }
   }
 `;
