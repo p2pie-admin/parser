@@ -32,6 +32,7 @@ const findUniqueRates = async (dirRates: RatesMap): Promise<RatesMap> => {
     return topCodes.reduce<RatesMap>((acc, code) => {
       let selector: ((rate: IRate) => number) | null = null;
       let needLowest = true;
+      let eligibleEntries: [string, IRate][] = Object.entries(dirRates);
 
       switch (code) {
         case "optimal":
@@ -45,13 +46,19 @@ const findUniqueRates = async (dirRates: RatesMap): Promise<RatesMap> => {
           needLowest = false;
           break;
         case "top_rating":
-          selector = (rate: IRate) => rate.admin_rating || 3;
+          eligibleEntries = eligibleEntries.filter(
+            ([, rate]) => rate.admin_rating !== null && rate.admin_rating !== undefined
+          );
+          selector = (rate: IRate) => rate.admin_rating as number;
+          needLowest = false;
           break;
         default:
           return acc; // skip unknown code
       }
 
-      const unique = findUniqueRate(dirRates, selector, needLowest);
+      if (!selector || !eligibleEntries.length) return acc;
+
+      const unique = findUniqueRate(eligibleEntries, selector, needLowest);
       return addTopParameter(acc, code, unique);
     }, {});
   } catch (err) {
@@ -61,13 +68,14 @@ const findUniqueRates = async (dirRates: RatesMap): Promise<RatesMap> => {
 };
 
 const findUniqueRate = (
-  dirRates: RatesMap,
+  entries: [string, IRate][],
   selector: (rate: IRate) => number,
   needLowest = true
 ): [string, IRate] => {
-  const sorted = Object.entries(dirRates).sort(
-    (a, b) => selector(a[1]) - selector(b[1])
-  );
+  const sorted = [...entries].sort((a, b) => selector(a[1]) - selector(b[1]));
+  if (!sorted.length) {
+    throw new Error("Cannot determine unique rate from empty entries");
+  }
   const [exchangerId, rate] = needLowest ? sorted[0] : sorted.at(-1)!;
   return [exchangerId, rate];
 };
