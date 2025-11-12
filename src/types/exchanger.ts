@@ -76,7 +76,6 @@ export type IExchanger = {
   status: IExchangerStatus;
   rates_link: string;
   ref_link?: string;
-  tag?: string | null;
   logo?: Logo | null;
   total_rates?: number;
   admin_rating?: number;

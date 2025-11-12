@@ -11,7 +11,6 @@ export const ExchangersQuery = gql`
         attributes {
           name
           admin_rating
-          tag
           status
           rates_link
           ref_link
