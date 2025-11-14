@@ -72,6 +72,7 @@ export interface IExchangerParsingInfo {
 
 export type IExchanger = {
   name: string;
+  display_name?: string | null;
   id: string;
   status: IExchangerStatus;
   rates_link: string;

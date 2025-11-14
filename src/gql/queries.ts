@@ -10,6 +10,7 @@ export const ExchangersQuery = gql`
         id
         attributes {
           name
+          display_name
           admin_rating
           status
           rates_link

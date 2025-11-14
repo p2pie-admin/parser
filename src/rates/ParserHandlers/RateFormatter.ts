@@ -167,6 +167,7 @@ export default class RateFormatter {
       const {
         id,
         name,
+        display_name,
         tag,
         logo,
         admin_rating,
@@ -174,8 +175,7 @@ export default class RateFormatter {
         rates_link,
         parameters,
         offices,
-      } =
-        this.exchanger;
+      } = this.exchanger;
 
       const inAmount = +rateData.in._text;
       const outAmount = +rateData.out._text;
@@ -197,6 +197,7 @@ export default class RateFormatter {
       const rate = {
         exchangerId: id,
         name,
+        display_name,
         admin_rating,
         tag,
         logo,
