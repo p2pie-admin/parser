@@ -51,14 +51,17 @@ export class DirRatesVerificator {
     const { min, max } = rate;
     let hasWarnings = false;
     const [fromCurrency] = this.dir.split("_");
+    const isCrowdedDir = ratesAmount > 20;
+    const strictMultiplier = isCrowdedDir ? 0.9 : 1;
+    const warningMultiplier = isCrowdedDir ? 0.8 : 0.85;
 
     const [minCourse, maxCourse] = [
-      average - SD * this.SD_worst,
-      average + SD * this.SD_best,
+      average - SD * this.SD_worst * strictMultiplier,
+      average + SD * this.SD_best * strictMultiplier,
     ];
     const [lowCourse, highCourse] = [
-      average - SD * (this.SD_worst * 0.85),
-      average + SD * (this.SD_best * 0.85),
+      average - SD * (this.SD_worst * warningMultiplier),
+      average + SD * (this.SD_best * warningMultiplier),
     ];
 
     const deviation =
