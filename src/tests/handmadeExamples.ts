@@ -2,7 +2,6 @@ export const handmadeWrongRates = {
   "333": {
     name: "SuperChange",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.3,
     min: {
@@ -22,7 +21,6 @@ export const handmadeWrongRates = {
   "222": {
     name: "PocketExchange",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.2,
     min: {
@@ -42,7 +40,6 @@ export const handmadeWrongRates = {
   "111": {
     name: "FastCoin",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.15,
     min: {
@@ -62,7 +59,6 @@ export const handmadeWrongRates = {
   "444": {
     name: "FastCoin",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.1,
     min: {
@@ -85,7 +81,6 @@ export const handmadeBestRates = {
   "111": {
     name: "FastCoin",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.1,
     min: {
@@ -105,7 +100,6 @@ export const handmadeBestRates = {
   "222": {
     name: "PocketExchange",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.2,
     min: {
@@ -125,7 +119,6 @@ export const handmadeBestRates = {
   "333": {
     name: "SuperChange",
     admin_rating: null,
-    tag: null,
     logo: null,
     course: 0.3,
     min: {

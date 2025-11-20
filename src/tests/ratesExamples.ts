@@ -4,7 +4,6 @@
 //   "922": {
 //     name: "ОбменМонет",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008493617464361511,
 //     min: {
@@ -24,7 +23,6 @@
 //   "965": {
 //     name: "Real-Bit",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008439086282416248,
 //     min: {
@@ -43,7 +41,6 @@
 //   "968": {
 //     name: "ExMoney",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000009269721932606446,
 //     min: {
@@ -63,7 +60,6 @@
 //   "974": {
 //     name: "Delets",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008933265013012902,
 //     min: {
@@ -83,7 +79,6 @@
 //   "993": {
 //     name: "Pocket-Exchange",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000009373434636415718,
 //     min: {
@@ -103,7 +98,6 @@
 //   "1026": {
 //     name: "UniCash",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008324232172824379,
 //     min: {
@@ -123,7 +117,6 @@
 //   "1043": {
 //     name: "CashTransfers",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.00000663214569973361,
 //     min: {
@@ -146,7 +139,6 @@
 //   "922": {
 //     name: "ОбменМонет",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008493617464361511,
 //     min: {
@@ -166,7 +158,6 @@
 //   "965": {
 //     name: "Real-Bit",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008439086282416248,
 //     min: {
@@ -185,7 +176,6 @@
 //   "968": {
 //     name: "ExMoney",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000009269721932606446,
 //     min: {
@@ -205,7 +195,6 @@
 //   "974": {
 //     name: "Delets",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008333265013012902,
 //     min: {
@@ -225,7 +214,6 @@
 //   "993": {
 //     name: "Pocket-Exchange",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000009373434636415718,
 //     min: {
@@ -245,7 +233,6 @@
 //   "1026": {
 //     name: "UniCash",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008324232172824379,
 //     min: {
@@ -265,7 +252,6 @@
 //   "1043": {
 //     name: "CashTransfers",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.00000843214569973361,
 //     min: {
@@ -285,7 +271,6 @@
 //   "1045": {
 //     name: "Алтын",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000007851796474701676,
 //     min: {
@@ -305,7 +290,6 @@
 //   "1056": {
 //     name: "PAY2DAY.TOP",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008192882905541297,
 //     min: {
@@ -325,7 +309,6 @@
 //   "1061": {
 //     name: "FastExchange",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008348726297444247,
 //     min: {
@@ -345,7 +328,6 @@
 //   "1073": {
 //     name: "КэшБанк",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008498768303255498,
 //     min: {
@@ -365,7 +347,6 @@
 //   "1085": {
 //     name: "Alfabit",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008317658739887728,
 //     min: {
@@ -384,7 +365,6 @@
 //   "1089": {
 //     name: "El-Change",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008348726994456612,
 //     min: {
@@ -404,7 +384,6 @@
 //   "1129": {
 //     name: "Transfer24",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008439556403412146,
 //     min: {
@@ -424,7 +403,6 @@
 //   "1145": {
 //     name: "1-Online",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008470986869970351,
 //     min: {
@@ -443,7 +421,6 @@
 //   "1152": {
 //     name: "Btcsale",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.00000834872166582791,
 //     min: {
@@ -462,7 +439,6 @@
 //   "1153": {
 //     name: "Platov",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008352553879451516,
 //     min: {
@@ -482,7 +458,6 @@
 //   "1160": {
 //     name: "RamonCash",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008338708967600129,
 //     min: {
@@ -502,7 +477,6 @@
 //   "1168": {
 //     name: "100Bitcoins",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.00000837519396910602,
 //     min: {
@@ -522,7 +496,6 @@
 //   "1175": {
 //     name: "Zombie.cash",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008427101356379548,
 //     min: {
@@ -542,7 +515,6 @@
 //   "1197": {
 //     name: "CryptoPolis",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008374444170658742,
 //     min: {
@@ -561,7 +533,6 @@
 //   "1205": {
 //     name: "CryptoHome",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008315865483098344,
 //     min: {
@@ -580,7 +551,6 @@
 //   "1228": {
 //     name: "BTC-Обменник",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008482835893474414,
 //     min: {
@@ -600,7 +570,6 @@
 //   "1237": {
 //     name: "A-Exchange",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008474944679904539,
 //     min: {
@@ -619,7 +588,6 @@
 //   "1252": {
 //     name: "CryptoMax",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008309496849163438,
 //     min: {
@@ -639,7 +607,6 @@
 //   "1266": {
 //     name: "24Zone",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     course: 0.000008479750356149515,
 //     min: {
@@ -658,7 +625,6 @@
 //   "1276": {
 //     name: "CoinCat",
 //     admin_rating: null,
-//     tag: null,
 //     logo: null,
 //     to_fee: "50 RUB",
 //     course: 0.000008464390197362257,

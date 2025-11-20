@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Parser module</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 1.5rem;
+        line-height: 1.5;
+      }
+      h1,
+      h2 {
+        margin-top: 1.4rem;
+      }
+      code {
+        background: #f5f5f5;
+        padding: 0.1rem 0.35rem;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Назначение модуля</h1>
+    <p>
+      Модуль <code>parser</code> запускает пачку воркеров, которые циклически
+      скачивают XML-курсы обменников, форматируют их и складывают результаты в
+      Redis/GraphQL-слои сервиса. Процесс разбит на главный поток, отвечающий за
+      подготовку окружения и оркестрацию воркеров, и рабочие циклы, которые
+      непосредственно обрабатывают обменники.
+    </p>
+
+    <h2>Главный процесс</h2>
+    <ul>
+      <li>
+        <strong>start()</strong> (файл <code>src/index.ts</code>) — точка входа,
+        которая либо запускает главный процесс, либо, в дочернем воркере,
+        ждёт свою очередь и вызывает основной цикл <code>loop()</code>.
+      </li>
+      <li>
+        <strong>startMainWorker()</strong> — выполняет <code>runInitialization()</code>,
+        запускает обновление справочников через
+        <code>scheduleAllRatesIDRefresh()</code>, подбирает свободные порты и
+        форкает по числу CPU процессы-клонов. Также следит за падениями воркеров
+        и рестартует их с экспоненциальной задержкой не более пяти раз.
+      </li>
+    </ul>
+
+    <h2>Рабочий цикл</h2>
+    <ul>
+      <li>
+        <strong>getGeneralData()</strong> (файл <code>src/1_loop.ts</code>) —
+        кеширует результат <code>prepareGeneralData()</code> на интервал
+        <code>GENERAL_DATA_TTL_MS</code>, чтобы воркеры не перегружали
+        источники служебных данных.
+      </li>
+      <li>
+        <strong>loop()</strong> — бесконечно получает список обменников и их
+        статистику из Redis, раз в <code>big_loop</code> итераций инициирует
+        <code>reload()</code>, распределяет задания между воркерами с учётом
+        весов <code>getAdaptiveWorkerWeights()</code>, затем ограничивает
+        параллельность через <code>p-limit</code> и вызывает
+        <code>processSingleExchanger()</code> для каждого обменника. После каждой
+        итерации фиксирует пропуски <code>updateStatusesBySkip()</code> и ждёт
+        паузу <code>loopPause</code> секунд.
+      </li>
+    </ul>
+
+    <h2>Обработка обменников</h2>
+    <ul>
+      <li>
+        <strong>processSingleExchanger()</strong> (файл
+        <code>src/2_exchangerProcessor.ts</code>) — пропускает обменники по
+        расписанию <code>skip</code>, скачивает их XML через <code>httpGet</code>,
+        преобразует <code>xmlToJson()</code>, формирует курсы обработчиком
+        <code>RateFormatter</code> и отправляет агрегированную статистику с
+        помощью <code>sendTotalRates()</code>. Ошибки и предложения по увеличению
+        интервала парсинга отправляются через <code>sendExchangerError()</code>.
+      </li>
+      <li>
+        <strong>withTimeout()</strong> и <strong>ProcessingTimeoutError</strong>
+        — обёртка, ограничивающая работу <code>processSingleExchanger()</code>
+        значением <code>PROCESS_TIMEOUT_MS</code>. При таймауте воркер
+        аккуратно повышает <code>skip</code> и сообщает о проблеме.
+      </li>
+    </ul>
+
+    <p>
+      В сумме эти функции формируют устойчивый конвейер парсинга обменников,
+      где главный процесс управляет воркерами, каждый воркер кэширует общие
+      данные и разбирает свою часть обменников, а конкретная обработка защищена
+      таймаутами и отчётностью.
+    </p>
+  </body>
+</html>

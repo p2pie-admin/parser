@@ -40,7 +40,6 @@ import { IPm } from "../../types/selector";
 //   "858": {
 //       "name": "InternetMoney",
 //       "admin_rating": null,
-//       "tag": null,
 //       "logo": null,
 //       "course": 0.000034810501588982196,
 //       "min": {
@@ -120,7 +119,6 @@ export default (order: IOrder) => {
       p2pRatio,
       logo: null,
       admin_rating: null,
-      tag: "p2p",
       cities: locations?.map((l) => l.code).join("/"),
       // перечисляем только включенные параметры, потом возьмем их описание из Exchanger Parameters
       parameterCodes: Object.entries(regulationCodes || {}).reduce(
@@ -144,7 +142,6 @@ export default (order: IOrder) => {
 //           "858": {
 //               "name": "InternetMoney",
 //               "admin_rating": null,
-//               "tag": null,
 //               "logo": null,
 //               "course": 0.000034810501588982196,
 //               "min": {

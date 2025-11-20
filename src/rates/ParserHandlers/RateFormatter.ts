@@ -168,7 +168,6 @@ export default class RateFormatter {
         id,
         name,
         display_name,
-        tag,
         logo,
         admin_rating,
         ref_link,
@@ -199,7 +198,6 @@ export default class RateFormatter {
         name,
         display_name,
         admin_rating,
-        tag,
         logo,
         ...(rateData.minfee?._text && parseFloat(rateData.minfee?._text) > 0
           ? { min_fee: rateData.minfee._text }

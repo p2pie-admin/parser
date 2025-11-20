@@ -20,7 +20,6 @@ export interface IRate {
   exchangerId: string;
   name: string;
   display_name?: string | null;
-  tag: string;
   admin_rating: number | null;
   course: number;
   p2pRatio?: number;

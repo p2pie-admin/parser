@@ -96,6 +96,30 @@ export class DirRatesVerificator {
       ],
     ];
 
+    const invalidLimits: [boolean, string][] = [
+      [
+        !Number.isFinite(min.give) ||
+          min.give <= 0 ||
+          !Number.isFinite(min.get) ||
+          min.get <= 0,
+        "🔴 Минимум не задан или неположительный",
+      ],
+      [
+        !Number.isFinite(max.give) ||
+          max.give <= 0 ||
+          !Number.isFinite(max.get) ||
+          max.get <= 0,
+        "🔴 Максимум не задан или неположительный",
+      ],
+      [
+        !Number.isFinite(rate.reserve?.give) ||
+          (rate.reserve?.give ?? 0) <= 0 ||
+          !Number.isFinite(rate.reserve?.get) ||
+          (rate.reserve?.get ?? 0) <= 0,
+        "🔴 Резерв не задан или неположительный",
+      ],
+    ];
+
     const easyWarnings: [boolean, string][] = [
       [
         rate.course < lowCourse && rate.course > minCourse,
@@ -116,6 +140,13 @@ export class DirRatesVerificator {
     ];
 
     for (let [condition, message] of warnings) {
+      if (condition && rate.exchangerId) {
+        sendExchangerWarning(rate.exchangerId, this.dir, message);
+        hasWarnings = true;
+      }
+    }
+
+    for (let [condition, message] of invalidLimits) {
       if (condition && rate.exchangerId) {
         sendExchangerWarning(rate.exchangerId, this.dir, message);
         hasWarnings = true;
