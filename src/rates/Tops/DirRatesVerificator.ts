@@ -39,7 +39,61 @@ export class DirRatesVerificator {
       {}
     );
 
-    return okDirRates;
+    return this._verifyCityRates(okDirRates);
+  };
+
+  _verifyCityRates = (dirRates: { [key: string]: IRate }) => {
+    const cityRateEntries = Object.values(dirRates).flatMap((rate) =>
+      Object.entries(rate.cityRates || {}).map(([cityCode, cityRate]) => ({
+        cityCode,
+        cityRate,
+      }))
+    );
+
+    if (!cityRateEntries.length) return dirRates;
+
+    const cityRatesMap = cityRateEntries.reduce(
+      (acc: { [key: string]: IRate }, { cityCode, cityRate }) => {
+        acc[`${cityCode}-${cityRate.exchangerId || ""}`] = cityRate;
+        return acc;
+      },
+      {}
+    );
+
+    const [average, SD] = this._getAverageAndSD(cityRatesMap);
+    const totalRates = cityRateEntries.length;
+
+    return Object.entries(dirRates).reduce(
+      (acc: { [key: string]: IRate }, [exchangerId, rate]) => {
+        const filteredCityRates = Object.entries(rate.cityRates || {}).reduce(
+          (cityAcc: { [key: string]: IRate }, [cityCode, cityRate]) => {
+            const hasWarnings = this._verifyRate(
+              cityRate,
+              average,
+              SD,
+              totalRates
+            );
+
+            if (!hasWarnings) {
+              cityAcc[cityCode] = cityRate;
+            }
+            return cityAcc;
+          },
+          {}
+        );
+
+        const nextRate: IRate = { ...rate };
+        if (Object.keys(filteredCityRates).length) {
+          nextRate.cityRates = filteredCityRates;
+        } else {
+          delete nextRate.cityRates;
+        }
+
+        acc[exchangerId] = nextRate;
+        return acc;
+      },
+      {}
+    );
   };
 
   _verifyRate = (

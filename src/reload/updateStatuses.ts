@@ -1,31 +1,50 @@
-import { IExchanger } from "../types/exchanger";
+import { IExchanger, IExchangerStats } from "../types/exchanger";
 import { mylog } from "../utils/logger";
-import { getData, setData } from "../utils/redis";
+import { getObject, setData } from "../utils/redis";
 import statusChange from "../utils/statusChange";
+
+type ExchangerStatsSnapshot = Record<
+  string,
+  IExchangerStats & { status?: IExchanger["status"] }
+>;
 
 export async function updateStatusesBySkip(exchangersObj: {
   [key: string]: IExchanger;
 }) {
+  /**
+   * Быстро синхронизирует статусы обменников:
+   *  - читает все exchanger_stats одним запросом
+   *  - вешает "suspended", если skip > THRESHOLD
+   *  - снимает "suspended" только если есть курсы и skip <= THRESHOLD
+   *  - кеширует запрошенный статус в Redis, чтобы не слать лишние запросы в Strapi
+   */
   const entries = Object.entries(exchangersObj);
+  if (!entries.length) return;
+
   const THRESHOLD = 2;
   const STATUS_CACHE_TTL =
     Number(process.env.STATUS_CACHE_TTL ?? 60 * 60) || 60 * 60;
+  const exchangerStats =
+    ((await getObject("exchanger_stats")) as
+      | ExchangerStatsSnapshot
+      | null) ?? {};
 
   const toSuspend: string[] = [];
   const toActivate: string[] = [];
   const cacheSync: Array<{ id: string; status: IExchanger["status"] }> = [];
 
   for (const [exID, exchanger] of entries) {
-    const skipVal = Number(
-      (await getData(`exchanger_stats:${exID}:skip`)) || 0
-    );
+    const stats = exchangerStats?.[exID] ?? {};
+    const skipVal = Number.isFinite(stats.skip) ? Number(stats.skip) : 0;
+    const totalRatesRaw = stats.total_rates;
+    const totalRatesVal = Number.isFinite(totalRatesRaw)
+      ? Number(totalRatesRaw)
+      : 0;
+    const hasRates = Number.isFinite(totalRatesVal) && totalRatesVal > 0;
     const desiredStatus: IExchanger["status"] =
       skipVal > THRESHOLD ? "suspended" : "active";
     const currentStatus = exchanger.status;
-    const cachedStatus =
-      ((await getData(`exchanger_stats:${exID}:status`)) as
-        | IExchanger["status"]
-        | null) ?? null;
+    const cachedStatus = (stats.status as IExchanger["status"] | undefined) ?? null;
 
     if (currentStatus === desiredStatus) {
       if (cachedStatus !== desiredStatus) {
@@ -34,6 +53,12 @@ export async function updateStatusesBySkip(exchangersObj: {
       continue;
     }
 
+    // Do not try to re-activate an exchanger until we've observed actual rates.
+    if (desiredStatus === "active" && !hasRates) {
+      continue;
+    }
+
+    // We already requested this status earlier and cache hasn't expired yet.
     if (cachedStatus === desiredStatus) {
       continue;
     }

@@ -3,7 +3,7 @@ import { getAllExchangerIds, updateExchangerStatus } from "../gql/queries";
 import { waitSec } from "../reload/helper";
 import { mylog } from "./logger";
 
-type Status = "active" | "suspended" | "disabled";
+type Status = "active" | "suspended" | "disabled" | "draft";
 
 async function statusChange(
   fromStatus: Status,

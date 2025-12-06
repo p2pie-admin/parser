@@ -56,7 +56,7 @@ export interface IExchangerOffice {
   visible?: boolean | null;
 }
 
-export type IExchangerStatus = "active" | "suspended" | "disabled";
+export type IExchangerStatus = "active" | "suspended" | "disabled" | "draft";
 
 export interface IExchangerParsingError {
   comment?: string;

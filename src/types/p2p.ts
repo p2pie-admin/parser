@@ -69,7 +69,7 @@ export interface IOrder {
   uid: string;
   ip?: string;
   name?: string;
-  status?: "active" | "suspended" | "disabled";
+  status?: "active" | "suspended" | "disabled" | "draft";
   info?: string;
   dirs?: IP2PDir[];
   regulationCodes?: IP2PRegulationCodes;
