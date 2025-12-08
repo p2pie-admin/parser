@@ -23,6 +23,8 @@ const errorCodesExplanation = {
   "500": "Ошибка сервера",
   "503": "Сервер перегружен",
   "522": "Истекло время ожидания",
+  "json-parsing-error": "Не удалось разобрать XML/JSON",
+  "no-rates": "Ответ без курсов",
   unknown: "⦿",
 } as { [key in IErrorCode]: string };
 

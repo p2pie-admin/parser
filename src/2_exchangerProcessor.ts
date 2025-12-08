@@ -2,7 +2,7 @@
 import { httpGet } from "./utils/httpClient";
 import { emoji, mylog } from "./utils/logger";
 import { sendExchangerError, sendTotalRates } from "./rates/ErrorHandler";
-import { waitSec, xmlToJson } from "./reload/helper";
+import { XmlToJsonResult, waitSec, xmlToJson } from "./reload/helper";
 import { IExchanger, IExchangerParsingError } from "./types/exchanger";
 import { IGeneralData } from "./types/rates";
 import RateFormatter from "./rates/ParserHandlers/RateFormatter";
@@ -67,13 +67,28 @@ export const processSingleExchanger = async ({
   const doProcess = async () => {
     const response = await httpGet(exchanger.rates_link);
 
-    const parsed = xmlToJson(response.data);
-    const rates = parsed?.rates?.item;
+    const { parsed, error: parsingError }: XmlToJsonResult = xmlToJson(
+      response.data
+    );
+
+    const rawRates = parsed?.rates?.item;
+    const rates = Array.isArray(rawRates)
+      ? rawRates
+      : rawRates
+      ? [rawRates]
+      : undefined;
 
     if (!rates || !rates.length) {
+      const errorDetails: IExchangerParsingError = {
+        code: parsingError ? "json-parsing-error" : "no-rates",
+        autoMessage: parsingError
+          ? `Ошибка парсинга XML/JSON: ${parsingError}`
+          : "Ответ обменника не содержит списка курсов в rates.item",
+        comment: "Ошибка обработки полученного XML/JSON",
+      };
       sendExchangerError(
         exchanger,
-        { comment: "Ошибка обработки полученного XML/JSON" },
+        errorDetails,
         (skip || 0) + rand0to10() * rand0to10()
       );
       return;

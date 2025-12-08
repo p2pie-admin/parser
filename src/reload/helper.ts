@@ -18,19 +18,27 @@ const convertExchangers = (
   }, {});
 };
 
-export const xmlToJson = (data: any): ExchangerResponse | null => {
+export type XmlToJsonResult = {
+  parsed: ExchangerResponse | null;
+  error?: string;
+};
+
+export const xmlToJson = (data: any): XmlToJsonResult => {
   const options = {
     compact: true,
     ignoreComment: true,
     alwaysChildren: true,
   };
-  let res = {} as ExchangerResponse;
+  let parsed = {} as ExchangerResponse;
   try {
-    res = JSON.parse(XML2JSON.xml2json(data, options)) as ExchangerResponse;
+    parsed = JSON.parse(XML2JSON.xml2json(data, options)) as ExchangerResponse;
   } catch (e) {
-    return null;
+    return {
+      parsed: null,
+      error: e instanceof Error ? e.message : String(e),
+    };
   }
-  return res;
+  return { parsed };
 };
 
 export const reloadExchangers = async () => {
