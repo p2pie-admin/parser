@@ -1,13 +1,17 @@
 // rates/exchangerProcessor.ts
 import { httpGet } from "./utils/httpClient";
-import { emoji, mylog } from "./utils/logger";
-import { sendExchangerError, sendTotalRates } from "./rates/ErrorHandler";
-import { XmlToJsonResult, waitSec, xmlToJson } from "./reload/helper";
+import {
+  sendExchangerError,
+  sendExchangerWarning,
+  sendTotalRates,
+} from "./rates/ErrorHandler";
+import { parseRatesFromXml } from "./reload/helper";
 import { IExchanger, IExchangerParsingError } from "./types/exchanger";
 import { IGeneralData } from "./types/rates";
 import RateFormatter from "./rates/ParserHandlers/RateFormatter";
-import { idx } from "./utils/settings";
 import { rand0to10 } from "./utils/helper";
+import statusChange from "./utils/statusChange";
+import { setData } from "./utils/redis";
 
 const MAX_SKIP = 1200;
 const PROCESS_TIMEOUT_MS = Number(process.env.PROCESS_TIMEOUT ?? 100) * 1000;
@@ -41,23 +45,23 @@ const withTimeout = async <T>(
   }
 };
 
+const computeNextSkip = (currentSkip: number): number => {
+  const base = currentSkip > 0 ? currentSkip : 1;
+  const candidate = base * 2 + rand0to10();
+  return candidate >= MAX_SKIP ? 0 : candidate;
+};
+
 export const processSingleExchanger = async ({
   exchanger,
   skip,
   loopsDone,
   generalData,
-  index,
 }: {
   exchanger: IExchanger;
   skip: number;
   loopsDone: number;
   generalData: IGeneralData;
-  index: number;
 }): Promise<void> => {
-  const { id, name } = exchanger;
-
-  //await waitSec(index / 100);
-
   if (skip > 1 && loopsDone % skip !== 0) {
     return;
   }
@@ -67,31 +71,46 @@ export const processSingleExchanger = async ({
   const doProcess = async () => {
     const response = await httpGet(exchanger.rates_link);
 
-    const { parsed, error: parsingError }: XmlToJsonResult = xmlToJson(
-      response.data
-    );
-
-    const rawRates = parsed?.rates?.item;
-    const rates = Array.isArray(rawRates)
-      ? rawRates
-      : rawRates
-      ? [rawRates]
-      : undefined;
+    const { rates, errors: parsingErrors } = parseRatesFromXml(response.data);
 
     if (!rates || !rates.length) {
+      const preview =
+        typeof response.data === "string"
+          ? response.data.slice(0, 200)
+          : Buffer.isBuffer(response.data)
+          ? response.data.toString("utf8").slice(0, 200)
+          : JSON.stringify(response.data ?? "").slice(0, 200);
+      const nextSkip = computeNextSkip(skip);
       const errorDetails: IExchangerParsingError = {
-        code: parsingError ? "json-parsing-error" : "no-rates",
-        autoMessage: parsingError
-          ? `Ошибка парсинга XML/JSON: ${parsingError}`
-          : "Ответ обменника не содержит списка курсов в rates.item",
+        code: parsingErrors.length ? "json-parsing-error" : "no-rates",
+        autoMessage: parsingErrors.length
+          ? `Ошибка парсинга XML/JSON: ${parsingErrors[0]} | preview: ${preview}...`
+          : `Ответ обменника не содержит списка курсов | preview: ${preview}...`,
         comment: "Ошибка обработки полученного XML/JSON",
       };
-      sendExchangerError(
+      await sendExchangerError(
         exchanger,
         errorDetails,
-        (skip || 0) + rand0to10() * rand0to10()
+        nextSkip
+      );
+      await statusChange("active", "suspended", exchanger.id);
+      await setData(
+        `exchanger_stats:${exchanger.id}:status`,
+        "suspended",
+        Number(process.env.STATUS_CACHE_TTL ?? 60 * 60) || 60 * 60
       );
       return;
+    }
+
+    if (parsingErrors.length) {
+      const warnings = parsingErrors.map((msg, idxWarn) =>
+        sendExchangerWarning(
+          exchanger.id,
+          `item-${idxWarn + 1}`,
+          `Ошибка парсинга XML/JSON: ${msg}`
+        )
+      );
+      await Promise.allSettled(warnings);
     }
 
     const rateFormatter = new RateFormatter(
@@ -113,6 +132,7 @@ export const processSingleExchanger = async ({
     const time = ((Date.now() - start) / 1000).toFixed(2);
 
     if (err instanceof ProcessingTimeoutError) {
+      const nextSkip = computeNextSkip(skip);
       const error: IExchangerParsingError = {
         code: "ETIMEDOUT",
         autoMessage: err.message,
@@ -121,12 +141,13 @@ export const processSingleExchanger = async ({
       await sendExchangerError(
         exchanger,
         error,
-        Math.min((skip + rand0to10()) * 2, MAX_SKIP),
+        nextSkip,
         time
       );
       return;
     }
 
+    const nextSkip = computeNextSkip(skip);
     const message = err?.message ? String(err.message) : String(err);
     const error: IExchangerParsingError = {
       code: err?.code,
@@ -136,7 +157,7 @@ export const processSingleExchanger = async ({
     await sendExchangerError(
       exchanger,
       error,
-      Math.min(skip * 2, MAX_SKIP) + rand0to10(),
+      nextSkip,
       time
     );
     return;

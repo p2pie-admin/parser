@@ -21,16 +21,16 @@ export async function updateStatusesBySkip(exchangersObj: {
   const entries = Object.entries(exchangersObj);
   if (!entries.length) return;
 
-  const THRESHOLD = 2;
+  const THRESHOLD = 20;
   const STATUS_CACHE_TTL =
     Number(process.env.STATUS_CACHE_TTL ?? 60 * 60) || 60 * 60;
   const exchangerStats =
-    ((await getObject("exchanger_stats")) as
-      | ExchangerStatsSnapshot
-      | null) ?? {};
+    ((await getObject("exchanger_stats")) as ExchangerStatsSnapshot | null) ??
+    {};
 
   const toSuspend: string[] = [];
   const toActivate: string[] = [];
+  const toDraft: string[] = [];
   const cacheSync: Array<{ id: string; status: IExchanger["status"] }> = [];
 
   for (const [exID, exchanger] of entries) {
@@ -41,10 +41,19 @@ export async function updateStatusesBySkip(exchangersObj: {
       ? Number(totalRatesRaw)
       : 0;
     const hasRates = Number.isFinite(totalRatesVal) && totalRatesVal > 0;
+    const missingLinks =
+      !exchanger.rates_link || !exchanger.rates_link.trim() || !exchanger.ref_link;
+
+    if (exchanger.status === "active" && missingLinks) {
+      toDraft.push(exID);
+      continue;
+    }
+
     const desiredStatus: IExchanger["status"] =
       skipVal > THRESHOLD ? "suspended" : "active";
     const currentStatus = exchanger.status;
-    const cachedStatus = (stats.status as IExchanger["status"] | undefined) ?? null;
+    const cachedStatus =
+      (stats.status as IExchanger["status"] | undefined) ?? null;
 
     if (currentStatus === desiredStatus) {
       if (cachedStatus !== desiredStatus) {
@@ -74,6 +83,19 @@ export async function updateStatusesBySkip(exchangersObj: {
     await Promise.all(
       cacheSync.map(({ id, status }) =>
         setData(`exchanger_stats:${id}:status`, status, STATUS_CACHE_TTL)
+      )
+    );
+  }
+
+  if (toDraft.length) {
+    mylog(
+      `⚠️ Moving to draft (missing links): ${toDraft.join(", ")}`,
+      "warning"
+    );
+    await statusChange("active", "draft", toDraft);
+    await Promise.all(
+      toDraft.map((id) =>
+        setData(`exchanger_stats:${id}:status`, "draft", STATUS_CACHE_TTL)
       )
     );
   }

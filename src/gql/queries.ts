@@ -5,7 +5,7 @@ const toLoop = Number(process.env.EXCHANGERS_TO_LOOP || 10000);
 
 export const ExchangersQuery = gql`
 {
-    exchangers(filters: {  status: { in: ["active", "suspended"] } ref_link: {notNull: true} rates_link: {notNull: true}  } pagination: { start: 0, limit:${toLoop} }) {
+    exchangers(filters: {  status: { in: ["active", "suspended"] }   } pagination: { start: 0, limit:${toLoop} }) {
    data {
         id
         attributes {

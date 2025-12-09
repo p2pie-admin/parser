@@ -11,8 +11,8 @@ export const runInitialization = async () => {
   // SUSPENDED это те, которые не дают курсов по какой-то причине, но ожидается, что дадут. (skip > 2)
   // ACTIVE это те, которые опрашиваются стабильно и отдают курсы. (skip ≤ 2)
   await statusChange("suspended", "active");
-  await statusChange("draft", "active");
-  await statusChange("disabled", "active");
+  // await statusChange("draft", "active");
+  // await statusChange("disabled", "active");
   // при старте парсера сперва всех переводим в active
   await reload();
   mylog("✅ Initialization completed successfully", "success");

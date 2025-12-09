@@ -116,7 +116,6 @@ export const loop = async (): Promise<void> => {
                 loopsDone,
                 skip: exchanger_stats?.[exchanger.id]?.skip || 0,
                 generalData,
-                index,
               })
             );
           })

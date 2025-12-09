@@ -91,9 +91,7 @@ export const getDirRatesID = async (
   mergeRatesWithParameters(enrichedRates, uniqueRates);
   mergeRatesWithParameters(enrichedRates, specialRates);
 
-  const sortedEntries = Object.entries(enrichedRates).sort(
-    ([, a], [, b]) => a.course - b.course
-  );
+  const sortedEntries = Object.entries(enrichedRates);
 
   return sortedEntries.map(toRateIdWithParameters);
 };
