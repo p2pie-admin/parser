@@ -2,5 +2,23 @@
   "editor.hover.delay": 1200,
   "editor.fontSize": 20,
   "typescript.preferences.importModuleSpecifierEnding": "none",
-  "javascript.preferences.importModuleSpecifierEnding": "none"
+  "javascript.preferences.importModuleSpecifierEnding": "none",
+  "folder-color.pathColors": [
+    {
+      "folderPath": "parser/src/index.ts/",
+      "badge": "🗯️"
+    },
+    {
+      "folderPath": "parser/src/1_loop.ts/",
+      "badge": "1️⃣"
+    },
+    {
+      "folderPath": "parser/src/2_exchangerProcessor.ts/",
+      "badge": "2️⃣"
+    },
+    {
+      "folderPath": "parser/src/initial/",
+      "badge": "🔵"
+    }
+  ]
 }

@@ -112,7 +112,20 @@ const decodeCompressed = (
 };
 
 const toXmlText = (data: any, errors: string[]): string => {
-  if (typeof data === "string") return data;
+  if (typeof data === "string") {
+    if (looksLikeXml(data)) {
+      return data;
+    }
+
+    // axios иногда отдает сжатый ответ как "строку" в бинарной кодировке
+    const maybeBuffer = Buffer.from(data, "binary");
+    const decoded = decodeCompressed(maybeBuffer, errors);
+    if (decoded) {
+      return decoded;
+    }
+
+    return data;
+  }
 
   const buffer = toBuffer(data);
   if (buffer) {

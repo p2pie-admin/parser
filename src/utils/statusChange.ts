@@ -3,7 +3,14 @@ import { getAllExchangerIds, updateExchangerStatus } from "../gql/queries";
 import { waitSec } from "../reload/helper";
 import { mylog } from "./logger";
 
-type Status = "active" | "suspended" | "disabled" | "draft";
+type Status =
+  | "active"
+  | "suspended"
+  | "disabled"
+  | "draft"
+  | "draft2"
+  | "paused"
+  | "blacklist";
 
 async function statusChange(
   fromStatus: Status,
@@ -53,7 +60,7 @@ async function statusChange(
         exchangerId: id,
         status: toStatus,
       });
-      const delay = 0.05;
+      const delay = 0.1;
       await waitSec(delay);
     } catch (err) {
       console.error(`📕 \u001b[1;31m Failed to update exchanger ${id}:`, err);

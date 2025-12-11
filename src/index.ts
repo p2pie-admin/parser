@@ -1,13 +1,14 @@
 import { mylog } from "./utils/logger";
 import { cpus } from "os";
 import cluster from "cluster";
-import { findAvailablePort, parseRatesFromXml, waitSec } from "./reload/helper";
+import { findAvailablePort, waitSec } from "./reload/helper";
 import dotenv from "dotenv";
 import { loop } from "./1_loop";
 import { runInitialization } from "./initial";
 import { scheduleAllRatesIDRefresh } from "./rates/top";
 import { readFileSync, existsSync } from "fs";
 import path from "path";
+import { runTest } from "./test/runTest";
 
 dotenv.config();
 
@@ -79,14 +80,4 @@ const startMainWorker = async () => {
 };
 
 start();
-// const examplePathCandidates = [
-//   path.resolve(process.cwd(), "test/example.xml"),
-//   path.resolve(__dirname, "../test/example.xml"),
-// ];
-
-// const examplePath =
-//   examplePathCandidates.find((p) => existsSync(p)) || examplePathCandidates[0];
-
-// const xml = readFileSync(examplePath, "utf8");
-// const res = parseRatesFromXml(xml);
-// console.log(JSON.stringify(res));
+//runTest();

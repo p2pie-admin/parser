@@ -10,8 +10,10 @@ import { IExchanger, IExchangerParsingError } from "./types/exchanger";
 import { IGeneralData } from "./types/rates";
 import RateFormatter from "./rates/ParserHandlers/RateFormatter";
 import { rand0to10 } from "./utils/helper";
+import { mylog } from "./utils/logger";
 import statusChange from "./utils/statusChange";
 import { setData } from "./utils/redis";
+import zlib from "zlib";
 
 const MAX_SKIP = 1200;
 const PROCESS_TIMEOUT_MS = Number(process.env.PROCESS_TIMEOUT ?? 100) * 1000;
@@ -70,16 +72,69 @@ export const processSingleExchanger = async ({
 
   const doProcess = async () => {
     const response = await httpGet(exchanger.rates_link);
+    const contentEncoding =
+      response.headers?.["content-encoding"]?.toLowerCase() || "";
 
-    const { rates, errors: parsingErrors } = parseRatesFromXml(response.data);
+    const decompressResponseBody = (body: any) => {
+      if (!contentEncoding || !Buffer.isBuffer(body)) return body;
+
+      try {
+        if (contentEncoding.includes("br")) {
+          return zlib.brotliDecompressSync(body);
+        }
+        if (contentEncoding.includes("gzip")) {
+          return zlib.gunzipSync(body);
+        }
+        if (contentEncoding.includes("deflate")) {
+          return zlib.inflateSync(body);
+        }
+      } catch (err: any) {
+        mylog(
+          `Decompress failed for #${exchanger.id} ${
+            exchanger.name || ""
+          } | encoding: ${contentEncoding} | ${err?.message || err}`,
+          "warning",
+          true
+        );
+      }
+
+      return body;
+    };
+
+    const decodedBody = decompressResponseBody(response.data);
+
+    const { rates, errors: parsingErrors } = parseRatesFromXml(decodedBody);
 
     if (!rates || !rates.length) {
       const preview =
-        typeof response.data === "string"
-          ? response.data.slice(0, 200)
-          : Buffer.isBuffer(response.data)
-          ? response.data.toString("utf8").slice(0, 200)
-          : JSON.stringify(response.data ?? "").slice(0, 200);
+        typeof decodedBody === "string"
+          ? decodedBody.slice(0, 200)
+          : Buffer.isBuffer(decodedBody)
+          ? decodedBody.toString("utf8").slice(0, 200)
+          : JSON.stringify(decodedBody ?? "").slice(0, 200);
+      const contentType = response.headers?.["content-type"];
+      const contentLengthHeader = response.headers?.["content-length"];
+      const bodyLength =
+        typeof decodedBody === "string"
+          ? decodedBody.length
+          : Buffer.isBuffer(decodedBody)
+          ? decodedBody.byteLength
+          : JSON.stringify(decodedBody ?? "").length;
+      mylog(
+        `no-rates debug #${exchanger.id} ${
+          exchanger.name || ""
+        } | status: ${response.status} | content-type: ${
+          contentType || "?"
+        } | content-encoding: ${
+          contentEncoding || "-"
+        } | content-length(hdr/body): ${
+          contentLengthHeader || "?"
+        }/${bodyLength} | parsingErrors: ${
+          parsingErrors.length ? parsingErrors.join("; ") : "none"
+        } | url: ${exchanger.rates_link} | preview: ${preview}...`,
+        "warning",
+        true
+      );
       const nextSkip = computeNextSkip(skip);
       const errorDetails: IExchangerParsingError = {
         code: parsingErrors.length ? "json-parsing-error" : "no-rates",

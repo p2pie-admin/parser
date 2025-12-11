@@ -69,6 +69,7 @@ export async function httpGet<T = any>(
 ): Promise<AxiosResponse<T>> {
   const maxAttempts = Math.max(RETRY_COUNT + 1, 1);
   const timeout = config.timeout ?? DEFAULT_TIMEOUT_MS;
+  const responseType = config.responseType ?? "arraybuffer";
 
   let attempt = 0;
   let lastError: any;
@@ -79,6 +80,7 @@ export async function httpGet<T = any>(
       return await client.get<T>(url, {
         ...config,
         timeout,
+        responseType,
         headers: {
           ...DEFAULT_HEADERS,
           ...(config.headers || {}),

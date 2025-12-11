@@ -10,9 +10,11 @@ export const runInitialization = async () => {
   // DISABLED это те, которые никак не попадают в парсер вовсе. Им запрещено листиться.
   // SUSPENDED это те, которые не дают курсов по какой-то причине, но ожидается, что дадут. (skip > 2)
   // ACTIVE это те, которые опрашиваются стабильно и отдают курсы. (skip ≤ 2)
-  await statusChange("suspended", "active");
+  await statusChange("active", "paused");
+  // await statusChange("active", "paused");
+  // await statusChange("suspended", "draft");
   // await statusChange("draft", "active");
-  // await statusChange("disabled", "active");
+
   // при старте парсера сперва всех переводим в active
   await reload();
   mylog("✅ Initialization completed successfully", "success");
