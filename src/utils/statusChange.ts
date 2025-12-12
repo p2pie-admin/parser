@@ -55,16 +55,28 @@ async function statusChange(
   );
 
   for (const id of exchangerIds) {
-    try {
-      await callStrapi(updateExchangerStatus, {
-        exchangerId: id,
-        status: toStatus,
-      });
-      const delay = 0.1;
-      await waitSec(delay);
-    } catch (err) {
-      console.error(`📕 \u001b[1;31m Failed to update exchanger ${id}:`, err);
+    let attempt = 0;
+    const maxAttempts = 2;
+
+    while (attempt < maxAttempts) {
+      attempt += 1;
+      try {
+        await callStrapi(updateExchangerStatus, {
+          exchangerId: id,
+          status: toStatus,
+        });
+        break;
+      } catch (err) {
+        console.log(`📕 \u001b[1;31m failed ${id} attempt ${attempt}`);
+        if (attempt >= maxAttempts) {
+          break;
+        }
+        await waitSec(5);
+      }
     }
+
+    const delay = 0.1;
+    await waitSec(delay);
   }
 }
 

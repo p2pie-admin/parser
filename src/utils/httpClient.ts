@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 10) * 1000;
+// Увеличили дефолт до 20s, чтобы уменьшить ERR_REQUEST_ABORTED на медленных обменниках
+const DEFAULT_TIMEOUT_MS = Number(process.env.RATES_TIMEOUT ?? 20) * 1000;
 const RETRY_COUNT = Number(process.env.HTTP_RETRY_COUNT ?? 1);
 const RETRY_DELAY_BASE_MS = Number(process.env.HTTP_RETRY_DELAY_MS ?? 400);
 

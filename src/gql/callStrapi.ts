@@ -53,8 +53,16 @@ const callStrapi = async (
     const res = normalizer(data);
     return res;
   } catch (err) {
-    mylog("-- GQL ERROR --", "error");
-    mylog(`${err}`, "error");
+    const status = (err as any)?.response?.status;
+    const rawResponseError =
+      (err as any)?.response?.error ||
+      (err as any)?.response?.errors?.[0]?.message ||
+      (err as any)?.message;
+    const snippet =
+      typeof rawResponseError === "string"
+        ? rawResponseError.replace(/\s+/g, " ").trim().slice(0, 140)
+        : "GraphQL error";
+    mylog(`-- GQL ERROR -- ${status ? `status ${status} | ` : ""}${snippet}`, "error");
     const hasJwt = Boolean(jwt && jwt.length > 5);
     if (isForbiddenError(err, hasJwt) && allowRetry) {
       mylog("JWT rejected, re-authorizing...", "warning");
