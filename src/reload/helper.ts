@@ -168,6 +168,9 @@ const normalizeItem = (data: any): IRateData | null => {
     amount: toRateField(item.amount?._text ?? item.amount),
     minamount: toRateField(item.minamount?._text ?? item.minamount),
     maxamount: toRateField(item.maxamount?._text ?? item.maxamount),
+    ...(item.city !== undefined
+      ? { city: toRateField(item.city?._text ?? item.city) }
+      : {}),
     ...(item.minfee !== undefined
       ? { minfee: toRateField(item.minfee?._text ?? item.minfee) }
       : {}),
