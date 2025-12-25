@@ -112,6 +112,7 @@ export default (order: IOrder) => {
     const rateData = {
       exchangerId: uid,
       name: name || "",
+      display_name: name || null,
       min: convertLimit(min[0], usersRate.rate[0], gbtg),
       max: convertLimit(max[0], usersRate.rate[0], gbtg),
       reserve: convertLimit(max[0], usersRate.rate[0], gbtg),

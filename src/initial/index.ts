@@ -13,7 +13,7 @@ export const runInitialization = async () => {
   //await statusChange("active", "suspended");
   //await statusChange("active", "paused");
 
-  // await statusChange("draft", "active");
+  await statusChange("disabled", "draft");
   // await statusChange("paused", "active");
   //await statusChange("suspended", "active");
   // await statusChange("draft", "active");
