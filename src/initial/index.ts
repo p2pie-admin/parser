@@ -13,9 +13,9 @@ export const runInitialization = async () => {
   //await statusChange("active", "suspended");
   //await statusChange("active", "paused");
 
-  await statusChange("disabled", "draft");
+  //await statusChange("disabled", "draft");
   // await statusChange("paused", "active");
-  //await statusChange("suspended", "active");
+  await statusChange("suspended", "active");
   // await statusChange("draft", "active");
   // при старте парсера сперва всех переводим в active
   await reload();
