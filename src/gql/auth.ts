@@ -6,7 +6,11 @@ import { AuthMutation } from "./queries";
 async function auth() {
   mylog("Authorizing ...");
   await setData("parser_jwt", "", 0);
-  const data = await callStrapi(AuthMutation);
+  // Credentials come from the environment (rotated in /root/.env), never from source.
+  const data = await callStrapi(AuthMutation, {
+    identifier: process.env.STRAPI_AUTH_IDENTIFIER || "parser",
+    password: process.env.STRAPI_AUTH_PASSWORD || "",
+  });
   const jwt = data?.login?.jwt;
   if (jwt) {
     mylog("Authorized successfully!", "success");

@@ -154,13 +154,9 @@ export const TopParametersQuery = gql`
 `;
 
 export const AuthMutation = gql`
-  mutation login {
+  mutation login($identifier: String!, $password: String!) {
     login(
-      input: {
-        identifier: "parser"
-        password: "x#@TH4L-#UJ#vq2"
-        provider: "local"
-      }
+      input: { identifier: $identifier, password: $password, provider: "local" }
     ) {
       jwt
       user {
