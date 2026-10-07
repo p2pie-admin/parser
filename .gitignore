@@ -1,3 +1,7 @@
 node_modules
 build
 scripts
+# secrets (never commit)
+.env
+.env.*
+!.env.example
