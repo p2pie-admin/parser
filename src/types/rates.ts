@@ -21,6 +21,7 @@ export interface IRate {
   name: string;
   display_name?: string | null;
   admin_rating: number | null;
+  trust_level?: string | null;
   course: number;
   p2pRatio?: number;
   min_fee?: string;

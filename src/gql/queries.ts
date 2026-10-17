@@ -12,6 +12,7 @@ export const ExchangersQuery = gql`
           name
           display_name
           admin_rating
+          trust_level
           status
           rates_link
           ref_link

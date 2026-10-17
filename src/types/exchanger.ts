@@ -80,6 +80,8 @@ export type IExchanger = {
   logo?: Logo | null;
   total_rates?: number;
   admin_rating?: number;
+  // Trust level from Strapi (unknown | caution | verified | reliable), carried into every rate.
+  trust_level?: string | null;
   skip?: number;
   parameters?: IExchangerParameterRule[] | null;
   offices?: IExchangerOffice[] | null;

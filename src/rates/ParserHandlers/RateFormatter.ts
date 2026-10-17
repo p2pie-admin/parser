@@ -170,6 +170,7 @@ export default class RateFormatter {
         display_name,
         logo,
         admin_rating,
+        trust_level,
         ref_link,
         rates_link,
         parameters,
@@ -198,6 +199,7 @@ export default class RateFormatter {
         name,
         display_name,
         admin_rating,
+        trust_level: trust_level ?? null,
         logo,
         ...(rateData.minfee?._text && parseFloat(rateData.minfee?._text) > 0
           ? { min_fee: rateData.minfee._text }
